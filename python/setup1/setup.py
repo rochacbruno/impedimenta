@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""Installer script for module idontevenknowitseducational."""
+"""Installer script for project foo."""
 
 from distutils.core import setup
 
@@ -7,9 +7,9 @@ from distutils.core import setup
 DISTUTILS_DEBUG = ""
 
 setup(
-    name = "foo",             # name of package
-    version = "1.0",          # package release version
-    py_modules = ["main"],    # modules in package
+    name = "foo",             # foo-1.0.tar.gz
+    version = "1.0",
+    py_modules = ["main"],    # "import main"
     author = "Jeremy Audet",
     author_email = "ichimonji10@gmail.com",
     url = "https://github.com/Ichimonji10/impedimenta",
