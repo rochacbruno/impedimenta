@@ -4,8 +4,15 @@
 import os
 import sys
 
-print os.getcwd()
-print os.path.dirname(__file__)
-print os.path.abspath(os.path.dirname(__file__))
-print os.path.join(os.path.abspath(os.path.dirname(__file__)), 'testdir')
-print os.path.join(os.path.abspath(os.path.dirname(__file__)), 'testdir/subdir')
+print(os.getcwd())
+print(os.path.dirname(__file__))
+print(os.path.abspath(os.path.dirname(__file__)))
+print(os.path.join(os.path.abspath(
+    os.path.dirname(__file__)),
+    'testdir'
+))
+print(os.path.join(os.path.abspath(
+    os.path.dirname(__file__)),
+    'testdir',
+    'subdir'
+))
