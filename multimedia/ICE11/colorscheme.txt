@@ -1,0 +1,6 @@
+#009999 graphics
+#C3CDE5 event header highlight color
+#1240AB event header blue
+#008400 active nav bar item
+#93EF93 nav bar green
+#4CDFDF header blue

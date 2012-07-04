@@ -1,0 +1,20 @@
+div.image_and_caption {
+    float: right;
+    margin: 0.5em;
+    padding: 0.5em 0.5em 0 0.5em;
+    /* no need for padding on bottom -- caption has its own padding */
+
+    border: thin dashed black;
+    background-color: #383838; /* lighter grey */
+}
+
+div.image_and_caption p {
+    width: 100%;
+    /* parent div (.image) should have width set, inline */
+    margin: 0.2em;
+
+    font-size: smaller;
+    font-style: italic;
+    text-align: center;
+    background-color: #383838; /* lighter-grey */
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+    android:title="Location"
+    android:summary="name or ip address of server (e.g. example.com)"
+    android:key="@string/serverIP_key"
+    android:defaultValue="127.0.0.1"
+    android:persistent="true"/>
+    <EditTextPreference
+    android:title="Port"
+    android:summary="port number of server (default 6600)"
+    android:key="@string/serverPort_key"
+    android:defaultValue="6600"
+    android:persistent="true"/>
+    <CheckBoxPreference
+    android:title="Use Password"
+    android:summary="is a password required?"
+    android:key="@string/passwordRequired_key"
+    android:defaultValue="false"
+    android:persistent="true"/>
+    <EditTextPreference
+    android:title="Password"
+    android:summary="password used to connect"
+    android:key="@string/serverPassword_key"
+    android:defaultValue="password"
+    android:persistent="true"
+    android:dependency="@string/passwordRequired_key"/>
+</PreferenceScreen>

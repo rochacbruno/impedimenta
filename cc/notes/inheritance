@@ -1,0 +1,19 @@
+TERMS:
+base class
+derived class
+
+ancestor class
+parent class
+child class
+descendant class
+
+LEGAL:
+parentObject = childObject;
+ancestorObject = descendantObject;
+
+ILLEGAL;
+childObject = parentObject;
+descendantObject = ancestorObject;
+
+ENGLISH NOTES:
+Any time Any time an object of type parent is used, an object of type child or descendant can also be used. However, an ancestor object cannot be used in place of a parent object.

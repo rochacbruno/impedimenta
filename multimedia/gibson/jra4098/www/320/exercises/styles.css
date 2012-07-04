@@ -1,0 +1,85 @@
+/* "Where am I now?" style */
+#navlist li a#current{
+    background-color:red;
+}
+
+/* Navigation related styles */
+/* Add your styles here */
+
+ul#navlist {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;  /* no bullets */
+    float: left;
+    width: 100%;            /* float + width allows color and background-color to proplerly display */
+    color: #FFF;
+    background-color: #036;
+}
+
+ul#navlist li {
+    display: inline;        /* allow elements to stack horizontally */
+}
+
+ul#navlist li a {
+    float: left;
+    width: 8em;             /* float + width allows each anchor to be large enough to display properly */
+    padding: 0.2em 1em;     /* aesthetic padding */
+    text-decoration: none;  /* Remove distracting underlines. Other visual cues point this out as a navbar. */
+    border-right: 1px solid #FFF; /* obviously separate navbar items */
+    color: #FFF;
+}
+
+ul#navlist li a:hover {
+    background-color: #369;
+}
+
+/* Don't change the styles below (unless you really want to) */
+/* Layout and content related styles */
+body{  
+    font-family: verdana, sans-serif; 
+    font-size: small;
+    margin: 0;
+    padding: 0;
+}
+
+ul#stories{ 
+    padding: 0px;
+}
+
+ul#stories li {    
+    list-style: none;
+    margin: 10px 0; 
+}
+
+#banner{
+    margin-left:15px;
+}
+
+#container{
+    width:750px;
+    border:1px solid black;
+    background-image: url(2col_bkgd.gif);
+    background-repeat: repeat-y;
+}
+
+#header{
+    padding-top:15px;
+    padding-bottom:21px;
+    background-color:#CCC;
+}
+
+#footer{
+    clear:both;
+    padding:15px;
+    background:#ccc;
+}
+
+#main{
+    float:right;
+    width:530px;
+    margin: 0 10px;
+}
+
+#extras{
+    margin-left:10px;
+}

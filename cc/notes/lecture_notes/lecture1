@@ -1,0 +1,18 @@
+Identifiers (variable, constant names) can consist of alphanumeric characters and underscores. The first character in an identifier cannot be a number.
+
+Sample cpp keywords: class, const, float, static, sizeof, while, dynamic_cast, etc.
+cin, cout, and others are defined by <iostream>. #include strings allows type string. By default, you will most commonly use int, double, char, bool, and string. All ints can be unsigned.
+
+Variable can be declared using the 'type varName(value);' syntax. ex. int gorillas(3); Statements can be combined. Ex: amount *= num1 + num2; is equivalent to amount = amount * (num1 + num2). The operator alway goes on the left.
+
+char ch = 7; and int number = Z; are acceptable, though ill-advised. Bools treat all nonzero values as true. Therefore, declaring bool test = 13; is valid and evaluates to true. int integer = test; will assign 1 to integer.
+
+Literals are synonymous with constants. Don't forget that floats can be written in the form 3.67e-17. Chars are encosed in single quotes: 'm'. Strings are enclosed in double quotes: "test string", or "m".
+
+Undefined escape sequences are, truly, undefined. \z has no defined meaning. Each compiler can treat it differently.
+
+Variables can use the const modifiere. Example: const int HEADS;
+
+Never use / and % with negative integers. The syntax for a type cast is: static_cast<type>(expression). 
+
+For example, static_cast<int>(3.9). Note that the value returned by this expression is 3. ++n and n++ will increment n before and after n is evaluated, respectively. It is not a good idea to use increment operators in larger expressions. Do not write expressions that depend upon the order of operations.

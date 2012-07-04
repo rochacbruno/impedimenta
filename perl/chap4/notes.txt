@@ -1,0 +1,13 @@
+	When used with foreach(), an array will return a list of element values. When used with foreach(), a hash will return a list of hash elements, including both keys and values. If you wish to return a list of just keys or values, use a utility such as keys or values.
+	In the sample code below, the keyword "keys" returns a list of all the keys in %hash. If the keyword had not been present, a list of all elements in %hash would have been returned -- including both keys and values. Note that foreach treats arrays slightly differently. Rather than returning a list of element identifiers (0, 1, 2, etc) and element values, a list consisting of only element values is returned.
+
+foreach $hashKey (keys %hash) {
+	print "Key: $hashKey\n";
+	print "Value: $hash{$hashKey}\n";
+}
+
+	There are three contexts that data can be used in: scalar, list, and boolean. In scalar context, data is either converted to a number or string. In list context, data (such as a hash, an array, or the output of split()) is converted to a list. Boolean context refers to when data is used in a true/false context. Data is converted to a 1 if true, and a 0 of false.
+	Here's a way to think about context: A TYPE used in a CONTEXT returns a TYPE. For example:
+A LIST used in SCALAR context returns the last item in the array (SCALAR STRING). 
+An ARRAY used in LIST context returns a LIST of array contents. 
+An ARRAY used in SCALAR context returns the length of that array (SCALAR NUMBER).

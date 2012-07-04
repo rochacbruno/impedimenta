@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- labels -->
+    <string name="app_name">Jeremy\'s Jammin\' Jukebox</string>
+    <string name="control_mode_name">Controls</string>
+    <string name="playlist_mode_name">Playlist</string>
+    <string name="library_mode_name">Library</string>
+    <string name="preference_mode_name">Preferences</string>
+
+    <!-- handlers for the four mode buttons -->
+    <string name="controlsButtonHandler">controlModeStarted</string>
+    <string name="playlistButtonHandler">playlistModeStarted</string>
+    <string name="libraryButtonHandler">libraryModeStarted</string>
+    <string name="optionsButtonHandler">optionsModeStarted</string>
+
+    <!-- preference keys -->
+    <string name="serverIP_key">serverIP</string>
+    <string name="serverPort_key">serverPort</string>
+    <string name="serverPassword_key">serverPassword</string>
+    <string name="passwordRequired_key">passwordRequired</string>
+</resources>

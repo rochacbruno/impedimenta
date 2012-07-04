@@ -1,0 +1,205 @@
+/*-== CODE ==================================================================-*\
+This section sets rules for how to display code.
+\*-==========================================================================-*/
+code {
+    font-family: "DejaVu Sans Mono",  monospace;
+    color: #16733E;
+}
+
+code.code_block {
+    padding: 0em 0.5em;
+    margin: 0.5em 0;
+    display: block;
+    white-space: pre;
+    /*word-wrap: break-word;*/              /* @WARNING CSS3. In my tests, works on Chromium and Opera, but not Firefox. W3Schools says Safari supports word-wrap. */
+                                        /* Possible reference: http://caniuse.com/#search=word-wrap */
+                                        /* The "white-space: pre" property is what causes the need for word wrapping. */
+                                        /* see: http://webdesignerwall.com/tutorials/word-wrap-force-text-to-wrap */
+    border: thin solid gray;
+    border-radius: 0.5em;
+
+    color: black;
+    background-color: #EEE;
+    overflow: auto;                     /* Because whitespace is preserved, it is possible for code to overflow its 
+                                        container. This adds scrollbars when appropriate (and it has better support 
+                                        than word-wrap:break-word; */
+    font-style: normal;                 /* don't italicize text */
+}
+
+/*-== HORIZONTAL NAVBAR =====================================================-*\
+This section styles a <ul> to create a navbar. It forces <li> elements to 
+behave as block-level items, allowing the entire element area to be clicked 
+(rather than just text).
+\*-==========================================================================-*/
+
+/* Create a 100% width box that can contain nav elements. */
+ul#navbar {
+    float: left;                        /* float causes navbar to display as a box */
+    width: 100%;                        /* every float needs to be given a width */
+    padding: 0;
+    margin: 0.5em 0;
+    border: thin solid black;
+    list-style-type: none;              /* no bullets on list items */
+
+    background-color: #444;             /* grey */
+    box-shadow: 0em 0em 0.5em black;
+}
+
+/* Allow elements to stack horizontally, like normal text. */
+ul#navbar li {
+    display: inline;
+}
+
+/* Nav element styling. */
+ul#navbar li a {
+    float: left;                        /* Floating allows the entire link area to be clicked (instead of just the text area. */
+    width: 10em;                        /* Sets the width of each (floated) nav element. */
+    padding: 0.4em 0.5em 0.7em 0.5em;               /* Additional height and width for each nav element. */
+
+    font-weight: bold;
+    font-size: smaller;
+    text-decoration: none;              /* no underline on links */
+    text-transform: uppercase;
+    color: white;                       /* Background color is dark. Make text readable. */
+    box-shadow: inset 0em -0.5em #FFF;
+    background-color: #444;             /* grey */
+}
+
+ul#navbar li a:link {}
+ul#navbar li a:visited {}
+ul#navbar li a:hover {
+    box-shadow: inset 0em -0.5em #FE877D; /* pink */
+}
+ul#navbar li a:active {}
+
+ul#navbar li a#current_section {
+    box-shadow: inset 0em -0.5em #5C8EAF; /* cobalt */
+}
+
+/*-== IMAGES & CAPTIONS =====================================================-*\
+This section sets rules for how images and captions display.
+\*-==========================================================================-*/
+div.image_with_caption {
+    float: right;
+    margin: 0.5em;
+    padding: 0.5em 0.5em 0 0.5em;
+    /* no need for padding on bottom -- caption has its own padding */
+}
+
+div.image_with_caption p {
+    width: 100%;
+    margin: 0.2em;
+
+    font-size: smaller;
+    text-align: center;
+}
+
+/*-== ROLLOVER IMAGE ========================================================-*\
+This section creates a rollover image that also acts as a link.
+\*-==========================================================================-*/
+a#logo_rollover {
+    display: block;
+    height: 180px;
+    width: 180px;
+    clear: both;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+a#logo_rollover:link,
+a#logo_rollover:visited {
+    background-image: url(../images/logo_jra.png);
+}
+a#logo_rollover:hover,
+a#logo_rollover:active {
+    background-image: url(../images/logo_home.png);
+}
+
+/*-== PAGE STRUCTURE ========================================================-*\
+This section is the 'master' styling section that defines both basic page 
+structure and default styling.
+
+This website uses a fluid layout. There are two columns on the page: the 
+#main column, and the #extras column. Together, they do _not_ fill 100% of 
+the page width. This is because some room needs to be left for elements such 
+as borders that add to page width.
+\*-==========================================================================-*/
+
+/*-= BLOCK LEVEL ELEMENTS & CHILDREN =-*/
+/* Main column consumes (79% + 1% = 80%) of total page width. */
+div#main {
+    float: right;
+    width: 79%;
+    padding-left: 1%;
+    border-left: thin dotted black;
+}
+
+/* Extras column consumes 18% of total page width. */
+div#extras {
+    width: 18%;
+    float: left;
+    overflow: hidden; /* for the logo/graphic */
+}
+
+div#extras h2 {
+    font-size: large;
+    margin-bottom: 0.5em;
+    text-decoration: none;
+}
+
+div#extras ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style-type: none;              /* no bullets on list items */
+    border: thin solid black;
+
+    background-color: #444;             /* grey */
+    margin-bottom: 0.5em;               /* If there are multiple <ul>s in the div#extras column, leave space between them. */
+
+    box-shadow: 0em 0em 0.5em black;
+}
+
+div#extras ul li a {
+    float: left;                        /* float so that the entire box is clickable */
+    width: 90%;                         /* leave room for left and right padding */
+    padding: 0.2em 0em 0.2em 10%;       /* additional height and width */
+                                        /* The 10% padding on each anchor leaves room for a small inset box-shadow. */
+
+    box-shadow: inset 5px 0px #FFF;       /* This inset shadow forms a column on the left hand side of each <a>. These are colored in and used for navigation. */
+    color: white;
+    font-weight: bold;
+    text-decoration: none;              /* no underline on links */
+}
+
+div#extras ul li a:hover {
+    box-shadow: inset 5px 0px  #FE877D;    /* pink */
+}
+
+div#extras ul li a.selection {
+    box-shadow: inset 5px 0px #5C8EAF;    /* cobalt */
+}
+
+/*-= INLINE ELEMENTS ================-*/
+h1 {
+    text-align: center;
+}
+
+h2 {
+    text-decoration: underline;
+}
+
+a:link      {}
+a:visited   {}
+a:hover     {color: #5C8EAF; /* cobalt */}
+a:active    {}
+
+/*-= EXTRAS =================================================================-*\
+color: #5C8EAF;                     cobalt
+color: #7D66B9;                     purple
+color: #9FC1D7;                     light cobalt
+color: #B5A6DC;                     light purple
+\*-==========================================================================-*/

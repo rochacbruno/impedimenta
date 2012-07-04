@@ -1,0 +1,41 @@
+The for() loop is very useful, because it combines the three dependencies for a successful counting loop into one place.
+In order to have a successful counting loop, 1) a variable must be initialized 2) a relational operator must be tested 3) the variable must be incremented.
+Each expression within the parentheses of the for() function is considered a complete statement. Therefore, each statement and all its side effects are evaluated before moving on to the next statement.
+Each statement is setparated by a semicolon. For example, for(i = 1; i < 11; i++) {...} In this case, i++ and ++i do the same thing
+The first statement within a for() loop is evaluated onl once. The statement can be most anytining you want; heck, it could be a printf() statement. It's just good form to use it to initialize a variable.
+The second statement within a for() loop is always a test that is evaluated each time the for() loop is run. If you leave it blank, the expression is considered true.
+The third statement is evaluated every time the for() loop is run. Again, you don't have to increment some counter, but it's good form. After all, that's what the for() structure was made for.
+
+When a prototype function is declared, the arguments given are declarations of lvalue (variable/constant) names.
+When a prototype function is called, the arguments given are lvalues or rvalues to be passed to the prototype function lvalues already declared.
+The return value of a prototype function is dependent upon what type of variable it is declared as. Ex. int, double, char, void
+
+The equivalent of
+ch = getchar();
+is
+scanf("%c", &ch);
+Similarly, the equivalent of 
+putchar(ch);
+is
+printf("%c", ch);
+
+printf() and scanf() use boolean return values.
+getchar()'s return value is the character it just scanned
+
+The equivalent of the if else statement
+x = (y < 0) ? -y : y)
+is
+if(y < 0)
+	x = -y;
+else
+	x = y;
+The ?: is called the conditional operator. The general form of the conditional operator is 
+if expression1 then expression2 else expression3
+or
+expression1 ? expression2: expression3
+
+continue; affects for and while loops.
+continue; means SKIP the rest of this loop and run the loop again
+break; affects for and while loops, and switch.
+break; means SKIP the rest of the loop/switch and DO NOT run the loop again
+The switch() function only takes int arguments. Same with the case() function.

@@ -1,0 +1,185 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>"Hello, world!" Repository</title>
+        <link rel="stylesheet" type="text/css" href="./css/master_layout.css" />
+        <style type="text/css">
+            /* styles go here */
+        </style>
+    </head>
+
+    <body>
+        <h1>"Hello, world!" Repository</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a id="current_section" href="../projects_index.html">Projects</a></li>
+            <li><a                      href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+
+        <div id="extras">
+            <h2>Repository Navigation</h2>
+            <ul>
+                <li><a                  href="./index.html">About the Repository</a></li>
+                <li><a                  href="./resources.html">Resources</a></li>
+            </ul>
+            <ul>
+                <li><a class="selection" href="./content_android.html">Android</a></li>
+                <li><a                  href="./content_c.html">C</a></li>
+                <li><a                  href="./content_c++.html">C++</a></li>
+                <li><a                  href="./content_java.html">Java</a></li>
+                <li><a                  href="./content_perl.html">Perl</a></li>
+            </ul>
+            <a id="logo_rollover" href="./index.html"></a>
+        </div>
+
+
+        <div id="main">
+            <h2 id="bookmark0">"Hello, world!" for Android</h2>
+            <p>Assume your program is called HelloWorld, and its namespace is com.example.helloworld. In this case, you need to edit the <code><em>project_root</em>/src/com/example/helloworld/HelloWorld.java </code> file.</p>
+            <code class="code_block">
+/**
+ * Author(s):
+ * Jeremy Audet
+ *
+ * First Created: 11/09/2011
+ * License: Creative Commons BY-SA      http://creativecommons.org/licenses/by-sa/3.0/
+ */
+
+package net.JeremyAudet.HelloWorld;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+public class HelloWorld extends Activity
+{
+    /** Called when the activity is first created. */
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+        TextView message = new TextView(this);
+        message.setText("Hello, world!");
+
+        setContentView(message);
+    }
+}
+            </code>
+
+            <!-- Picture with caption. Links to full sized image. -->
+            <div class="image_with_caption" style="width:400px;">
+                <a href="./images/helloworld_android_full.png">
+                    <img height="287" src="./images/helloworld_android_small.png" alt="An AVD displaying the hello world app." />
+                </a>
+                <p>An AVD displaying the message "Hello, world!".</p>
+            </div>
+
+            <h2>Compiling &amp; Running an Android Program</h2>
+            <p>The build process to be performed varies, depending upon the state of the project. If you are compiling an up-to-date pre-existing project, and a single emulator is already running in the background, compilation is easy. You can compile, install, and debug an application using a single command (you must be in the root directory of the project).</p>
+            <code class="code_block">
+$ ant debug install &amp;&amp; adb logcat
+            </code>
+            <p>Unfortunately, creating a working development environment from scratch is much tougher. Here's a breakdown.</p>
+
+            <h3 id="bookmark1">Install at Least One Android Platform (i.e. an Android API)</h3>
+            <p>Installing the Android platform can be accomplished using a simple <code>android update sdk</code>. However, issuing this command will install <em>all</em> available packages. If you want to more intelligently install packages, you need to walk through the following steps.</p>
+            <ol>
+                <li>view available packages</li>
+                <li>choose packages for installation (or updating)</li>
+                <li>install the chosen packages</li>
+            </ol>
+            <p>In the example below, replace <code>itemNumbers</code> with the index number of each update to install (index numbers are shown after issuing the first command).</p>
+            <code class="code_block">
+$ android list sdk
+$ android update sdk --no-ui --filter <em>itemNumbers</em> --dry-mode
+# android update sdk --no-ui --filter <em>itemNumbers</em>
+            </code>
+
+            <h3>Create an Android Virtual Device (AVD)</h3>
+            <p>An AVD is simply an emulator that simulates an Android phone. Before creating a new AVD, you need to decide which Android version you are developing for. You can find the ID numbers for each Android version using the <code>android list targets</code> command. The basic steps needed to create a new AVD look like this:</p>
+            <code class="code_block">
+$ android list targets
+$ android create avd -name <em>name</em> -target <em>targetID</em> [optionalArguments]
+            </code>
+            <p>For example:</p>
+            <code class="code_block">
+$ android create avd --name v2-3-3_hvga --target 9 --skin HVGA
+Auto-selecting single ABI armeabi
+Created AVD 'v2-3-3_hvga' based on Google APIs (Google Inc.), ARM (armeabi) processor,
+with the following hardware config:
+hw.lcd.density=160
+hw.ramSize=256
+$ android list targets
+Name: v2-3-3_hvga
+Path: /home/[output cut]/.android/avd/v2-3-3_hvga.avd
+Target: Google APIs (Google Inc.)
+Based on Android 2.3.3 (API level 10)
+ABI: armeabi
+Skin: HVGA
+            </code>
+            <p>You can launch existing AVDs using the <code>emulator -avd <em>avdName</em></code> command. For example:</p>
+            <code class="code_block">
+$ emulator -avd <em>v2-3-3_hvga</em> &amp;
+            </code>
+
+            <h3>Create a New Android Project</h3>
+            <p>Every android program has a host of helper files and directories. The exact layout and content of these files is very specific, and varies from build to build. You can think of these files as the archiatecture within which a program lives. The <code>android</code> tool (also used to launch the android gui) can automate the process of creating these files. The <a href="http://developer.android.com/guide/index.html">official Android documentation</a> has many excellent examples, and I am reproducing several here. You can view the full page <a href="http://developer.android.com/guide/developing/projects/projects-cmdline.html">here</a>.</p>
+            <p>From the official Android documentation:</p>
+            <code class="code_block">
+android create project \
+--target &lt;target_ID&gt; \
+--name &lt;your_project_name&gt; \
+--path path/to/your/project \
+--activity &lt;your_activity_name&gt; \
+--package &lt;your_package_namespace&gt;
+            </code>
+            <dl>
+                <dt>target</dt>
+                <dd>target is the "build target" for your application. It corresponds to an Android platform library (including any add-ons, such as Google APIs) that you would like to build your project against. To see a list of available targets and their corresponding IDs, execute: android list targets.</dd>
+                <dt>name</dt>
+                <dd>name is the name for your project. This is optional. If provided, this name will be used for your .apk filename when you build your application.</dd>
+                <dt>path</dt>
+                <dd>path is the location of your project directory. If the directory does not exist, it will be created for you.</dd>
+                <dt>activity</dt>
+                <dd>activity is the name for your default Activity class. This class file will be created for you inside &lt;path_to_your_project&gt;/src/&lt;your_package_namespace_path&gt;/ . This will also be used for your .apk filename unless you provide a name.</dd>
+                <dt>package</dt>
+                <dd>package is the package namespace for your project, following the same rules as for packages in the Java programming language.</dd>
+            </dl>
+            <p>Here's an example:</p>
+            <code class="code_block">
+android create project \
+--target 1 \
+--name MyAndroidApp \
+--path ./MyAndroidAppProject \
+--activity MyAndroidAppActivity \
+--package com.example.myandroid
+            </code>
+
+            <h3>Write the "Hello, world!" Program</h3>
+            <p>See <a href="#bookmark0">above</a>.</p>
+
+            <h3>Compile, Install, and Debug the Newly Written Program</h3>
+            <p>At any time during the coding process, one can compile using the command <code>ant debug</code> (make sure you're in the root directory of the project). Assuming you have a single AVD running, installation and debugging is just as easy. Just issue <code>ant debug install</code> and <code>adb logcat</code>.</p>
+            <p>Here's the condensed version.</p>
+            <code class="code_block">
+$ ant debug install &amp;&amp; adb logcat
+            </code>
+            <p>I suggest executing <code>adb logcat</code> in a separate window, and leaving it running at all times.</p>
+
+            <h3>Maintenance</h3>
+            <p>There are at least two good habits a good Android developer should cultivate.</p>
+            <p>First: update your development platform once in a while. The process for updating packages is the same process used for installing packages. See <a href="#bookmark1">above</a>.</p>
+            <p>Second: update your project once in a while. Only certain modifications to the project (e.g. changing project name) require an update. Example: you're targeting Android 2.3.3. The appropriate value for <em>targetID</em> is 9.</p>
+            <code class="code_block">
+$ android list targets
+$ android update project --target <em>targetID</em> --path <em>pathToProject</em>
+            </code>
+        </div>
+    </body>
+</html>

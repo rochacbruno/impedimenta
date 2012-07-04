@@ -1,0 +1,117 @@
+	Regular expressions use the =~ operator. Funnily enough, the string to be examined goes on the left side of the operator, and the regular expression goes on the right side. The string is just what you would expect: either a string in quotes or a scalar/NUMERIC/ARRAY? variable. The regular expression goes on the right side. Formally, the regular expression is written as such: m/regex/. The m means match. The // encloses the regular expresssion to be used. Forward slashes can be replaced with another character, such as carats: m<regex>.
+	The =~ operator is not the only operator available for use. The =~ operator takes a regular expression on its right side and looks for a match on its left side. If a match is found, it returns true. The =! operator, however, returns false if a match is found.
+	Regular expressions are used to build a sequence of characters. That sequence of characters is compared in some way to a string -- the operator used determines exactly how the sequence of characters generated is compared. Note that characters in regular expressions are treated literally. Metacharacters are special. Metacharacters are not interpreted literally. They make your regex go from WYSIWYG to WYSINWYG.
+
+#-----------------------
+# REGEXP OPERATORS, SEARCH PATTERNS
+#-----------------------
+
+	>>> =~ <<<
+	Return true if a match is found, false if a match is not found.
+
+	>>> =! <<<
+	Return false if a match is found, true if a match is not found.
+
+	>>> m// <<<
+	m/regexp/ Look for a match.
+
+	>>> s/// <<<
+	s/regexp/replace/ Look for a pattern, replace it.
+
+	>>> tr/// <<<
+	tr/chars/replace/ Look for specified characters, replace specified characters. See example at bottom of notes.
+
+#-----------------------
+# GLOBAL MODIFIERS
+#-----------------------
+
+	>>> i <<<
+	Ignore case when searching for patterns and characters.
+
+	>>> g <<<
+	Find all matces, not just first match.
+
+#-----------------------
+# METACHARACTERS
+#-----------------------
+
+	(	)	\	|
+	[	{	+	*
+	^	$	?	.
+
+	>>> ^ <<<
+	This metacharacter specifies that a match is only valid if it is found at the beginning of the search string. When used at the beginning of a character class/series, it negates that character class. For example, [^a-c]d will match dd, ed, %d, and so on. It will not match ad, bd, or cd. 
+
+	>>> $ <<<
+	This metacharacter specifies that a match is only valid if it is found at the end of a search string. Note that the ^ and $ metacharacter can be combined. This allows you to search for a string consisting ONLY of ^pattern$.
+
+	>>> \ <<<
+	This metacharacter specifies that the following metacharacter should be treated as a normal character. e.g. treat the following metacharacter literally. If \ is used before a normal character, the normal character may become a metacharacter. For example, \b and \B become metacharacters.
+
+	>>> ? <<<
+	This metacharacter specifies that the preceding character can either be present exactly as typed, or not at all. For example, /fe?d/ will match either 'fed' or 'fd', but nothing else. 'feed' will not match, nor will 'fad'. It can be used on a group of characters. For example, /f(ree)?d/ will match either 'fd' or 'freed', but nothing else.
+
+	>>> . <<<
+	This metacharacter stands in for a single character of any type EXCEPT for newlines (\n). For example, /f.d/ will match 'fed', 'f d', 'fzd', and so on. This metacharacter can be used as a standalone metacharacter. For example, /f...d/ will match 'freed', 'feeed', 'fz nd', and so on. The . metacharacter MUST stand in for a character; /f.d/ will not match 'fd'. A character must exist.
+
+	>>> * <<<
+	This metacharacter modifies the character to its left. The * specifies that the character to the left should be found zero or more times. For example, /f*d/ will match 'fd', 'fed', and 'feeeeeeeeed'. However, it will NOT match 'fred'. It stands in for a SINGLE character, repeated zero or more times.
+
+	>>> [] <<<
+	This metacharacter stands in for a range of characters, any ONE of which is valid. The range specified goes inside the brackets. You can use the - to denote a set of characters. For example, [ad] will match upon finding a or d, but [a-d] will match upon finding a, b, c, or d.
+
+	>>> {} <<<
+	TXhis metacharacter stands in for a certain number of characters. For example, /4{3}/ will match the pattern 444, but nothing else. A minimum and maximum number of characters can be specified. For example, /4{2,4}/ will match the patterns 44, 444, and 4444. This metacharacter can also modify other types of characters. For example, /\d{4}/ will match four numbers (It will match four of any number).
+
+	>>> | <<<
+	This metacharacter allows one to specify several different characters. For example, /stars|bars/ will return true upon finding either "stars" or "bars" in the search string.
+
+	>>> () <<<
+	This metacharacter allows you to place a regexp operator inside. The parentheses act as an AND. For example, /house(cat|keeper)/ says to look for house AND (cat or keeper). The regexp /house([a-c][fa])/ would match houseaf, houseaa, housebf, houseba, housecf, and houseca.
+
+#-----------------------
+# OTHER METACHARACTERS
+#-----------------------
+
+	>>> \b <<<
+	This metacharacter specifies that a word boundary should occur here. It is a metacharacter that, when compared to a string, matches if a space or qualifying punctuation is found. For example, /\bit/ will come up with a match in this case: "Why is it dead, mommy?". However, /\bit/ will not come up with a match in this case: "It fits like a glove." The \b metacharacter stands in for a character that is a word boundary.
+
+	>>> \B <<<
+	This metacharacter stands in for a character that is part of a word. /\Bile/ will come up with a match in this case: "I grabbed the file for you.". However, /\Bit/ will not come up with a match in this case: "I dare say it is good.".
+
+	>>> \s <<<
+	This metacharacter matches whitespace characters. Specifically, it stands in for [\ \t\r\n\f] (and maybe a few oters).
+
+	>>> \S <<<
+	This metacharacter matches any non-whitespace character. It is a negated \s. It stands in for [^\ \t\r\n\f]. Or, [^\s].
+
+#-----------------------
+# GREP
+#-----------------------
+
+	The general syntax for grep is:
+
+	grep(regexp,list)
+
+	Grep is used to search through a list for matches. If a match is found, grep returns the list element which contained the match. For example, grep (/^...$/, @array) might return ABC, cat, and fad. You might use grep like this:
+
+	@array = qw(Mary Molly Johnny Acid);
+	@matches = grep (/^M/, @array);
+	@matches == ("Mary", "Molly");
+
+#-----------------------
+# EXAMPLES
+#-----------------------
+
+#! /usr/bin/perl
+
+$word = "aegiou";
+
+print "Before search/replace operation, word = $word\n";
+$word =~ s/aeiou/-/;
+print "After search/replace operation, word = $word\n";
+
+$word = "aegiou";
+print "Before transliteration, word = $word\n";
+$word =~ tr/aeiou/-/;
+print "After transliteration, word = $word\n";

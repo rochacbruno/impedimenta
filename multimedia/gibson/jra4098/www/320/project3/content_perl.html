@@ -1,0 +1,102 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>"Hello, world!" Repository</title>
+        <link rel="stylesheet" type="text/css" href="./css/master_layout.css" />
+        <style type="text/css">
+            /* styles go here */
+        </style>
+    </head>
+
+    <body>
+        <h1>"Hello, world!" Repository</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a id="current_section" href="../projects_index.html">Projects</a></li>
+            <li><a                      href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+
+        <div id="extras">
+            <h2>Repository Navigation</h2>
+            <ul>
+                <li><a                  href="./index.html">About the Repository</a></li>
+                <li><a                  href="./resources.html">Resources</a></li>
+            </ul>
+            <ul>
+                <li><a                  href="./content_android.html">Android</a></li>
+                <li><a                  href="./content_c.html">C</a></li>
+                <li><a                  href="./content_c++.html">C++</a></li>
+                <li><a                  href="./content_java.html">Java</a></li>
+                <li><a class="selection" href="./content_perl.html">Perl</a></li>
+            </ul>
+            <a id="logo_rollover" href="./index.html"></a>
+        </div>
+
+
+        <div id="main">
+            <h2>"Hello, world!" in Perl</h2>
+            <code class="code_block">
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+#############################################################################-*\
+#
+# Author(s):
+# Jeremy Audet
+#
+# First Created: 10/24/2011
+# License: Creative Commons BY-SA        http://creativecommons.org/licenses/by-sa/3.0/
+#
+# Thanks to:
+# PerlMonks                             http://www.perlmonks.org/?node_id=111088
+# When I last worked with Perl, I enabled warnings by writing a shebang like this: #!/usr/bin/perl -w. The -w switch was necessary for perl before v5.6; v5.6 was released on 03/22/200. (I'm currently running v5.14) The better way to enable warnings is with the more semantically correct "use warnings" and "use strict" commands.
+#
+#############################################################################-*/
+
+print "Hello, world!\n";
+            </code>
+            <p>If your script is more than ten lines long, you should probably have warnings enabled.</p>
+            <p>The line <code>#!/usr/bin/perl</code> is called a shebang. The shebang tells the computer what type of script is contained within this file (e.g. perl, bash, csh, python). A shebang is necessary because perl is a scripting language, not a compiled language. Scripting languages are read at runtime, rather than being compiled in advance.</p>
+
+            <h2>Echo in Perl</h2>
+            <code class="code_block">
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+#############################################################################-*\
+#
+# Author(s):
+# Jeremy Audet
+#
+# First Created: 10/24/2011
+# License: Creative Commons BY-SA        http://creativecommons.org/licenses/by-sa/3.0/
+#
+#############################################################################-*/
+
+my $input;
+
+print "Type something, press 'enter', and it will be echoed back.\n";
+print "Press CTRL-D or CTRL-C to quit.\n";
+
+$input = &lt;STDIN&gt;;
+print "$input";
+            </code>
+            <p><code>&lt;STDIN&gt;</code> Can be replaced with <code>&lt;&gt;</code>.</p>
+
+            <h2>Compiling &amp; Running Perl</h2>
+            <code class="code_block">
+$ perl hello.pl
+Hello, world!
+$
+            </code>
+            <p>Perl is a scripting language, not a compiled language. As a result, you do not need to create and execute a binary file. Instead, you can execute any perl file directly.</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,47 @@
+**Increment And Decrement Operators**
+The increment and decrement operators are ++ and --. 
+Increment and decrement operators can only operate on modifiable lvalues (variable names and their values).
+They can be used as a prefix or postfix.
+For example, prefix: ++n, postfix: n++.
+Prefix says: increment n, then use n. Postfix says, use n, then increment.
+Never use an increment or decrement operator in: 1) when that variable is used as more than one argument to a function. 2) when that variable appears more than once in an expression.
+
+**Expressions And Statements**
+An expression consists of an operator(s) and/or operand(s). Every expression MUST have a value. This is why undeclared variables, etc. are so bad.
+A statement is an expression with a semicolon denoting the end.
+A statement is typically a single complete instruction, though more than once complete instruction can populate a statement. 
+Example: x = 6 + (y + 5) is an expression, x = 6 + (y + 5); is a statement.
+int var 1 is not a statement or an expression. An expression requires that the variable (here being declared) have some value. A statement is composed of valid, full expressions.
+Statements are the building blocks of programs. A program is a series of statements, plus a little punctuation (to control execution order).
+There are several types of statements: assignment statements, function statements, declaration statements, null statements, structured statements, and compound statements.
+An assignment statement assigns an rvalue to some lvalue.
+A function statements causes a function to execute whatever it does.
+A declaration statement declares that a variable, constant, array, etc. exists. It assigns an lvalue to a memory location. Initializing then also assigns an rvalue to the lvalue.
+A null statement consists of this: ; It is an easy way for a program to do nothing.
+A structured statement evaluates a test condition and has multiple paths of execution.
+A compound statement consists of a set of statements (could be just one) set aside inside braces. Typically part of a while loop, etc.
+
+A sequece point is the point in a program's execution at which all side effects MUST be evaluated before proceeding.
+The semicolon demarcs sequence points in C.
+A side effect is what any operator demands be done. C evaluates side effects.
+Given the statement states = 50, the operator is =. The side effects of = are 1) evaluating 50 2) assigning that value to states
+A subexpression is an expression that is part of a larger expression
+example: y = (4 + x++) - (13 - z++); The two sets of parentheses each include a subexpression.
+
+**Cast Operator**
+Type casting is used for forcing the temporary conversion of one type to another. This is opposed to relying upon automatic conversions which otherwise take place.
+The operator itself is very small, and simple in construction: (type)
+Typically used in mixed algebraic expressions
+example: 
+	given: int var1 and float var2
+	printf("%.2f\n", (float) var1 + var2);
+
+**Function Arguments**
+You can give prototype functions a number of different arguments. At the moment, I know how to give a prototype function an argument that will declare a variable.
+That variable will be given a value when it is called later in the program.
+When the prototype function is declared, the argument given is called a formal argument. When the prototype function is called, the argument given is called an actual argument.
+
+scanf() returns a q or 0. 1 for success, 0 for failure
+EOF status indicates hardware problem or end of file
+while() executes until the expression inside the parentheses becomes 0 (or false)
+while() is an entry-condition test.

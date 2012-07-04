@@ -1,0 +1,91 @@
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>"Hello, world!" Repository</title>
+        <link rel="stylesheet" type="text/css" href="./css/page_layout.css" />
+        <link rel="stylesheet" type="text/css" href="./css/horizontal_navbar.css" />
+        <link rel="stylesheet" type="text/css" href="./css/code_sample.css" />
+        <style type="text/css">
+            /* styles go here */
+        </style>
+    </head>
+
+    <body>
+        <h1>"Hello, world!" Repository</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a id="current_section" href="../projects_index.html">Projects</a></li>
+            <li><a                      href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+
+        <div id="extras">
+            <h2>Repository Navigation</h2>
+            <ul>
+                <li><a                  href="./index.html">About the Repository</a></li>
+                <li><a                  href="./resources.html">Resources</a></li>
+            </ul>
+            <ul>
+                <li><a                  href="./content_c.html">C</a></li>
+                <li><a                  href="./content_c++.html">C++</a></li>
+                <li><a class="selection" href="./content_java.html">Java</a></li>
+                <li><a                  href="./content_perl.html">Perl</a></li>
+            </ul>
+        </div>
+
+
+        <div id="main">
+            <h2>"Hello, world!" in Java</h2>
+            <code class="code_block">
+/**
+ * Author(s):
+ * Tyler Sherman (original author)
+ * Jeremy Audet (minor changes to style)
+ * 
+ * Published on 03/25/2009 at           http://tylorsherman.com/hello-world-eclipse
+ * License: Creative Commons BY-NC-SA   http://creativecommons.org/licenses/by-nc-sa/2.5/
+ */
+
+public class HelloWorld {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}
+            </code>
+            <p><code>main&#40;&#41;</code> can take any number of arguments from the command line. However, nothing is done with them.</p>
+
+            <h2>Echo in Java</h2>
+            <code class="code_block">
+/**
+ * Author(s):
+ * Jeremy Audet
+ * 
+ * First Created: 03/26/2009
+ * License: Creative Commons BY-SA   http://creativecommons.org/licenses/by-sa/3.0/
+ */
+
+ import java.io.Console;
+
+ public class Echo {
+    public static void main(String[] args) {
+        Console userConsole = System.console();
+        String input = userConsole.readLine("Input: ");
+        userConsole.printf("%s\n", input);
+    }
+ }
+            </code>
+            <p>There are several valid ways of reading input from the user.</p>
+            <ul>
+                <li>You can read input with <code>java.io.Console.readLine&#40;&#41;</code>.</li>
+                <li>You can use j<code>ava.io.BufferedReader.readLine&#40;&#41;</code>.</li>
+                <li>You can even use <code>java.util.Scanner.nextLine&#40;&#41;</code>.</li>
+            </ul>
+            <p>See examples <a href="http://forums.techarena.in/software-development/1299048.htm">here</a>.</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,68 @@
+/*-----------------------------------------------------------------------------/
+Overloading
+/-----------------------------------------------------------------------------*/
+You can overload function names in C++. The distinction between various functions is done by two metrics: NUMBER and TYPE of formal parameters. Const does not distinguish a formal parameter, and neither does call-by-x type.
+
+Example:
+void myFunction(int a, double b);
+void myFunction(double a, int b);
+These two functions are overloaded but distinguished by the type of arguments.
+
+Example:
+double addNums(double a, double b);
+double addNums(double a, double b, double c);
+These two functions are overloaded but distinguished by the number of arguments.
+
+Example:
+int returnSquare(int a);
+double returnSquare(int a);
+These two functions are overloaded and CANNOT be distinguished. Neither the number or type of arguments distinguishes them.
+
+/*-----------------------------------------------------------------------------/
+Default Arguments
+/-----------------------------------------------------------------------------*/
+Default arguments specify what value a formal parameter should be given if no argument is specified. Default arguments should be given from right to left. If an argument is not specified when calling a function, then the rightmost parameter is given a default value first. Anything that can be done with default arguments can also be done with overloading (overloading is more capable); however, default arguments can result in shorter and easier to understand code.
+
+Example:
+void findAreaVolume(int length; int width; int height = 1);
+[...]
+void findAreaVolume(int length; int width; int height) {
+	return (length * width * height);
+}
+
+Note that the function definition DOES NOT include the default arguments: this is the job of the funciton declaration!
+
+In this case, a single function can be used to find either the area of a rectangle or the volume of a regular hexahedron. This same task could have been accomplished with overloading. However, this is a much shorter method that reflects a different style of thinking.
+
+/*-----------------------------------------------------------------------------/
+Overloading different operators
+/-----------------------------------------------------------------------------*/
+Most of the notes I've written on overloading operators are in the ../chap8/complex/ program. However, there's some other details I also want to write down here.
+
+First, this web page is an amazing reference when creating overloaded operators: http://en.wikipedia.org/wiki/Operators_in_C_and_C%2B%2B
+There are three ways to overload an operator: as a class member, as a non-member friend function, and as a non-member function. Check out the following three examples, and their minimal prototypes. Binary member operators must use an object of its class type as the left argument. That's why the + operator has only one argument in parentheses. The first argument is assumed to be of type Complex&, and only the second argument is listed. Non-member functions access an object's data using getters and setters, while friend functions (can) access object data using the dot operator. For example, number1.imaginary.
+	const Complex operator +(const Complex& number2) const;					// member function
+	friend const Complex operator *(const Complex& number1, const Complex& number2);	// friend function
+	const Complex operator -(const Complex& number1, const Complex& number2);		// nonmember function
+	​T T::operator +(const T& b) const;​
+	​T operator *(const T &a, const T& b);​
+	​T operator -(const T& a, const T& b);​
+
+When overloaded, the array operator allows one to access data in a single object using index numbers, rather than accessing multiple objects. For example, Money[3] would normally access the fourth Money object in an array. If overloaded, however, Money[3] could return the value of member variable yourSalary.
+
+The input and output operators must be overloaded as non-member functions (preferably friend functions). This allows the left operator for << and >> to be of type ostream and istream, respectively. If << and >> were overloaded as member functions, then the left operator for them must be of some other class type such as Complex or Money. That's won't work. Just think of this: ((cout << "I have") << amount) << " in my purse.\n"; The << operator must return a pointer to an output stream (that output stream being either a terminal or file).
+
+This is totally unlike the assignment operator, which must be a member operator. If you do not define = as a member operator of a class, then the default assignment operator for all classes will be used instead. The default assignment operator for classes just copies the value of one object into another object. This may or may not be the behaviour your want.
+
+Lastly, there are a few interesting situations in which you will want to return a reference to an object. One example is if the reference returned is to be used in an assignment operator, such as this: (yourAccount = myAccount) = 1000000; This statement would perform the overloaded = operation inside parentheses, and then leave you with yourAccount = 1000000;. 
+
+Lastly again, I've got to make a blurb about the increment/decrement operators. The best way to explain them is with a code snippet.
+
+	class IntPair {
+		public:
+			IntPair operator++();	// prefix version
+			IntPair operator++(int);// postfix version
+	[...]
+	};
+
+In this code snippet, note that an IntPair is a member of the IntPair class. Thus, the overloaded versions of ++ listed here will implicitly have an argument of type IntPair.  Secondly, the int argument to the postfix ++ is a bogus value. That is, the second argument to postfix ++ will never be used and should not be referenced except in the operator signatures.

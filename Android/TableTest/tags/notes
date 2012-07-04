@@ -1,0 +1,3 @@
+The directory resource_id_bug showcases a bug whereby the ID of a ViewGroup _must_ be at least zero.
+The directory stable1 is my first stable build of this program. Main limitation: the range of numbers used is hardcoded in. No preferences activity implemented.
+The directory stable2 is my second stable build of this program. An extremely basic preferences dialogue has been implemented.

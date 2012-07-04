@@ -1,0 +1,77 @@
+add
+add #5		Add the number five to the accumulator
+and
+and #%11111110	And A, turn off 0th bit if not already off.
+and 4,x		And A with the value in memory location x + 4.
+beq
+beq end		If result of last operation = 0, branch to the tag called "end".
+bne
+bne end		If result of last operation != 0, branch to end. (check Z bit)
+bge
+bge goto_tag	Branch if greater than or equal to
+bgt
+bgt tag		Branch if greater than
+bit
+bit #%00111111	AND A and %#00111111, do not update A, update CCR
+bit temp1	AND A and temp1. Do nto update A, update CCR. CCR <-- (A & M)
+		ex. Z bit set if result of AND is %00000000
+ble
+ble tag		Branch if less than or equal to
+bclr
+bclr 2,temp1	Clear second bit in temp1. ONLY syntax available for command.
+bset
+bset 3,temp1	Set 3rd bit in temp1. ONLY syntax available for command.
+		same as:
+			lda temp1
+			ora #%00001000
+			sta temp1
+		temp1 now equal to ???1????
+clr
+clra		Clear register A
+cmp
+cmp #12		A = (A - N), n can be memory location. 
+dc
+var1 dc $1394	Designate space AND declare contents of var1. var1 is 4 byte num
+ROM_table dc $45,%10010010,$32,$fc,12	ROM_table is equal to the list of values
+dec
+decx		Decrement the contents of register X by one.
+deca		Decrement A. Can also decrement a memory location. Cannot dec H.
+div
+div		No arguments. A = (H:A / X), H = remainder
+ds
+temp_address1 ds 2	Designate 2 bytes of space for variable temp_address1
+table ds 10	Designate 10 bytes of space for variable temp
+eor
+eor #% 00110000	Invert the 4th and 5th bit in A
+eor ,x		Use contents of memory location specified by X. Also: eor $2550
+inc
+incx		Increment X. X will not overflow into H :( Useful for arrays.
+ld
+lda #$70	Load register a with the hex number 70.
+ldhx 51		Load H:X with the contents of memory location 51
+ldhx var1	Load H:X with the contents of var1
+ldhx #51	Load H:X with the number 51
+ldhx #var1	Load HX: with the address of var1
+lda 0,x		Go to memory location specified by X. Load a with contents.
+lda 3,x		Go to memory location specified by X, plus 3 bytes. Load A.
+ldx word1	If word1 is 16 bit var, load x with least signif. (right 8) bits
+lsl
+lsla		Logical shift left. Same as multiply by 2, rounded down.
+lsl 3,x		Memory location in X, add 3, then lsl.
+lsr
+lsrx		Logical shift right. Same as divide by 2, rounded down.
+mov
+mov #$65,$70	Move number 65 into memory location hex 70
+mov $65,$70	Move contents of memory location $65 into memory location $70
+mov var1,$70	Move contents of var1 into var2
+mov var1,var2	Move contents of var1 into var2
+mul
+mul		X:A = X * A (multiply two 8 bit values, result is 16 bit value)
+ora
+ora #%00100000	Turn on 5th bit in A.
+ora 2,x		Or A with the contents of (2 + x).
+st
+sta $68		Store a in memory location hex 68.
+sthx var1	Store contents of var1 in H:X
+sub
+sub #70		A = A - 70

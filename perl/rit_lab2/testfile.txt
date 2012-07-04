@@ -1,0 +1,10 @@
+Dec  6 19:47:52 localhost NetworkManager[792]: <info>   nameserver '129.21.3.17'
+Dec  6 19:47:52 localhost NetworkManager[792]: <info>   nameserver '129.21.4.18'
+Dec  6 19:47:52 localhost NetworkManager[792]: <info>   domain name 'wireless.rit.edu'
+Dec  6 19:47:52 localhost dbus[574]: [system] Activating service name='org.freedesktop.nm_dispatcher' (using servicehelper)
+Dec  6 19:47:52 localhost dbus[574]: [system] Successfully activated service 'org.freedesktop.nm_dispatcher'
+Dec  6 20:02:53 localhost dhcpcd[894]: wlan0: renewing lease of 129.21.69.251
+Dec  6 20:02:53 localhost dhcpcd[894]: wlan0: acknowledged 129.21.69.251 from 129.21.13.175
+Dec  6 20:02:53 localhost dhcpcd[894]: wlan0: leased 129.21.69.251 for 1800 seconds
+Dec  6 20:08:08 localhost NetworkManager[792]: <info> (wlan0): supplicant interface state: completed -> 4-way handshake
+Dec  6 20:08:08 localhost NetworkManager[792]: <info> (wlan0): supplicant interface state: 4-way handshake -> completed

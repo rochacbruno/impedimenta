@@ -1,0 +1,2 @@
+For some reason, I cannot correctly execute this code on my chip. The problem is that I cannot seem to ever correctly write a value into the TPMC0V register. I can manually edit this register and the program will work correctly; writing to the register as part of my program never works. It's a mystery to me. I'd love to see if you have the same problem, Matt.
+--Jeremy Audet

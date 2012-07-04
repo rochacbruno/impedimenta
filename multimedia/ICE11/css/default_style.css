@@ -1,0 +1,48 @@
+/*-======= BLOCK ELEMENTS ============-*/
+body {
+    font-family: "Arial", sans-serif;
+}
+
+/*-======= INLINE ELEMENTS ===========-*/
+h1 {
+    font-size: xx-large;
+    font-weight: bold;
+    text-align: center;
+}
+
+h2 {
+    font-size: x-large;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* The four a:modifiers should be in the order of
+* link
+* visited
+* active
+* hover
+*/
+
+a:link {
+    color: #5C8EAF; /* cobalt */
+    text-decoration: none;
+}
+
+a:visited {
+    color: #7D66B9; /* purple */
+    text-decoration: none;
+}
+
+a:active {
+    color: #60C271; /* green */
+    text-decoration: none;
+    border-top:     thin dashed #FE877D; /* pink */
+    border-right:   none;
+    border-bottom:  thin dashed #FE877D; /* pink */
+    border-left:    none;
+}
+
+a:hover {
+    color: #60C271; /* green */
+    text-decoration: underline;
+}

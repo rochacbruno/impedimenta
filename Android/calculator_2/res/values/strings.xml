@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calculator 2</string>
+    <string name="digitHandler">digitClicked</string>
+    <string name="signHandler">signClicked</string>
+    <string name="equalsHandler">equalsClicked</string>
+    <string name="dotHandler">dotClicked</string>
+    <string name="clearHandler">clearClicked</string>
+</resources>

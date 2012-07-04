@@ -1,0 +1,32 @@
+ul#horizontal_navbar {
+    margin: 0.5em;
+    padding: 0.5em;
+    list-style-type: none;
+
+    background-color: #2B2B2B; /* lighter-grey */
+    border: thin solid black;
+}
+
+ul#horizontal_navbar li {
+    display: inline;
+    /* allow elements to stack horizontally, like normal text */
+}
+
+ul#horizontal_navbar li a {
+    margin-right: 2em;
+    margin-left: 0;
+    /* left margin is already provided by padding in ul#horizontal_navbar */
+    /* leave left margin small, as there should be little wasted space there (esp when window gets small) */
+    /* cannot have top or bottom margins on inline elements */
+
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: smaller;
+    white-space: nowrap
+}
+
+ul#horizontal_navbar li a#current_page {
+    color: #FFC67E; /* peach */
+}

@@ -1,0 +1,43 @@
+#	getValidateInput can be passed as many or as few args as needed. Each argument represents a valid input string. For example, say the sub was passed arguments of "Yes" and "No". getValidateInput would prompt the user for input, and only accept a variant of "yes" and "no". This sub is not strict about case. For example, the user could enter "YES" or "nO", and getValidateInput would accept that input.
+#	If the user inputs something other than the arguments given, getValidateInput will tell the user that wrong input has been entered. It will also display both a list of valid inputs ([Yes] [No]) and a prompt (> ). Note that getValidateInput will not produce a prompt or display valid input on the first run. It will only display a list of valid inputs and a prompt if the user has entered invalid input. Currently, there is no mechanism for passing custom prompts.
+#	getValidateInput will return one of the arguments passed to it, even if user input does not match exactly. For example, if "Yes" and "No" were passed as arguments and "yEs" was input, "Yes" would be returned.
+
+sub getValidateInput {
+	my @arguments = @_;
+	my $userInput = '';
+	my $menuEntry = '';
+
+	if (! exists $arguments[0]) {			# If no input choices are passed to sub, just prompt
+		$userInput = <STDIN>;			# for user to press Enter. Immediately end sub.
+	} else {
+		chomp ($userInput = <STDIN>);		# User input can be upper/lower case, makes no difference.
+		foreach $menuEntry (@arguments) {	# For each possible answer that has been passed to the sub,
+			if ($menuEntry =~ /^$userInput$/i) {	# Then check if user input matches correct answer.
+				return $menuEntry;	# If match found, return appropriate sub argument.
+			}				# Do not return exact user input. Again, sub will only return
+		}					# one of the arguments given to it (or undef if not match).
+
+		while (1) {				# If user gave wrong input, do above with an error message.
+			print "\nInput not valid. Please enter input according to choices given.\n";
+			foreach $menuEntry (@arguments) {
+				if ($menuEntry eq "\n") {
+					print "[(enter)] ";
+				} elsif ($menuEntry eq "\t") {
+					print "[(tab)] ";
+				} else {
+					print "[$menuEntry] ";
+				}
+			}
+			print "\n> ";
+			chomp ($userInput = <STDIN>);
+
+			foreach $menuEntry (@arguments) {
+				if ($menuEntry =~ /^$userInput$/i) {
+					return $menuEntry;
+				}	# End if
+			}		# End foreach
+		}			# End while (1)
+	}				# End else
+
+	return undef;
+}

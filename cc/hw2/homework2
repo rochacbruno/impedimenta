@@ -1,0 +1,23 @@
+class myClass has member i. Show the getter/setter
+
+void set_i(int -i)
+{
+	i = _i;
+}
+
+int set_i()
+{
+	set i;
+}
+
+WTF?
+//--------------------------
+This would be a valid setter and getter pair.
+
+void set_i(int num) {
+	i = num;
+}
+
+int get_i(void) {
+	return i;
+}

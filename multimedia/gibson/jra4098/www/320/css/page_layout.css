@@ -1,0 +1,99 @@
+/*-== BLOCK ELEMENTS ========================================================-*/
+body {
+    background-color: black;
+    color: #FFF;
+}
+
+/* div#main, div#extras
+ * #main and #extras contain the body of the document. Each is formatted as a column. 
+ * Because of borders, they cannot have a total width of 100%; Instead, I've consumed only 96% of the page.
+ * 
+ * Each list item/anchor in the #extras column only consumes 90% of the 
+ * available width. The other 10% is split between right and left margins. 
+ * The left border adds a little extra width to each listing/anchor, and 
+ * causes each listing/anchor to overflow slightly.
+ */
+div#main {
+    float: right;
+    width: 78%;
+}
+
+div#extras {
+    width: 18%;
+    float: left;
+}
+
+div#extras h2 {
+    font-size: medium;
+    margin-bottom: 0;
+}
+
+div#extras ul {
+    float: left;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: thin solid black;
+    list-style-type: none;              /* no bullets on list items */
+
+    background-color: #2B2B2B;          /* lighter-grey */
+}
+
+div#extras ul li a {
+    float: left;                        /* float so that the entire box is clickable */
+    width: 90%;                         /* leave room for left and right padding */
+    padding: 0.2em 5%;                  /* additional height and width */
+    border-left: thick solid white;     /* In most cases, padding should prevent any content from escaping column. However, clickable area will still extend outside column. */
+
+    color: white;
+    font-weight: bold;
+    text-decoration: none;              /* no underline on links */
+}
+
+div#extras ul li a:hover {
+    border-left: thick solid #FE877D;   /* pink */
+    border-bottom: none;                /* override style below */
+}
+
+div#extras ul li a.selection {
+    border-left: thick solid #5C8EAF;   /* cobalt */
+}
+
+/*-= INLINE ELEMENTS ========================================================-*/
+h1, h2, h3, h4, h5, h6 {
+    color: #FFEB7E;                     /* yellow */
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    color: #FFC67E;                     /* peach */
+    text-decoration: none;
+}
+
+/* The four a:modifiers should be in the order of
+* link
+* visited
+* active
+* hover
+*/
+
+a:link {
+}
+
+a:visited {
+}
+
+a:active {
+    border-bottom: thin solid #5C8EAF;  /* cobalt */
+}
+
+a:hover {
+    border-bottom: thin solid #5C8EAF;  /* cobalt */
+}
+    /*color: #5C8EAF;*/                     /* cobalt */
+    /*color: #7D66B9;*/                     /* purple */
+    /*color: #9FC1D7;*/                     /* light cobalt */
+    /*color: #B5A6DC;*/                     /* light purple */

@@ -1,0 +1,9 @@
+img#left_sidebar {
+    position: fixed;
+    left: 0;
+    top: 1em;
+}
+
+body {
+    margin-left: 155px;
+}

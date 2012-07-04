@@ -1,0 +1,35 @@
+/*-================ CSS3 DEMO CODE ==========================================-*/
+img#css3_image {
+    position: relative;
+    bottom: 5em;
+    border: thick solid black;
+
+    /* @WARNING CSS3 FEATURES */
+    border-radius: 4em;
+    opacity: 0.5;
+    box-shadow: 0px 0px 10px blue;
+}
+
+div#css3_div {
+    float: right;
+    width: 15em;
+    border: medium solid red;
+
+    /* @WARNING CSS3 FEATURES */
+    border-top-left-radius: 0em;
+    border-top-right-radius: 1em;
+    border-bottom-right-radius: 2em;
+    border-bottom-left-radius: 3em;
+    box-shadow: 0px 0px 10px red inset;         /* for when it becomes standard */
+    -ms-box-shadow: 0px 0px 10px red inset;     /* IE 9 */
+    -moz-box-shadow: 0px 0px 10px red inset;    /* Firefox */
+    -webkit-box-shadow: 0px 0px 10px red inset; /* Safari and Chrome */
+    -o-box-shadow: 0px 0px 10px red inset;      /* Opera */
+
+    /* @WARNING CSS3 FEATURES */
+    transform:rotate(7deg);             /* for when it becomes standard */
+    -ms-transform:rotate(7deg);         /* IE 9 */
+    -moz-transform:rotate(7deg);        /* Firefox */
+    -webkit-transform:rotate(7deg);     /* Safari and Chrome */
+    -o-transform:rotate(7deg);          /* Opera */
+}

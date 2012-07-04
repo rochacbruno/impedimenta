@@ -1,0 +1,23 @@
+answers.txt -- answers to chapter 3 review questions.
+
+1a - Either unsigned int or unsigned long int.
+1b - float
+1c - char
+1d - unsigned int
+2 - You would use a type long variable instead of type int NEVER. Long is a modifier used to modify other types of variables such as int or float. Still, long lets you (sometimes) store larger numbers.
+3 - You could use either type int or type long int to get a 32-bit signed integer. Int would work because most compilers seem to compile an int as a 32-bit number. Long int would also be a good choice, because ANCI C defines the minimum for a signed int as 32 bits (of course, you run the risk of a compiler using a 64-bit number, for some reason.
+4a - escape character \b, for backspace
+4b - int 1066
+4c - float 99.44
+4d - hex number AA
+4e - float 2.0*10^30
+5 - see prog8.c
+6 - 
+7 - 
+8 - see prog9.c
+9 - see prog10.c
+10 - see prog11.c
+11a - newline
+11b - backslash
+11c - double quotes
+11d - tab (horizontal)

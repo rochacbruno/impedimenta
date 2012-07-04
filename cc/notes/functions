@@ -1,0 +1,44 @@
+/*------------------------------------------------------------------------------
+Useful functions
+------------------------------------------------------------------------------*/
+Pow function: pow(1.1,6.0) == 1.1^6.0. Both arguments are doubles. Pow should only be used when the first argument is nonnegative. Pow is included in <cmath>. 
+
+Exit is found in <cstdlib>. exit(0) is for sucessful exits, and exit(1) denotes an error. 
+
+rand() takes no arguments. It is defined in the <cstdlib> library, and generates a number somewhere between 0 and RAND_MAX. RAND_MAX is also defined in cstdlib. To get a number between, say, 0 and 10, use this: rand() % 11. srand() is a little bit different, in that you can define the seed used. Thus, you can generate the same series of numbers using srand, but you probably cannot using rand(). srand(unsigned_int).
+
+/*------------------------------------------------------------------------------
+Sample user-defined function
+------------------------------------------------------------------------------*/
+void functionName (int, double, float);
+
+int main(void) {
+	return 0;
+}
+
+void functionName (int count, double weight, float iceCream) {
+	return;
+}
+
+/*------------------------------------------------------------------------------
+Variable Scope
+------------------------------------------------------------------------------*/
+return; in a void function will end that function. This is true even if return; shows up in the middle of a function. Make sure to include a precondition and postcondition comment in a function delcaration/prototype. A variable declared in a function is never accesible to any other function (even if that second function is called by the first). 
+
+Variables declared in a for loop are local to that loop. Variables declared in a block are generally local to that block, depending upon the implementation... check out ../chap3/blocks.cc
+/*------------------------------------------------------------------------------
+Call-by-X
+------------------------------------------------------------------------------*/
+Call by value passes only a value to the called function. If a value is passed to a function using call-by-value, then the original value can NEVER be modified. The value can only be modified from within the function.
+
+Call-by-reference passes the address of a variable. If a variable is passed to a function using call-by-reference, then the value of the variable will ALWAYS be modified.
+
+Check out ../chap4/callby.cc for an example of how to use call-by-reference.
+
+/*------------------------------------------------------------------------------
+Terms
+------------------------------------------------------------------------------*/
+Three terms you should know: Formal Parameter, Argument, and Call-by-X.
+Formal Parameter = Variable declaration used in the header & body of a function.
+Argument = Value passed to function to be used with formal parameters (either value will be substituted or memory location passed).
+Call-by-X = The method by which arguments are passed to functions. Are functions given the memory location of the variable passed, or a value? Call-by-reference and call-by-value, respectively.

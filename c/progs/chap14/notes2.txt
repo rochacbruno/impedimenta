@@ -1,0 +1,7 @@
+Just as there are three different ways of interacting with a prototype function, there are also three different ways of interacting with a structure. In a function, there is the function declaration, the function call, and the function definition. In a structure, there is the structure declaration (or just template), 
+
+The syntax for a structure layout declaration is 'struct tag {plan;};'
+The syntax for a structure variable declaration is 'struct tag name;'
+- To initialize the array as well, change the syntax to 'struct tag = {value, value, etc} name;'
+- There must be a comma-separated list inside the braces. The list can simply list values, such as "The Tempest", or a set of values equated to members, such as .author = "Shakespeare", The two methods of assigning values to members can be mixed.
+The syntax for a structure layout & variable declaration is 'struct tag {plan;} name;'

@@ -1,0 +1,43 @@
+In perl...
+
+There are three types of variables: scalars, arrays, and hashes. Think of them as things, lists, and dictionaries, respectively. Scalar variable names must be named in the following format: $, _ or alphabetic character, alphanumeric character. For example, $n, $_flag, $opus_no_64. The keyword 'my' can be added to the beginning of a declaration, to ensure that particular variable is only available in its sub. (more on subs later?)
+
+Note that traditional data types that differentiate scalars, such as char, int, float, and even string, do not exist in perl. When perl needs to treat a scalar as a string it will; when it needs to treat a scalar as an int, it will. Perl is very high level in this respect.
+
+There are three different ways one can assign data to a scalar. See the following:
+$index = 5;
+$test = joanna;			# perl converts from scalar int/char to scalar string.
+$name = 'Jeremy';
+$full_name = "Sir $name\n";
+Note that one can use either no quotes, single quotes, or double quotes. Single quotes are used for literal assignment of an argument to a variable. Double quotes are for interpreted assignment of an argument to a variable. No quotes are used for numbers. Oh, and one more thing: double quotes interpret scalars, specifically.
+
+The difference between single quotes and double quotes is much the same when printing out data. See below:
+print 'newline character?\n';
+print "\$full_name: $full_name";	# \n is included in $full_name
+
+There are six basic types of arithmetic operations: +, -, *, /, % (modulo), and ** (x^y --> x**y). When dealing with strings, there is one basic operator you need to know: the concatenation operator. The concatenation operator uses a period. Check out the following:
+my $num1 = 8;			# declares $num1 as a scalar string equal to "8".
+my $num2 = $num1 + "1";		# declares $num2 as a scalar number equal to 8 + 1, or 9. (converted $num1 to number)
+my $num3 = $num1 . "1";		# declares $num3 as a scalar string equal to "8" + "1".
+Basically, the + operator adds numbers, while the . operator concatenates strings.
+
+====================
+
+How are the three data types different? Let's start with syntax. 
+
+Declaration:
+$index = 5;
+@names = ("Jeremy", "Nobuo", "Joel", "Kain");
+%balances = ("Jeremy" => 1542, "$names[1]" => 84181,  );
+
+Usage:
+print "$index\n";
+print "$names[0]\n";
+print "$balances{Nobuo}\n";
+
+Five important points about data types.
+1) The three different data types use different prefixes in their declarations.
+2) When referencing a value in a scalar, array, or hash, the $ prefix is still used. This is because even if a value is inside an array or hash, the value being referenced is itself a scalar.
+3) A hash, unlike an array, has _named_ values that can be of _different_ scalar types.
+4) A hash can have values added to it at any time. 
+5) An array uses [] notation; a hash uses {} notation.

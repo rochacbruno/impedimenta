@@ -1,0 +1,47 @@
+	The syntax for opening a file is:
+
+	open (FILEHANDLE, 'path');
+
+	The file handle is a variable used to represent the file. It should be declared before opening a file. By default, the file is interpreted as a stream of characters. It is also possible to read a file in binary mode. 'filename' is the full path to the file being opened. If a full path is not specified, the current directory will be searched. 
+	You can handle errors by using the die operator. You should use 'die' after attempting to open a file. Here are some good ways to open a file:
+
+	open (FILEHANDLE, 'path') or die ("error message");
+	open (FILEHANDLE, 'path') or die ("Error: $!");
+	if (-e '/path/to/file.txt') {
+		open (FILEHANDLE, 'path') or die ("Error $!");
+	}
+
+	Note the 'or' in this message. It makes the syntax more human-readable. You are telling perl to "open this file or, in case of error, allow script to die and print the following error message". The $! is a special variable holding a perl-generated error message in case of opening error. The -e switch allows you to check for the existence of a file.
+	Perl automatically closes files at script termination. However, this is bad practice. To manually close a file, use the close operator on the file handle. You do not need to specify the path to the file that has been worked on; the file handile is enough. Use this syntax:
+
+	close FILEHANDLE;
+
+	Nuff' said.
+	Files can be opened in several modes: reading, writing, appending, reading+writing, and reading+appending. The syntax for opening a file in read mode has already been demonstrated -- just open the file. The syntax for opening a file in write mode is very similar. Just add the appropriate symbol the the beginning of the path (NOT the filename). See the examples below. Note that you can explicitly read using the < operator.
+
+	open (FILEHANDLE, '<', 'path') or die ("Error: $!");		# Read
+	open (FILEHANDLE, '>', 'path') or die ("Error: $!");		# Write
+	open (FILEHANDLE, '>>', 'path') or die ("Error: $!");		# Append
+	open (FILEHANDLE, '+>' 'path') or die ("Error: $!");		# Read + Write
+	open (FILEHANDLE, '+>>' 'path') or die ("Error: $!");		# Read + Append
+
+	Once a file has been opened, you'll want to use the contents of the file. Filehandles are treated as a standard input/output stream. Funnily enough, the input/output stream is read from and written to one line at a time, not one character at a time. The first code block below will read a single line of text into $lineOfText. The second code block will read all lines of text and place them into @linesOfText.
+
+	$lineOfText = <FILEHANDLE>;
+	@linesOfText = <FILEHANDLE>;
+
+	To write out to a file, use the print function. The syntax is shown below:
+
+	print FILEHANDLE ("Text to print. Note the absence of commas, unlike open() and like close().");
+
+	The same syntax is used for both printing and appending to a file. Recall that you decide whether you are writing to a file or appending to that file when you first open FILEHANDLE. To quickly switch between write and append mode, you will need to first close and then reopen the file. Something like this could be useful.
+
+	my $append = 0;
+
+	if ($append = 0) {
+		open (FILEHANDLE, '>path') or die ("Error message:\n$!\n");
+	} else {
+		open (FILEHANDLE, '>>path') or die ("Error message:\n$!\n");
+	}
+
+	If the file you are opening does not already exist, it will be created.

@@ -1,0 +1,6 @@
+The three pillars of OOP are encapsulation, inheritance, and polymorphism.
+
+The three big ones to overload are the copy constructor, overloaded 
+assignment operator, and the destructor. All of these three need to be 
+created if you use pointers or the new operator at any place within your 
+object.

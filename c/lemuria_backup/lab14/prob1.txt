@@ -1,0 +1,53 @@
+Jeremy Audet -- problem 1 for lab 14
+10 unix commands + brief descriptions
+
+	1) ls
+a) This command lists all the files in the current directory. (note that directories, links, etc are represented as files in the unix 
+filesystem)
+b) Someone would use this command while navigating the directory structure.
+c) The -l option lists all the results in an ordered list, and includes information such as file permissions and last date of modification. The 
+-a option lists hidden files.
+	2) cat
+a) The cat command concatenates the contents of a file and prints them out to stdout. The cat command is made for catting text files, not 
+binary files, msword files, and other types of files.
+b) Someone would use this command if they wanted to take a look at a file without having to open it up in a program. Useful for glancing at a file.
+c) The -n option numbers lines of output.
+	3) grep
+a) This command searches for an expression within a given block of text.
+b) This command would likely be used when paired with some long listing -- for example, you could cat the contents of a file or list a directory 
+structure, and then pipe the results to grep.
+c) The -E option specifies that the expression used should be interpreted as a perl expression. The -c option simply prints out how many matches were 
+found.
+	4) man
+a) The man command provides a manual page describing unix commands.
+b) This command would be used when researching how to use some unix command.
+c) The -k option would be used when searching for a command to perform some task. For example, one could issue the command "man -k compress" to find 
+utilities to compress files.
+	5) mkdir
+a) This command creates a directory.
+b) Someone would use this command if they wanted a folder to store a set of files in.
+c) The -v option makes the program run in verbose mode, displaying more information than is normally shown. Specifically, the command will inform users 
+each time a directory is created.
+	6) zip
+a) This command compresses a set of files/directores
+b) Someone would use this command if they wanted to, say, send a large file over a network.
+c) The -g command will attempt to append ("grow") files to an existing archive.
+	7) rm
+a) This command is used to remove a file.
+b) Someone would use this command to get rid of old junk.
+c) The -r option recursively removes files and directories.
+	8) date
+a) The date command lists the current time and date.
+b) This command is especially useful if you are working in a pure command line environment, or if you want to check whether the time on a host has been 
+messed up.
+c) The -s command allows you to specify what the current time should be.
+	9) tail
+a) The tail command lists out the last 10 lines of a specified file.
+b) This command is useful when you want to know what the last bit of information added to a file is.
+c) The -n option is used to specify how many lines should be displayed, instead of the default 10.
+	10) less
+a) The less command takes a block of text and displays it, while allowing the user to scroll through the text line by line.
+b) Someone would use this command if they were looking at a block of text (say a directory listing) too large to diplay on a single line. Unlike the 
+more command, the user can scroll up and down through the text, and the text is not left on stdout after quitting the less command.
+c) The -q command invokes a partially quiet mode, where the terminal bell will not be rung if the user attempts to scroll above the top or below the 
+bottom of the file. The bell will still be rung in other cases, such as if an invalid character is entered.

@@ -1,0 +1,79 @@
+/*-============================================================================/
+Operators in C
+/============================================================================-*/
+The following details how to work with binary values with C.
+
+PREFIXES:
+decimal, none   42
+binary, 0b      0b1101
+hex, 0x         0x2B5
+
+OPERATORS:
+&   bitwise AND
+|   bitwise OR
+^   bitwise XOR
+~   bitwise inversion
+>>  right shift (integer division by 2)
+<<  left shift (multiply by 2)
+
+The right shift and left shift operators deserve some additional explanation. Even better, how about some examples.
+num >> 2
+This will shift all the bits right twice. It's the equivalent of dividing by integer four. 2^(yourNumHere) == divisor.
+num << 3
+This will shift all bits to the left thrice. It's the equivalent of multiplying by eight. 2^(yourNumHere) == multiplier.
+
+LOGICAL OPERATORS:
+The usual are available.
+==, &&, ||, >, <, >=, <=, !=
+
+INTERRUPTS:
+Here's how to set up an RTI using C.
+SRTISC = 0x11 (this is for RTI settings)
+void interrupt 23 RTI_ISR(void) {
+    // do something here
+    // the "interrupt 23" statement matches the RTI entry in the vector interupt table
+    // it specifies which type of interrupt you are defining
+}
+
+DATA TYPES:
+C has five data types.
+void
+char
+int
+float
+double
+
+/*-============================================================================/
+Mixing C and Assembly
+/============================================================================-*/
+EDIT: just take a look at ../c_asm_template. I think that's a much better guide than this mess of an explnation.
+
+For the most part, you can just use the templates that are given to you by Codewarrior. Here's some things you should know, however.
+1) In the .asm files, you can define function names using XDEF. In the "; export symbols" section, add this
+    XDEF asm_main
+    XDEF DELAY_10US
+    XDEF DELAY_100US
+    XDEF DELAY_XHMS
+2) In the C .h file, include the following kind of stuff
+    void asm_main(void);
+    void DELAY_10US(void);
+    void DELAY_100US(void);
+    void DELAY_XHMS(void);
+3) There are two methods you can use to pass data.
+    to pass an 8 bit byte, simply store the data in the accumulator A
+    to pass a 16 bit word, simply store the data in the registers HX
+
+Point 3 needs some examples.
+In .c file
+    DELAY_10US();   // the actual call to a function
+In .h file
+    void DELAY_10US(void);
+In .asm file
+    XDEF DELAY_10US // plus actual definition of this sub somewhere, ends with rti
+
+In .c file
+    delay(500);     // value greater than 255. Passing word.
+In .h file
+    void delay(int);    // if passing byte, pass char instead of int
+In .asm file
+    XDEF delay      // actual definition of this sub exists elsewhere in file

@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>"Hello, world!" Repository</title>
+        <link rel="stylesheet" type="text/css" href="./css/master_layout.css" />
+        <style type="text/css">
+            /* styles go here */
+        </style>
+    </head>
+
+    <body>
+        <h1>"Hello, world!" Repository</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a id="current_section" href="../projects_index.html">Projects</a></li>
+            <li><a                      href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+
+        <div id="extras">
+            <h2>Repository Navigation</h2>
+            <ul>
+                <li><a                  href="./index.html">About the Repository</a></li>
+                <li><a                  href="./resources.html">Resources</a></li>
+            </ul>
+            <ul>
+                <li><a                  href="./content_android.html">Android</a></li>
+                <li><a                  href="./content_c.html">C</a></li>
+                <li><a class="selection" href="./content_c++.html">C++</a></li>
+                <li><a                  href="./content_java.html">Java</a></li>
+                <li><a                  href="./content_perl.html">Perl</a></li>
+            </ul>
+            <a id="logo_rollover" href="./index.html"></a>
+        </div>
+
+
+        <div id="main">
+            <h2>"Hello, world!" in C++</h2>
+            <code class="code_block">
+/*-==========================================================================-*\
+Author(s):
+Jeremy Audet
+
+First Created: 10/25/2011
+License: Creative Commons BY-SA         http://creativecommons.org/licenses/by-sa/3.0/
+\*-==========================================================================-*/
+
+#include &lt;iostream&gt;
+
+int main() {
+    std::cout &lt;&lt; "Hello, world!\n";
+
+    return 0;
+}
+            </code>
+            <p><code>cout</code> is in the namespace <code>std</code>. You can omit the <code>std::</code> prefix by writing <code>using namespace std;</code> above <code>cout</code>. Read the echo program to see <code>using namespace std;</code> in action.</p>
+            <!--
+            &#40;   (
+            &#41;   )
+            -->
+
+            <h2>Echo in C++</h2>
+            <code class="code_block">
+/*-==========================================================================-*\
+Author(s):
+Jeremy Audet
+
+First Created: 10/25/2011
+License: Creative Commons BY-SA         http://creativecommons.org/licenses/by-sa/3.0/
+
+Thanks to:
+* C++ Primer Plus, by Stephen Prata     ISBN: 0131388207, 9780131388208
+This is the book that taught me how to use C++. Highly recommended.
+
+\*-==========================================================================-*/
+
+#include &lt;iostream&gt;
+
+int main(void) {
+    using namespace std;                // Limit the scope of namespace std to just this function.
+
+    char ch;                            // For buffering input.
+
+    cout &lt;&lt; "Type something, press 'enter', and it will be echoed back." &lt;&lt; endl
+         &lt;&lt; "Press CTRL-D or CTRL-C to quit." &lt;&lt; endl;
+    cin.get(ch);
+    while(false == cin.fail()) {        // If EOF has been read, cin.fail() will return true.
+        cout &lt;&lt; ch;
+
+        cin.get(ch);
+    }
+    cout &lt;&lt; endl;
+
+    return 0;
+}
+            </code>
+            <p>EOF stands for End Of File. This character is at the end of every text file. You can type an EOF character into a terminal by pressing CTRL-D.</p>
+
+            <h2>Compiling &amp; Running C++</h2>
+            <code class="code_block">
+$ g++ hello.cpp -o hello_world
+$ ./hello_world 
+Hello, world!
+$
+            </code>
+            <p>By default, the gcc compiler will call a newly-created binary file <code>a.out</code>. You can name the newly-created files using the optional <code>-o</code> switch.</p>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,15 @@
+Homework for next week is to read chapter 2 and 6. I should read chapter 1 too. There will be a quiz. Make sure to write a hello world proam for him. 10 points for functionality, 10 points for headers and comments. Attach source code to quiz 1. Bring souce code with me.
+
+A method signature is the declaration of a function. A function in C is called a method in C++. 
+
+what is a namespace?
+what is a 2d array?
+??? A 2d array is something like int numAray[3][4]; ???
+
+The :: denotes the relationship between a method and namespace. A namespace is a wrapper in which all methods should have unique names. This is similar to funtions. Inside a function, each variable should have a unique name.
+OR
+:: is a scope resolution operator.
+
+Express your intent. Do not use expressions such as 2*(n++). Use expressive variable and function names.
+
+Figure out the difference between a class and a struct. A class describes an object. There may be many or no objects in a program.

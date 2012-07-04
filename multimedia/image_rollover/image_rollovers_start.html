@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>Image Rollovers</title>
+	<style type="text/css">
+		/* Presentational stuff */
+		body{
+			font-family:tahoma,verdana,"trebuchet ms",sans-serif;
+			margin-left:2em;
+		}
+
+		code{
+			font-size:120%;
+		}
+
+		div{
+			padding-bottom:1em;
+			margin-bottom:3em;
+			width:80%;
+		}
+
+		h2{
+			margin-bottom:0;
+		}
+
+        span.page_action {
+            text-decoration: underline;
+            margin-left: 0.3em;
+            margin-right: 0.3em;
+        }
+
+		/* Our rollover related CSS */
+		a#shark1{
+			display:block;
+			width:270px;
+			height:200px;
+			background-color:gray;
+		}
+
+        a#shark1:link,
+        a#shark1:visited {
+            background-image: url(normal.jpg);
+        }
+
+        a#shark1:hover {
+            background-image: url(hover.jpg);
+        }
+
+        a#shark1:active {
+            background-image: url(active.jpg);
+        }
+
+		/* CSS for our other sharks */
+		#shark2{
+			border:1px solid black;
+			padding:7px;
+		}
+
+		#shark3{
+			border:1px solid red;
+			padding:7px;
+		}
+	</style>
+</head>
+<body>
+    <h1>Day 17 - Cavalcade of Rollovers</h1>
+    <div>
+        <h2>#1 - Pure CSS Image Rollovers (needed in P3)</h2>
+        <p>The trick: use <code>a:hover</code> and <code>a:active</code> to change the <code>background-image</code> property of an <code>&lt;a&gt;</code> tag.</p>
+        <a id="shark1" href="#"></a>
+    </div>
+
+    <div>
+        <h2>#2 - Simple JavaScript Rollovers (optional)</h2>
+        <p>The trick: use <em>inline</em> event handlers and JavaScript programming to change the value of the <code>src</code> attribute of an <code>&lt;img&gt;</code> tag.</p>
+        <p>Note: Using inline JavaScript event handlers is discouraged for the same reason that inline CSS is - they both muddle up your HTML content. We will demo a "cleaner" way to do this on Day 19.</p>
+        <img id="shark2" src="normal.jpg" alt="Shark!" width="270" height="200" 
+            onmouseover="this.src='hover.jpg'"
+            onmousedown="this.src='active.jpg'"
+            onmouseup="this.src='normal.jpg'"
+            onmouseout="this.src='normal.jpg'"
+        />
+    </div>
+
+    <div>
+        <h2>#3 - "Disjoint" JavaScript Rollovers (optional)</h2>
+        <p>Changing the <code>src</code> attribute of a <em>different</em> element is a neat effect that you can't do with CSS alone. 
+        The technique we're showing here is a little "old school" though - we'll show you a better one on Day 19.</p>
+        <p>Shameless plug: If you are interested in JavaScript programming, check out 4002-536 <em>Client Side Scripting</em>.</p>
+        <p>
+            <span class="page_action"
+                onmouseover="images['shark3'].src='hover.jpg'"
+                onmouseout="images['shark3'].src='normal.jpg'"
+            >Happy Shark</span>
+            <span class="page_action"
+                onmouseover="images['shark3'].src='active.jpg'"
+                onmouseout="images['shark3'].src='normal.jpg'"
+            >Really Happy Shark</span>
+        </p>
+        <img id="shark3" src="normal.jpg" alt="Shark!" width="270" height="200" />
+    </div>
+
+    <p>
+        <img src="../image_rollovers_start.jpg" width="515" height="278" id="image_rollovers_start" usemap="#m_image_rollovers_start" alt="" />
+        <map id="m_image_rollovers_start">
+            <area shape="rect" coords="65,218,445,278" href="http://ist.rit.edu/~imm320/20111-70/" alt="" />
+            <area shape="circle" coords="339,134, 39" href="http://www.reddit.com/r/rit" alt="" />
+            <area shape="circle" coords="169,134, 39" href="http://www.gooogle.com/" alt="" />
+        </map>
+    </p>
+</body>
+</html>

@@ -1,0 +1,36 @@
+ul#navbar {
+    padding: 0;
+    margin: 0.5em 0;
+    list-style-type: none;              /* no bullets on list items */
+    float: left;
+    width: 100%;
+
+    background-color: #2B2B2B;          /* lighter-grey */
+    border: thin solid black;
+}
+
+/* allow elements to stack horizontally, like normal text */
+ul#navbar li {
+    display: inline;
+}
+
+ul#navbar li a {
+    float: left;
+    width: 10em;                        /* All floated elements need a width */
+    padding: 0.5em 0.5em;               /* Additional height and width */
+
+    color: white;
+    font-weight: bold;
+    text-decoration: none;              /* no underline on links */
+    text-transform: uppercase;
+    font-size: smaller;
+    border-bottom: thick solid white;   /* default bottom border */
+}
+
+ul#navbar li a:hover {
+    border-bottom: thick solid #FE877D; /* pink */
+}
+
+ul#navbar li a#current_section {
+    border-bottom: thick solid #5C8EAF; /* cobalt */
+}

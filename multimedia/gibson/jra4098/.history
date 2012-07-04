@@ -1,0 +1,6 @@
+whoami
+ls
+cd www
+ls
+cd ..
+exit

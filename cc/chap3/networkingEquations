@@ -1,0 +1,23 @@
+In a circuit network, resources have to be reserved at each node along a network path. Before transmission of any data can occur, resources have to be reserved. For example, say a node with 1.546 mbps link capacity has logically divided that link into 24 circuits. Buffers sufficent to transfer 64 kbps of network traffic should be reserved at that node on that link. This same process has to be repeated at each node along the network path before any data can be transferred from link to link.
+
+In a packet switched network, resources do not have to be reserved before transmission of data from a node can commence.
+
+The types of delay that can occur on a packet switched network are: processing delay, queuing delay, transmission delay, and propagation delay. The sum of these delays is the nodal delay.
+
+Processing delay involves performing a CRC or examining the routing table. Queuing delay is due to other packets being and/or waiting to be transmitted. Transmission delay is the amount of time it takes to physically transmit a packet onto a medium (Length of packet/Rate of link). Propagation delay is the time necessary for a signal to travel the length of a link (length of link/speed of signal movement).
+
+Here's some ideal equations.
+
+To determine whether a queue will grow: if (La)/R > 1, then the queue will grow.
+L = bits / packet
+a = packets / second
+R = bits / second (link speed)
+If (La)/R > 1, then bits/second due to packets is greater than bits/second that can be transmitted on the link. 
+
+The delay before a packet is transmitted over a link, if it is the n'th packet in the queue:
+L(n - 1)/R
+L = bits / packet
+n = position in queue, where the packet being transmitted is 1. If packet being transmitted is 0, then equation changes to Ln/R
+R = link speed 
+
+

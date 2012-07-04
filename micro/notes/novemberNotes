@@ -1,0 +1,69 @@
+/*-============================================================================/
+Basics of the TPM interrupt system.
+/============================================================================-*/
+One useful function of the chip we're using is the ability to use a counter to interrupt at intervals. It's kinda like the RTI, but you have a lot more fine-grained control over the timing of the interrupts. You also have the ability to view the value of the counter being used to interrupt.
+
+TPM, the interrupt system itself, is controlled with three registers.
+TPMSC               Status and control register for TPM.
+TPMCNTH:TPMCNTL     The counter.
+TPMMODH:TPMMODL     The modulo register, used to limit how high the counter goes.
+
+Timer channels are used to capture data from the interrupt system.
+TPMCnSC             Status and control register for timer channel n.
+TPMCnVH:TPMCnVL     Channel value register. 
+
+/*-============================================================================/
+Details of registers used.
+/============================================================================-*/
+TPMSC:7 (TOF) is a read only bit. It it set to 1 whenever the counter resets to 0.
+TPMSC:6 (TOIE) controls whether interrupts are generated. If set to 1, an interrupt occurs whenever the counter resets (whenever TOF is 1).
+TPMSC:5 (CPWMS) controls whether (some Pulse Width Modulated function?) is left-aligned or center-aligned. 0 is left, 1 is center.
+TPMSC:4-3 (CLKS[B,A]) controls the clock source or disables the system completely. 00 disables the TPM system completely. 01 uses the chip bus as a clock source.
+TPMSC:2-0 (PS[2,1,0]) is used to control the divisor for whatever clock source is selected. The divisor can be any number between 1 and 128 (as opposed to 0 through 64 as you might expect for a 3 bit number). Value table follows:
+    000 1
+    001 2
+    010 4
+    011 8
+    100 16
+    101 32
+    110 64
+    111 128
+
+TPMCNTH:TPMCNTL is the register that holds the current counter value. These registers need to be incremented according to some source; bits TPMSC:4-3 are used to choose what drives the counter. You'll probably want to set these bits to 01, which means that the counter will be incremented 8000 times per second (8000Mhz clock). If you want to count up slower, use TPMSC:2-0. For example, if TPMSC:2-0 = 001, then you'll increment this register 4000 times per second.
+
+TPMMODH:TPMMODL is the modulo register. It is used to limit how high the counter goes. The counter will go up to TPMMOD + 1.
+
+/*----------------------------------------------------------------------------*/
+There are two pins on this chip that are capable of either capturing input, comparing output, or creating pulses (square waves). Channel 0 (n = 0) controls pin PTA0, and channel 1 controls PTB5.
+
+TPMCnSC:7 (CHnF) This bit is basically a status bit. It tells you what is going on in the chip. Its function differs depending upon whether the chip is in output-compare mode, input-compeare mode, edge-aligned PWM mode, or center-aligned PWM mode. If in edge-aligned PWM mode, this bit is high when the counter matches the value in TPMCnV (I think...).
+TPMCnSC:6 (CHnIE) controls whether interrupts are enabled. 1 enables hardware interrupts, 0 disables.
+TPMCnSC:5 (MSnB) If CPWMS is 1 (center-aligned PWM mode) then this bit has no effect. If CPWMS is 0 (left-aligned PWM mode) then setting this bit to 1 enables the PWM output function of this channel.
+TPMCnSC:4 (MSnA) If CPWMS is 1 (center-alighned PWM mode) or MSnB is 1 (enable the PWM abilities of this channel) then setting this bit has no effect. If CPWMS is 0 (left-aligned PWM mode) and MSnB is 0 (do not enable the PWM abilities of this cannel) then this bit will put channel n into either input capture or output compare mode. 0 for input capture, 1 for output compare.
+TPMCnSC:3-2 (ELSn[B,A]) These two bits determine a number of settings depending upon whether channel n is in input capture, output compare, center-aligned PWM, or edge(left)-aligned PWM mode. See page 236 of the manual for details. If channel n is in edge-aligned PWM mode, a good setting is 10 (high-true pulses (output pulses not inverted)).
+
+TPMCnV: If PWM output is enabled on a channel (as determined by TPMCnSC:5 and TPMSC:5), then this register determines the duty cycle. The duty cycle = TPMCnV / TPMMOD, with a maximum of 1.
+
+/*-============================================================================/
+How to use TPM system.
+/============================================================================-*/
+Use this formula when setting up pwm output: Fint = Fclock / (Nmodulo * ClockDivide).
+Fint is the frequency of how often the counter resets to 0. Note that an interrupt may occur when the counter resets to 0 if you have configured such.
+Fclock is the clock frequency (4 MHz).
+Nmodulo is the value of the modulo register.
+ClockDivide is the value of the divisor as set with TPMSC:2-0. Some value between 1 and 128.
+
+You'll have to do some guesswork when choosing values for Nmodulo and ClockDivide. Here's an example.
+Let's say you want to reset once every 40 ms. The period of the counter, T, is 40 ms. Frequency, F, is therefore 25Hz. The value of Fint is 25. The clock rate is 4 MHz. Therefore, the value of Fclock is 4,000,000. The equation now looks like this: 25 = 4,000,000 / (Nmodulo * ClockDivide). Choose a random value for ClockDivide such as 8. Nmodulo then has a value of 20,000. This is totally valid, as Nmodulo is a 16 bit register that can count up to 65,536.
+Fint = 25
+Fclock = 4,000,000
+ClockDivide = 8
+Nmodulo = 20,000
+
+If you want output a pulse with a frequency of 25 Hz, set the chip registers as such:
+TPMSC = 00001011
+TPMMOD = 20000
+TPMCnSC = 00101000
+TPMCnV = (0 to 20000, determines duty cycle of pulse)
+
+Note that the actual frequency of the chip we're working with is 8 MHz.

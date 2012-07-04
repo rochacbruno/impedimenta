@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- activity & application labels -->
+    <string name="app_name">Jeremy\'s Jammin\' Jukebox</string>
+    <string name="control_mode_name">Controls</string>
+    <string name="playlist_mode_name">Playlist</string>
+    <string name="library_mode_name">Library</string>
+    <string name="preference_mode_name">Preferences</string>
+    <string name="about_mode_name">About</string>
+
+    <!-- handlers for the mode buttons -->
+    <string name="controlsButtonHandler">controlModeStarted</string>
+    <string name="playlistButtonHandler">playlistModeStarted</string>
+    <string name="libraryButtonHandler">libraryModeStarted</string>
+
+    <!-- preference keys -->
+    <string name="serverIP_key">serverIP</string>
+    <string name="serverPort_key">serverPort</string>
+    <string name="serverPassword_key">serverPassword</string>
+    <string name="passwordRequired_key">passwordRequired</string>
+
+    <!-- status messages -->
+    <string name="help_message">
+    To use this app, you must be connected to an MPD server. To do so, first 
+    open the Preferences screen by pressing the MENU button. Specify a server 
+    name (e.g. example.com or 192.168.0.5) and, if necessary, a port number 
+    and password. Return to this screen and press the \"Connect\" button. You 
+    should then be able to enter the three control modes, via the buttons at 
+    the top of this screen.
+    </string>
+    <string name="about_message">
+    Author: Jeremy \"Ichimonji10\" Audet\n
+    \n
+    Special thanks to:\n
+    * www.rizwanashraf.com for the \"Controls\" mode icons.\n
+    * Bill Findeisen for creating the open source javampd project. The javampd library provides the communications layer underpinning this app. www.thejavashop.net/javampd
+    </string>
+</resources>

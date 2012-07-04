@@ -1,0 +1,36 @@
+prerequisites:
+#include <vector>
+using std::vector;
+
+declaration:
+vector<int> num;
+vector<base_type> vectorName;	// create empty vector, using default constructor for base_type to define size of each nascent element
+vector<double> prefab(4);	// create vector with four elements [0] - [3]
+
+Vectors can be comprised of any class. vector<myClass> myClassVector; uses the default constructor for myClass to create a vector of type myClass. This is similar to how vector<int> num calls the default constructor for an int when adding an element to itself.
+
+addressing:
+num[0]
+vectorName[10]
+
+Vectors are addressed just like arrays. You cannot change the size of a vector using this notation. When a vector is created, no slices are automatically created for that vector. A vector can be created with a certain number of slices, as shown above (vector<double> prefab(4);). The size of a vector is the number of vector elements which are currently defined with values (constructor called), and can be used. The capacity of a vector is the amount of memory set aside for vector elements.
+
+increase size:
+num.push_back(3);			// adds slice, pass 3 to constructor
+vectorName.push_back('n', 3.14159);	// adds one slice to vector
+
+check size:
+num.size();		// returns a value >= 0
+vectorName.size();	// if vectorName has, for example, 4 elements, then this will return 4.
+
+explicitly set size:
+num.resize(5);		// New elements, if any, are created using default constructor.
+vectorName.resize(vectorName.size() + 5);
+
+check capacity:
+num.capacity();		// returns a value denoting how many vector elements can
+vectorName.capacity();	// fit in the currently allocated memory. Capacity >= size.
+
+explicitly set capacity:
+num.reserve(20);	// will not set capacity so low that size is decreased.
+vectorName.reserve(vectorName.size() * 2);

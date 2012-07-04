@@ -1,0 +1,72 @@
+<!-- <?xml version="1.0" encoding="utf-8"?> -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>ICE: CSS Image Rollovers and Image Maps</title>
+        <link rel="stylesheet" type="text/css" href="../css/page_layout.css" />
+        <link rel="stylesheet" type="text/css" href="../css/horizontal_navbar.css" />
+        <link rel="stylesheet" type="text/css" href="../css/image_with_caption.css" />
+        <style type="text/css">
+            /* Image rollover CSS */
+            a#rollover_0 {
+                display: block;
+                width: 256px;
+                height: 256px;
+            }
+            a#rollover_0:link,
+            a#rollover_0:visited {
+                background-image: url(./media/cecil_dark_knight_large.gif);
+            }
+            a#rollover_0:hover,
+            a#rollover_0:active {
+                background-image: url(./media/cecil_paladin_large.gif);
+            }
+
+            /* Divs containing images are centered normally, rather than floating right. */
+            div.image_and_caption {
+                float:none;
+                margin-right:auto;
+                margin-left:auto;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>ICE: CSS Image Rollovers and Image Maps</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a                      href="../projects_index.html">Projects</a></li>
+            <li><a id="current_section" href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+        <h2>CSS Image Rollover</h2>
+        <div class="image_and_caption" style="width:256px;">
+            <a id="rollover_0" href="http://en.wikipedia.org/wiki/Final_Fantasy_IV"></a> <!-- image with rollover display. see css rules at top -->
+            <p>A sprite portrait of Cecil the knight.<br />Copyright Square Enix.</p>
+        </div>
+        <p>Cecil is a character from the video game Final Fantasy IV (FFIV). FFIV is a role-playing game released by Square (now Square Enix) in 1991. Cecil starts the game as a dark knight, and becomes a paladin during the course of the game. It's archetypal from a distance, but the archetype is pulled off with grace.</p>
+
+        <h2>Image Map</h2>
+        <div class="image_and_caption" style="width:952px;">
+            <img width="952" height="120" src="./media/imagemap_banner.jpg" alt="Banner image with clickable areas." usemap="#imagemap_banner" />
+            <map name="imagemap_banner">
+                <!-- #$-:Image map file created by GIMP Image Map plug-in -->
+                <!-- #$-:GIMP Image Map plug-in by Maurits Rijk -->
+                <!-- #$-:Please do not edit lines starting with "#$" -->
+                <!-- #$VERSION:2.3 -->
+                <!-- #$AUTHOR:Ichimonji10 -->
+                <area shape="rect" alt="Link to albaevent.ch." coords="12,2,216,113" href="http://albaevent.ch/EN/Default.asp" />
+                <area shape="rect" alt="News article about Albanian integration into Swiss culture." coords="634,79,944,113" href="http://www.infosud.org/spip.php?article9331" />
+                <area shape="rect" alt="Wikipedia article about the cultural phenomena known as 'Party'." coords="298,7,626,113" href="http://en.wikipedia.org/wiki/Party" />
+            </map>
+            <p>Click click click click click.<br />Author: <a href="http://fidangashi.deviantart.com/">fidangashi</a>.</p>
+        </div>
+        <p>This banner image has a series of cliclable areas on the image.</p>
+
+        <p style="clear:both;"></p> <!-- Parent block element contains floated element. Prevent sibling float from escaping parent. -->
+    </body>
+</html>

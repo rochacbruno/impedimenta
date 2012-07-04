@@ -1,0 +1,38 @@
+1) What types of industries are the guests on the show involved in?
+
+The first guest on the show is a professor from Harvard. The second guest, Eric Geiler, is CEO of WiTricity, a company that aims to provide wireless electricity. He also founded Brooktrout and Groove, which provided voicemail technologies and mobile music, respectively. Another guest, Donna Dubinsky, is currently working with Numenta software. She had earlier cofounded Palm technologies. The last guest, Andrew Perlman, is the president of GreatPoint Energy. GreatPoint energy is working on processes that would allow coal (and its byproducts?) to effectively be turned into gaseous fuels.
+
+All of the guests on this show are involved in high-tech industries. Working on technologies such as carbon sequestration, software modeling of the human brain, and wireless electricity all require a combination of technical ability and an imaginative drive.
+
+2) What is the most important thing we can do to keep the entrepenurial spirit alive?
+
+I'm not sure of what would encourage the entrepenurial spirit. Part of it may be a social attitude. I've read that in France, for example, it is more admirable to inherit a fortune than to make one. Laws which support this attitude are, of course, important; but how to go about it is a mystery to me. One of the guests, for example, stated that stable economic and legal conditions are more important than profit margins. Another mentioned that many of the inventions and companies that he knew of came from universities such as MIT. Mr. Perlman mentioned the problems he had with getting two of his American-educated PhD workers back into the country. These suggestions still don't even touch on how the public sector and private sector interact.
+
+3) New ideas can be pushed forward with or without gov't help. What are the benefits and pitfalls of each?
+
+Both the public and private sector can promote and inhibit progress in their own way. I would say that the primary pitfall of government support for ideas is that the government is inherently slow and overly-regulated. I would say that the primary pitfall of private sector support for ideas is the incredible desire to monetize ideas; the private sector is greedy.
+
+The best environment I can think of to support new ideas combines the best characteristics of both. Take, for example, the current internet service provider market. The US FCC decided to almost entirely deregulate that market around 2001. Previous to that time, ISPs were forced to provide service to other ISPs at government-set rates. This meant that an ISP could internally structure itself however it wished. However, if a competitor wanted to connect to the incumbent's network, the incumbent was required to provide service at a set cost. This provided a stable structure in which new companies could emerge.
+
+Since these rules were removed, the ISP market has dramatically shrunk. 97% of Americans have access to 2 or fewer ISPs. This is a duopoly, not a competitive market. In other markets where the government has implemented line-sharing regulations, however, the situation is quite different. Take a look at this image:
+http://static.arstechnica.com/2009/10/15/high_price_low_speeds.png
+You'll see that american ISPs consistently offer the worst deals in the developed world. We're down there with Canada. However, areas such as the UK consistently have a much better marketplace.
+
+So why is this all important? Because even relatively new businesses such as ISPs can quicly turn into foundations for other businesses and technologies. Google wants to make television available over IP networks, wikipedia wants to distribute media using bittorrent, and pro-marijuana advocacy groups want to use texting to promote their cause. Yet ISPs have repeatedly shown themselves willing to completely block these technologies (IP-based TV, bittorrent, and texting).
+
+Perhaps a parable from the ACLU will push my point across best:
+--------------------------------------------------------------------------------
+    In order to help farmers bring their goods to market, a town awards a company a charter to build a bridge across a river and gives the company the right to collect a toll. But the toll collector begins treating farmers differently—making some wait longer to cross, and charging higher tolls to some farmers based on the food that the farmer is carrying, whether the bridge keeper approves of the farmer’s lifestyle and politics, and whether the farmers are willing to make individual side deals with the bridge keeper.
+
+    In response, farmers and others call for the city to declare the bridge a common carrier—impose a “bridge neutrality” rule that says it can still charge a toll but cannot discriminate among those who pass. Friends and beneficiaries of the bridgekeeper protest that such a rule would interfere with the “free market.” But the bridge is not much of a market—and permitting the bridgekeeper to do these things actually distorts the other marketplace that depends upon it, as farmers with inferior produce gain an advantage just because they have gained favor with the bridge keeper and can bring their vegetables across more cheaply. The city’s action doesn’t threaten markets; to the contrary it protects them and helps them operate for the maximum benefit of all.
+--------------------------------------------------------------------------------
+
+The moral of the story is that only when the public and private sector work together can a healthy marketplace for ideas and innovation emerge.
+
+4) At one point one of the guests says that taxes are not a big issue for entrepeneurs. Why not?
+
+Taxes are not a big issue for enetrepeneurs because stable economic conditions are more imporant than unstable, potentially profitable economic conditions. Put another way, stability and opportunity drive innovation, not cheap sources of labor and materials or large profit margins.
+
+5) Add any comments about what strikes you most about the discussion. Include any supporting material that you might be able to find on the web.
+
+I'm annoyed with the constant focus on entrepeneurs. As I've already alluded to, attention must be paid to both new entrants into the marketplace (entrepeneurs) and incumbents. Incumbents provide a stable platform for new ideas and technologies to grow, and entrepeneurs both displace old industries and create new markets. This cannot happen if we just assume that already-existing marketplaces warrant no attention.

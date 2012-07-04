@@ -1,0 +1,28 @@
+ul#horizontal_navbar {
+    padding: 0;
+    list-style-type: none;
+
+    background-color: #555; /* lighter-grey */
+    border: thin solid black;
+}
+
+ul#horizontal_navbar li {
+    display: inline;
+    padding-left: 0.5em;
+    padding-right: 1.5em;
+    /* allow elements to stack horizontally, like normal text */
+}
+
+ul#horizontal_navbar li a {
+    /* cannot have top or bottom margins on inline elements */
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: smaller;
+    white-space: nowrap
+}
+
+ul#horizontal_navbar li a#current_page {
+    color: #FFC67E; /* peach */
+}

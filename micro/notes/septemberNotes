@@ -1,0 +1,125 @@
+/*-----------------------------------------------------------------------------/
+Pertinent info
+/-----------------------------------------------------------------------------*/
+The registers and their functions are outlined on page 90 of the manual.
+The vector interrupt table is on page 42.
+
+/*-----------------------------------------------------------------------------/
+Types of Addressing
+/-----------------------------------------------------------------------------*/
+There are four types of addressing: Immediate, Direct/Extended, Indexed/Relative, and Inherent.
+
+Immediate
+Immediate addressing uses numbers, not addresses. #$45, or #%11001111.
+lda #3		; Example of immediate addressing.
+
+Direct
+Direct addressing uses memory locations. $45 or %11001111.
+lda 3		; Example of direct addressing.
+
+Indexed/Relative
+Indexed addressing uses memory locations that have been incremented.
+lda 3,x		; Uses contents of address specified by (x + 3).
+
+Inherent
+Inherent addressing refers to a memory location using a variable name.
+inc var1	; Inrement var1 by 1 bit.
+
+/*-----------------------------------------------------------------------------/
+Ports & Pins
+/-----------------------------------------------------------------------------*/
+PTA is a port. PTAd is a register. One port has eight pins. Each register can affect all of the pins on its port. A register has eight bits, and each bits corresponds to a pin on a port. The general form for referring to ports is PTx. PTxD, PTxDD, PTxPE, and PTxSE are all registers that control PTx (port x). If I set, for example, PTCPE = %00000001, then PorT C Pullup Enable pin 0. Pin 0 of Port C now has a default input value of 1.
+
+/*-----------------------------------------------------------------------------/
+Active high-low
+/-----------------------------------------------------------------------------*/
+If an output voltage (on a port) is high and an LED is on, then the port is active high. If an output voltage is low and the LED is on, then the port is active low. That's an example. In the more general sense, if you have a logical 1 and an action is happening, then you have an active high. If you have a logical 0 and an action is happening, then you have an active low.
+
+/*-----------------------------------------------------------------------------/
+Port registers
+/-----------------------------------------------------------------------------*/
+Each port on a chip has a register associated with it. Each bit in the register corresponds with a pin on the port. 
+PTAD	data
+PTADD	data direction (1 output, 0 input)
+PTAPE	pullup enable (1 pe, 0 no pe)
+PTASE	slew enable (slow down i/o...?)
+
+The input ports on our chips are active low. That is, by default a high voltage is sent to the switch pins. When a switch is depressed, a low voltage is sent to that pin.
+
+/*-----------------------------------------------------------------------------/
+Interrupts
+/-----------------------------------------------------------------------------*/
+There are two types of interrupts used in my chip. The first type of interrupt is the IRQ, and the second is the RTI. IRQ stands for Interrupt Request, and RTI stands for Real Time Interrupt.
+
+/*-------------------------------------/
+IRQ
+/-------------------------------------*/
+IRQs occur whenever a certain input or button is pressed. RTIs happen on a certain schedule (such as every 4, 8, 32, 64 ms, etc. IRQs are controlled by the IRQSC register. On the chip I am using, PTA:5 can function as the IRQ input pin. Useful bits:
+0: IRQ detection mode. 0 detects IRQs on a falling edge, 1 detects on falling edge and low.
+1: Turn on the IRQ function. 1 is IRQ on, 0 is IRQ off.
+2: IRQ acknowledge. Only 1 can be written to IRQACK (this bit). Writing 1 to this bit clears the I flag in the CCR.
+4: Make pin PTA:5 function as an IRQ input rather than a normal input.
+6: pullup enable. If an external interrupt source (such as a switch) is being used, then this bit should be 0. If an internal interrupt source is being used, the situation may be different. In that case, you'll also use at least one other bit in the IRQSC, so... don't mess with that internal stuff.
+
+IRQ Behaviour:
+mov	#%00010010,IRQSC
+
+IRQ Tag: (tags are the very last item in your code)
+org	$fffa
+dc.w	IRQ_SR
+
+IRQ Guts:
+IRQ_SR
+	bclr	2,PTBD
+	bset	2,PTBD
+	bset	2,IRQSC	; Write 1 to IRQACK, clear I flag in CCR
+	rti		; ReTurn from Interrupt, not Real Time Interrupt
+
+When an IRQ occurs, the I bit is set in the CCR so that no other interrupts can occur. The current instruction is finished, and the Program Counter is loaded with the address of the IRQ vector ($fffa). The CCR, A, X, and other CPU registers are placed on the stack.
+
+Then, the IRQ vector is read to determine where in memory the IRQ instructions are located. The IRQ is executed. The user manually clears the I bit from the CCR (allowing more IRQs to occur, if necessary. The RTI MUST be the next instruction executed after the IRQACK. Otherwise, a new IRQ can occur before releasing the resources on the stack that were claimed when the IRT started. Lastly, the RTI is executed. All of the registers are read back into the CPU from the stack.
+
+Perhaps most interesting are the org $fffa lines. The interrupt vector is filled with special commands that the user can define. For example, the IRQ and RTI commands are listed here. The user will fill each of these locations in the interrupt vector with a tag, or label, that specifies what code should be run when that special command is executed. For example, by stating:
+org	$fffa
+dc.w	IRQ_SR
+the memory location $fffa (the IRQ command in the interrupt vector) is filled with the tag IRQ_SR. Then, when an IRQ is executed the chip will go to the tag IRQ_SR and execute the code listed there. Similarly, $ffd0 is used to hold the tag of RTI interrupts. This table can be found on page 42 of the the manual I'm using.
+
+When an interrupt occurs, the CCR, A, X, and PC are pushed onto the stack. Note that H is NOT pushed onto the stack (manual p. 63). These registers total 6 bytes. Therefore, the stack pointer would decrement by 6.
+
+/*-------------------------------------/
+RTI
+/-------------------------------------*/
+RTIs occur on a regular schedule. If an RTI is already in progress when a new one is scheduled to occur, the new RTI is ignored. SRTISC is used to control RTIs. 
+0, 1, 2: Determines how often RTIs occur. 0, no RTI. 1, RTI every 8 ms. 2 to 7, RTI every 32 (64, 128...) ms.
+4: 1 to enable RTIs, 0 to disable RTIs. 
+5: choose internal or external clock source. 1 for external clock, 0 for internal clock. I did not solder an external oscillator to my board.
+6: RTIACK. Make sure to write 1 to this to clear CCR flag. Do this just before exiting RTI.
+
+RTI behaviour:
+	lda	SRTISC
+	ora	#%00010111	; enable RTI, set to every 1 s
+	and	#%11011111	; use internal clock source
+	sta	SRTISC
+	;mov only works for 8 bit address
+
+Place RTI tag into interrupt vector:
+org $ffd0
+dc.w	MY_RTI
+
+Guts of RTI:
+MY_RTI
+	; do something
+
+	lda	SRTISC
+	ora	#%01000000	; RTIACK
+	sta	SRTISC
+	rti
+
+/*-------------------------------------/
+cool bit of code
+/-------------------------------------*/
+	; your code here
+	bne	DO_NOT_JUMP
+	jsr	JUMP_TO_ROUTINE
+DO_NOT_JUMP
+	; continue

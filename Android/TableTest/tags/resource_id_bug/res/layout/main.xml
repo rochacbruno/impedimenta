@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+>
+    <!-- From:n To:n -->
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="From:"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:paddingRight="5dp"/>
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="0"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:id="@+id/fromNumber"/>
+
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="To:"
+        android:layout_weight="1"
+        android:gravity="right"
+        android:paddingRight="5dp"/>
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="0"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:id="@+id/toNumber"/>
+    </LinearLayout>
+
+    <!-- Base Squared Cubed -->
+    <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    >
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="Base"
+        android:layout_weight="1"
+        android:gravity="left"/>
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="Squared"
+        android:layout_weight="1"
+        android:gravity="left"/>
+        <TextView  
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content" 
+        android:text="Cubed"
+        android:layout_weight="1"
+        android:gravity="left"/>
+    </LinearLayout>
+
+    <!-- numbers -->
+    <TableLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="*"
+    android:id="@+id/numberBox"
+    >
+        <TableRow>
+            <TextView  
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:text="layout_span"
+            android:gravity="center"
+            android:layout_span="3"/>
+        </TableRow>
+    </TableLayout>
+</LinearLayout>
+

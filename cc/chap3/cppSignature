@@ -1,0 +1,5 @@
+A method signature is defined by three things: a return type, a name, and a set of parameters. Take the following function declaration:
+	void MyMethod(int param1, float param2);
+void is the return type
+name is MyMethod
+parameters are "int param1" and "int param2".

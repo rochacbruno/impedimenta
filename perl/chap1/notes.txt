@@ -1,0 +1,17 @@
+Perl scripts do not have to be written to a file before they are run. They can also be issued as a command, directly from the terminal. To do this, issue the "perl" command, followed by the -e switch. The -e switch tells perl that what follows should be interpreted as a line of perl code. For example, I might execute the following code: 
+
+perl -e 'print "Hello, world!\n";'
+
+Let's look at the syntax here. The statement "perl" tells bash to call the perl utility to interpret the rest of the command. The -e switch tells perl that whatever follows should be interpreted as a single line of perl code. The single quotes (') at the beginning and end of the rest of the statement enclose a single line of perl code. What is inside the single quotes is a comfortably familiar line of perl code. It is possible to run multiple lines of perl code from a single command, too. Just make sure to use appropriate pairs of the -e switch and single quotes. For example, 
+
+perl -e 'print "Hello, world!\n";' -e 'print "I said, \"Hello, world!\"\n";'
+
+In this case, there are two -e and ' pairs. Each -e and ' pair is a separate line of perl code.
+
+====================
+
+When writing perl code, here are two good tips:
+
+First, include the -w switch in your shebang statement. This enables warnings, and the interpreter will be more vocal about anything amiss it sees.
+
+Second, add the .pl extension to perl files. In unix/linux, the extension is not necessary; the shebang statement will let the OS know where to find the perl interpreter. However, in Windows and Mac OS, the .pl extension (NOT the shebang) tells the OS what program should run the file.

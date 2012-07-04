@@ -1,0 +1,20 @@
+	While arrays associate scalar data with an element number, hashes associate scalar data with a key. The key is simply a label, and is itself a scalar. The syntax is like this: $hash{'key'} = ('scalar');. Alternatively, %hash = ('key', 'value'). If an odd number of key-value pairs are made, a key is created, and the value is 'undef'. The comma can be replaced with an arrow like this: %has = (key => 'value');.
+
+	You can treat hashes and their data almost exactly like you can treat arrays. The only major is that you refer to hash data using key-value pairs instead of element-value pairs. For example, $hash{key} = (value); will simply add another pair to the array, just as if you had referenced a new element in an array. The only way to destructively modify a hash is adding data to the hash without specifying a particular key. For example, %hash = (pair); will destroy any pre-existing data in the hash.
+
+	A foreach() loop will print every value in a hash, including both keys and values. The delete(), undef(), exists(), defined(), and other functions will also work for hashes. For example: exists $biddies{Dustin};
+	A new function for hashes is the keys() function. It takes a hash, and generates a (list) of all the keys in a hash. It is great for working through the values in a hash. There is also the values() function, which generates a similar (list). For example:
+foreach $_ (keys %hash) {
+	print "$hash{$_}\n";
+}
+foreach $_ (values %hash) {
+	print "$_\n";
+}
+These two code blocks perform the exact same function.
+
+	You cannot control what order values are placed into the hash. You can, however, sort the mess afterwards. Sort of. You're really doing error handling, of a sort. Check this out:
+foreach $_ (sort (keys (%hash))) {
+	print "$hash{$_}\n";
+}
+
+	It is very easy to push data back and forth between hashes and arrays. Just set them equal to each other. Just remember that array elements and hash keys are stored slightly differently. For example, if there are three key-value pairs in %hash, then there will be six elements in @array after doing this: @array = %hash. It works both ways, too.

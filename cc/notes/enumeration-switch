@@ -1,0 +1,53 @@
+switch (ageOfFrog)
+{
+	case 0:
+		cout << "Still in the sac, I see.\n";
+		break;
+	case 1:
+	case 2:
+		cout << "Newts: the wave of the future!\n";
+		break;
+	case 3:
+		cout << "You can hop, but you can't hide. >:(\n";
+		break;
+	case 4:
+	case 5:
+		cout << "Beware the lawnmower.\n";
+		break;
+	case 6:
+	case 7:
+		cout << "Strongthroat\n";
+		break;
+	case 8:
+	case 9:
+		cout << "Greybeard\n";
+		break;
+	case 10:
+		cout << "Living on borrowed time.\n";
+		break;
+	default:
+		cout << "Zombie\n";
+}
+
+Leave out a break, and the next statement evaluates too.
+
+ENUMERATION:
+enum RestrictAnswer_t {		// answer_t is a new type, like double
+	YES=1, NO=0		// const int YES = 1; const int NO = 0;
+};
+RestrictAnswer_t userAnswer = YES;	// valid
+RestrictAnswer_t userAnswer = 1;	// invalid (1 not converted to YES, cannot assign 1 to type RestrictAnswer_t)
+RestrictAnswer_t userAnswer = MAYBE	// invalid (MAYBE undeclared)
+int userAnswer = YES			// valid (YES converted to 1, can assign 1 to type int)
+int userAnswer = 1;			// valid (1 is valid value for type int)
+int userAnswer = MAYBE;			// invalid (MAYBE undeclared)
+
+Remember, enumerated types will translate into ints. However, ints will not translate into enumerated types. They are different from const variables, because consts can only be read from.
+They are similar in this respect:
+myInt = NUMBER_OF_BATS;
+myInt = YES;
+They are dissimilar in this respect:
+NUMBER_OF_BATS = 20;	// invalid. value 20 is substituted for NUMBER_OF_BATS during compile time, cannot assign value to a value.
+YES = 1;	// invalid! int 1 cannot cast into an enum type.
+NUMBER_OF_BATS == 20;	// valid. Value 20 is substituted for const during compile time, and 20 == 20.
+YES == 1; 	// valud. Enumerated types may be cast as ints before comparisons.

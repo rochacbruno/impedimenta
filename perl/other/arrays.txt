@@ -1,0 +1,63 @@
+Hi! Here's some notes about perl.
+
+###ARRAYS###
+	An array is created the first time it is used. If you want that array to be local (to the sub it is created in), you must use the keywork my with the array, when it is created. You have plenty of flexibility in you you want to assign data to an array.
+
+	When you assign data to an array, you must do so using a list of some sort. Here's some ways the list can be created:
+1) Create a list directly. 
+	Ex: @array = ("Piano", "Harp", "Flute");
+2) Use a function to create the list. 
+	Ex: @array = qw(Piano Harp Flute); 
+	Ex: @array = split(/ /, "List with w#173spaces!");
+3) Use some other array (which will be interpreted as a list, arrays can only be populated by lists of data).
+	Ex: @array = @margheritas;
+4) Use a combination of the above.
+	Ex: @array = (qw(John DeFoe), @flavors);
+	Ex: @array = (qw(John DeFoe), @array);
+
+	Be careful. If you assign a list of any size to an array, you will overwrite the entire array. If you wish to add data to an array without destroying the array, you must either specify which element of the array you are adding data to, or use a function such as unshift(). If you are referencing a single item in an array, you must use the notation $arrayname[elementnum]. This is because there is a difference between working with lists of data in an array (@array = (list)) vs working with elements of an array ($array[element] = scalar).
+	When you add elements to an array, any undefined elements are initialized as 'undef'. undef is a special value that is either interpreted as a zero (0) or an empty string (""), depending on the context. Remember, the two types of scalar data are numbers and strings.
+	A slice of an array is considered a type of list. For example, if you are printing elements 2 and 5 of an array, you must use the @ array prefix. Example: print "@array1[0, 4]\n";.
+	If you assign an array to a scalar, you are really assigning the SIZE of the array to the scalar. If you assign the special variable $#array to a scalar, you are assigning the number of the last element of the array to the scalar. You can change the size of an array using $#array. Examples:
+1) Array to scalar.
+	@array = qw(Zero One Two);
+	$scalar = @array;
+	$scalar == '3';
+2) Special array to scalar.
+	@array = qw(Zero One Two);
+	$scalar = $#array;
+	$scalar == '2';
+3) Array element to scalar.
+	@array = qw(Zero One Two);
+	$scalar = $array[2];
+	$scalar == "Two";
+4) Array elements to scalars.
+	@array = qw(Zero One Two);
+	($scalar, $list) = @array;		# $array[2] is never assigned to a scalar.
+	($too, $long, $scalar, $list) = @array;	# $list == undef;
+5) Array size using $#.
+	@array = qw(Zero One Two);
+	$#array = 3;				#Array now has four elements instead of three.
+	$array[$#array] = "last"; 		# @array[3] == "last";
+
+	Here are some useful functions when dealing with arrays:
+1) push @array, (list); adds a list of elements to the end of an array.
+	Ex: push @recipies, "Green Bean Casserole";
+2) pop (list);
+	Pops an element off the end of a list. 
+3) unshift @names, (list); 
+	Adds a list of elements to the beginning of an array. The array can also be a list.
+4) shift (list);
+	Shifts an element off the beginning of a list.
+5) delete $array[element];
+6) undef $array[element];
+	Both remove the specified array element, without actually deleting that array element.
+7) reverse (list);
+	Reverses the order of elements in (list). List can be an array.
+8) sort {sortorder} (list);
+   sort (list);
+	List can either be a list or an array. If {sortorder} is included, the list elements are all treated as scalar numbers. This means that strings are interpreted as zeroes, and will likely be left in the same order they were in before being sorted. {$a <=> $b}, sorts list element low to high, while {$b <=> $a} sorts list elements high to low. If {sortorder} is omitted, the list is sorted according to the elements' ASCII values (numbers, upper case, lower case, etc).
+9) exists $array[element];
+	Returns a one is element exists, zero if it does not.
+10) defined $array[element];
+	Returns a one if element has data, zero if it does not.

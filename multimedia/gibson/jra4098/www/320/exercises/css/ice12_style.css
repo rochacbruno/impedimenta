@@ -1,0 +1,64 @@
+/*-======= BLOCK ELEMENTS ============-*/
+div#wrapper {
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#page_title {
+    border: thin solid black;
+    text-align: center;
+}
+
+div#left_column {
+    float:left;
+    width: 360px;
+    clear: both;
+    margin-left: 0;
+    margin-right: 15px;
+}
+
+div#right_column {
+    float:left;
+    width: 360px;
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+div#footer {
+    clear: both;
+    text-align: center;
+}
+
+div.centered_image {
+    width: 360px;
+}
+
+div.centered_image img {
+    display: block;
+    margin-left: auto; /* center div; equal margins on left and right */
+    margin-right: auto;
+}
+
+/*-======= INLINE ELEMENTS ===========-*/
+table {
+    border: 2px solid black;
+}
+
+th, td {
+    padding: 4px;
+    margin: 0px;
+}
+
+th, td.subheader {
+    font-weight: bold;
+    color: white;
+}
+
+th {
+    background-color: #2B2B2B; /* darker grey */
+}
+
+td.subheader {
+    background-color: #555; /* lighter grey */
+}

@@ -1,0 +1,52 @@
+/*-----------------------------------------------------------------------------/
+Terminology
+/-----------------------------------------------------------------------------*/
+A class is a type. Class = Type, int = Type, double = Type.
+
+Take the following example.
+class DayOfYear {
+	public:
+		void output(void);
+		int month;
+		int day;
+}
+
+DayOfYear is a type of class (a class type). DayOfYear's class definition is given above.
+
+The value of a DayOfYear variable is an object. The value of class variable (e.g. tomorrow.output(), tomorrow.month, and tomorrow.day) is an object. An object is the value of the members that make up a class variable.
+
+The scope resolution operator :: is used to link a class (or type) and a member function.
+Ship::foo();
+
+The dot . operator is used to link a class variable and a class member.
+myVariableOfTypeShip.decibels;
+
+/*-----------------------------------------------------------------------------/
+A case study
+/-----------------------------------------------------------------------------*/
+class DayOfYear {
+	public:
+		void output(void);
+		int month;
+		int day;
+}
+
+int main(void) {
+	DayOfYear birthday;
+
+	cout << "The month of your bday: " << birthday.month << endl;
+	birthday.output();	// DayOfYear::output() is able to access
+				// DayOfYear::month already.
+
+	return 0;
+}
+
+void DayOfYear::output(void) {
+	cout << "Your birthday is on the "
+	     << day
+	     << "th day of the "
+	     << month
+	     << "th month of each year. Congrats.\n";
+
+	return;
+}

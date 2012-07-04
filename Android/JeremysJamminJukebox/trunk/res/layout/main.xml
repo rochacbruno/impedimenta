@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout 
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent"
+android:gravity="bottom"
+>
+    <!-- these buttons never change -->
+    <TableLayout
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="0"
+    android:stretchColumns="*"
+    >
+        <TableRow>
+            <Button
+            android:id="@+id/controlsButton"
+            android:text="Controls"
+            android:gravity="center"
+            android:onClick="@string/controlsButtonHandler"/>
+            <Button
+            android:id="@+id/playlistButton"
+            android:text="Playlist"
+            android:gravity="center"
+            android:onClick="@string/playlistButtonHandler"/>
+            <Button
+            android:id="@+id/libraryButton"
+            android:text="Library"
+            android:gravity="center"
+            android:onClick="@string/libraryButtonHandler"/>
+        </TableRow>
+    </TableLayout>
+
+    <!-- this is the container for dynamic content -->
+    <LinearLayout
+    android:id="@+id/mainViewGroup"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="top"
+    android:layout_weight="1"
+    >
+    </LinearLayout>
+</LinearLayout>

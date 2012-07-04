@@ -1,0 +1,12 @@
+The three pillars of OOP!
+1) Encapsulation: public, private, API
+2) Inheritance
+3) Polymorphism
+
+To define how floating point output should look, use this block of code:
+cout.setf(ios::fixed);
+cout.setf(ios::showpoint);
+cout.precision(N)
+Repeat the last line to change the precision in the future
+cout.precision(N)
+

@@ -1,0 +1,36 @@
+PROBLEM 1:
+The strings "I Love Isograms" and "I Love Isograms" are the same.
+
+PROBLEM 2:
+The letter a was found in string1.
+The letter e was found in string1.
+The letter i was found in string1.
+The letter o was not found in string1.
+The letter u was not found in string1.
+The letter a was found in string2.
+The letter e was found in string2.
+The letter i was found in string2.
+The letter o was not found in string2.
+The letter u was found in string2.
+
+PROBLEM 3:
+Before editing, string1: "Help! I'm trapped in here. Can... can you help?"
+After editing, string1:  "HELP! I'M TRAPPED IN HERE. CAN... CAN YOU HELP?"
+
+PROBLEM 4:
+string1 before catting string2: String two
+string2 before catting string2: String one
+string1 after catting string2:  String twoString one
+string1 before catting 2 chars: String one
+string2 before catting 2 chars: String two
+string1 after catting 2 chars:  String oneSt
+The vowel a was found in string1
+The vowel e was found in string1
+The vowel i was found in string1
+The vowel o was not found in string1
+The vowel u was not found in string1
+The vowel a was found in string2
+The vowel e was found in string2
+The vowel i was found in string2
+The vowel o was not found in string2
+The vowel u was found in string2

@@ -1,0 +1,35 @@
+A class can have static member functions and member variables.
+
+class Server {
+	public:
+		Server(char letterName);
+		static int getTurn();
+		void serveOne();
+		static bool stillOpen();
+	private:
+		static int turn;
+		static int lastServed;
+		static bool nowOpen;
+		char name;
+};
+
+Static member variables should be initialized right after the class interface is defined. Because static variables exist outside of any one object, they cannot be initialized in a constructor for an object. Initializing static variables like this prevents them from being re-initialized in a constructor, etc.
+
+int Server::turn = 0;
+int Server::lastServed = 0;
+bool Server::nowOpen = true;
+
+Static member functions cannot work with any normal variables of a class; static member functions can only work with other static member functions and static variables.
+
+int Server::getTurn() {
+	turn++;
+	return turn;
+}
+
+Static member functions cannot be referred to as if they are part of an object. That is, they cannot use the dot operator (myObject.getTurn()). Rather, they must identify themselves as belonging directly to a class.
+
+int main(void) {
+	Server s1('A');
+
+	cout << Server::getTurn() << endl;
+}

@@ -1,0 +1,4 @@
+# python compiled source
+*.pyc
+# vim swap files
+*.swp

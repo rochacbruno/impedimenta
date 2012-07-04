@@ -1,0 +1,67 @@
+/*-----------------------------------------------------------------------------/
+Basics
+/-----------------------------------------------------------------------------*/
+Sample structure usage:
+
+[...]
+struct CDAccountV1 {
+	double interestRate;
+	double balance;
+	int monthsLeft;	// term
+};
+
+int main(void) {
+	CDAccountV1 someonesAccount;
+
+	someonesAccount.balance = 10000.0;
+	someonesAccount.interestRate = 3.14159;
+	someonesAccount.monthsLeft = 5;
+
+	return 0;
+}
+[...]
+
+CDAccountV1 is a structure tag
+interestRate is a member name
+someonesAccount is a structure variable
+someonesAccount.interestRate is a member variable
+
+/*-----------------------------------------------------------------------------/
+Syntax, variable declaration
+/-----------------------------------------------------------------------------*/
+You can declare variables at the same time that you declare a structure.
+
+struct CDAccountV1 {
+	double interestRate;
+	double balance;
+	int monthsLeft; // term
+} samepleAccount1, sampleAccount2;
+
+If the type CDAccountV1 is declared before main(), then sampleAccount1 and sampleAccount2 are global variables, of type struct.
+
+/*-----------------------------------------------------------------------------/
+Technical usage
+/-----------------------------------------------------------------------------*/
+The following statement is legal:
+sampleAccount1 = sampleAccount2;
+It is equivalent to this statement:
+sampleAccount1.interestRate = sampleAccount2.interestRate;
+sampleAccount1.balance = sampleAccount2.balance;
+sampleAccount1.monthsLeft = sampleAccount2.monthsLeft;
+
+Structures can contain member structures. In this case, structures must be declared in a very careful order.
+
+struct Birthday {
+	int year;
+	int month;
+	int day;
+};
+
+struct PersonalInfo {
+	string name;
+	string eyeColor;
+	Birthday birthday;
+}
+
+PersonalInfo.name = "Jeremy";
+PersonalInfo.birthday.year = 1991;

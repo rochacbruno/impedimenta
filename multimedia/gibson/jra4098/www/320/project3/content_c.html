@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>"Hello, world!" Repository</title>
+        <link rel="stylesheet" type="text/css" href="./css/master_layout.css" />
+        <style type="text/css">
+            /* styles go here */
+        </style>
+    </head>
+
+    <body>
+        <h1>"Hello, world!" Repository</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a id="current_section" href="../projects_index.html">Projects</a></li>
+            <li><a                      href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+
+        <div id="extras">
+            <h2>Repository Navigation</h2>
+            <ul>
+                <li><a                  href="./index.html">About the Repository</a></li>
+                <li><a                  href="./resources.html">Resources</a></li>
+            </ul>
+            <ul>
+                <li><a                  href="./content_android.html">Android</a></li>
+                <li><a class="selection" href="./content_c.html">C</a></li>
+                <li><a                  href="./content_c++.html">C++</a></li>
+                <li><a                  href="./content_java.html">Java</a></li>
+                <li><a                  href="./content_perl.html">Perl</a></li>
+            </ul>
+            <a id="logo_rollover" href="./index.html"></a>
+        </div>
+
+
+        <div id="main">
+            <h2>"Hello, world!" in C</h2>
+            <code class="code_block">
+/*-==========================================================================-*\
+Author(s):
+Jeremy Audet
+
+First Created: 10/24/2011
+License: Creative Commons BY-SA         http://creativecommons.org/licenses/by-sa/3.0/
+\*-==========================================================================-*/
+
+#include "stdio.h"
+
+int main(void) {
+    printf("Hello, world!\n");
+
+    return 0;
+}
+            </code>
+            <p>The <code>\n</code> character is an escape code that means "start a new line".</p>
+
+            <h2>Echo in C</h2>
+            <code class="code_block">
+/*-==========================================================================-*\
+Author(s):
+Jeremy Audet
+
+First Created: 10/25/2011
+License: Creative Commons BY-SA         http://creativecommons.org/licenses/by-sa/3.0/
+
+Thanks to:
+* Beej's Guide to C                     http://beej.us/guide/bgc/output/html/multipage/putc.html
+I had forgotten how easy it is to write out characters using putchar().
+
+\*-==========================================================================-*/
+
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(void) {
+    char input;                         // For buffering input.
+
+    printf("Enter input, and it will be immediately echoed back.\n"
+           "Press CTRL-D or CTRL-C to quit.\n");
+    while((input = getchar()) != EOF) {
+        putchar(input);
+    }
+    putchar('\n');
+
+    return 0;
+}
+            </code>
+            <p>C does not care about whitespace. This allows the <code>printf&#40;&#41;</code> statement to be split over two lines.</p>
+
+            <h2>Compiling &amp; Running C</h2>
+            <code class="code_block">
+$ gcc hello.c -o hello_world 
+$ ./hello_world 
+Hello, world!
+$
+            </code>
+            <p>By default, the gcc compiler will create a newly-created binary file <code>a.out</code>. You can name the newly-created files using the optional <code>-o</code> switch.</p>
+        </div>
+    </body>
+</html>

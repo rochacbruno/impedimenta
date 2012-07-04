@@ -1,0 +1,15 @@
+A note on pointers: the expression 'char * name[const]' creates... ??!?. Whaaat? Let me explain.
+The statement 'char *' says that a pointer of type char is going to be made. Similarly, the statement 'struct library *' is a pointer that refers to variables of type struct library. Note that the * floats -- it can be anywhere between the type and each variable being declared.
+An array and a pointer are very similar concepts. An array is a collection of addresses, where each address can store a variable of a certain type -- basically pointers. By default, the array name holds the address of its first element. This is why, when assigning a value to a normal variable using scanf(), the & operator must be used. When assigning a value to a normal variable, you are specifying that you want to assocate the value of an expression with the address of the variable.
+Similarly, a pointer holds an address as a value. An array holds an address as a value.
+So the statement 'char * name[const]' says
+	make a set of characters (therefore, an array, or a string)
+	call that set of characters name
+	the * says to make [const] sets of 'name' strings
+[const] is associated with the *. So make name strings/arrays of variable length, and * says to make an array of [const] of them.
+
+char * name[const]
+1) Make an array called name, with const members.
+2) Make that array of type char.
+3) Make a pointer to that array.
+4) SUMMARY: Make a pointer, and have that pointer hold the address of the first member of an array called name.

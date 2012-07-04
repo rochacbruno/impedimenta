@@ -1,0 +1,19 @@
+int *varName1
+varName1 is a pointer to a variable of type int.
+
+int *varName1, *varName2;
+varName1 and varName2 are pointers to a variables of type int.
+
+void myFunction(int* varName1, double* varName2);
+varName1 is a pointer to a variable of type int. varName2 is a pointer to a variable of type double. Both what is passed, and what is used in the the function, is a pointer to a variable of type int/double.
+
+void myFunction(int& varName1);	// equivalent to (int &varName1); ?
+varName1 is now equal to the address of the passed integer variable.
+
+varName1 = &someNormalVar;
+*varName1 = 3;
+varName1 = address of someNormalVar. someNormalVar = 3.
+
+Something important here. When you use a variable (either of pointer or some other type), you are by default doing some operation on the content of that variable. With pointers, however, you often want to go one step further: from acting on the pointer contents to acting on what the contents reference. Think of an object. The object variable name, in a sense, is merely a header; that's why you need to use the dot operator. Thus, when you have a pointer to that object, you'll need to do two dereferences; thus, (*p).contents and p->contents.
+
+//	CavernParameters *ptrCavern = cavern;	//ptrCavern == cavern, redundant

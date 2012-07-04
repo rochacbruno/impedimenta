@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" 
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+    <head>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+        <title>"Hello, world!" Repository</title>
+        <link rel="stylesheet" type="text/css" href="./css/master_layout.css" />
+        <style type="text/css">
+            /* styles go here */
+        </style>
+    </head>
+
+    <body>
+        <h1>"Hello, world!" Repository</h1>
+        <ul id="navbar">
+            <li><a                      href="../index.html">Homepage</a></li>
+            <li><a id="current_section" href="../projects_index.html">Projects</a></li>
+            <li><a                      href="../exercises_index.html">Exercises</a></li>
+            <li><a                      href="http://ist.rit.edu/~imm320/20111-70">IMM Class List</a></li>
+        </ul>
+
+
+        <div id="extras">
+            <h2>Repository Navigation</h2>
+            <ul>
+                <li><a                  href="./index.html">About the Repository</a></li>
+                <li><a class="selection" href="./resources.html">Resources</a></li>
+            </ul>
+            <ul>
+                <li><a                  href="./content_android.html">Android</a></li>
+                <li><a                  href="./content_c.html">C</a></li>
+                <li><a                  href="./content_c++.html">C++</a></li>
+                <li><a                  href="./content_java.html">Java</a></li>
+                <li><a                  href="./content_perl.html">Perl</a></li>
+            </ul>
+            <a id="logo_rollover" href="./index.html"></a>
+        </div>
+
+
+        <div id="main">
+            <h2>About</h2>
+            <p>The repository does not exist in a vacuum, and neither does the author. Here, you'll find resources that I have used (or have simply influenced me to a great degree) in the creation of this website.</p>
+
+            <h2>Resources</h2>
+            <ul>
+                <li>I had forgotten the most common ways of writing output to STDOUT. But for <a href="http://bit.ly/vYrB2y">Beej's Guide to C</a>, I would still be using printf()!</li>
+                <li><a href="http://bit.ly/ukiiwB">C++ Primer Plus, by Stephen Prata &#40;ISBN: 0131388207, 9780131388208&#41;</a> is the book that taught me C++. Exceptional quality writing.</li>
+                <li>The folks over at <a href="http://bit.ly/vZzJCA">PerlMonks</a> have a preternatural knowledge of Perl.</li>
+                <li>Special thanks so the <a href="http://source.android.com/">Android Open Source Project</a>. Their <a href="http://developer.android.com/guide/index.html">documentation</a> is truly amazing.</li>
+            </ul>
+
+            <h2>Similar Websites</h2>
+            <ul>
+                <li><a href="http://bit.ly/sNYzol">Hello World in Many Programming Languages</a></li>
+                <li><a href="http://bit.ly/uw1aYp">The Hello World Collection</a></li>
+                <li><a href="http://bit.ly/rWNhe7">Hello World in C, C++, and Java in Eclipse | Tyler Sherman</a></li>
+                <li><a href="http://bit.ly/vjD0el">SimplePrograms - PythonInfo Wiki</a></li>
+            </ul>
+
+            <h2>Project 3</h2>
+            <h3>Grading Notes</h3>
+            <ol>
+                <li>The graphics shown below are what I created for this project.</li>
+                <li>For rich media, I chose to embed a youtube video. It's found on <em>this very page</em>!</li>
+                <li>The secondary navigation system is the navigation column on the left hand side of every page.</li>
+                <li>The graphic/logo shown on each page uses a CSS image rollover effect.</li>
+                <li>No JavaScript is used in this web site.</li>
+            </ol>
+            <img src="./images/logo.png"        alt="logo with no decorations" />
+            <img src="./images/logo_jra.png"    alt="logo with initials" />
+            <img src="./images/logo_home.png"   alt="logo with the word 'home'" />
+            <p>I had a tough time figuring out how to create these graphics, and the video below helped me finish the project. Full disclosure: I used GIMP to create these graphics, not photoshop.</p>
+            <object type="application/x-shockwave-flash" style="width:450px; height:366px;" data="http://www.youtube.com/v/yQBa76NpiWM">
+                <param name="movie" value="http://www.youtube.com/v/yQBa76NpiWM" />
+            </object>
+
+            <h3>Project 3 Summary</h3>
+            <p>Here's what I think was done really well on this site:</p>
+            <ol>
+                <li>Content. Though I have previously worked with all the languages (and platforms) shown on this site, I have not kept up with them. In the process of creating this site, I had to go back and re-learn the basic syntax of several languages, and even learned a few tricks along the way. If you still doubt me, check out the Android page, or the comments in my Perl source code.</li>
+                <li>Design, both technical and aesthetic. Yes, I improved the look of the website (I'm no longer using an overly dark tone). But even more than that, I made sure the site was well-constructed. For example, inspect the navbar elements on the left side of the page. In project 2, the nav elements overflowed their container (due to extra border width), while in project 3 they don't (due to inset drop shadows). Tough! There are other small touches all around the site: code blocks add scroll bars when text starts overflowing, the dotted vertical line helps with readability, the logo/graphic will never interfere with main page content (even when the browser window is shrunk down), and pictures are clickable.</li>
+                <li>Incidental work. In the making of this site, I installed the Android platform and created a "Hello, world!" project from scratch. I installed Apache web server, and figured out how to create a (fairly) secure install. (Really: there are a <em>lot</em> of ways the default Apache install can abused) These projects are outside the scope of the class, but they required a <em>considerable</em> investment of time and effort.</li>
+            </ol>
+            <p>Here's what's not up to par:</p>
+            <ol>
+                <li>Mobile access. I briefly tried making my site mobile-accessible, and then discovered how fragmented support for the mobile landscape really is. I really should persist and figure out how to create a mobile version of the site, but did not.</li>
+                <li>Server side includes. Each page on the website has several common elements (e.g. navbars), and SSIs would make the site easier to maintain.</li>
+            </ol>
+        </div>
+    </body>
+</html>

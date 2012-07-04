@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:orientation="vertical"
+android:layout_width="fill_parent"
+android:layout_height="fill_parent">
+	<!-- First row, contains a mode (+, -, /, *) and number display -->
+	<LinearLayout android:orientation="vertical"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1">
+		<TextView android:id="@+id/TextViewMode"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:text=" "
+		android:gravity="right">
+		</TextView>
+		<TextView android:id="@+id/TextViewDecimal"
+		android:layout_width="fill_parent" 
+		android:layout_height="wrap_content" 
+		android:text="0" 
+		android:gravity="right">
+		</TextView>
+	</LinearLayout>
+	
+	<!-- Second row, contains clear and + buttons -->
+	<LinearLayout android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1">
+		<Button android:text="Clear" android:id="@+id/ButtonClear" android:layout_weight="3" android:onClick="@string/clearHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="+" android:id="@+id/ButtonPlus" android:layout_weight="1" android:onClick="@string/signHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+
+	<!-- Third row, contains 7, 8, 9, and - buttons -->
+	<LinearLayout android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1">
+		<Button android:text="7" android:id="@+id/ButtonSeven" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="8" android:id="@+id/ButtonEight" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="9" android:id="@+id/ButtonNine" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="-" android:id="@+id/ButtonMinus" android:layout_weight="1" android:onClick="@string/signHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+	
+	<!-- Fourth row, contains 4, 5,, 6, and * buttons -->
+	<LinearLayout android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1">
+		<Button android:text="4" android:id="@+id/ButtonFour" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="5" android:id="@+id/ButtonFive" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="6" android:id="@+id/ButtonSix" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="*" android:id="@+id/ButtonMultiply" android:layout_weight="1" android:onClick="@string/signHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+	
+	<!-- Fifth row, contains 1, 2, 3, and / buttons -->
+	<LinearLayout android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1">
+		<Button android:text="1" android:id="@+id/ButtonOne" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="2" android:id="@+id/ButtonTwo" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="3" android:id="@+id/ButtonThree" android:layout_weight="1" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="/" android:id="@+id/ButtonDivide" android:layout_weight="1" android:onClick="@string/signHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+	
+	<!-- Sixth row, contains 0, . and = buttons -->
+	<LinearLayout android:orientation="horizontal"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:layout_weight="1">
+		<Button android:text="0" android:id="@+id/ButtonZero" android:layout_weight="3" android:onClick="@string/digitHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="." android:id="@+id/ButtonDot" android:layout_weight="1" android:onClick="@string/dotHandler" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+		<Button android:text="=" android:id="@+id/ButtonEquals" android:onClick="@string/equalsHandler" android:layout_weight="1" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+	</LinearLayout>
+</LinearLayout>

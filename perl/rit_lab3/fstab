@@ -1,0 +1,10 @@
+# 
+# /etc/fstab: static file system information
+#
+# <file system>         <dir>           <type>  <options>       <dump>  <pass>
+tmpfs		            /tmp	        tmpfs	nodev,nosuid	0	    0 # testing
+
+
+/dev/sda1               swap            swap
+/dev/sda2               /               ext4    defaults        0      1#one#two
+/dev/sda3               /media/sync-part ext4   auto,nouser,rw,exec 0    12    3#45
