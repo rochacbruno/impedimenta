@@ -76,6 +76,10 @@ def get_serial_devices():
     '''
     proc_devices = ''
     real_devices = {}
+    uart_type_re   =  re.compile('uart:(\S+)')
+    device_num_re  =  re.compile('^(\d+)')
+    port_num_re    =  re.compile('port:(\S+)')
+    irq_num_re     =  re.compile('irq:(\S+)')
 
     # Read /proc/tty/driver/serial
     try:
@@ -90,18 +94,20 @@ def get_serial_devices():
         return real_devices
 
     for line in proc_devices.splitlines():
-        uart_type = re.compile('uart:(\S+)').search(line)
-        if(uart_type and uart_type.group(1) != 'unknown'):
+        # Line may contain spurious output. e.g. "serinfo:1.0 driver revision:"
+        match = uart_type_re.search(line)
+        if not match:
+            continue
+
+        uart_type = match.group(1)
+        if(uart_type != 'unknown'):
             # Found a real serial device!
-            device_num  = re.compile('^(\d+)').search(line).group(1)
-            device_path = '/dev/ttyS' + device_num
-            port_num    = re.compile('port:(\S+)').search(line).group(1)
-            irq_num     = re.compile('irq:(\S+)').search(line).group(1)
+            device_path = '/dev/ttyS' + device_num_re.search(line).group(1)
             real_devices[device_path] = {
                 'Path': device_path,
                 'UART': uart_type,
-                'Port': port_num,
-                'IRQ':  irq_num,
+                'Port': port_num_re.search(line).group(1),
+                'IRQ':  irq_num_re.search(line).group(1),
             }
 
     return real_devices
