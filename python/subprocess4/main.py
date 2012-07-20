@@ -118,6 +118,9 @@ def main():
     print('Serial devices have the following prefixes:\n{}'.format(
         get_serial_naming_scheme()
     ))
+    print('Serial devices can be found at the following paths:\n{}'.format(
+        get_serial_devices().keys()
+    ))
     print('The following serial device info was found:\n{}'.format(
         get_serial_devices()
     ))
