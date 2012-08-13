@@ -41,23 +41,32 @@ def get_serial_naming_scheme():
     return device_names
 
 def get_serial_devices():
-    '''Figure out the names of all real serial devices on this system.
+    '''Get info about all real serial devices on this system.
 
     Returns a dict of ``{device_path: settings_dict}`` key:value pairs where
-    settings_dict has the following keys:
+    ``settings_dict`` has the following keys:
         
-        #. Path
-        #. UART
-        #. Port
-        #. IRQ
+    #. Path
+    #. UART
+    #. Port
+    #. IRQ
+
+    For example::
+
+        {
+            '/dev/ttyS0': {
+                'UART': '16550A',
+                'Path': '/dev/ttyS0',
+                'Port': '000003F8',
+                'IRQ': '4'
+            }
+        }
 
     As recently as Ubuntu 11.04, the devices listed in /proc/tty/driver/serial
-    did not correspond to real, physical devices. The output of "setserial -g
-    /dev/*" was similarly fictitious. Instead, the output showed whatever
+    did not correspond to real, physical devices. The output of ``setserial -g
+    /dev/\*`` was similarly fictitious. Instead, the output showed whatever
     logical configuration the kernel had for things like IRQ addresses and line
-    speed.
-
-    Ubuntu 12.04 introduces the use of the serinfo driver. This driver
+    speed. Ubuntu 12.04 introduces the use of the serinfo driver. This driver
     automagically determines how many "real" serial devices are present. Here's
     an example from a system with one serial port::
 
@@ -67,11 +76,13 @@ def get_serial_devices():
         2: uart:unknown port:000003E8 irq:4
         3: uart:unknown port:000002E8 irq:3
 
-    Serial devices are conventionally prefixed /dev/ttyS. Serial devices may
-    also exist at /dev/ttyUSB, but logistix is not currently expected to test
-    usb-to-serial adapters. The number in the leftmost column above is appended
-    to the prefix, so the serial device in the example above is located at
-    /dev/ttyS0.
+    Serial devices are, by convention, found at /dev/ttyS. The number in the
+    left-most column above corresponds to the device number. So, in the example
+    above, the one serial port is found at /dev/ttyS0. Serial devices may exist
+    elsewhere, such as /dev/ttyUSB in the case of a usb-to-serial adapter.
+    However, this function will assume that all serial devices discovered are
+    located at /dev/ttyS. It is unknown whether this code will function well if
+    devices such as usb-to-serial adapters are plugged in.
 
     '''
     proc_devices = ''
