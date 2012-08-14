@@ -1,0 +1,145 @@
+################################################################################
+# This config file defines how logistix's autodetection feature should work.
+#
+# [test_name]
+# action = component_name
+# action = component_name
+#
+# test_name
+#     A plugin to be enabled or disabled by logistix. Don't touch these names!
+# component_name
+#     A part name. You can find these part names on build order sheets or by
+#     going to logicsupply.com/admin and viewing the details of an order.
+# action
+#     Either the keyword 'on' or 'off'. If the keyword is misspelled, the rule
+#     is ignored.
+#
+# Read the configs as follows:
+# If 'component_name' is in this system, turn 'test_name' 'action'.
+#
+# By default (e.g. if this file is empty), logistix will run a system test.
+#
+# Under the hood, each component_name is compared to part names fetched from the
+# logicsupply database. The part names in this file must match part names from
+# the database EXACTLY. Extra whitespace between words or a mis-capitalized
+# letter matter! Whitespace surrounding the = is ignored. Developers looking for
+# more client-side implementation details should check out a copy of the
+# logistix source code and grep for ConfigParser.
+################################################################################
+
+
+# Flash BIOS
+# Flashes classic BIOS mainboards (non UEFI) with updates and settings. Requires
+# a previusly captured BIOS image present on the server.
+[BiosFlashTask]
+
+
+# Run memtest86+
+# Dump out of Logistix into memtest86+ for memory testing. It's recommended to
+# run memtest for at least 3 passes or 6 hours.
+[Memtest86PlusTask]
+
+
+# Establish network connection
+# This ensures communication with the Logistix server remains active throughout
+# the test run. Necessary for status reporting, downloading image files, and
+# flashing the BIOS.
+[NetworkConnectivityTask]
+
+
+# Test network interfaces
+# This initializes and tests all physical ethernet ports in the system. If an
+# ethernet cable is unplugged, it will cause this test to fail.
+[NetworkTask]
+
+
+# Report MAC addresses
+# Send all the system's MAC addresses to the Logistix server.
+[MacAddressPlugin]
+
+
+# Test storage devices
+# Capable of testing hard drives, flash storage, and CD/DVD drives, including
+# removable media.
+[StorageTestTask]
+off = Mainboard Test: Onboard Processor
+
+
+# Set hardware clock
+# Synchronizes the BIOS' hardware clock with Network Time Protocol servers.
+[HardwareClockTask]
+
+
+# Report max CPU and HDD temperatures
+# Upload the highest reached CPU and HDD temperatures to the Logistix Server.
+[TemperatureReportingPlugin]
+
+
+# Wipe storage device
+# Erases a device's bootloader/partitions (fast) or the entire device (slow).
+[WipeStorageDeviceTask]
+
+
+# Wipe storage devices
+# Wipe the selected storage devices
+[WipeStorageDevicesTask]
+
+
+# Test LCD display
+# Tests the CrystalFontz LCD screen and asks for user verification of correct
+# functionality.
+[DemoLcdTask]
+
+
+# Write image
+# Install pfSense, m0n0wall, or a custom customer image to this machine's hard
+# drive or flash storage.
+[ImagingTask]
+
+
+# Install pfSense
+# Install pfSense to the firewall.
+[PFSenseImagingTaskPlugin]
+
+
+# Install m0n0wall
+# Install m0n0wall to the firewall.
+[M0n0wallImagingTaskPlugin]
+
+
+# Install Untangle
+# Install Untangle to the firewall.
+[UntangleImagingTaskPlugin]
+
+
+# Upload log file
+# Sends this test run's logfile to the Logistix server.
+[LogDataAcquisitionPlugin]
+
+
+# Initialize server communication
+# Register Built By, Order Number, and Serial Number information with the
+# Logistix server. Required for viewing test results on the web frontend.
+[BuildDataReportingTask]
+
+
+# Test bluetooth device
+# Checks to see if a bluetooth device is present in the system.
+[BluetoothTask]
+
+
+# Test audio device
+# Plays back noise through the speakers and then prompts for user confirmation.
+[PlaySoundTask]
+
+
+# Run CPU burn
+# Stress test all of the CPU cores for an hour (default).
+[BurnCpuTask]
+
+
+# Test serial ports
+# Tests the specified number of RS-232 COM ports.
+[TestSerialPortsTask]
+on = 4x COM Port Module (AD4COMCB)
+on = RS-232 COM port from 2.54mm pitch header cable (AT/Everex) [DB9-IDC10]
