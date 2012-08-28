@@ -4,7 +4,7 @@ exec scala "$0" "$@"
 
 object Main {
     def upperCase(words: Array[String]): Unit = {
-        for(i <- List.range(0, words.length)) {
+        for(i <- 0 to words.length - 1) {
             words(i) = words(i).toUpperCase()
         }
     }
