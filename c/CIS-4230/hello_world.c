@@ -1,22 +1,35 @@
 #include <stdio.h>
 #include <pthread.h>
 
-void * say_hello(void * arg) {
-    int * hello_id = (int *)arg;
+#define NUM_THREADS 10
 
-    printf("Hello, world! (hello_id %d)\n", *hello_id);
+/* Prints out "Hello, world!" and the argument passed in. Should be called from
+ * a thread. Argument should be a pointer to an integer.
+ */
+void * say_hello(void * arg) {
+    int hello_id = *(int *)arg; // dereference pointer to int
+
+    printf("Hello, world! (thread arg: %d)\n", hello_id);
 
     return NULL;
 }
 
+/* Creates NUM_THREADS threads, joins them, and prints their return vals. */
 int main(void) {
-    pthread_t thread_ID;
-    void * exit_status;
-    int pass_in = 42;
+    pthread_t thread_ID[NUM_THREADS];
+    int args[NUM_THREADS];
+    void * ret_vals[NUM_THREADS];
 
-    pthread_create(&thread_ID, NULL, say_hello, &pass_in);
-    printf("Hello, world! (main)\n");
-    pthread_join(thread_ID, &exit_status);
+    for(int i = 0; i < NUM_THREADS; i++) {
+        args[i] = i;
+        pthread_create(&thread_ID[i], NULL, say_hello, &args[i]);
+    }
+    for(int i = 0; i < NUM_THREADS; i++) {
+        pthread_join(thread_ID[i], &ret_vals[i]);
+    }
+    for(int i = 0; i < NUM_THREADS; i++) {
+        printf("Return value for thread %d: %d\n", i, ret_vals[i]);
+    }
 
     return 0;
 }
