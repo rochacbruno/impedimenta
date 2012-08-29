@@ -1,0 +1,61 @@
+1.  (3 pts) In what year was Scala's first public release? Hint: The answer is on
+    the Scala web site. Give a specific URL reference with your answer.
+
+Scala's first public release was in 2003. [1]_
+
+2.  (4 pts) What are the advantages and disadvantages of implementing a
+    programming language on top of a virtual machine such as the JVM (or similar)?
+
+advantages
+
+A.  Any improvements to the JVM are immediately made available to Scala.
+
+disadvantages
+
+A.  Scala rises and falls with Java. If Sun suddenly goes belly up, so too
+    would Scala.
+
+3.  (5 pts) Write a method that accepts an integer and returns true if that
+    integer is prime and false otherwise. The method should have the signature::
+
+       def isPrime(n: Int): Boolean
+
+    Write a program that uses this method to check if its first command line
+    argument is prime or not. An example run of the program might look like::
+
+        > scala PrimeCheck 17
+        The value 17 is prime.
+
+See q3.scala.
+
+4.  (8 pts) Write a method that accepts an array of strings and converts each
+    string in that array to uppercase. The method should return Unit (it should
+    modify the array it is given "in place"). Write a program that uses this
+    method to print its command line arguments in uppercase. This program
+    demonstrates some important points about immutability and references. Also
+    answer the following questions.
+
+    A.  Method parameters are vals and thus can not be modified. Yet you were
+        able to modify the array given to your function. Why?
+    B.  Strings in Scala (and Java) are immutable. What did you need to do in
+        order to work around this limitation in order to change them to
+        uppercase?
+
+See q4.scala.
+
+"Things" in scala can be immutable or mutable in two disctinct senses. First,
+the use of the ``val`` or ``var`` keyword determines whether a variable name may
+be used to point to a new object, or whether that variable must always point to
+the same object. Secondly, the object pointed to may be either mutable or
+immutable. Scala's ``Array`` is mutable. In contrast, Scala's ``List`` is
+immutable.  These two senses roughly correspond to the two ways in which C's
+``const`` keyword may be applied to a pointer (e.g. const int * const num =
+whatever).
+
+I was able to work around Scala's restrictions by passing in an
+``Array[String]``. I simply replaced the existing strings with upper-case
+variations of those same strings.
+
+----------
+
+.. [1] See the `scala website <http://www.scala-lang.org/node/239>`_.
