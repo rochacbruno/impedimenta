@@ -11,24 +11,15 @@ class CustomTask(tasks.Task):
             time.sleep(0.1)
         try:
             yield self.complete()
-        except tasks.NewInstructionError, err:
-            print("Task failed to complete: " + err.message)
+        except tasks.NewInstructionError as err:
+            print("Task failed to complete: {}".format(err.message))
             yield self.fail('method self.complete() does not exist')
 
 def main():
     """The one and only main function."""
-    my_task = CustomTask('the_task')
-    manager = tasks.ComplexTask(
-        'the manager',
-        [
-            CustomTask('first worker'),
-            CustomTask('second worker'),
-            CustomTask('third worker'),
-        ],
-    )
 
     print "Demonstrating how to use a simple task."
-    for task_changes in my_task.run():
+    for task_changes in CustomTask('my simple task').run():
         for task_change in task_changes:
             print "Task <{0}> parameter <{1}> changing: <{2}> -> <{3}>".format(
                 task_change.task,
@@ -37,7 +28,16 @@ def main():
                 task_change.value
             )
     print ""
+
     print "Demonstrating how to use a complex task."
+    manager = tasks.ComplexTask(
+        'my complex task',
+        [
+            CustomTask('first worker'),
+            CustomTask('second worker'),
+            CustomTask('third worker'),
+        ],
+    )
     for task_changes in manager.run():
         for task_change in task_changes:
             print "Task <{0}> parameter <{1}> changing: <{2}> -> <{3}>".format(

@@ -126,13 +126,13 @@ def get_serial_devices():
 def main():
     '''The intended entry point for this program.'''
 
-    print('Serial devices have the following prefixes:\n{}'.format(
+    print('Serial devices have the following prefixes: {}'.format(
         get_serial_naming_scheme()
     ))
-    print('Serial devices can be found at the following paths:\n{}'.format(
+    print('Serial devices can be found at the following paths: {}'.format(
         get_serial_devices().keys()
     ))
-    print('The following serial device info was found:\n{}'.format(
+    print('The following serial device info was found: {}'.format(
         get_serial_devices()
     ))
 
