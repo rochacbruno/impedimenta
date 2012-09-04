@@ -1,13 +1,27 @@
 package generics1;
 
+/**
+ * A singly-linked node which can store any arbitrary data type.
+ */
 public class GenericNode<T> {
-    private T node;
+    public T data;
+    public GenericNode next;
 
-    public GenericNode(T initT) {
-        node = initT;
+    /**
+     * Constructor. Sets <code>data</code> to <code>initData</code> and
+     * <code>next</code> to <code>null</code>.
+     */
+    public GenericNode(T initData) {
+        data = initData;
+        next = null;
     }
 
-    public String getNodeAsString() {
-        return node.toString();
+    /**
+     * Constructor. Sets <code>data</code> to <code>initData</code> and
+     * <code>next</code> to <code>initNext</code>.
+     */
+    public GenericNode(T initData, GenericNode initNext) {
+        data = initData;
+        next = initNext;
     }
 }
