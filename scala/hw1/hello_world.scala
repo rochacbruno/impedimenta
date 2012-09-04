@@ -6,11 +6,13 @@ exec scala "$0" "$@"
   * priority.
   */
 object Main {
-    println("Hello, world (inside the object, before the method)!")
+    println("Hello, world! (inside the object, before the method)")
     /** The intended entry point for this program. */
     def main(args: Array[String]) {
-        println("Hello, World (inside the method)!")
+        println("Hello, World! (inside the method)")
+        println("Arguments:")
+        args.foreach(arg => println(arg))
     }
-    println("Hello, world (inside the object, after the method)!")
+    println("Hello, world! (inside the object, after the method)")
 }
-// println("Hello, world (outside the object)!") // Try uncommenting this.
+// println("Hello, world! (outside the object)") // Try uncommenting this.
