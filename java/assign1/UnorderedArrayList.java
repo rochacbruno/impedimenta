@@ -59,12 +59,11 @@ public class UnorderedArrayList<T> implements UnorderedList<T> {
         if(this.isFull()) {
             throw new ListFullException();
         }
-        if (location > 0 && location < size()) {
-            for (int i = size(); i >= location; i--)
-                _list[i+1] = _list[i];
-            _list[location] = value;
-            _size++;
-        }
+
+        for(int i = size(); i > location; i--)
+            _list[i] = _list[i - 1];
+        _list[location] = value;
+        _size++;
     }
 
     /**
@@ -161,7 +160,7 @@ public class UnorderedArrayList<T> implements UnorderedList<T> {
      */
     public String toString() {
         String result = "[ ";
-        for (int i = 0; i < size(); i++)
+        for(int i = 0; i < size(); i++)
             result += _list[i] + " ";
         result += "]";
 

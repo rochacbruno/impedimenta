@@ -11,8 +11,8 @@ import org.junit.Test;
  */
 public class UnorderedArrayListTest {
     /**
-     * Create an UnorderedArrayList<Integer>. Add elements to end, then remove
-     * them from the end.
+     * Create an UnorderedArrayList<Integer>. Add elements to end using
+     * insertEnd(), and remove using remove().
      */
     @Test
     public void addTwoIntegers() {
@@ -24,14 +24,16 @@ public class UnorderedArrayListTest {
 
         // 1 element
         list.insertEnd(1);
+        assertTrue(1 == list.size());
         assertTrue(1 == list.get(0));
         assertTrue(1 == list.get(list.size() - 1));
-        assertTrue(1 == list.size());
+        assertEquals("[ 1 ]", list.toString());
 
         // 2 elements
         list.insertEnd(2);
         assertTrue(2 == list.size());
         assertTrue(1 == list.get(0));
+        assertTrue(1 == list.get(list.size() - 2));
         assertTrue(2 == list.get(1));
         assertTrue(2 == list.get(list.size() - 1));
         assertEquals("[ 1 2 ]", list.toString());
@@ -49,77 +51,71 @@ public class UnorderedArrayListTest {
         assertEquals("[ ]", list.toString());
     }
 
+    /**
+     * Create an UnorderedArrayList<Integer>. Add elements to end using
+     * insertAt(), and remove using remove().
+     */
     @Test
     public void addThreeIntegers() {
         UnorderedArrayList<Integer> list = new UnorderedArrayList<Integer>();
-        list.insertEnd(1);
-        int result = list.get(0);
-        assertTrue(result == 1);
-        result = list.get(list.size()-1);
-        assertTrue(result == 1);
-        int size = list.size();
-        assertTrue(size == 1);
 
-        list.insertEnd(2);
-        result = list.get(0);
-        assertTrue(result == 1);
-        result = list.get(list.size()-1);
-        assertTrue(result == 2);
-        size = list.size();
-        assertTrue("expected 2, received "+size,size == 2);
-        System.out.println("Printing list: expect list with two elements '1  2'");
-        System.out.println(list);
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
 
-        list.insertEnd(3);
-        result = list.get(0);
-        assertTrue(result == 1);
-        result = list.get(list.size()-1);
-        assertTrue(result == 3);
-        size = list.size();
-        assertTrue("expected 3, received "+size,size == 3);
-        System.out.println("Printing list: expect list with two elements '1  2  3'");
-        System.out.println(list);
+        list.insertAt(0, 1);
+        assertTrue(1 == list.size());
+        assertTrue(1 == list.get(0));
+        assertTrue(1 == list.get(list.size() - 1));
+        assertEquals("[ 1 ]", list.toString());
+
+        list.insertAt(1, 2);
+        assertTrue(2 == list.size());
+        assertTrue(1 == list.get(0));
+        assertTrue(1 == list.get(list.size() - 2));
+        assertTrue(2 == list.get(1));
+        assertTrue(2 == list.get(list.size() - 1));
+        assertEquals("[ 1 2 ]", list.toString());
+
+        list.insertAt(2, 3);
+        assertTrue(3 == list.size());
+        assertTrue(1 == list.get(0));
+        assertTrue(1 == list.get(list.size() - 3));
+        assertTrue(2 == list.get(1));
+        assertTrue(2 == list.get(list.size() - 2));
+        assertTrue(3 == list.get(2));
+        assertTrue(3 == list.get(list.size() - 1));
+        assertEquals("[ 1 2 3 ]", list.toString());
 
         list.remove(1);
-        size = list.size();
-        assertTrue(size == 2);
-        result = list.get(0);
-        assertTrue(result == 2);
-        result = list.get(list.size()-1);
-        assertTrue(result == 3);
-
-        System.out.println("Printing list: expect list with 2 element '2  3'");
-        System.out.println(list);
+        assertTrue(2 == list.size());
+        assertTrue(2 == list.get(0));
+        assertTrue(2 == list.get(list.size() - 2));
+        assertTrue(3 == list.get(1));
+        assertTrue(3 == list.get(list.size() - 1));
+        assertEquals("[ 2 3 ]", list.toString());
 
         list.remove(2);
-        size = list.size();
-        assertTrue(size == 1);
-        result = list.get(0);
-        assertTrue("expected 3, received "+result, result == 3);
-        result = list.get(list.size()-1);
-        assertTrue(result == 3);
-
-        System.out.println("Printing list: expect list with 1 element '3'");
-        System.out.println(list);
+        assertTrue(1 == list.size());
+        assertTrue(3 == list.get(0));
+        assertTrue(3 == list.get(list.size() - 1));
+        assertEquals("[ 3 ]", list.toString());
 
         list.remove(3);
-        size = list.size();
-        assertTrue(size == 0);
-
-        System.out.println("Printing list: expect list with 0 elements");
-        System.out.println(list);
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
     }
 
     @Test 
     public void testEmptyList() {
         UnorderedArrayList<Integer> emptyList = new UnorderedArrayList<Integer>();
-        boolean result = emptyList.remove(1);
-        assertTrue(result == false);
+
+        assertTrue(false == emptyList.remove(1));
     }
 
     @Test (expected=IndexOutOfBoundsException.class)
     public void testEmptyListGet() {
         UnorderedArrayList<Integer> emptyList = new UnorderedArrayList<Integer>();
-        emptyList.get(emptyList.size()-1);
+
+        emptyList.get(emptyList.size() - 1);
     }
 }
