@@ -1,5 +1,5 @@
 // Run junit tests from the command line with the following:
-// javac -cp .:/usr/share/java/junit.jar assign1/UnorderedArrayListTest.java
+// javac -cp .:/usr/share/java/junit.jar assign1/*.java
 // java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore assign1.UnorderedArrayListTest
 package assign1;
 import static org.junit.Assert.*;
@@ -62,15 +62,18 @@ public class UnorderedArrayListTest {
     public void addThreeIntegers() {
         UnorderedArrayList<Integer> list = new UnorderedArrayList<Integer>();
 
+        // 0 elements
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
 
+        // 1 elements
         list.insertAt(0, 1);
         assertTrue(1 == list.size());
         assertTrue(1 == list.get(0));
         assertTrue(1 == list.get(list.size() - 1));
         assertEquals("[ 1 ]", list.toString());
 
+        // 2 elements
         list.insertAt(1, 2);
         assertTrue(2 == list.size());
         assertTrue(1 == list.get(0));
@@ -79,6 +82,7 @@ public class UnorderedArrayListTest {
         assertTrue(2 == list.get(list.size() - 1));
         assertEquals("[ 1 2 ]", list.toString());
 
+        // 3 elements
         list.insertAt(2, 3);
         assertTrue(3 == list.size());
         assertTrue(1 == list.get(0));
@@ -89,6 +93,7 @@ public class UnorderedArrayListTest {
         assertTrue(3 == list.get(list.size() - 1));
         assertEquals("[ 1 2 3 ]", list.toString());
 
+        // 2 elements
         list.remove(1);
         assertTrue(2 == list.size());
         assertTrue(2 == list.get(0));
@@ -97,12 +102,14 @@ public class UnorderedArrayListTest {
         assertTrue(3 == list.get(list.size() - 1));
         assertEquals("[ 2 3 ]", list.toString());
 
+        // 1 elements
         list.remove(2);
         assertTrue(1 == list.size());
         assertTrue(3 == list.get(0));
         assertTrue(3 == list.get(list.size() - 1));
         assertEquals("[ 3 ]", list.toString());
 
+        // 0 elements
         list.remove(3);
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
@@ -157,15 +164,18 @@ public class UnorderedArrayListTest {
     public void addThreeStrings() {
         UnorderedArrayList<String> list = new UnorderedArrayList<String>();
 
+        // 0 elements
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
 
+        // 1 element
         list.insertAt(0, "one");
         assertTrue(1 == list.size());
         assertTrue("one" == list.get(0));
         assertTrue("one" == list.get(list.size() - 1));
         assertEquals("[ one ]", list.toString());
 
+        // 2 elements
         list.insertAt(1, "two");
         assertTrue(2 == list.size());
         assertTrue("one" == list.get(0));
@@ -174,6 +184,7 @@ public class UnorderedArrayListTest {
         assertTrue("two" == list.get(list.size() - 1));
         assertEquals("[ one two ]", list.toString());
 
+        // 3 elements
         list.insertAt(2, "three");
         assertTrue(3 == list.size());
         assertTrue("one" == list.get(0));
@@ -184,6 +195,7 @@ public class UnorderedArrayListTest {
         assertTrue("three" == list.get(list.size() - 1));
         assertEquals("[ one two three ]", list.toString());
 
+        // 2 elements
         list.remove("one");
         assertTrue(2 == list.size());
         assertTrue("two" == list.get(0));
@@ -192,15 +204,48 @@ public class UnorderedArrayListTest {
         assertTrue("three" == list.get(list.size() - 1));
         assertEquals("[ two three ]", list.toString());
 
+        // 1 elment
         list.remove("two");
         assertTrue(1 == list.size());
         assertTrue("three" == list.get(0));
         assertTrue("three" == list.get(list.size() - 1));
         assertEquals("[ three ]", list.toString());
 
+        // 0 elements
         list.remove("three");
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
+    }
+
+    @Test
+    public void addTwoPersons() {
+        UnorderedArrayList<Person> list = new UnorderedArrayList<Person>();
+
+        // 0 elements
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
+
+        // 1 element
+        list.insertEnd(new Person());
+        assertTrue(1 == list.size());
+//        assertTrue(new Person() == list.get(0));
+        assertEquals("[ (\"\", 0) ]", list.toString());
+
+        // 0 elements
+        list.remove(new Person());
+//        assertTrue(0 == list.size());
+//        assertEquals("[ ]", list.toString());
+    }
+
+    @Test
+    public void testBadAgeException1() {
+        Person myPerson = new Person("foo", 5);
+        assertEquals("(\"foo\", 5)", myPerson.toString());
+    }
+
+    @Test (expected = BadAgeException.class)
+    public void testBadAgeException2() {
+        new Person("foo", -5);
     }
 
     @Test 
@@ -210,7 +255,7 @@ public class UnorderedArrayListTest {
         assertTrue(false == emptyList.remove(1));
     }
 
-    @Test (expected=IndexOutOfBoundsException.class)
+    @Test (expected = IndexOutOfBoundsException.class)
     public void testEmptyListGet() {
         UnorderedArrayList<Integer> emptyList = new UnorderedArrayList<Integer>();
 
