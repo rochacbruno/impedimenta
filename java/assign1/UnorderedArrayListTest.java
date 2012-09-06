@@ -243,7 +243,7 @@ public class UnorderedArrayListTest {
         assertEquals("(\"foo\", 5)", myPerson.toString());
     }
 
-    @Test (expected = BadAgeException.class)
+    @Test (expected = PersonAgeException.class)
     public void testBadAgeException2() {
         new Person("foo", -5);
     }
