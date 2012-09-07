@@ -1,4 +1,5 @@
 package assign1;
+// import org.apache.commons.lang3.builder.EqualsBuilder; // FIXME
 
 /**
  * A very simple custom class, used to test <code>UnorderedArrayList</code>.
@@ -62,5 +63,27 @@ public class Person {
      */
     public String toString() {
         return "(\"" + name + "\", " + age + ")";
+    }
+
+    // FIXME
+    // should override equals() and hashCode()
+    //@Override
+    public boolean contentsEqual(Object other) {
+        if(other == this)
+            return true;
+        if(other == null)
+            return false;
+        if(other.getClass() != this.getClass())
+            return false;
+
+        Person otherPerson = (Person)other;
+        return (age == otherPerson.age) && (name == otherPerson.name);
+        /*
+        return new EqualsBuilder()
+            //.appendSuper(super.equals(other)) // only if this is subclass
+            .append(age, otherPerson.age)
+            .append(name, otherPerson.name)
+            .isEquals();
+        */
     }
 }

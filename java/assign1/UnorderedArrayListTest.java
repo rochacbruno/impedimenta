@@ -218,23 +218,44 @@ public class UnorderedArrayListTest {
     }
 
     @Test
-    public void addTwoPersons() {
+    public void addThreePersons() {
         UnorderedArrayList<Person> list = new UnorderedArrayList<Person>();
+
+        Person personOne = new Person();
+        Person personTwo = new Person("Alice");
+        Person personThree = new Person("Bob", 42);
 
         // 0 elements
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
 
         // 1 element
-        list.insertEnd(new Person());
+        list.insertEnd(personOne);
         assertTrue(1 == list.size());
-//        assertTrue(new Person() == list.get(0));
+        assertTrue(new Person().contentsEqual(list.get(0)));
         assertEquals("[ (\"\", 0) ]", list.toString());
 
+        // 2 elements
+        list.insertEnd(personTwo);
+        assertTrue(2 == list.size());
+        assertTrue(new Person().contentsEqual(list.get(0)));
+        assertTrue(new Person("Alice").contentsEqual(list.get(1)));
+        assertEquals("[ (\"\", 0) (\"Alice\", 0) ]", list.toString());
+
+        // 3 elements
+        list.insertEnd(personThree);
+        assertTrue(3 == list.size());
+        assertTrue(new Person().contentsEqual(list.get(0)));
+        assertTrue(new Person("Alice").contentsEqual(list.get(1)));
+        assertTrue(new Person("Bob", 42).contentsEqual(list.get(2)));
+        assertEquals("[ (\"\", 0) (\"Alice\", 0) (\"Bob\", 42) ]", list.toString());
+
         // 0 elements
-        list.remove(new Person());
-//        assertTrue(0 == list.size());
-//        assertEquals("[ ]", list.toString());
+        list.remove(personOne);
+        list.remove(personTwo);
+        list.remove(personThree);
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
     }
 
     @Test
