@@ -4,3 +4,5 @@
 *.swp
 # java compiled files
 *.class
+# C and C++ executables
+a.out

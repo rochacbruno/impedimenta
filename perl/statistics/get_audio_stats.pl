@@ -14,8 +14,7 @@ use warnings;
 ########################################
 #   Summary
 # Recursively scans the given directory for audio files. Extracts the length,
-# size, and encoding of each audio file, then prints said info out. First line
-# printed is header info, and should be discarded when parsing afterwards.
+# size, and encoding of each audio file, then prints said info out.
 ########################################
 
 unless(1 == scalar(@ARGV)) {
@@ -24,9 +23,6 @@ unless(1 == scalar(@ARGV)) {
 }
 
 my $music_lib = shift(@ARGV);
-
-# Start by printing a legend explaining the following data.
-# print "length_(seconds) size_(bits) encoding\n";
 
 # Then get and print info about one file at a time.
 open(PIPE_IN_FIND, "find -H \"$music_lib\" -type f |") or die("Cannot open pipe: $!\n");
