@@ -1,6 +1,6 @@
 // Run junit tests from the command line with the following:
-// javac -cp .:/usr/share/java/junit.jar assign1/*.java
-// java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore assign1.UnorderedArrayListTest
+// javac -cp .:/usr/share/java/junit.jar:commons-lang3-3.1.jar assign1/*.java
+// java -cp .:commons-lang3-3.1.jar:/usr/share/java/junit.jar org.junit.runner.JUnitCore assign1.UnorderedArrayListTest
 package assign1;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -217,6 +217,8 @@ public class UnorderedArrayListTest {
         assertEquals("[ ]", list.toString());
     }
 
+    // TODO: flesh out tests
+    // TODO: test hashCode
     @Test
     public void addThreePersons() {
         UnorderedArrayList<Person> list = new UnorderedArrayList<Person>();
@@ -232,22 +234,22 @@ public class UnorderedArrayListTest {
         // 1 element
         list.insertEnd(personOne);
         assertTrue(1 == list.size());
-        assertTrue(new Person().contentsEqual(list.get(0)));
+        assertTrue(new Person().equals(list.get(0)));
         assertEquals("[ (\"\", 0) ]", list.toString());
 
         // 2 elements
         list.insertEnd(personTwo);
         assertTrue(2 == list.size());
-        assertTrue(new Person().contentsEqual(list.get(0)));
-        assertTrue(new Person("Alice").contentsEqual(list.get(1)));
+        assertTrue(new Person().equals(list.get(0)));
+        assertTrue(new Person("Alice").equals(list.get(1)));
         assertEquals("[ (\"\", 0) (\"Alice\", 0) ]", list.toString());
 
         // 3 elements
         list.insertEnd(personThree);
         assertTrue(3 == list.size());
-        assertTrue(new Person().contentsEqual(list.get(0)));
-        assertTrue(new Person("Alice").contentsEqual(list.get(1)));
-        assertTrue(new Person("Bob", 42).contentsEqual(list.get(2)));
+        assertTrue(new Person().equals(list.get(0)));
+        assertTrue(new Person("Alice").equals(list.get(1)));
+        assertTrue(new Person("Bob", 42).equals(list.get(2)));
         assertEquals("[ (\"\", 0) (\"Alice\", 0) (\"Bob\", 42) ]", list.toString());
 
         // 0 elements
