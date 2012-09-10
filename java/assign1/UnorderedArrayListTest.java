@@ -1,6 +1,3 @@
-// Run junit tests from the command line with the following:
-// javac -cp .:/usr/share/java/junit.jar:commons-lang3-3.1.jar assign1/*.java
-// java -cp .:commons-lang3-3.1.jar:/usr/share/java/junit.jar org.junit.runner.JUnitCore assign1.UnorderedArrayListTest
 package assign1;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -9,253 +6,191 @@ import org.junit.Test;
  * Unit tests for UnorderedArrayList
  *
  * @author ldamon
- * @author Jeremy Audet <ichimonji10@gmail.com>
+ * @author Jeremy Audet &lt;ichimonji10@gmail.com&gt;
  */
 public class UnorderedArrayListTest {
 
     /**
-     * Create an UnorderedArrayList<Integer>. Add elements to end using
-     * insertEnd(), and remove using remove().
+     * Create and test an UnorderedArrayList&lt;Integer&gt;.
      */
     @Test
-    public void addTwoIntegers() {
+    public void addRemoveInteger() {
+        // 0 elements. Test constructor
         UnorderedArrayList<Integer> list = new UnorderedArrayList<Integer>();
-
-        // 0 elements
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
 
-        // 1 element
-        list.insertEnd(1);
-        assertTrue(1 == list.size());
-        assertTrue(1 == list.get(0));
-        assertTrue(1 == list.get(list.size() - 1));
-        assertEquals("[ 1 ]", list.toString());
-
-        // 2 elements
-        list.insertEnd(2);
-        assertTrue(2 == list.size());
-        assertTrue(1 == list.get(0));
-        assertTrue(1 == list.get(list.size() - 2));
-        assertTrue(2 == list.get(1));
-        assertTrue(2 == list.get(list.size() - 1));
-        assertEquals("[ 1 2 ]", list.toString());
-
-        // 1 element
-        list.remove(2);
-        assertTrue(1 == list.size());
-        assertTrue(1 == list.get(0));
-        assertTrue(1 == list.get(list.size() - 1));
-        assertEquals("[ 1 ]", list.toString());
-
-        // 0 elements
-        list.remove(1);
-        assertTrue(0 == list.size());
-        assertEquals("[ ]", list.toString());
-    }
-
-    /**
-     * Create an UnorderedArrayList<Integer>. Add elements to end using
-     * insertAt(), and remove using remove().
-     */
-    @Test
-    public void addThreeIntegers() {
-        UnorderedArrayList<Integer> list = new UnorderedArrayList<Integer>();
-
-        // 0 elements
-        assertTrue(0 == list.size());
-        assertEquals("[ ]", list.toString());
-
-        // 1 elements
-        list.insertAt(0, 1);
-        assertTrue(1 == list.size());
-        assertTrue(1 == list.get(0));
-        assertTrue(1 == list.get(list.size() - 1));
-        assertEquals("[ 1 ]", list.toString());
-
-        // 2 elements
-        list.insertAt(1, 2);
-        assertTrue(2 == list.size());
-        assertTrue(1 == list.get(0));
-        assertTrue(1 == list.get(list.size() - 2));
-        assertTrue(2 == list.get(1));
-        assertTrue(2 == list.get(list.size() - 1));
-        assertEquals("[ 1 2 ]", list.toString());
-
-        // 3 elements
-        list.insertAt(2, 3);
+        // 3 elements. Test insertEnd()
+        for(int i = 0; i < 3; i++)
+            list.insertEnd(i);
         assertTrue(3 == list.size());
-        assertTrue(1 == list.get(0));
-        assertTrue(1 == list.get(list.size() - 3));
-        assertTrue(2 == list.get(1));
-        assertTrue(2 == list.get(list.size() - 2));
-        assertTrue(3 == list.get(2));
-        assertTrue(3 == list.get(list.size() - 1));
-        assertEquals("[ 1 2 3 ]", list.toString());
+        assertTrue(0 == list.get(0));
+        assertTrue(1 == list.get(1));
+        assertTrue(2 == list.get(2));
+        assertTrue(0 == list.get(list.size() - 3));
+        assertTrue(1 == list.get(list.size() - 2));
+        assertTrue(2 == list.get(list.size() - 1));
+        assertEquals("[ 0 1 2 ]", list.toString());
 
-        // 2 elements
-        list.remove(1);
-        assertTrue(2 == list.size());
-        assertTrue(2 == list.get(0));
-        assertTrue(2 == list.get(list.size() - 2));
-        assertTrue(3 == list.get(1));
-        assertTrue(3 == list.get(list.size() - 1));
-        assertEquals("[ 2 3 ]", list.toString());
+        // 0 elements. Test clear()
+        list.clear();
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
 
-        // 1 elements
+        // 3 elements. Test insertAt()
+        for(int i = 0; i < 3; i++)
+            list.insertAt(i, i);
+        assertTrue(3 == list.size());
+        assertTrue(0 == list.get(0));
+        assertTrue(1 == list.get(1));
+        assertTrue(2 == list.get(2));
+        assertTrue(0 == list.get(list.size() - 3));
+        assertTrue(1 == list.get(list.size() - 2));
+        assertTrue(2 == list.get(list.size() - 1));
+        assertEquals("[ 0 1 2 ]", list.toString());
+
+        // 2 elements. Test remove()
         list.remove(2);
+        assertTrue(2 == list.size());
+        assertTrue(0 == list.get(0));
+        assertTrue(1 == list.get(1));
+        assertTrue(0 == list.get(list.size() - 2));
+        assertTrue(1 == list.get(list.size() - 1));
+        assertEquals("[ 0 1 ]", list.toString());
+        // 1 element. Test remove()
+        list.remove(0);
         assertTrue(1 == list.size());
-        assertTrue(3 == list.get(0));
-        assertTrue(3 == list.get(list.size() - 1));
-        assertEquals("[ 3 ]", list.toString());
-
-        // 0 elements
-        list.remove(3);
+        assertTrue(1 == list.get(0));
+        assertTrue(1 == list.get(list.size() - 1));
+        assertEquals("[ 1 ]", list.toString());
+        // 0 elements. Test remove()
+        list.remove(1);
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
     }
 
     /**
-     * Create an UnorderedArrayList<String>. Add elements to end using
-     * insertEnd(), and remove using remove().
+     * Create and test an UnorderedArrayList&lt;String&gt;.
      */
     @Test
-    public void addTwoStrings() {
+    public void addRemoveString() {
+        // 0 elements. Test constructor
         UnorderedArrayList<String> list = new UnorderedArrayList<String>();
-
-        // 0 elements
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
 
-        // 1 element
+        // 3 elements. Test insertEnd()
+        list.insertEnd("zero");
         list.insertEnd("one");
-        assertTrue(1 == list.size());
-        assertTrue("one" == list.get(0));
-        assertTrue("one" == list.get(list.size() - 1));
-        assertEquals("[ one ]", list.toString());
-
-        // 2 elements
         list.insertEnd("two");
-        assertTrue(2 == list.size());
-        assertTrue("one" == list.get(0));
-        assertTrue("one" == list.get(list.size() - 2));
-        assertTrue("two" == list.get(1));
-        assertTrue("two" == list.get(list.size() - 1));
-        assertEquals("[ one two ]", list.toString());
+        assertTrue(3 == list.size());
+        assertTrue("zero" == list.get(0));
+        assertTrue("one"  == list.get(1));
+        assertTrue("two"  == list.get(2));
+        assertTrue("zero" == list.get(list.size() - 3));
+        assertTrue("one"  == list.get(list.size() - 2));
+        assertTrue("two"  == list.get(list.size() - 1));
+        assertEquals("[ zero one two ]", list.toString());
 
-        // 1 element
+        // 0 elements. Test clear()
+        list.clear();
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
+
+        // 3 elements. Test insertAt()
+        list.insertAt(0, "zero");
+        list.insertAt(1, "one");
+        list.insertAt(2, "two");
+        assertTrue(3 == list.size());
+        assertTrue("zero" == list.get(0));
+        assertTrue("one"  == list.get(1));
+        assertTrue("two"  == list.get(2));
+        assertTrue("zero" == list.get(list.size() - 3));
+        assertTrue("one"  == list.get(list.size() - 2));
+        assertTrue("two"  == list.get(list.size() - 1));
+        assertEquals("[ zero one two ]", list.toString());
+
+        // 2 elements. Test remove()
         list.remove("two");
+        assertTrue(2 == list.size());
+        assertTrue("zero" == list.get(0));
+        assertTrue("one"  == list.get(1));
+        assertTrue("zero" == list.get(list.size() - 2));
+        assertTrue("one"  == list.get(list.size() - 1));
+        assertEquals("[ zero one ]", list.toString());
+        // 1 element. Test remove()
+        list.remove("zero");
         assertTrue(1 == list.size());
         assertTrue("one" == list.get(0));
         assertTrue("one" == list.get(list.size() - 1));
         assertEquals("[ one ]", list.toString());
-
-        // 0 elements
+        // 0 elements. Test remove()
         list.remove("one");
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
     }
 
     /**
-     * Create an UnorderedArrayList<String>. Add elements to end using
-     * insertAt(), and remove using remove().
+     * Create and test an UnorderedArrayList&lt;Person&gt;.
      */
     @Test
-    public void addThreeStrings() {
-        UnorderedArrayList<String> list = new UnorderedArrayList<String>();
+    public void addRemovePerson() {
+        Person alice = new Person();
+        Person bob = new Person("Bob");
+        Person carl = new Person("Carl", 42);
 
-        // 0 elements
-        assertTrue(0 == list.size());
-        assertEquals("[ ]", list.toString());
-
-        // 1 element
-        list.insertAt(0, "one");
-        assertTrue(1 == list.size());
-        assertTrue("one" == list.get(0));
-        assertTrue("one" == list.get(list.size() - 1));
-        assertEquals("[ one ]", list.toString());
-
-        // 2 elements
-        list.insertAt(1, "two");
-        assertTrue(2 == list.size());
-        assertTrue("one" == list.get(0));
-        assertTrue("one" == list.get(list.size() - 2));
-        assertTrue("two" == list.get(1));
-        assertTrue("two" == list.get(list.size() - 1));
-        assertEquals("[ one two ]", list.toString());
-
-        // 3 elements
-        list.insertAt(2, "three");
-        assertTrue(3 == list.size());
-        assertTrue("one" == list.get(0));
-        assertTrue("one" == list.get(list.size() - 3));
-        assertTrue("two" == list.get(1));
-        assertTrue("two" == list.get(list.size() - 2));
-        assertTrue("three" == list.get(2));
-        assertTrue("three" == list.get(list.size() - 1));
-        assertEquals("[ one two three ]", list.toString());
-
-        // 2 elements
-        list.remove("one");
-        assertTrue(2 == list.size());
-        assertTrue("two" == list.get(0));
-        assertTrue("two" == list.get(list.size() - 2));
-        assertTrue("three" == list.get(1));
-        assertTrue("three" == list.get(list.size() - 1));
-        assertEquals("[ two three ]", list.toString());
-
-        // 1 elment
-        list.remove("two");
-        assertTrue(1 == list.size());
-        assertTrue("three" == list.get(0));
-        assertTrue("three" == list.get(list.size() - 1));
-        assertEquals("[ three ]", list.toString());
-
-        // 0 elements
-        list.remove("three");
-        assertTrue(0 == list.size());
-        assertEquals("[ ]", list.toString());
-    }
-
-    // TODO: flesh out tests
-    // TODO: test hashCode
-    @Test
-    public void addThreePersons() {
+        // 0 elements. Test constructor
         UnorderedArrayList<Person> list = new UnorderedArrayList<Person>();
-
-        Person personOne = new Person();
-        Person personTwo = new Person("Alice");
-        Person personThree = new Person("Bob", 42);
-
-        // 0 elements
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
 
-        // 1 element
-        list.insertEnd(personOne);
-        assertTrue(1 == list.size());
-        assertTrue(new Person().equals(list.get(0)));
-        assertEquals("[ (\"\", 0) ]", list.toString());
-
-        // 2 elements
-        list.insertEnd(personTwo);
-        assertTrue(2 == list.size());
-        assertTrue(new Person().equals(list.get(0)));
-        assertTrue(new Person("Alice").equals(list.get(1)));
-        assertEquals("[ (\"\", 0) (\"Alice\", 0) ]", list.toString());
-
-        // 3 elements
-        list.insertEnd(personThree);
+        // 3 elements. Test insertEnd()
+        list.insertEnd(alice);
+        list.insertEnd(bob);
+        list.insertEnd(carl);
         assertTrue(3 == list.size());
-        assertTrue(new Person().equals(list.get(0)));
-        assertTrue(new Person("Alice").equals(list.get(1)));
-        assertTrue(new Person("Bob", 42).equals(list.get(2)));
-        assertEquals("[ (\"\", 0) (\"Alice\", 0) (\"Bob\", 42) ]", list.toString());
+        assertTrue(alice == list.get(0));
+        assertTrue(bob   == list.get(1));
+        assertTrue(carl  == list.get(2));
+        assertTrue(alice == list.get(list.size() - 3));
+        assertTrue(bob   == list.get(list.size() - 2));
+        assertTrue(carl  == list.get(list.size() - 1));
+        assertEquals("[ (\"\", 0) (\"Bob\", 0) (\"Carl\", 42) ]", list.toString());
 
-        // 0 elements
-        list.remove(personOne);
-        list.remove(personTwo);
-        list.remove(personThree);
+        // 0 elements. Test clear()
+        list.clear();
+        assertTrue(0 == list.size());
+        assertEquals("[ ]", list.toString());
+
+        // 3 elements. Test insertAt()
+        list.insertAt(0, alice);
+        list.insertAt(1, bob);
+        list.insertAt(2, carl);
+        assertTrue(3 == list.size());
+        assertTrue(alice == list.get(0));
+        assertTrue(bob   == list.get(1));
+        assertTrue(carl  == list.get(2));
+        assertTrue(alice == list.get(list.size() - 3));
+        assertTrue(bob   == list.get(list.size() - 2));
+        assertTrue(carl  == list.get(list.size() - 1));
+        assertEquals("[ (\"\", 0) (\"Bob\", 0) (\"Carl\", 42) ]", list.toString());
+
+        // 2 elements. Test remove()
+        list.remove(carl);
+        assertTrue(2 == list.size());
+        assertTrue(alice == list.get(0));
+        assertTrue(bob   == list.get(1));
+        assertTrue(alice == list.get(list.size() - 2));
+        assertTrue(bob   == list.get(list.size() - 1));
+        assertEquals("[ (\"\", 0) (\"Bob\", 0) ]", list.toString());
+        // 1 element. Test remove()
+        list.remove(alice);
+        assertTrue(1 == list.size());
+        assertTrue(bob == list.get(0));
+        assertTrue(bob == list.get(list.size() - 1));
+        assertEquals("[ (\"Bob\", 0) ]", list.toString());
+        // 0 elements. Test remove()
+        list.remove(bob);
         assertTrue(0 == list.size());
         assertEquals("[ ]", list.toString());
     }
