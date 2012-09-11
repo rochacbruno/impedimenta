@@ -1,0 +1,4 @@
+root = /media/external1/
+root = /media/external2/
+auto = true
+ignore = Path lost+found

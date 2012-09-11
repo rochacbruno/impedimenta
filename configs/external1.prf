@@ -1,0 +1,14 @@
+root = /media/external1/
+root = /media/data/ichimonji10/
+
+auto = true
+
+ignore = Path local
+ignore = Path docs/Dropbox
+
+ignore = Path games
+ignore = Path OSs
+ignore = Path video
+ignore = Path Oscar
+
+ignore = Path lost+found

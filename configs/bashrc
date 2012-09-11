@@ -1,0 +1,33 @@
+#
+# ~/.bashrc
+#
+
+# If not running interactively, don't do anything
+# How does this work???
+#[[ $- != *i* ]] && return
+
+alias t='todo.sh'
+alias grep='grep --color=auto'
+alias less='less -i'
+alias rm='rm -I'
+alias ls='ls -h --color=auto --group-directories-first'
+alias l='ls -lh --color=auto --group-directories-first'
+alias ll='ls -lha --color=auto --group-directories-first'
+export LIBUSBTP=/usr/lib32/libusb.so
+export EDITOR="vim"
+export PS1='\u@\h:\[\e[33m\]\W\[\e[0m\]\$ '
+export EMAIL="ichimonji10@gmail.com"
+
+# if raid is plugged in, give status of such when terminal launches
+if [ -e /media/external-raid/ ]; then
+    cat /proc/mdstat
+fi
+# FIXME: for vim colorization
+if [ "xterm" == "$TERM" ]; then
+    TERM='xterm-256color'
+fi
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+# append to the history file, don't overwrite it
+shopt -s histappend

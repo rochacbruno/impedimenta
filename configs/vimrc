@@ -1,0 +1,34 @@
+set nocompatible        " do not emulate vi's limitations, whatever they are
+set nowrap              " learn how to write 80-character wide code, y'all!
+set tabstop=4           " tab character treated as four characters wide
+set expandtab           " tab inserts spaces instead of tab character...
+set shiftwidth=4        " ...specifically, four spaces
+set autoindent          " keep current indentation level when starting new line
+set incsearch           " incremental search: match as you type
+set ignorecase          " ignore case when searching...
+set smartcase           " ...except when I use caps in a search term
+set scrolloff=2         " start scrolling viewport berore cursor reaches top/bot
+set laststatus=2        " always show the status line
+set rnu                 " relative line numbers, not absolute numbers
+set cursorline          " highlight the current row
+set foldmethod=indent   " more convenient than manual, easier than custom
+set nofoldenable        " enable folding by default?
+let mapleader=","
+
+"nmap n nzz              " center display around cursor when searching for terms
+"nmap N Nzz              " .
+nmap <F5> :tabprev<CR>
+nmap <F6> :tabnew<CR>:NERDTreeToggle<CR>:TagbarToggle<CR>
+cmap <F7> ctags -R -o ~/.mytags ~/code
+nmap <F8> :tabnext<CR>
+nmap <F9> :NERDTreeToggle<CR>
+nmap <F12> :TagbarToggle<CR>
+set tags=~/.mytags      " where to find the tags that exuberant ctags generates?
+
+syntax enable               " enable syntax coloring
+"color default               " :'(
+"color jellybeans            " Pleasant colors and low contrast. A bit too low.
+color badwolf               " Bright colors and high contrast.
+set background=light        " badwolf's dark variation looks nicer
+" Syntax coloring for arduino .pde filetype is horrid, but better than nothing.
+autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino.vim

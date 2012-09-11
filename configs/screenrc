@@ -1,0 +1,2 @@
+#hardstatus alwayslastline '%{yk}%H %{wk}%w'
+hardstatus alwayslastline '%w'
