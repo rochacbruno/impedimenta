@@ -6,9 +6,9 @@ import generics1.Node;
  */
 public class Main {
     /**
-     * Class Node provides the foundation for a linked list. A LinkedList class
-     * has not yet been written, but this method demonstrates, in a nutshell,
-     * how to "walk" down a linked list.
+     * Class Node provides the components of a linked list. This method
+     * demonstrates, in a nutshell, how to create and "walk" down a linked list.
+     * A LinkedList class has not been written.
      */
     public static void main(String[] args) {
         Node<String> myStringNode = new Node<String>("I'm the tail node.");
