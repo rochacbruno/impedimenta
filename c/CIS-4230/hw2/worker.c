@@ -1,66 +1,60 @@
 #include "worker.h"
 #include <stdio.h>
 
-void worker_cockpit_init(struct worker_cockpit * cockpit) {
-    pthread_cond_init(&cockpit->alarm_clock, NULL);
-    pthread_mutex_init(&cockpit->lock, NULL);
-    cockpit->do_task = false;
-    cockpit->should_die = false;
+// NOT thread-safe
+void control_panel_init(struct control_panel * panel) {
+    pthread_cond_init(&panel->alarm_clock, NULL);
+    pthread_mutex_init(&panel->lock, NULL);
+    panel->do_task = false;
+    panel->should_die = false;
 
     return;
 }
 
-// struct worker_cockpit * cockpit
-void * worker(void * arg) {
-    struct worker_cockpit * cockpit = (struct worker_cockpit *)arg;
+void * worker(void * arg) { // arg: struct control_panel * panel
+    struct control_panel * panel = (struct control_panel *)arg;
     while(1) {
         // Sleep until alarm_clock rings. Notice how do_task immediately resets
         // to false. Think of it as a button that resets after being pressed.
-        pthread_mutex_lock(&cockpit->lock);
-        while(false == cockpit->do_task)
-            pthread_cond_wait(&cockpit->alarm_clock, &cockpit->lock);
-        cockpit->do_task = false;
-        if(true == cockpit->should_die) { // Die?
-            pthread_mutex_unlock(&cockpit->lock);
+        pthread_mutex_lock(&panel->lock);
+        while(false == panel->do_task)
+            pthread_cond_wait(&panel->alarm_clock, &panel->lock);
+        panel->do_task = false;
+        if(true == panel->should_die) { // Die?
+            pthread_mutex_unlock(&panel->lock);
             return NULL;
         }
-        pthread_mutex_unlock(&cockpit->lock);
+        pthread_mutex_unlock(&panel->lock);
 
         // Have been woken up and was not told to die. Default to doing work.
-        //cockpit->task_result = cockpit->task(cockpit->task_arg);
-        cockpit->task();
+        //panel->task_result = panel->task(panel->task_arg);
+        panel->task.function();
     }
 }
 
 // Thread-safe. Tell worker to wake up.
-void worker_wake_up(struct worker_cockpit * cockpit) {
-    pthread_mutex_lock(&cockpit->lock);
-    cockpit->do_task = true;
-    pthread_mutex_unlock(&cockpit->lock);
-
-    pthread_cond_signal(&cockpit->alarm_clock);
+void worker_wake_up(struct control_panel * panel) {
+    pthread_mutex_lock(&panel->lock);
+    panel->do_task = true;
+    pthread_mutex_unlock(&panel->lock);
+    pthread_cond_signal(&panel->alarm_clock);
 }
 
 // Thread-safe. Tell worker to die.
-void worker_kill(struct worker_cockpit * cockpit) {
-    pthread_mutex_lock(&cockpit->lock);
-    cockpit->should_die = true;
-    pthread_mutex_unlock(&cockpit->lock);
-
-    worker_wake_up(cockpit);
+void worker_kill(struct control_panel * panel) {
+    pthread_mutex_lock(&panel->lock);
+    panel->should_die = true;
+    pthread_mutex_unlock(&panel->lock);
+    worker_wake_up(panel);
 }
 
-// Thread-safe. Tell worker what to do.
+// Input directions for job to control panel.
 // TODO: block until worker is sleeping
-void worker_give_task(
-    struct worker_cockpit * cockpit,
-    void * (* task)(),
-    void * task_arg,
-    void * task_result
+void control_panel_set_task(
+    struct control_panel * panel,
+    struct work_unit task
 ) {
-    pthread_mutex_lock(&cockpit->lock);
-    cockpit->task = task;
-    cockpit->task_arg = task_arg;
-    cockpit->task_result = task_result;
-    pthread_mutex_unlock(&cockpit->lock);
+    pthread_mutex_lock(&panel->lock);
+    panel->task = task;
+    pthread_mutex_unlock(&panel->lock);
 }
