@@ -1,4 +1,5 @@
 #include "worker.h"
+#include <stdio.h>
 
 void worker_cockpit_init(struct worker_cockpit * cockpit) {
     pthread_cond_init(&cockpit->alarm_clock, NULL);
@@ -26,7 +27,8 @@ void * worker(void * arg) {
         pthread_mutex_unlock(&cockpit->lock);
 
         // Have been woken up and was not told to die. Default to doing work.
-        cockpit->task_result = cockpit->task(cockpit->task_arg);
+        //cockpit->task_result = cockpit->task(cockpit->task_arg);
+        cockpit->task();
     }
 }
 
@@ -52,7 +54,7 @@ void worker_kill(struct worker_cockpit * cockpit) {
 // TODO: block until worker is sleeping
 void worker_give_task(
     struct worker_cockpit * cockpit,
-    void * task,
+    void * (* task)(),
     void * task_arg,
     void * task_result
 ) {

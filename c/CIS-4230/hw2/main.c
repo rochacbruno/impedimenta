@@ -2,7 +2,10 @@
 #include <stdio.h>
 #include <sys/sysinfo.h>
 
-#define NUM_ITERATIONS 10
+void * print_hello(void * arg) {
+    printf("hello!\n");
+    return NULL;
+}
 
 int main() {
     const int NUM_THREADS = get_nprocs();
@@ -20,8 +23,16 @@ int main() {
             &cockpits[i]
         );
     }
-    for(int i = 0; i < NUM_ITERATIONS; i++)
+    for(int i = 0; i < NUM_THREADS; i++) {
+        printf("giving worker %d a task\n", i);
+        worker_give_task(
+            &cockpits[i],
+            print_hello,
+            NULL,
+            NULL
+        );
         worker_wake_up(&cockpits[i % NUM_THREADS]);
+    }
     for(int i = 0; i < NUM_THREADS; i++)
         worker_kill(&cockpits[i]);
     for(int i = 0; i < NUM_THREADS; i++)
