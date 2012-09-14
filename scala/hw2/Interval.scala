@@ -1,6 +1,65 @@
-// TODO: create class Interval
-// TODO: create methods toString, *, /, +, and -
-// TODO: throw java.lang.ArithmeticError if division by zero: "interval
-//       division by zero"
-// TODO: constructor allows reverse of toString
-// TODO: mimic this behaviour: http://en.wikipedia.org/wiki/Interval_arithmetic
+import scala.util.matching.Regex
+
+// TODO: add docstrings
+
+class Interval(val min: Double, val max: Double) {
+    def this() = this(0.0, 0.0)
+
+    override def toString(): String = {
+        "[" + min.toString + ", " + max.toString + "]"
+    }
+
+    def +(other: Interval): Interval = {
+        return new Interval(min + other.min, max + other.max)
+    }
+
+    def -(other: Interval): Interval = {
+        return new Interval(min - other.max, max - other.min)
+    }
+
+    def *(other: Interval): Interval = {
+        val minMaxCandidates: Array[Double] = Array(
+            min * other.min,
+            min * other.max,
+            max * other.min,
+            max * other.max
+        )
+        var newMin, newMax = minMaxCandidates(0)
+        for(candidate <- minMaxCandidates) {
+            if(candidate < newMin) newMin = candidate
+            if(candidate > newMax) newMax = candidate
+        }
+        return new Interval(newMin, newMax)
+    }
+
+    def /(other: Interval): Interval = {
+        if(0 == other.min || 0 == other.max)
+            throw new java.lang.ArithmeticException("internal division by zero")
+        val minMaxCandidates: Array[Double] = Array(
+            min / other.min,
+            min / other.max,
+            max / other.min,
+            max / other.max
+        )
+        var newMin, newMax = minMaxCandidates(0)
+        for(candidate <- minMaxCandidates) {
+            if(candidate < newMin) newMin = candidate
+            if(candidate > newMax) newMax = candidate
+        }
+        return new Interval(newMin, newMax)
+    }
+}
+
+object Interval {
+    def apply(interval: String): Interval = {
+        val minMaxStr = """^\s*\[\s*(\d+.\d+)\s*,\s*(\d+.\d+)\s*\]\s*$""".r
+        val (min: Double, max: Double) = try {
+            val minMaxStr(minStr, maxStr) = interval
+            (minStr.toDouble, maxStr.toDouble)
+        } catch {
+            case err: scala.MatchError =>
+                (0.0, 0.0)
+        }
+        return new Interval(min, max)
+    }
+}
