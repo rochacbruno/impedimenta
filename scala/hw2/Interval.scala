@@ -10,11 +10,11 @@ class Interval(val min: Double, val max: Double) {
     }
 
     def +(other: Interval): Interval = {
-        return new Interval(min + other.min, max + other.max)
+        new Interval(min + other.min, max + other.max)
     }
 
     def -(other: Interval): Interval = {
-        return new Interval(min - other.max, max - other.min)
+        new Interval(min - other.max, max - other.min)
     }
 
     def *(other: Interval): Interval = {
@@ -29,7 +29,7 @@ class Interval(val min: Double, val max: Double) {
             if(candidate < newMin) newMin = candidate
             if(candidate > newMax) newMax = candidate
         }
-        return new Interval(newMin, newMax)
+        new Interval(newMin, newMax)
     }
 
     def /(other: Interval): Interval = {
@@ -46,7 +46,7 @@ class Interval(val min: Double, val max: Double) {
             if(candidate < newMin) newMin = candidate
             if(candidate > newMax) newMax = candidate
         }
-        return new Interval(newMin, newMax)
+        new Interval(newMin, newMax)
     }
 }
 
@@ -60,6 +60,6 @@ object Interval {
             case err: scala.MatchError =>
                 (0.0, 0.0)
         }
-        return new Interval(min, max)
+        new Interval(min, max)
     }
 }

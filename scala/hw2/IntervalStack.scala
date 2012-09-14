@@ -1,6 +1,6 @@
-package edu.vtc.cis3030.hw2
+//package edu.vtc.cis3030.hw2
 import collection.immutable.Stack
-// TODO: verify code here
+
 // TODO: add docstrings
 
 object IntervalStack {
@@ -12,7 +12,6 @@ object IntervalStack {
 
     def pop() = {
         val value = s(0)
-            s = s.pop
-            value
+        s = s.pop(value)
     }
 }
