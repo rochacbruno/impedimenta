@@ -1,10 +1,14 @@
 import scala.util.matching.Regex
 
-// TODO: add docstrings
-
+/** Represents a numerical interval.
+ *
+ * See: https://en.wikipedia.org/wiki/Interval_%28mathematics%29
+ */
 class Interval(val min: Double, val max: Double) {
+    /** Auxiliary Interval constructor. */
     def this() = this(0.0, 0.0)
 
+    /** Returns a string representation of this interval. e.g. [1.0, 2.0] */
     override def toString(): String = {
         "[" + min.toString + ", " + max.toString + "]"
     }
@@ -32,6 +36,11 @@ class Interval(val min: Double, val max: Double) {
         new Interval(newMin, newMax)
     }
 
+    /** Returns this / other.
+     *
+     * Throws ArithmeticException if other.min or other.max is 0.
+     */
+    @throws(classOf[ArithmeticException])
     def /(other: Interval): Interval = {
         if(0 == other.min || 0 == other.max)
             throw new java.lang.ArithmeticException("internal division by zero")
@@ -50,16 +59,16 @@ class Interval(val min: Double, val max: Double) {
     }
 }
 
+/** Companion object to class Interval. */
 object Interval {
+    /** Auxiliary Interval constructor.
+     *
+     * If argument cannot be interpreted, throws a MatchError.
+     */
+    @throws(classOf[MatchError])
     def apply(interval: String): Interval = {
         val minMaxStr = """^\s*\[\s*(\d+.\d+)\s*,\s*(\d+.\d+)\s*\]\s*$""".r
-        val (min: Double, max: Double) = try {
-            val minMaxStr(minStr, maxStr) = interval
-            (minStr.toDouble, maxStr.toDouble)
-        } catch {
-            case err: scala.MatchError =>
-                (0.0, 0.0)
-        }
-        new Interval(min, max)
+        val minMaxStr(minStr: String, maxStr: String) = interval // throws
+        new Interval(minStr.toDouble, maxStr.toDouble)
     }
 }
