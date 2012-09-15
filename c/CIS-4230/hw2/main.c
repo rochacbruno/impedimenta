@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <sys/sysinfo.h>
 
+#define NUM_JOBS 50
+
 void * print_hello(void * arg) {
     printf("hello!\n");
     return NULL;
@@ -9,30 +11,38 @@ void * print_hello(void * arg) {
 
 int main() {
     const int NUM_THREADS = get_nprocs();
-    struct control_panel panels[NUM_THREADS];
     pthread_t worker_IDs[NUM_THREADS];
+    struct control_panel panels[NUM_THREADS];
+    for(int i = 0; i < NUM_THREADS ; i++) {
+        printf("Prepping control panel & worker %d.\n", i);
+        control_panel_init(&panels[i]);       // initialize control panel
+        pthread_create(                       // Create worker. Give it ID,
+            &worker_IDs[i],                   // control panel, and a default
+            NULL,                             // sleep/die/work routine.
+            worker, // pthread function
+            &panels[i] // pthread argument
+        );
+    }
 
-    printf("number of threads: %d\n", NUM_THREADS);
-
-    for(int i = 0; i < NUM_THREADS; i++) {
-        control_panel_init(&panels[i]);         // initialize control panels
-        struct work_unit task = {               // create jobs
+    for(int i = 0; i < NUM_JOBS; i++) {
+        printf("Creating task %d.\n", i);
+        struct work_unit task = {
             .function = print_hello,
             .arg = NULL,
             .result = NULL
         };
-        control_panel_set_task(&panels[i], task); // input job into contol panel
-        pthread_create(                         // create workers, give them CPs
-            &worker_IDs[i],
-            NULL,
-            worker, // function to execute
-            &panels[i] // argument to function
-        );
-        worker_wake_up(&panels[i]);             // wake workers
+        printf("Waiting for worker %d to complete previous job.\n", i % NUM_THREADS);
+        while(!worker_is_done(&panels[i % NUM_THREADS]));
+
+        printf("Giving worker %d new job.\n", i % NUM_THREADS);
+        control_panel_work(&panels[i % NUM_THREADS], task);
+        worker_work(&panels[i % NUM_THREADS]);
     }
     for(int i = 0; i < NUM_THREADS; i++) {
-        worker_kill(&panels[i]);
-        pthread_join(worker_IDs[i], NULL);
+        printf("Instructing worker %d to die.\n", i);
+        worker_die(&panels[i % NUM_THREADS]);
+        printf("Joining worker %d.\n", i);
+        pthread_join(worker_IDs[i % NUM_THREADS], NULL);
     }
 
     return 0;
