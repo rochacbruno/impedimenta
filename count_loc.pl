@@ -13,6 +13,7 @@ my %filetypes = (   # files with any other extension will be ignored
     cpp     => 0,   # C++
     h       => 0,   # C and C++ headers
     java    => 0,   # Java
+    scala   => 0,   # scala
     pde     => 0,   # arduino
     pl      => 0,   # Perl
     py      => 0,   # Python
