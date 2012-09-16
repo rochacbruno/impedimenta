@@ -6,7 +6,7 @@ void control_panel_init(struct control_panel * panel) {
     pthread_cond_init(&panel->alarm_clock, NULL);
     pthread_mutex_init(&panel->lock, NULL);
     panel->should_die = false;
-    panel->work_ready = false;
+    panel->new_work = false;
     panel->work_done = true;
 
     return;
@@ -28,20 +28,22 @@ void control_panel_work(
 void * worker(void * arg) { // arg: struct control_panel * panel
     struct control_panel * panel = (struct control_panel *)arg;
     while(1) {
-        // Sleep until alarm_clock rings. Then, either die or do work.
+        // Sleep until alarm_clock rings. Then, either die or do work. If dying,
+        // first unlock control panel (ensures caller can still use it).
         pthread_mutex_lock(&panel->lock);
-        while(false == panel->work_ready && false == panel->should_die)
+        while(false == panel->new_work && false == panel->should_die)
             pthread_cond_wait(&panel->alarm_clock, &panel->lock);
         if(true == panel->should_die) {
-            // Control panel was created and initialized separately from worker.
             pthread_mutex_unlock(&panel->lock);
             return NULL;
+        } else {
+            panel->new_work = false;
         }
-        panel->work_ready = false;
         pthread_mutex_unlock(&panel->lock);
 
-        //panel->work_result = panel->work(panel->work_arg);
-        panel->work.function();
+        //panel->work_result = panel->work(panel->work.arg);
+        panel->work.function(panel->work.arg);
+        //panel->work.function();
         panel->work_done = true;
     }
 }
@@ -49,7 +51,7 @@ void * worker(void * arg) { // arg: struct control_panel * panel
 // Thread-safe. Tell worker to wake up and execute work unit.
 void worker_work(struct control_panel * panel) {
     pthread_mutex_lock(&panel->lock);
-    panel->work_ready = true;
+    panel->new_work = true;
     panel->work_done = false;
     pthread_mutex_unlock(&panel->lock);
     pthread_cond_signal(&panel->alarm_clock);

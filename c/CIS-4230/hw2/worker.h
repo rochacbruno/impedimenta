@@ -6,14 +6,14 @@
 
 struct work_unit {
     void * (* function)(); // Execute this function
-    void * arg;            // with these args
+    void * arg;            // with this arg
     void * result;         // and place the return value here.
 };
 struct control_panel { // Treat contents as private! Only modify via functions.
     pthread_mutex_t lock;
     pthread_cond_t  alarm_clock; // Wakes worker if worker sleeping
     bool            should_die; // True if worker should die
-    bool            work_ready;
+    bool            new_work;
     bool            work_done;
     struct work_unit work;
 };
