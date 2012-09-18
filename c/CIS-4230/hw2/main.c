@@ -13,7 +13,7 @@ void * print_hello(void * arg) {
 }
 
 int main() {
-    const int NUM_JOBS = 100000; // arbitrary
+    const int NUM_JOBS = 19; // arbitrary
     struct worker_work tasks[NUM_JOBS]; // FIXME: malloc
     struct thread_pool pool;
 

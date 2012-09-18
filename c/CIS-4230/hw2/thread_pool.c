@@ -26,7 +26,7 @@ void thread_pool_init(struct thread_pool * pool) {
 void thread_pool_give_work(struct thread_pool * pool, struct worker_work work) {
     sem_wait(&pool->idle_workers); // decrement. block if already 0
     for(int i = 0; i < pool->num_workers; i++) {
-        if(worker_is_done(&pool->panels[i])) {
+        if(worker_is_idle(&pool->panels[i])) {
             worker_give_work(&pool->panels[i], work);
             break;
         }
