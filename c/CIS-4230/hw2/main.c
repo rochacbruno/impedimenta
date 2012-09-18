@@ -7,39 +7,29 @@
 void * print_hello(void * arg) {
     int num = *(int *)arg;
 
-    printf("hello from thread: %d\n", num);
+    printf("hello from job: %d\n", num);
 
     return NULL;
 }
 
 int main() {
-    const int NUM_JOBS = 500; // arbitrary
+    const int NUM_JOBS = 1; //500; // arbitrary
     struct work_unit tasks[NUM_JOBS];
     struct thread_pool pool;
 
     thread_pool_init(&pool);
-/*
-    // initialize tasks (with malloc!), then give job to worker
     for(int i = 0; i < NUM_JOBS; i++) {
         int * the_arg = malloc(sizeof(int));
         *the_arg = i;
 
-        printf("Defining task %d.\n", i);
         tasks[i].function = print_hello;
         tasks[i].arg = the_arg;
         tasks[i].result = NULL;
-        printf("Waiting for worker %d to complete previous job.\n", i % NUM_THREADS);
-        while(!worker_is_done(&panels[i % NUM_THREADS]));
-
-        printf("Giving worker %d new job.\n", i % NUM_THREADS);
-        control_panel_work(&panels[i % NUM_THREADS], tasks[i]);
-        worker_work(&panels[i % NUM_THREADS]);
+        thread_pool_give_work(&pool, tasks[i]);
     }
+    thread_pool_die(&pool);
     for(int i = 0; i < NUM_JOBS; i++)
         free(tasks[i].arg);
-*/
-
-    thread_pool_die(&pool);
 
     return 0;
 }

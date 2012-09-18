@@ -14,7 +14,7 @@ void control_panel_init(struct control_panel * panel) {
 
 // Input work directions to control panel. Do not wake worker; do that with
 // worker_work.
-void control_panel_work(
+void control_panel_set_work(
     struct control_panel * panel,
     struct work_unit work
 ) {
@@ -36,14 +36,12 @@ void * worker(void * arg) { // arg: struct control_panel * panel
         if(true == panel->should_die) {
             pthread_mutex_unlock(&panel->lock);
             return NULL;
-        } else {
-            panel->new_work = false;
         }
+        panel->new_work = false;
         pthread_mutex_unlock(&panel->lock);
 
-        //panel->work_result = panel->work(panel->work.arg);
+        //panel->work_result = panel->work(panel->work.arg); // TODO
         panel->work.function(panel->work.arg);
-        //panel->work.function();
         panel->work_done = true;
     }
 }
