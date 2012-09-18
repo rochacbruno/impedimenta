@@ -1,7 +1,10 @@
 #include "worker.h"
 #include <stdio.h>
 
-// Populate control panel with sane defaults. NOT thread-safe
+/* ========================================================================== *\
+Populates ``panel`` with sane default settings. This should be called on the
+panel before using the panel it for *anyhing* else.
+\* ========================================================================== */
 void control_panel_init(struct control_panel * panel) {
     pthread_cond_init(&panel->alarm_clock, NULL);
     pthread_mutex_init(&panel->lock, NULL);
@@ -12,7 +15,10 @@ void control_panel_init(struct control_panel * panel) {
     return;
 }
 
-// Input work directions to control panel and wake worker.
+/* ========================================================================== *\
+Inputs ``work`` into the ``panel``, fiddles other flags as needed, and wakes the
+worker. Thread-safe. Job is done when ``worker_is_done()`` returns true.
+\* ========================================================================== */
 void worker_give_work(
     struct control_panel * panel,
     struct work_unit work
@@ -25,9 +31,14 @@ void worker_give_work(
     pthread_cond_signal(&panel->alarm_clock);
 }
 
-//================//
+/* ========================================================================== *\
+Function which can be run as a thread and managed using a ``control_panel``.
 
-void * worker(void * arg) { // arg: struct control_panel * panel
+Why the weird function signature? Well, the supporting thread library used is
+pthread.h, and pthread_t() requires this signature due to the limitations of the
+C language (C doesn't have generics).
+\* ========================================================================== */
+void * worker(void * arg) {
     struct control_panel * panel = (struct control_panel *)arg;
     while(1) {
         // Sleep until alarm_clock rings. Then, either die or do work. If dying,
@@ -48,7 +59,9 @@ void * worker(void * arg) { // arg: struct control_panel * panel
     }
 }
 
-// Thread-safe. Tell worker to wake up and die.
+/* ========================================================================== *\
+Tells the worker using ``panel`` to wake up and die. Thread-safe.
+\* ========================================================================== */
 void worker_die(struct control_panel * panel) {
     pthread_mutex_lock(&panel->lock);
     panel->should_die = true;
@@ -56,7 +69,9 @@ void worker_die(struct control_panel * panel) {
     pthread_cond_signal(&panel->alarm_clock);
 }
 
-// Thread-safe. Returns true if worker done with job, else false.
+/* ========================================================================== *\
+Returns true if worker done with work. Else, returns false. Thread-safe.
+\* ========================================================================== */
 bool worker_is_done(struct control_panel * panel) {
     pthread_mutex_lock(&panel->lock);
     bool is_done = panel->work_done;
