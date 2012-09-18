@@ -28,8 +28,7 @@ void thread_pool_give_work(struct thread_pool * pool, struct work_unit work) {
     // TODO: while semaphore 0, wait (unlocked while waiting)
     for(int i = 0; i < pool->num_threads; i++) {
         if(worker_is_done(&pool->panels[i])) {
-            control_panel_set_work(&pool->panels[i], work);
-            worker_work(&pool->panels[i]);
+            worker_give_work(&pool->panels[i], work); // TODO: merge these
             break;
         }
      }

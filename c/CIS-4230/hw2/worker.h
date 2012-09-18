@@ -19,12 +19,8 @@ struct control_panel { // Treat contents as private! Only modify via functions.
 };
 
 void   control_panel_init(struct control_panel * panel);
-void   control_panel_set_work(
-           struct control_panel * panel,
-           struct work_unit work
-       );
 void * worker(void * arg); // arg: pointer to a ``struct control_panel``
-void   worker_work(struct control_panel * panel);
+void   worker_give_work(struct control_panel * panel, struct work_unit work);
 bool   worker_is_done(struct control_panel * panel);
 void   worker_die(struct control_panel * panel);
 

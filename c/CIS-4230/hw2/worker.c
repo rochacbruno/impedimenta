@@ -12,15 +12,17 @@ void control_panel_init(struct control_panel * panel) {
     return;
 }
 
-// Input work directions to control panel. Do not wake worker; do that with
-// worker_work.
-void control_panel_set_work(
+// Input work directions to control panel and wake worker.
+void worker_give_work(
     struct control_panel * panel,
     struct work_unit work
 ) {
     pthread_mutex_lock(&panel->lock);
     panel->work = work;
+    panel->new_work = true;
+    panel->work_done = false;
     pthread_mutex_unlock(&panel->lock);
+    pthread_cond_signal(&panel->alarm_clock);
 }
 
 //================//
@@ -44,15 +46,6 @@ void * worker(void * arg) { // arg: struct control_panel * panel
         panel->work.function(panel->work.arg);
         panel->work_done = true;
     }
-}
-
-// Thread-safe. Tell worker to wake up and execute work unit.
-void worker_work(struct control_panel * panel) {
-    pthread_mutex_lock(&panel->lock);
-    panel->new_work = true;
-    panel->work_done = false;
-    pthread_mutex_unlock(&panel->lock);
-    pthread_cond_signal(&panel->alarm_clock);
 }
 
 // Thread-safe. Tell worker to wake up and die.
