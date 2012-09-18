@@ -3,13 +3,13 @@
 #include <stdlib.h>
 
 void thread_pool_init(struct thread_pool * pool) {
-    const int num_threads = get_nprocs();
+    pool->num_workers = get_nprocs();
+    pool->worker_IDs = malloc(pool->num_workers * sizeof(pthread_t));
+    pool->panels = malloc(pool->num_workers * sizeof(struct worker_control_panel));
+    sem_init(&pool->idle_workers, 0, pool->num_workers);
 
-    pool->num_threads = num_threads;
-    pool->worker_IDs = malloc(num_threads * sizeof(pthread_t));
-    pool->panels = malloc(num_threads * sizeof(struct control_panel));
-    for(int i = 0; i < num_threads; i++) {
-        control_panel_init(&pool->panels[i]);
+    for(int i = 0; i < pool->num_workers; i++) {
+        worker_control_panel_init(&pool->panels[i], &pool->idle_workers);
         // Create worker. Give it an ID, a sleep/work/die routine, and a control
         // panel to control that routine.
         pthread_create(
@@ -23,25 +23,22 @@ void thread_pool_init(struct thread_pool * pool) {
     return;
 }
 
-void thread_pool_give_work(struct thread_pool * pool, struct work_unit work) {
-    // TODO: lock
-    // TODO: while semaphore 0, wait (unlocked while waiting)
-    for(int i = 0; i < pool->num_threads; i++) {
+void thread_pool_give_work(struct thread_pool * pool, struct worker_work work) {
+    sem_wait(&pool->idle_workers); // decrement. block if already 0
+    for(int i = 0; i < pool->num_workers; i++) {
         if(worker_is_done(&pool->panels[i])) {
-            worker_give_work(&pool->panels[i], work); // TODO: merge these
+            worker_give_work(&pool->panels[i], work);
             break;
         }
      }
-    // TODO: give job and decrement semaphore
-    // TODO: unlock
 
     return;
 }
 
 void thread_pool_die(struct thread_pool * pool) {
-    for(int i = 0; i < pool->num_threads; i++)
+    for(int i = 0; i < pool->num_workers; i++)
         worker_die(&pool->panels[i]);
-    for(int i = 0; i < pool->num_threads; i++)
+    for(int i = 0; i < pool->num_workers; i++)
         pthread_join(pool->worker_IDs[i], NULL);
     free(pool->worker_IDs);
     free(pool->panels);
