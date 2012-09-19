@@ -5,18 +5,28 @@
 #include <stdbool.h>
 #include <semaphore.h>
 
+// Note: If you are an end user of thread_pool.h, only worker_work and
+// worker_work_init are relevant to you. Everything else in this header file is
+// used by the thread pool.
+
 /* ========================================================================== *\
 This struct defines what a worker thread will do when told to work.
-
-If you are an end user of thread_pool.h, this is the *only* portion of this
-header file which is relevant to you. Everything else in this header file is
-used by the thread pool.
 \* ========================================================================== */
 struct worker_work {
-    void * (* function)(); // Execute this function
-    void * arg;            // with this arg
-    void * result;         // and place the return value here.
+    pthread_mutex_t lock;   // Struct accessed by both requestor and worker.
+    void * (* function)();  // Execute this function
+    void * arg;             // with this arg
+    void * result;          // and place the return value here.
+    bool work_done;         // Then, notify requestor that work is done.
+    pthread_cond_t alarm_clock; // Even if requestor is asleep.
 };
+
+/* ========================================================================== *\
+Populates ``work`` with sane defaults. This must be called on a worker_work
+instance before using it. After initializing ``work``, you should still populate
+work->function, work->arg, and work->result.
+\* ========================================================================== */
+void worker_work_init(struct worker_work * work);
 
 /* ========================================================================== *\
 This struct stores information about the state of a worker.
@@ -27,13 +37,13 @@ private. To get information about the state of a worker, or to manipulate that
 worker, use the functions in this header file.
 \* ========================================================================== */
 struct worker_control_panel {
-    pthread_mutex_t lock;
-    pthread_cond_t  alarm_clock;
-    bool            new_work;
-    bool            should_die;
-    bool            work_done; // TODO: move to worker_work?
-    struct worker_work * work;
-    sem_t * idle_workers; // incremented after worker completes work
+    pthread_mutex_t lock;       // Struct accessed by thread pool and worker.
+    pthread_cond_t  alarm_clock; // When alarm_clock rings, worker will check
+    bool            new_work;   // for new_work. If new_work, set to false and
+    struct worker_work * work;  // execute work.
+    bool            work_done;  // When work_done, state so. Then notify thread
+    sem_t         * idle_workers; // pool that a worker is idle.
+    bool            should_die; // Finally, check whether to die.
 };
 
 /* ========================================================================== *\

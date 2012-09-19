@@ -1,5 +1,11 @@
 #include "worker.h"
 
+void worker_work_init(struct worker_work * work) {
+    pthread_cond_init(&work->alarm_clock, NULL);
+    pthread_mutex_init(&work->lock, NULL);
+    work->work_done = false;
+}
+
 void worker_control_panel_init(struct worker_control_panel * panel, sem_t * idle_workers) {
     pthread_cond_init(&panel->alarm_clock, NULL);
     pthread_mutex_init(&panel->lock, NULL);
@@ -36,7 +42,13 @@ void * worker(void * arg) {
         if(true == panel->new_work) {
             panel->new_work = false;
             pthread_mutex_unlock(&panel->lock); // unlock before working!
+
+            pthread_mutex_lock(&panel->work->lock);
             panel->work->result = panel->work->function(panel->work->arg);
+            panel->work->work_done = true;
+            pthread_mutex_unlock(&panel->work->lock);
+            pthread_cond_signal(&panel->work->alarm_clock);
+
             // Set work_done to true *before* notifying thread pool that worker
             // is idle. Ensures thread pool can figure out which worker is idle.
             pthread_mutex_lock(&panel->lock);
