@@ -4,6 +4,8 @@
 #include "worker.h"
 #include <pthread.h>
 #include <semaphore.h>
+#include <sys/sysinfo.h>
+#include <stdlib.h>
 
 /* ========================================================================== *\
 This struct stores info about the state of a thread pool.
@@ -30,7 +32,10 @@ Waits for a thread in ``pool`` to become free, then gives it ``work``. Once a
 thread has been given work, that work is guaranteed to complete, even if
 ``thread_pool_die`` is called.
 \* ========================================================================== */
-void thread_pool_give_work(struct thread_pool * pool, struct worker_work work);
+void thread_pool_give_work(
+    struct thread_pool * pool,
+    struct worker_work * work
+);
 
 /* ========================================================================== *\
 Tells all threads to die. Waits for threads to die, then deallocates resources.

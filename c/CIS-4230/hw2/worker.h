@@ -32,7 +32,7 @@ struct worker_control_panel {
     bool            new_work;
     bool            should_die;
     bool            work_done; // TODO: move to worker_work?
-    struct worker_work work;
+    struct worker_work * work;
     sem_t * idle_workers; // incremented after worker completes work
 };
 
@@ -61,7 +61,7 @@ Tells the worker holding ``panel`` to wake up and do work. Thread-safe.
 \* ========================================================================== */
 void worker_give_work(
     struct worker_control_panel * panel,
-    struct worker_work work
+    struct worker_work * work
 );
 
 /* ========================================================================== *\

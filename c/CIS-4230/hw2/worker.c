@@ -13,7 +13,7 @@ void worker_control_panel_init(struct worker_control_panel * panel, sem_t * idle
 
 void worker_give_work(
     struct worker_control_panel * panel,
-    struct worker_work work
+    struct worker_work * work
 ) {
     pthread_mutex_lock(&panel->lock);
     panel->work = work;
@@ -26,23 +26,25 @@ void worker_give_work(
 void * worker(void * arg) {
     struct worker_control_panel * panel = (struct worker_control_panel *)arg;
     while(1) {
-        // Sleep until alarm_clock rings. Ensure wakeup is not spurious. Check
-        // new_work before checking should_die. Both flags may be true at the
-        // same time.
+        // Sleep until alarm_clock rings, and ensure wakeup is not spurious.
+        // Then check new_work before checking should_die, as both may be true.
         pthread_mutex_lock(&panel->lock);
         while(false == panel->new_work && false == panel->should_die)
             pthread_cond_wait(&panel->alarm_clock, &panel->lock);
+
+        // Work? (panel locked)
         if(true == panel->new_work) {
             panel->new_work = false;
             pthread_mutex_unlock(&panel->lock); // unlock before working!
-            //panel->work_result = panel->work(panel->work.arg); // TODO
-            panel->work.function(panel->work.arg);
-            // Notify thread pool that worker is idle *after* setting work_done
-            // to true. Ensures thread pool can figure out which worker is idle.
+            panel->work->result = panel->work->function(panel->work->arg);
+            // Set work_done to true *before* notifying thread pool that worker
+            // is idle. Ensures thread pool can figure out which worker is idle.
             pthread_mutex_lock(&panel->lock);
             panel->work_done = true;
             sem_post(panel->idle_workers);
         }
+
+        // Die? (panel locked)
         if(true == panel->should_die) {
             // Unlock panel before dying. (ensures caller can still access it)
             pthread_mutex_unlock(&panel->lock);

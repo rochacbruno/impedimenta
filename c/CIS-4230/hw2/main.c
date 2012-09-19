@@ -6,10 +6,12 @@
 
 void * print_hello(void * arg) {
     int num = *(int *)arg;
+    int * ret_val = malloc(sizeof(int));
+    *ret_val = num;
 
     printf("hello from job: %d\n", num);
 
-    return NULL;
+    return (void *)ret_val;
 }
 
 int main() {
@@ -24,13 +26,14 @@ int main() {
 
         tasks[i].function = print_hello;
         tasks[i].arg = the_arg;
-        tasks[i].result = NULL;
-        thread_pool_give_work(&pool, tasks[i]);
+        thread_pool_give_work(&pool, &tasks[i]);
     }
-//    for(int i = 0; i < 1000000; i++); // TODO: implement a better result wait/fetch mechanism
     thread_pool_die(&pool);
-    for(int i = 0; i < NUM_JOBS; i++)
+    for(int i = 0; i < NUM_JOBS; i++) {
+        printf("job %d return val: %d\n", i, *(int *)tasks[i].result);
         free(tasks[i].arg);
+        free(tasks[i].result);
+    }
 
     return 0;
 }
