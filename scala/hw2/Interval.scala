@@ -1,3 +1,4 @@
+package hw2
 import scala.util.matching.Regex
 
 /** Represents a numerical interval.
@@ -67,7 +68,7 @@ object Interval {
      */
     @throws(classOf[MatchError])
     def apply(interval: String): Interval = {
-        val minMaxStr = """^\s*\[\s*(\d+.\d+)\s*,\s*(\d+.\d+)\s*\]\s*$""".r
+        val minMaxStr = """^\s*\[\s*(-?\d+(?:.\d+)?)\s*,\s*(-?\d+(?:.\d+)?)\s*\]\s*$""".r
         val minMaxStr(minStr: String, maxStr: String) = interval // throws
         new Interval(minStr.toDouble, maxStr.toDouble)
     }

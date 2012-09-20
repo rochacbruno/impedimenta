@@ -1,3 +1,4 @@
+package hw2
 import collection.immutable.Stack
 
 /** A simple implementation of a stack of Intervals.

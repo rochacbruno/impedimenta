@@ -1,6 +1,5 @@
-#!/bin/sh
-exec scala "$0" "$@"
-!#
+import hw2.Interval
+import hw2.IntervalStack
 
 /** An implementation of a simple Interval calculator.
  *
