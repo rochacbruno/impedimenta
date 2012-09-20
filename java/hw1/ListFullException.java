@@ -1,4 +1,4 @@
-package assign1;
+package hw1;
 
 /**
  * Exception thrown when a list is at its capacity

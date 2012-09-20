@@ -1,4 +1,4 @@
-package assign1;
+package hw1;
 
 /**
  * Exception thrown when a person's age is set to an impossible value.

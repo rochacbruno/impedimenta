@@ -1,4 +1,4 @@
-package assign1;
+package hw1;
 import static org.junit.Assert.*;
 import org.junit.Test;
 

@@ -1,7 +1,7 @@
 /**
  * Assignment 1 for CIS-3050 "Algorithms and Data Structures", with Leslie Damon
  */
-package assign1;
+package hw1;
 
 // @TODO rework docstrings for entire file
 

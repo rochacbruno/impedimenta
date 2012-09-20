@@ -1,4 +1,4 @@
-package assign1;
+package hw1;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 

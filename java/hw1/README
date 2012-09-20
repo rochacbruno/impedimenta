@@ -1,0 +1,10 @@
+hw1 usage notes
+===============
+
+To compile::
+
+    javac -cp .:/usr/share/java/junit.jar:commons-lang3-3.1.jar hw1/*.java
+
+To run unit tests::
+
+    java -cp .:commons-lang3-3.1.jar:/usr/share/java/junit.jar org.junit.runner.JUnitCore hw1.UnorderedArrayListTest
