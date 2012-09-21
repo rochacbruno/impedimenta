@@ -113,21 +113,75 @@ public class JeremyAudetTest {
         assertEquals("", list.toString());
     }
 
+    /**
+     * Ensure that an SListException is thrown when insertNth() is called in an
+     * improper fashion.
+     */
     @Test (expected = SListException.class)
     public void insertSListException() {
         SList<Integer> list = new SList<Integer>();
         list.insertNth(1, 0); // (index, value)
     }
 
+    /**
+     * Ensure that an SListException is thrown when getNth() is called in an
+     * improper fashion.
+     */
     @Test (expected = SListException.class)
     public void getSListException() {
         SList<Integer> list = new SList<Integer>();
         list.getNth(0);
     }
 
+    /**
+     * Ensure that an SListException is thrown when removeNth() is called in an
+     * improper fashion.
+     */
     @Test (expected = SListException.class)
     public void removeSListException() {
         SList<Integer> list = new SList<Integer>();
         list.removeNth(0);
+    }
+
+    /**
+     * Create an SList&lt;String&gt;. Exercise the insertNth(), getNth(), and
+     * removeNth() methods.
+     */
+    @Test
+    public void insertGetRemoveNthString() {
+        // 0 elements
+        SList<String> list = new SList<String>();
+        assertTrue(0 == list.size());
+        assertEquals("", list.toString());
+        // 1 element
+        list.insertNth(0, "zero");
+        assertTrue(1 == list.size());
+        assertTrue("zero" == list.getNth(0));
+        assertEquals("zero", list.toString());
+        // 2 elements
+        list.insertNth(1, "one");
+        assertTrue(2 == list.size());
+        assertTrue("zero" == list.getNth(0));
+        assertTrue("one"  == list.getNth(1));
+        assertEquals("zero, one", list.toString());
+        // 3 elements
+        list.insertNth(1, "two");
+        assertTrue(3 == list.size());
+        assertTrue("zero" == list.getNth(0));
+        assertTrue("two"  == list.getNth(1));
+        assertTrue("one"  == list.getNth(2));
+        assertEquals("zero, two, one", list.toString());
+        // 2 elements
+        list.removeNth(0);
+        assertTrue("two" == list.getNth(0));
+        assertTrue("one" == list.getNth(1));
+        assertEquals("two, one", list.toString());
+        // 1 element
+        list.removeNth(1);
+        assertTrue("two" == list.getNth(0));
+        assertEquals("two", list.toString());
+        // 0 elements
+        list.removeNth(0);
+        assertEquals("", list.toString());
     }
 }
