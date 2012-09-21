@@ -14,17 +14,6 @@ public class SList<T> {
         head = null;
     }
 
-    /**
-     * Places <code>info</code> at the beginning of this <code>SList</code>.
-     */
-    public void insertFirst(T info) {
-        if(0 == length)
-            head = new Node<T>(info);
-        else
-            head = new Node<T>(info, head);
-        length++;
-    }
-
     /** Returns the number of nodes in this <code>SList</code>. */
     public int size() {
         return length;
@@ -58,6 +47,47 @@ public class SList<T> {
     }
 
     /**
+     * Places info in the Nth node of this <code>SList</code>, where
+     * <code>n</code> is a zero-based index. The head of the list is at index
+     * position 0. Throws <code>SListException</code> if element <code>n</code>
+     * does not exist.
+     */
+    public void insertNth(int n, T info) throws SListException {
+        if(n > length)
+            throw new SListException(
+                "Cannot create list element: " + n + ". List has " + length +
+                " elements. (indices 0 - " + (length - 1) + ")"
+            );
+
+        Node<T> newNode = new Node<T>(info);
+        if(0 == n) {
+            newNode.setLink(head);
+            head = newNode;
+        } else {
+            Node<T> pointer = head;
+            for(int i = 1; i < n; i++)
+                pointer = pointer.getLink();
+            newNode.setLink(pointer.getLink());
+            pointer.setLink(newNode);
+        }
+        length++;
+    }
+
+    /**
+     * Places <code>info</code> at the beginning of this <code>SList</code>.
+     */
+    public void insertFirst(T info) {
+        insertNth(0, info);
+    }
+
+    /**
+     * Places <code>info</code> at the end of this <code>SList</code>.
+     */
+    public void insertLast(T info) {
+        insertNth(length, info);
+    }
+
+    /**
      * Returns info in the Nth node of this <code>SList</code>, where
      * <code>n</code> is a zero-based index. The head of the list is at index
      * position 0. Throws <code>SListException</code> if element <code>n</code>
@@ -65,8 +95,9 @@ public class SList<T> {
      */
     public T getNth(int n) throws SListException {
         if(n >= length)
-            throw new SListException("Cannot access list element: " + n +
-                ". List has " + length + " elements."
+            throw new SListException(
+                "Cannot access list element: " + n + ". List has " + length +
+                " elements. (indices 0 - " + (length - 1) + ")"
             );
 
         Node<T> pointer = head;
@@ -98,27 +129,21 @@ public class SList<T> {
      * exist.
      */
     public void removeNth(int n) throws SListException {
-        if(n >= length)
-            throw new SListException("Cannot access list element: " + n +
-                ". List has " + length + " elements."
+        if(n >= length) {
+            throw new SListException(
+                "Cannot remove list element: " + n + ". List has " + length +
+                " elements. (indices 0 - " + (length - 1) + ")"
             );
-
-        if(0 == n) {
+        } else if(0 == n) {
             head = head.getLink();
-            length--;
-            return;
+        } else {
+            Node<T> pointer = head;
+            for(int i = 1; i < n; i++)
+                pointer = pointer.getLink();
+            pointer.setLink(pointer.getLink().getLink());
         }
-        Node<T> pointer = head;
-        // TODO: some all-encompassing procedure that uses a previous and next
-        // pointer?
+        length--;
     }
-
-/*
-void insertNth(int n, const T data)   // insert element into the Nth position (zero based)
-void insertLast(const T data)   // insert element into the last position
-void removeNth(int n)  // remove (delete) the Nth element in the SList
-void removeLast()  // remove (delete) the last element in the SList
-*/
 
     /**
      * Removes the first node from this <code>SList</code>. Throws
@@ -126,6 +151,14 @@ void removeLast()  // remove (delete) the last element in the SList
      */
     public void removeFirst() {
         removeNth(0);
+    }
+
+    /**
+     * Removes the last node from this <code>SList</code>. Throws
+     * <code>SListException</code> if list is empty.
+     */
+    public void removeLast() {
+        removeNth(length - 1);
     }
 
     /** A simple class which can be used to construct singly linked lists. */

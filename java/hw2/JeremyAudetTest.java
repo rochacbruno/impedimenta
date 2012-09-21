@@ -10,39 +10,106 @@ import org.junit.Test;
  */
 public class JeremyAudetTest {
     /**
-     * Create and test an SList&lt;Integer&gt;.
+     * Create an SList&lt;Integer&gt;. Exercise the insertFirst(), getFirst(),
+     * and removeFirst() methods.
      */
     @Test
-    public void addRemoveInteger() {
+    public void insertGetRemoveFirstInteger() {
         // 0 elements
         SList<Integer> list = new SList<Integer>();
         assertTrue(0 == list.size());
         assertEquals("", list.toString());
-
         // 1 element
         list.insertFirst(0);
         assertTrue(1 == list.size());
         assertTrue(0 == list.getFirst());
-        assertTrue(0 == list.getLast());
-        assertTrue(0 == list.getNth(0));
         assertEquals("0", list.toString());
-
         // 2 elements
-        // TODO: exercise more ways of inserting at beginning, end, and Nth
         list.insertFirst(1);
         assertTrue(2 == list.size());
         assertTrue(1 == list.getFirst());
-        assertTrue(0 == list.getLast());
-        assertTrue(1 == list.getNth(0));
-        assertTrue(0 == list.getNth(1));
         assertEquals("1, 0", list.toString());
-
         // 1 element
         list.removeFirst();
         assertTrue(1 == list.size());
         assertTrue(0 == list.getFirst());
+        assertEquals("0", list.toString());
+        // 0 elements
+        list.removeFirst();
+        assertTrue(0 == list.size());
+        assertEquals("", list.toString());
+    }
+
+    /**
+     * Create an SList&lt;Integer&gt;. Exercise the insertLast(), getLast(),
+     * and removeLast() methods.
+     */
+    @Test
+    public void insertGetRemoveLastInteger() {
+        // 0 elements
+        SList<Integer> list = new SList<Integer>();
+        assertTrue(0 == list.size());
+        assertEquals("", list.toString());
+        // 1 element
+        list.insertLast(0);
+        assertTrue(1 == list.size());
         assertTrue(0 == list.getLast());
+        assertEquals("0", list.toString());
+        // 2 elements
+        list.insertLast(1);
+        assertTrue(2 == list.size());
+        assertTrue(1 == list.getLast());
+        assertEquals("0, 1", list.toString());
+        // 1 element
+        list.removeLast();
+        assertTrue(1 == list.size());
+        assertTrue(0 == list.getLast());
+        assertEquals("0", list.toString());
+        // 0 elements
+        list.removeLast();
+        assertTrue(0 == list.size());
+        assertEquals("", list.toString());
+    }
+
+    /**
+     * Create an SList&lt;Integer&gt;. Exercise the insertNth(), getNth(), and
+     * removeNth() methods.
+     */
+    @Test
+    public void insertGetRemoveNthInteger() {
+        // 0 elements
+        SList<Integer> list = new SList<Integer>();
+        assertTrue(0 == list.size());
+        assertEquals("", list.toString());
+        // 1 element
+        list.insertNth(0, 0); // (index, value)
+        assertTrue(1 == list.size());
         assertTrue(0 == list.getNth(0));
         assertEquals("0", list.toString());
+        // 2 elements
+        list.insertNth(1, 1);
+        assertTrue(2 == list.size());
+        assertTrue(0 == list.getNth(0));
+        assertTrue(1 == list.getNth(1));
+        assertEquals("0, 1", list.toString());
+        // 3 elements
+        list.insertNth(1, 2);
+        assertTrue(3 == list.size());
+        assertTrue(0 == list.getNth(0));
+        assertTrue(2 == list.getNth(1));
+        assertTrue(1 == list.getNth(2));
+        assertEquals("0, 2, 1", list.toString());
+        // 2 elements
+        list.removeNth(0);
+        assertTrue(2 == list.getNth(0));
+        assertTrue(1 == list.getNth(1));
+        assertEquals("2, 1", list.toString());
+        // 1 element
+        list.removeNth(1);
+        assertTrue(2 == list.getNth(0));
+        assertEquals("2", list.toString());
+        // 0 elements
+        list.removeNth(0);
+        assertEquals("", list.toString());
     }
 }
