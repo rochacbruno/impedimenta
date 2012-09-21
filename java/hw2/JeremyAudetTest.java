@@ -112,4 +112,22 @@ public class JeremyAudetTest {
         list.removeNth(0);
         assertEquals("", list.toString());
     }
+
+    @Test (expected = SListException.class)
+    public void insertSListException() {
+        SList<Integer> list = new SList<Integer>();
+        list.insertNth(1, 0); // (index, value)
+    }
+
+    @Test (expected = SListException.class)
+    public void getSListException() {
+        SList<Integer> list = new SList<Integer>();
+        list.getNth(0);
+    }
+
+    @Test (expected = SListException.class)
+    public void removeSListException() {
+        SList<Integer> list = new SList<Integer>();
+        list.removeNth(0);
+    }
 }
