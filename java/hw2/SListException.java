@@ -1,7 +1,7 @@
 package hw2;
 
 /**
- * Exception thrown when something silly is done with an SList.
+ * Exception thrown when something silly is done with an <code>SList</code>.
  *
  * @author Jeremy Audet &lt;ichimonji10@gmail.com&gt;
  */

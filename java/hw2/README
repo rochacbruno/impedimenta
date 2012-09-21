@@ -3,7 +3,7 @@ hw2 usage notes
 
 To compile::
 
-    javac -cp .:/usr/share/java/junit.jar hw2/*.java
+    javac -Xlint -cp .:/usr/share/java/junit.jar hw2/*.java
 
 To run unit tests::
 
