@@ -18,7 +18,7 @@ alias l='ls -lh --color=auto --group-directories-first'
 alias ll='ls -lha --color=auto --group-directories-first'
 export LIBUSBTP=/usr/lib32/libusb.so
 export EDITOR="vim"
-export PS1='\[\e[33m\]\u\[\e[0m\]@\h:\[\e[36m\]\W\[\e[0m\]\$ '
+export PS1='\u@\[\e[33m\]\h\[\e[0m\]:\[\e[36m\]\W\[\e[0m\]\$ '
 export EMAIL="ichimonji10@gmail.com"
 
 # if raid is plugged in, give status of such when terminal launches
