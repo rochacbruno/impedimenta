@@ -1,14 +1,14 @@
-root = /media/external1/
+root = ssh://ichimonji10@mouse.question.cat//media/external1/ichimonji10/
 root = /media/data/ichimonji10/
 
 auto = true
 
+# local dirs
 ignore = Path local
 ignore = Path docs/Dropbox
 
+# external1 dirs
 ignore = Path games
 ignore = Path OSs
 ignore = Path video
 ignore = Path Oscar
-
-ignore = Path lost+found
