@@ -1,0 +1,50 @@
+CIS-3030 Homework #3
+====================
+
+Read Chapters 8 and 16 in the text. For this assignment you will be studying
+function values, higher order functions, and related topics.
+
+Write the functions below in a functional style. That is, use recursion, pattern
+matching, or higher order methods as appropriate. You may wish to write test
+programs to exercise the functions below (strongly recommended). However, you do
+not need to submit your test programs as part of this assignment.
+
+1. (5 pts) The List class contains a sortWith method that accepts a comparison
+   function used to define the sort order. That comparison function should return
+   true if the first parameter "comes before" the second in the desired order.
+   Write a function strangeSort that takes a list of strings and returns a new
+   list sorted by the second character of each string. Strings that are shorter
+   than two characters should be first in the order (and sorted according to
+   their first and only character). For example sorting List("aorld", "x", "a",
+   "xello") should produce List("a", "x", "xello", "aorld").
+
+#. (5 pts) Write a function primeCount that counts the number of prime numbers in
+   a list of integers. You'll need to also write a purely functional version of
+   isPrime that returns true if its argument is a prime number.
+
+#. (5 pts) Write a function toBinary that takes a list of n integers in the range
+   [0 .. 255] inclusive (8 bit integers) and returns a single 8*n bit string of 0
+   and 1 digits that corresponds to the binary representation of the bytes in the
+   list. For example toBinary( List(128, 1) ) should evaluate to
+   "1000000000000001." Notice that only one string is returned.
+
+   Hint: Use the toBinaryStringFunctional method in the BinaryString.scala sample
+   file to convert the individual numbers. Think about using map, maybe twice
+   (you'll have to pad short strings on the left with "0" characters), and then
+   foldLeft to combine the individual strings.
+
+#. (5 pts) Write a function compose that takes two functions and returns a
+   another function obtained by successively applying the given two functions to
+   a particular argument. For example suppose f is the function that adds one to
+   its argument and g is the function that doubles its argument. Then the
+   function returned by compose should double the result of adding one to its
+   argument. That is, the function returned by compose should return g(f(x)).
+   Specifically::
+
+        val f = (x : Int) => x + 1
+        val g = (x : Int) => 2 * x
+        val result = compose(f, g)
+        val n = result(5)  // n is bound to 2 * (5 + 1) = 12
+
+   Note that compose only needs to be able to compose functions taking a single
+   integer parameter and returning Int. Hint: Return a function literal.
