@@ -1,5 +1,5 @@
 #
-# Makefile for the CIS-4230 Linear Equations project (Serial version)
+# Makefile for the CIS-4230 Linear Equations project (Parallel version)
 #
 
 CC=clang
@@ -9,7 +9,7 @@ LDFLAGS=-native -L/usr/lib/i386-linux-gnu -lpthread
 SOURCES=solve_system.c linear_equations.c thread_pool/thread_pool.c \
     thread_pool/worker.c
 OBJECTS=$(SOURCES:.c=.bc)
-EXECUTABLE=Serial
+EXECUTABLE=Parallel
 
 %.bc:	%.c
 	$(CC) $(CFLAGS) $< -o $@

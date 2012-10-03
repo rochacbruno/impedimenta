@@ -44,7 +44,6 @@ int main(int argc, char * argv[]) {
     int error;
     gaussian_solve(size, a, b, &error);
     Timer_stop(&stopwatch);
-    free(a);
 
     // Print the solution.
     if(error) {
@@ -56,7 +55,6 @@ int main(int argc, char * argv[]) {
         }
         printf("\nExecution time = %ld milliseconds\n", Timer_time(&stopwatch));
     }
-    free(b);
 
     return EXIT_SUCCESS;
 }

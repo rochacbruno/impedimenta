@@ -10,6 +10,9 @@
 #include "thread_pool/thread_pool.h"
 #include "thread_pool/worker.h"
 
+// TODO: remove me. I'm just here for debugging purposes.
+#include <stdio.h>
+
 //
 // The following function does the major work of reducing the system.
 //
@@ -24,9 +27,16 @@ static void elimination(
     floating_type temp, m;
     *error = 0;
 
-    // TODO: do more than just test thread pool imports
     struct thread_pool pool;
     thread_pool_init(&pool);
+
+    // TODO: create a function which can be executed.
+    // TODO: fetch results from that function
+    struct worker_work * tasks = malloc(size * sizeof(struct worker_work));
+    for(int i = 0; i < size; i++) {
+        worker_work_init(&tasks[i]);
+        printf("Initialized task %d\n", i);
+    }
 
     for(i = 0; i < size - 1; ++i) {
         // Find the row with the largest value of |a[j][i]|, j = i, ..., n - 1
@@ -64,6 +74,10 @@ static void elimination(
             b[j] -= m * b[i];
         }
     }
+
+    printf("Destroying thread pool.\n");
+    thread_pool_die(&pool);
+    printf("Done destroying thread pool.\n");
 }
 
 
