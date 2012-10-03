@@ -6,3 +6,7 @@
 *.class
 # C and C++ executables
 a.out
+# gcc object files
+*.o
+# clang object files (?)
+*.bc

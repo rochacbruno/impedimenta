@@ -1,0 +1,35 @@
+#
+# Makefile for the library.
+#
+
+CC=gcc
+CFLAGS=-c -O
+AR=ar
+ARFLAGS=rcs
+SOURCES=ProblemFile.c str.c Timer.c Tree.c Vector3.c
+OBJECTS=$(SOURCES:.c=.o)
+LIBRARY=libCommon.a
+
+%.o:	%.c
+	$(CC) $(CFLAGS) $< -o $@
+
+$(LIBRARY):	$(OBJECTS)
+	$(AR) $(ARFLAGS) $@ $(OBJECTS)
+
+# File Dependencies
+###################
+
+ProblemFile.o:	ProblemFile.c
+
+str.o:		str.c
+
+Timer.o:	Timer.c environ.h
+
+Tree.o:	        Tree.c
+
+Vector3.o:	Vector3.c
+
+# Additional Rules
+##################
+clean:
+	rm -f *.o *.bc *.a *.s *.ll *~ $(LIBRARY)
