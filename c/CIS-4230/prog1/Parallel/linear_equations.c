@@ -7,6 +7,8 @@
 #include <math.h>
 #include <string.h>
 #include "linear_equations.h"
+#include "thread_pool/thread_pool.h"
+#include "thread_pool/worker.h"
 
 //
 // The following function does the major work of reducing the system.
@@ -21,6 +23,10 @@ static void elimination(
     int           i, j, k;
     floating_type temp, m;
     *error = 0;
+
+    // TODO: do more than just test thread pool imports
+    struct thread_pool pool;
+    thread_pool_init(&pool);
 
     for(i = 0; i < size - 1; ++i) {
         // Find the row with the largest value of |a[j][i]|, j = i, ..., n - 1

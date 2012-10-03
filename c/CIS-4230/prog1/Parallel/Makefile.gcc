@@ -6,7 +6,8 @@ CC=gcc
 CFLAGS=-c -std=gnu99 -pthread -O -I../../Common
 LD=gcc
 LDFLAGS=-pthread
-SOURCES=solve_system.c linear_equations.c
+SOURCES=solve_system.c linear_equations.c thread_pool/thread_pool.c \
+    thread_pool/worker.c
 OBJECTS=$(SOURCES:.c=.o)
 EXECUTABLE=Serial
 
@@ -19,11 +20,13 @@ $(EXECUTABLE):	$(OBJECTS)
 # File Dependencies
 ###################
 
-solve_system.o:	            solve_system.c linear_equations.h
-
-linear_equations.o:         linear_equations.c linear_equations.h
+solve_system.o:	solve_system.c linear_equations.h
+linear_equations.o:	linear_equations.c linear_equations.h
+thread_pool/thread_pool.o:	thread_pool/thread_pool.c thread_pool/thread_pool.h
+thread_pool/worker.o:	thread_pool/worker.c thread_pool/worker.h
 
 # Additional Rules
 ##################
 clean:
-	rm -f *.o *.bc *.s *.ll *~ $(EXECUTABLE)
+	find . -type f \( -name "*.o" -o -name "*.bc" -o -name "*.s" -o -name "*.ll" \
+    -o -name "*~" -o -name $(EXECUTABLE) \) -exec rm -f {} \;
