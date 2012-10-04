@@ -30,11 +30,11 @@ int main(int argc, char * argv[]) {
     floating_type a[size][size];
     floating_type b[size];
     // Populate arrays with coefficients.
-    for(int i = 0; i < size; ++i) {
-        for(int j = 0; j < size; ++j) {
-            fscanf(input_file, "%lf", &a[i][j]); // Nasty type unsafety!
+    for(int row = 0; row < size; ++row) {
+        for(int col = 0; col < size; ++col) {
+            fscanf(input_file, "%lf", &a[row][col]); // Nasty type unsafety!
         }
-        fscanf(input_file, "%lf", &b[i]); // Here too!
+        fscanf(input_file, "%lf", &b[row]); // Here too!
     }
     fclose(input_file);
 

@@ -11,8 +11,8 @@ typedef double floating_type;
 
 void gaussian_solve(
     int size,
-    floating_type a[size][size],
-    floating_type b[size],
+    floating_type a[size][size], // row, col
+    floating_type b[size],       // row
     int * error
 );
 

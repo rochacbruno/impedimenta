@@ -10,9 +10,6 @@
 #include "thread_pool/thread_pool.h"
 #include "thread_pool/worker.h"
 
-// TODO: remove me. I'm just here for debugging purposes.
-#include <stdio.h>
-
 //
 // The following function does the major work of reducing the system.
 //
@@ -22,62 +19,63 @@ static void elimination(
     floating_type *b,
     int *error
 ) {
-    floating_type temp_array[size];
-    int           i, j, k;
-    floating_type temp, m;
-    *error = 0;
-
+    // Create and initialize thread pool and tasks.
     struct thread_pool pool;
     thread_pool_init(&pool);
-
-    // TODO: create a function which can be executed.
-    // TODO: fetch results from that function
     struct worker_work * tasks = malloc(size * sizeof(struct worker_work));
     for(int i = 0; i < size; i++) {
         worker_work_init(&tasks[i]);
-        printf("Initialized task %d\n", i);
     }
 
-    for(i = 0; i < size - 1; ++i) {
-        // Find the row with the largest value of |a[j][i]|, j = i, ..., n - 1
-        k = i;
-        m = fabsf(a[i][i]);
-        for(j = i + 1; j < size; ++j) {
-            if(fabsf(a[j][i]) > m) {
-                k = j;
-                m = fabsf(a[j][i]);
+    floating_type max;  // the largest value in column i is ``max``
+    int max_row;        // the largest value in column i is at row ``max_row``
+    floating_type temp;
+    floating_type * temp_row = malloc(size * sizeof(floating_type));
+
+    // When examining row i, you're also going to simplify row i + 1. Do not
+    // examine the last row, or you will attempt to simplify a row that does not
+    // exist.
+    for(int i = 0; i < size - 1; i++) {
+        // Consider the column containing a[i][i]. Look at all the values from
+        // a[i][i] to the bottom of the matrix, and find the row with the
+        // largest value.
+        max = fabsf(a[i][i]); // fabsf(x): single-precision absolute value of x
+        max_row = i;
+        for(int row = max_row + 1; row < size; row++) {
+            if(max < fabsf(a[i][row])) {
+                max = fabsf(a[i][row]);
+                max_row = row;
             }
         }
 
-        // Check for |a[k][i]| zero.
-        if(fabsf(a[k][i]) <= 1.0E-6) {
-            *error = -2;
-            return;
-        }
-
-        // Exchange row i and row k, if necessary.
-        if(k != i) {
-            memcpy(temp_array, a[i], size * sizeof(floating_type));
-            memcpy(a[i], a[k], size * sizeof(floating_type));
-            memcpy(a[k], temp_array, size * sizeof(floating_type));
-
-            // Exchange corresponding elements of b.
+        // If row max_row has a larger value than row i (as per the restrictions
+        // above), they should be swapped. This provides better numerical
+        // stability when working on large matrices.
+        if(i != max_row) {
+            memcpy(temp_row,   a[i],       size * sizeof(floating_type));
+            memcpy(a[i],       a[max_row], size * sizeof(floating_type));
+            memcpy(a[max_row], temp_row,   size * sizeof(floating_type));
             temp = b[i];
-            b[i] = b[k];
-            b[k] = temp;
+            b[i] = b[max_row];
+            b[max_row] = temp;
         }
 
-        // Subtract multiples of row i from subsequent rows.
-        for(j = i + 1; j < size; ++j) {
-            m = a[j][i]/a[i][i];
-            for(k = 0; k < size; ++k) a[j][k] -= m * a[i][k];
-            b[j] -= m * b[i];
+        // Finally -- the part to be parallelized!
+        // TODO: parallelize
+        // For each row below row i, the value in column i should be made zero.
+        // Do this by subtracting (row i) * coefficient from each subsequent
+        // row. The coefficient ``k`` is different for each row.
+        for(int row = i + 1; row < size; row++) {
+            floating_type k = a[row][i] / a[i][i];
+            for(int col = 0; col < size; col++)
+                a[row][col] -= k * a[i][col];
+            b[row] -= k * b[i];
         }
     }
 
-    printf("Destroying thread pool.\n");
     thread_pool_die(&pool);
-    printf("Done destroying thread pool.\n");
+    free(tasks);
+    free(temp_row);
 }
 
 
