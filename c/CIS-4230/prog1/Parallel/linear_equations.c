@@ -41,8 +41,18 @@ static void elimination(
     floating_type * b, // 1d array
     int * error
 ) {
+    // Create and initialize thread pool and args.
     struct thread_pool pool;
     thread_pool_init(&pool);
+    // This many tasks and args are never needed on any single run of the loop.
+    // However, by creating a large number of tasks here, you'll never need to
+    // create more tasks later, and the same tasks can be reused. Doing this
+    // significantly improves runtime (on my machine).
+    struct worker_work * tasks = malloc(size * sizeof(struct worker_work));
+    struct simplifier_args * args = malloc(size * sizeof(struct simplifier_args));
+    for(int i = 0; i < size; i++)
+        worker_work_init(&tasks[i]);
+
     floating_type max;  // the largest value in column i is ``max``
     int max_row;        // the largest value in column i is at row ``max_row``
     int task;           // To keep track of tasks assigned to thread pool.
@@ -77,35 +87,37 @@ static void elimination(
             b[max_row] = temp;
         }
 
+        // The following could likely be improved in the following ways:
+        // 1. Do not pthread_mutex_lock every single task. Instead, call a
+        //    thread pool function/lock/semaphore/whatever to determine if all
+        //    workers are idle. I don't know how to do this.
+
         // For each row below row i, the value in column i should be made zero.
         // Do this by subtracting (row i) * coefficient from each subsequent
         // row. The coefficient ``k`` is different for each row.
-        // Also do prep work so each worker knows what row to modify.
-        struct worker_work tasks[size - i - 1];
-        struct simplifier_args args[size - i - 1];
-        task = 0;
-        for(int row = i + 1; row < size; row++, task++) {
-            worker_work_init(&tasks[task]);
-            args[task].size = size;
-            args[task].a = a;
-            args[task].b = b;
-            args[task].i = i;
-            args[task].row = row;
-            tasks[task].arg = (void *)&args[task];
-            tasks[task].function = simplifier;
-            thread_pool_give_work(&pool, &tasks[task]);
+        for(int row = i + 1; row < size; row++) {
+            args[row].size = size;
+            args[row].a = a;
+            args[row].b = b;
+            args[row].i = i;
+            args[row].row = row;
+            tasks[row].arg = (void *)&args[row];
+            tasks[row].function = simplifier;
+            thread_pool_give_work(&pool, &tasks[row]);
         }
         // Ensure each worker is done modifying its row before proceeding.
-        for(task = 0; task < (size - i - 1); task++) {
-            pthread_mutex_lock(&tasks[task].lock);
-            while(false == tasks[task].work_done)
-                pthread_cond_wait(&tasks[task].alarm_clock, &tasks[task].lock);
-            pthread_mutex_unlock(&tasks[task].lock);
+        for(int row = i + 1; row < size; row++) {
+            pthread_mutex_lock(&tasks[row].lock);
+            while(false == tasks[row].work_done)
+                pthread_cond_wait(&tasks[row].alarm_clock, &tasks[row].lock);
+            pthread_mutex_unlock(&tasks[row].lock);
         }
     }
 
     thread_pool_die(&pool);
     free(temp_row);
+    free(tasks);
+    free(args);
 }
 
 
