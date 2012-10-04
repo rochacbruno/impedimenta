@@ -10,8 +10,6 @@
 #include "thread_pool/thread_pool.h"
 #include "thread_pool/worker.h"
 
-#include <stdio.h>
-
 struct simplifier_args {
     int size;
     floating_type * a; // 2d array
@@ -27,8 +25,7 @@ void * simplifier(void * arg) {
         args->a[args->i * args->size + args->i];
 
     for(int col = 0; col < args->size; col++) {
-        args->a[args->row * args->size + col] -= \
-            coeff * args->a[args->i * args->size + col];
+        args->a[args->row * args->size + col] -= coeff * args->a[args->i * args->size + col];
     }
     args->b[args->row] -= coeff * args->b[args->i];
 
