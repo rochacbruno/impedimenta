@@ -1,0 +1,59 @@
+Analysis
+========
+
+Test Hardware
+-------------
+
+My test machine is the Dell Precision M4300, which has an Intel Core 2 Duo T9300
+processor. The T9300 has two cores and two threads, which indicates a lack of
+hyperthreading capability. For this assignment, I decided to use my own thread
+pool implementation, written for homework two, which creates two threads on this
+machine.
+
+The T9300 has a 6 MB L2 cache.
+
+Serial vs Parallel
+------------------
+
+My parallel program is significantly slower than the serial program. This is
+true for problem sizes from 500 to 1500 unknowns. As noted in the source code of
+linear_equations.c, this is likely due to a bad implementation. In that file, I
+have listed several suggestions for improving runtime performance.
+
+You can see a graph of problem sizes, runtimes, and program used in the file
+``runtimes.png``. The text file from which the graph was generated is log.txt.
+You may notice that the serial program does not have any data points for problem
+sizes greater than 1000 unknowns. This is because the serial program segfaults
+when attempting to solve large problems.
+
+Problem Size vs Cache
+---------------------
+
+Each element in the matrix being solved is represented as a double. Assuming a
+double consumes 8 bytes of memory, the memory consumed by the matrix is::
+
+    bytes_mem = num_unknowns * (num_unknowns + 1) * 8
+
+The memory usage of the matrix is summarized below.
+
+Unknowns Memory Usage (MB)
+-------- -----------------
+500      1.96
+600      2.82
+700      3.83
+800      5.01
+900      6.34
+1000     7.82
+1100     9.46
+1200     11.26
+1300     13.21
+1400     15.32
+1500     17.59
+
+Thus, for any problem with 900 unknowns or more, execution time should see
+significant slowdowns, as the entire problem can no longer be stored in cache.
+C stores arrays in row-major order. This means that each row in a matrix is laid
+out in memory one after another. The majority of execution time in both the
+serial and parallel program program is spent traversing rows, so the programs
+are working *with* the cache. Thus, rotating the table in memory would likely
+produce a slowdown.
