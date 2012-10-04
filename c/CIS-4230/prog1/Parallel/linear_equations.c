@@ -10,19 +10,29 @@
 #include "thread_pool/thread_pool.h"
 #include "thread_pool/worker.h"
 
+#include <stdio.h>
+
 struct simplifier_args {
-    int k;
-    //     matrix: a
-    //     matrix: b
-    //     index: i (old)
-    //     index: row (current)
+    int size;
+    floating_type * a; // 2d array
+    floating_type * b; // 1d array
+    int i;             // multiply this row with a constant based off a[i]
+    int row;           // the row a[row] is being adjusted here
 };
 
 void * simplifier(void * arg) {
+    struct simplifier_args * args = (struct simplifier_args *)arg;
+    floating_type coeff = \
+        args->a[args->row * args->size + args->i] / \
+        args->a[args->i * args->size + args->i];
+
+    for(int col = 0; col < args->size; col++) {
+        args->a[args->row * args->size + col] -= \
+            coeff * args->a[args->i * args->size + col];
+    }
+    args->b[args->row] -= coeff * args->b[args->i];
+
     return NULL;
-    // Calculate:
-    //     constant
-    //     new values for row to be modified
 }
 
 //
@@ -31,8 +41,8 @@ void * simplifier(void * arg) {
 static void elimination(
     int size,
     floating_type a[size][size],
-    floating_type *b,
-    int *error
+    floating_type * b,
+    int * error
 ) {
     struct thread_pool pool;
     thread_pool_init(&pool);
@@ -79,18 +89,15 @@ static void elimination(
         task = 0;
         for(int row = i + 1; row < size; row++, task++) {
             worker_work_init(&tasks[task]);
-            // TODO: populate arg
+            args[task].size = size;
+            args[task].a = a;
+            args[task].b = b;
+            args[task].i = i;
+            args[task].row = row;
             tasks[task].arg = (void *)&args[task];
             tasks[task].function = simplifier;
             thread_pool_give_work(&pool, &tasks[task]);
-
-            // TODO: move to function
-            floating_type k = a[row][i] / a[i][i];
-            for(int col = 0; col < size; col++)
-                a[row][col] -= k * a[i][col];
-            b[row] -= k * b[i];
         }
-
         // Ensure each worker is done modifying its row before proceeding.
         for(task = 0; task < (size - i - 1); task++) {
             pthread_mutex_lock(&tasks[task].lock);
