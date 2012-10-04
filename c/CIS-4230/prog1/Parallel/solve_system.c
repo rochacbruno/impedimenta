@@ -24,15 +24,15 @@ int main(int argc, char * argv[]) {
     }
 
     // Get the size of the gaussian equation, then create arrays to hold it.
-    // WARNING: this should be malloc'd instead. Creating a[size][size] results
-    // in segfaults for large ``size``. (on my machine, 1100+ will do it)
+    // WARNING: this should be malloc'd. Creating a[size][size] results in
+    // segfaults for large ``size``. (on my machine, 1100+ will do it)
     fscanf(input_file, "%d", &size);
-    floating_type a[size][size];
-    floating_type b[size];
+    floating_type * a = malloc(size * size * sizeof(floating_type));
+    floating_type * b = malloc(size * sizeof(floating_type));
     // Populate arrays with coefficients.
     for(int row = 0; row < size; ++row) {
         for(int col = 0; col < size; ++col) {
-            fscanf(input_file, "%lf", &a[row][col]); // Nasty type unsafety!
+            fscanf(input_file, "%lf", &a[row * size + col]); // Nasty type unsafety!
         }
         fscanf(input_file, "%lf", &b[row]); // Here too!
     }
@@ -55,6 +55,9 @@ int main(int argc, char * argv[]) {
         }
         printf("\nExecution time = %ld milliseconds\n", Timer_time(&stopwatch));
     }
+
+    free(a);
+    free(b);
 
     return EXIT_SUCCESS;
 }
