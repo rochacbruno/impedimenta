@@ -1,0 +1,17 @@
+500 1.0 parallel
+600 1.4 parallel
+700 2.0 parallel
+800 2.9 parallel
+900 3.6 parallel
+1000 4.5 parallel
+1100 5.7 parallel
+1200 7.1 parallel
+1300 8.3 parallel
+1400 9.5 parallel
+1500 12.0 parallel
+500 0.2 serial
+600 0.3 serial
+700 0.4 serial
+800 0.5 serial
+900 0.8 serial
+1000 1.4 serial
