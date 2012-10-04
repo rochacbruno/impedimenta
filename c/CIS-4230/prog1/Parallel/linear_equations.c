@@ -10,6 +10,21 @@
 #include "thread_pool/thread_pool.h"
 #include "thread_pool/worker.h"
 
+struct simplifier_args {
+    int k;
+    //     matrix: a
+    //     matrix: b
+    //     index: i (old)
+    //     index: row (current)
+};
+
+void * simplifier(void * arg) {
+    return NULL;
+    // Calculate:
+    //     constant
+    //     new values for row to be modified
+}
+
 //
 // The following function does the major work of reducing the system.
 //
@@ -19,16 +34,11 @@ static void elimination(
     floating_type *b,
     int *error
 ) {
-    // Create and initialize thread pool and tasks.
     struct thread_pool pool;
     thread_pool_init(&pool);
-    struct worker_work * tasks = malloc(size * sizeof(struct worker_work));
-    for(int i = 0; i < size; i++) {
-        worker_work_init(&tasks[i]);
-    }
-
     floating_type max;  // the largest value in column i is ``max``
     int max_row;        // the largest value in column i is at row ``max_row``
+    int task;           // To keep track of tasks assigned to thread pool.
     floating_type temp;
     floating_type * temp_row = malloc(size * sizeof(floating_type));
 
@@ -60,21 +70,37 @@ static void elimination(
             b[max_row] = temp;
         }
 
-        // Finally -- the part to be parallelized!
-        // TODO: parallelize
         // For each row below row i, the value in column i should be made zero.
         // Do this by subtracting (row i) * coefficient from each subsequent
         // row. The coefficient ``k`` is different for each row.
-        for(int row = i + 1; row < size; row++) {
+        // Also do prep work so each worker knows what row to modify.
+        struct worker_work tasks[size - i - 1];
+        struct simplifier_args args[size - i - 1];
+        task = 0;
+        for(int row = i + 1; row < size; row++, task++) {
+            worker_work_init(&tasks[task]);
+            // TODO: populate arg
+            tasks[task].arg = (void *)&args[task];
+            tasks[task].function = simplifier;
+            thread_pool_give_work(&pool, &tasks[task]);
+
+            // TODO: move to function
             floating_type k = a[row][i] / a[i][i];
             for(int col = 0; col < size; col++)
                 a[row][col] -= k * a[i][col];
             b[row] -= k * b[i];
         }
+
+        // Ensure each worker is done modifying its row before proceeding.
+        for(task = 0; task < (size - i - 1); task++) {
+            pthread_mutex_lock(&tasks[task].lock);
+            while(false == tasks[task].work_done)
+                pthread_cond_wait(&tasks[task].alarm_clock, &tasks[task].lock);
+            pthread_mutex_unlock(&tasks[task].lock);
+        }
     }
 
     thread_pool_die(&pool);
-    free(tasks);
     free(temp_row);
 }
 
