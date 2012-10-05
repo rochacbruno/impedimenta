@@ -16,7 +16,21 @@
  * integer parameter and returning Int. Hint: Return a function literal.
  */
 object Main {
+    def compose(first: Int => Int, second: Int => Int): Int => Int = {
+        second(first)
+    }
+
     def main(args: Array[String]): Unit = {
-        println("Hello, world!")
+        val num = 5
+        val f = (x: Int) => x + 1
+        val g = (x: Int) => x * 2
+
+        val composition = (x: Int) => g(f(x))
+        println(composition(num))
+        val composition2 = compose(f, g)
+        println(composition2(num))
+
+        println("f(" + num + "): " + f(num))
+        println("g(" + num + "): " + g(num))
     }
 }
