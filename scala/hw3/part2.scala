@@ -8,7 +8,13 @@ object Main {
      * Returns true if ``num`` is prime.
      */
     def isPrime(num: Int): Boolean = {
-        return true
+        for(test <- 2 until num) {
+            if(test * test > num)
+                return true
+            if(0 == num % test)
+                return false
+        }
+        return false // should not get here!
     }
 
     /**
