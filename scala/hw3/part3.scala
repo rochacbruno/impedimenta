@@ -21,18 +21,28 @@ object Main {
         }
     }
 
+    /**
+     * Represents a list of Integers in the range 0..255 as a single binary
+     * string. The resultant string is 8 * ``nums.length`` characters long.
+     * Throws an exception if any number is less than 0 or greater than 255.
+     */
     def toBinary(nums: List[Int]): String = {
-        var result = ""
-        for(num <- nums) {
-            // TODO: create a custom exception
-            if(255 < num)
-                throw new Exception("toBinary: cannot represent numbers greater than 255")
-            if(0 > num)
-                throw new Exception("toBinary: cannot represent numbers less than 0")
-
-            result += "0" * (8 - toBinaryStringFunctional(num).length) + toBinaryStringFunctional(num)
+        nums match {
+            case List() => ""
+            case head :: tail => {
+                // TODO: create custom exception
+                if(255 < head)
+                    throw new Exception(
+                        "toBinary: cannot represent numbers greater than 255"
+                    )
+                if(0 > head)
+                    throw new Exception(
+                        "toBinary: cannot represent numbers less than 0"
+                    )
+                val as_binary = toBinaryStringFunctional(head)
+                ("0" * (8 - as_binary.length)) + as_binary + toBinary(tail)
+            }
         }
-        result
     }
 
     /**
