@@ -16,21 +16,27 @@
  * integer parameter and returning Int. Hint: Return a function literal.
  */
 object Main {
-    def compose(first: Int => Int, second: Int => Int): Int => Int = {
-        second(first)
+    /**
+     * Returns a function literal second(first()). The resultant function
+     * literal can only take a single integer parameter.
+     */
+    def compose(first: (Int) => Int, second: (Int) => Int): (Int) => Int = {
+        (x: Int) => second(first(x))
     }
 
+    /**
+     * Tests compose() by feeding it various functions and testing the resultant
+     * function literals.
+     */
     def main(args: Array[String]): Unit = {
         val num = 5
         val f = (x: Int) => x + 1
         val g = (x: Int) => x * 2
 
-        val composition = (x: Int) => g(f(x))
-        println(composition(num))
-        val composition2 = compose(f, g)
-        println(composition2(num))
-
+        //val composition = (x: Int) => g(f(x)) // This works!
         println("f(" + num + "): " + f(num))
         println("g(" + num + "): " + g(num))
+        println("compose(f, g).apply(" + num + "): " + compose(f, g).apply(5))
+        println("compose(g, f).apply(" + num + "): " + compose(g, f).apply(5))
     }
 }
