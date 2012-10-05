@@ -14,18 +14,29 @@ object Main {
      * Returns true if ``first`` is less than or equal to ``second``, accoring
      * to the rules above.
      */
-    def lessEqual(first: Int, second: Int): Boolean = {
-        if(first <= second)
+    def lessEqual(first: String, second: String): Boolean = {
+        if(first.isEmpty)
             return true
-        else
+        if(second.isEmpty)
             return false
+
+        if(1 == first.length || 1 == second.length) {
+            if(first.length < second.length)
+                return true
+            else if(first.length > second.length)
+                return false
+            else
+                return first <= second
+        }
+
+        first(1) <= second(1)
     }
 
     /**
      * Inserts ``item`` into ``ordered_list``. Assumes that the list is already
      * sorted, according to the rules above.
      */
-    def insert(item: Int, ordered_list: List[Int]): List[Int] = {
+    def insert(item: String, ordered_list: List[String]): List[String] = {
         for(i <- ordered_list.indices) {
             if(lessEqual(item, ordered_list(i))) {
                 val (before, after) = ordered_list.splitAt(i)
@@ -35,32 +46,36 @@ object Main {
         ordered_list ::: List(item)
     }
 
-    def strangeSort(sort_me: List[Int]): List[Int] = {
+    /**
+     * Sorts a list of strings according to the conditions outlined above.
+     */
+    def strangeSort(sort_me: List[String]): List[String] = {
         sort_me match {
             case List()       => List()
             case head :: tail => insert(head, strangeSort(tail))
         }
     }
 
+    /**
+     * Tests ``strangeSort()`` with a variety of inputs. Prints the results of
+     * these exercises to stdout.
+     */
     def main(args: Array[String]): Unit = {
-    /*
-        val sort_me = List("c", "b", "", "hurk", "hark")
+        val lists = List(
+            List(),
+            List("one"),
+            List("c", "b", "", "hurk", "hark", "e pty")
+        )
 
-        println("List before sorting.")
-        println("--------------------")
-        sort_me.foreach((str: String) => println(str))
-        println()
-        println("List after sorting.")
-        println("-------------------")
-        strangeSort(sort_me).foreach((str: String) => println(str))
-    */
-        val sort_me = List(2, 1, 0, 3, 4)
-        println("List before sorting.")
-        println("--------------------")
-        sort_me.foreach((num: Int) => println(num))
-        println()
-        println("List after sorting.")
-        println("-------------------")
-        strangeSort(sort_me).foreach((num: Int) => println(num))
+        for(list <- lists) {
+            println("list before sorting")
+            println("-------------------")
+            list.foreach((str: String) => println(str))
+            println()
+            println("list after sorting")
+            println("------------------")
+            strangeSort(list).foreach((str: String) => println(str))
+            println()
+        }
     }
 }
