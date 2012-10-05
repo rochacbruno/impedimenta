@@ -1,7 +1,8 @@
 import hw2.Interval
 import hw2.IntervalStack
 
-/** An implementation of a simple Interval calculator.
+/**
+ * An implementation of a simple Interval calculator.
  *
  * Sample run:
  * &gt; [1.2, 4.5]  # Input an interval.
