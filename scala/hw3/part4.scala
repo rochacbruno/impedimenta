@@ -25,8 +25,8 @@ object Main {
     }
 
     /**
-     * Tests compose() by feeding it various functions and testing the resultant
-     * function literals.
+     * Tests ``compose()`` with a variety of inputs. Prints the results of these
+     * exercises to stdout.
      */
     def main(args: Array[String]): Unit = {
         val num = 5
