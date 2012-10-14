@@ -1,0 +1,8 @@
+hw3 usage notes
+===============
+
+To compile and run unit tests::
+
+    javac -Xlint -cp .:/usr/share/java/junit.jar hw3/*.java
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore hw3.TreeTest
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore hw3.TreeNodeTest
