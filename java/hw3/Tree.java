@@ -6,65 +6,100 @@ import hw3.TreeNode;
 /**
  * A binary search tree.
  *
+ * All nodes in a tree must be of the same type. No automatic or explicit
+ * balancing can be performed on the tree.
+ *
  * @author Jeremy Audet &lt;ichimonji10@gmail.com&gt;
  */
 public class Tree<T> {
     private TreeNode<T> root;
 
     /**
-     * constructs a Tree
+     * Creates an empty tree.
      */
     public Tree() {
         root = null;
     }
 
+    /**
+     * Creates a tree whose root contains <code>data</code>.
+     */
     public Tree(T data) {
         root = new TreeNode<T>(data);
     }
 
     /**
-     * returns the root node of the Tree.
+     * Returns the root node of the tree. If the tree is empty,
+     * <code>null</code> is returned.
      */
     public TreeNode<T> getRoot() {
         return root;
     }
 
     /**
-     * adds value to the correct place within the tree
+     * Adds <code>value</code> to the tree.
      */
     public void add(T value) {
+        root.add(value);
     }
 
     /**
-     * performs an in order print of the tree
+     * Returns a string representing an in-order traversal of this tree.
+     */
+    public String toString() {
+        return root.toString();
+    }
+
+    /**
+     * Returns a string representing a pre-order traversal of this tree.
+     */
+    public String toStringPre() {
+        return root.toStringPre();
+    }
+
+    /**
+     * Returns a string representing a post-order traversal of this tree.
+     */
+    public String toStringPost() {
+        return root.toStringPost();
+    }
+
+    /**
+     * Prints an in-order representation of tree to stdout.
      */
     public void print() {
+        System.out.println(toString());
     }
 
     /**
-     * performs a preorder print of the tree
+     * Prints a pre-order representation of tree to stdout.
      */
     public void printPre() {
+        System.out.println(toStringPre());
     }
 
     /**
-     * performs a postorder print of the tree
+     * Prints a post-order representation of tree to stdout.
      */
     public void printPost() {
+        System.out.println(toStringPost());
     }
 
     /**
-     * Returns true if <code>value</code> is found in the tree, false otherwise.
+     * Returns true if <code>value</code> is found in the tree. Otherwise,
+     * returns false.
      */
     public boolean search(T value) {
+        // TODO
         return false;
     }
 
     /**
-     * Returns true if <code>value</code> is removed from the tree, false
-     * otherwise.
+     * Returns true if <code>value</code> is removed from the tree. Otherwise,
+     * returns false.
      */
     public boolean delete(T value) {
+        // TODO
         return false;
     }
 }
