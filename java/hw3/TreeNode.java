@@ -96,9 +96,16 @@ public class TreeNode<T extends Comparable<? super T>> {
      * subtrees.
      */
     public String toString() {
-        String leftString = (null == left) ? "" : left.toString();
-        String rightString = (null == right) ? "" : right.toString();
-        return leftString + ", " + value.toString() + ", " + rightString;
+        if(null == left && null == right) {
+            return value.toString();
+        } else if(null == left && null != right) {
+            return value.toString() + ", " + right.toString();
+        } else if(null != left && null == right) {
+            return left.toString() + ", " + value.toString();
+        } else {
+            return left.toString() + ", " + value.toString() + ", " +
+                right.toString();
+        }
     }
 
     /**
@@ -106,9 +113,16 @@ public class TreeNode<T extends Comparable<? super T>> {
      * subtrees.
      */
     public String toStringPre() {
-        String leftString = (null == left) ? "" : left.toString();
-        String rightString = (null == right) ? "" : right.toString();
-        return value.toString() + ", " + leftString + ", " + rightString;
+        if(null == left && null == right) {
+            return value.toString();
+        } else if(null == left && null != right) {
+            return value.toString() + ", " + right.toString();
+        } else if(null != left && null == right) {
+            return value.toString() + ", " + left.toString();
+        } else {
+            return value.toString() + ", " + left.toString() +
+                right.toString();
+        }
     }
 
     /**
@@ -116,9 +130,16 @@ public class TreeNode<T extends Comparable<? super T>> {
      * it's subtrees.
      */
     public String toStringPost() {
-        String leftString = (null == left) ? "" : left.toString();
-        String rightString = (null == right) ? "" : right.toString();
-        return leftString + ", " + rightString + ", " + value.toString();
+        if(null == left && null == right) {
+            return value.toString();
+        } else if(null == left && null != right) {
+            return right.toString() + ", " + value.toString();
+        } else if(null != left && null == right) {
+            return left.toString() + ", " + value.toString();
+        } else {
+            return left.toString() + ", " + right.toString() + ", " +
+                value.toString();
+        }
     }
 
     /**
