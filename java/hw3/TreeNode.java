@@ -92,6 +92,26 @@ public class TreeNode<T extends Comparable<? super T>> {
     }
 
     /**
+     * Returns true if this node or one of it's subtrees contains
+     * <code>value</code>. Otherwise, returns false.
+     */
+    public boolean find(T value) {
+        if(value.equals(this.value)) {
+            return true;
+        }
+        if(0 > value.compareTo(this.value)) {
+            if(null != left && left.find(value)) {
+                return true;
+            }
+        } else {
+            if(null != right && right.find(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Returns a string representing an in-order traversal of this node and it's
      * subtrees.
      */

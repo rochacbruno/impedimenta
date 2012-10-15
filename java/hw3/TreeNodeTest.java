@@ -10,18 +10,22 @@ import org.junit.Test;
  */
 public class TreeNodeTest {
     /**
-     * Ensure standalone nodes can be created and read from. Test the getValue()
-     * and toString() methods.
+     * Ensure standalone nodes can be created and read from. Test the
+     * getValue(), toString(), and find() methods.
      */
     @Test
     public void singleNodes() {
         // Can I create a TreeNode<Integer>?
         TreeNode<Integer> nodeInt = new TreeNode<Integer>(42);
+        assertTrue( nodeInt.find(42));
+        assertTrue(!nodeInt.find(43));
         assertTrue(42 == nodeInt.getValue());
         assertEquals("42", nodeInt.toString());
 
         // Can I create a TreeNode<String>?
         TreeNode<String> nodeString = new TreeNode<String>("Hullabaloo");
+        assertTrue( nodeString.find("Hullabaloo"));
+        assertTrue(!nodeString.find("bogus"));
         assertEquals("Hullabaloo", nodeString.getValue());
         assertEquals("Hullabaloo", nodeString.toString());
     }
@@ -48,8 +52,8 @@ public class TreeNodeTest {
 
     /**
      * Create a <code>TreeNode&lt;Integer&gt;</code> and add children to it.
-     * Test the add(), left(), right(), getValue(), and various toString()
-     * methods.
+     * Test the add(), left(), right(), getValue(), various toString() methods,
+     * and find().
      */
     @Test
     public void createReadInteger() {
@@ -57,6 +61,11 @@ public class TreeNodeTest {
         TreeNode<Integer> node = new TreeNode<Integer>(10);
         node.add(9);
         node.add(8);
+        assertTrue(!node.find(11));
+        assertTrue( node.find(10));
+        assertTrue( node.find(9));
+        assertTrue( node.find(8));
+        assertTrue(!node.find(7));
         assertTrue(10 == node.getValue());
         assertTrue(9  == node.left().getValue());
         assertTrue(8  == node.left().left().getValue());
@@ -68,6 +77,11 @@ public class TreeNodeTest {
         node = new TreeNode<Integer>(10);
         node.add(11);
         node.add(12);
+        assertTrue(!node.find(9));
+        assertTrue( node.find(10));
+        assertTrue( node.find(11));
+        assertTrue( node.find(12));
+        assertTrue(!node.find(13));
         assertTrue(10 == node.getValue());
         assertTrue(11 == node.right().getValue());
         assertTrue(12 == node.right().right().getValue());
@@ -83,6 +97,19 @@ public class TreeNodeTest {
         node.add(20);
         node.add(19);
         node.add(21);
+        assertTrue(!node.find(-2));
+        assertTrue( node.find(-1));
+        assertTrue( node.find(0));
+        assertTrue( node.find(1));
+        assertTrue(!node.find(2));
+        assertTrue(!node.find(9));
+        assertTrue( node.find(10));
+        assertTrue(!node.find(11));
+        assertTrue(!node.find(18));
+        assertTrue( node.find(19));
+        assertTrue( node.find(20));
+        assertTrue( node.find(21));
+        assertTrue(!node.find(22));
         assertTrue(10 == node.getValue());
         assertTrue(0  == node.left().getValue());
         assertTrue(-1 == node.left().left().getValue());
@@ -103,6 +130,19 @@ public class TreeNodeTest {
         node.add(0);
         node.add(1);
         node.add(-1);
+        assertTrue(!node.find(-2));
+        assertTrue( node.find(-1));
+        assertTrue( node.find(0));
+        assertTrue( node.find(1));
+        assertTrue(!node.find(2));
+        assertTrue(!node.find(9));
+        assertTrue( node.find(10));
+        assertTrue(!node.find(11));
+        assertTrue(!node.find(18));
+        assertTrue( node.find(19));
+        assertTrue( node.find(20));
+        assertTrue( node.find(21));
+        assertTrue(!node.find(22));
         assertTrue(10 == node.getValue());
         assertTrue(0  == node.left().getValue());
         assertTrue(-1 == node.left().left().getValue());
@@ -126,6 +166,10 @@ public class TreeNodeTest {
         TreeNode<String> node = new TreeNode<String>("h");
         node.add("g");
         node.add("f");
+        assertTrue(!node.find("e"));
+        assertTrue( node.find("f"));
+        assertTrue( node.find("g"));
+        assertTrue( node.find("h"));
         assertEquals("h", node.getValue());
         assertEquals("g", node.left().getValue());
         assertEquals("f", node.left().left().getValue());
@@ -137,6 +181,10 @@ public class TreeNodeTest {
         node = new TreeNode<String>("h");
         node.add("i");
         node.add("j");
+        assertTrue(!node.find("g"));
+        assertTrue( node.find("h"));
+        assertTrue( node.find("i"));
+        assertTrue( node.find("j"));
         assertEquals("h", node.getValue());
         assertEquals("i", node.right().getValue());
         assertEquals("j", node.right().right().getValue());
@@ -152,6 +200,14 @@ public class TreeNodeTest {
         node.add("y");
         node.add("x");
         node.add("z");
+        assertTrue(!node.find("blergh"));
+        assertTrue( node.find("a"));
+        assertTrue( node.find("b"));
+        assertTrue( node.find("c"));
+        assertTrue( node.find("h"));
+        assertTrue( node.find("x"));
+        assertTrue( node.find("y"));
+        assertTrue( node.find("z"));
         assertEquals("h", node.getValue());
         assertEquals("b", node.left().getValue());
         assertEquals("a", node.left().left().getValue());
@@ -172,6 +228,14 @@ public class TreeNodeTest {
         node.add("b");
         node.add("c");
         node.add("a");
+        assertTrue(!node.find("blergh"));
+        assertTrue( node.find("a"));
+        assertTrue( node.find("b"));
+        assertTrue( node.find("c"));
+        assertTrue( node.find("h"));
+        assertTrue( node.find("x"));
+        assertTrue( node.find("y"));
+        assertTrue( node.find("z"));
         assertEquals("h", node.getValue());
         assertEquals("b", node.left().getValue());
         assertEquals("a", node.left().left().getValue());

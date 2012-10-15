@@ -8,7 +8,7 @@ import java.lang.Comparable;
  * A binary search tree.
  *
  * All nodes in a tree must be of the same type. No automatic or explicit
- * balancing can be performed on the tree.
+ * balancing can be performed on the tree. All nodes in the tree are unique.
  *
  * <code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code> means:
  * "<code>T</code> is a type that is comparable to itself or to some superclass
@@ -44,6 +44,8 @@ public class Tree<T extends Comparable<? super T>> {
 
     /**
      * Adds <code>value</code> to the tree.
+     *
+     * The tree is not altered if <code>value</code> already exists in the tree.
      */
     public void add(T value) {
         if(null == root) {
@@ -100,8 +102,11 @@ public class Tree<T extends Comparable<? super T>> {
      * returns false.
      */
     public boolean search(T value) {
-        // TODO
-        return false;
+        if(null == root) {
+            return false;
+        } else {
+            return root.find(value);
+        }
     }
 
     /**
