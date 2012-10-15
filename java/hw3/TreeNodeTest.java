@@ -27,6 +27,26 @@ public class TreeNodeTest {
     }
 
     /**
+     * Ensure that nodes, by default, have children of <code>null</code>.
+     */
+    @Test
+    public void nullChildren() {
+        // Nodes should have null children whether they're TreeNode<Integer>...
+        TreeNode<Integer> nodeInt = new TreeNode<Integer>(-10);
+        assertTrue(-10 == nodeInt.getValue());
+        assertEquals("-10", nodeInt.toString());
+        assertTrue(null == nodeInt.left());
+        assertTrue(null == nodeInt.right());
+
+        // ... or TreeNode<String>
+        TreeNode<String> nodeString = new TreeNode<String>("say cheese");
+        assertEquals("say cheese", nodeString.getValue());
+        assertEquals("say cheese", nodeString.toString());
+        assertTrue(null == nodeString.left());
+        assertTrue(null == nodeString.right());
+    }
+
+    /**
      * Create a <code>TreeNode&lt;Integer&gt;</code> and add children to it.
      * Test the add(), left(), right(), getValue(), and various toString()
      * methods.
@@ -162,5 +182,24 @@ public class TreeNodeTest {
         assertEquals("h, b, a, c, y, x, z", node.toStringPre());
         assertEquals("a, b, c, h, x, y, z", node.toString());
         assertEquals("a, c, b, x, z, y, h", node.toStringPost());
+    }
+
+    /**
+     * Ensure the setLeft() and setRight() methods work.
+     */
+    @Test
+    public void setLeftRight() {
+        TreeNode<Integer> left = new TreeNode<Integer>(9);
+        TreeNode<Integer> parent = new TreeNode<Integer>(10);
+        TreeNode<Integer> right = new TreeNode<Integer>(11);
+
+        parent.setLeft(left);
+        parent.setRight(right);
+        assertTrue(10 == parent.getValue());
+        assertTrue(9  == parent.left().getValue());
+        assertTrue(11 == parent.right().getValue());
+        assertEquals("10, 9, 11", parent.toStringPre());
+        assertEquals("9, 10, 11", parent.toString());
+        assertEquals("9, 11, 10", parent.toStringPost());
     }
 }
