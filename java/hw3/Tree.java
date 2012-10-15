@@ -59,21 +59,33 @@ public class Tree<T extends Comparable<? super T>> {
      * Returns a string representing an in-order traversal of this tree.
      */
     public String toString() {
-        return root.toString();
+        if(null == root) {
+            return "";
+        } else {
+            return root.toString();
+        }
     }
 
     /**
      * Returns a string representing a pre-order traversal of this tree.
      */
     public String toStringPre() {
-        return root.toStringPre();
+        if(null == root) {
+            return "";
+        } else {
+            return root.toStringPre();
+        }
     }
 
     /**
      * Returns a string representing a post-order traversal of this tree.
      */
     public String toStringPost() {
-        return root.toStringPost();
+        if(null == root) {
+            return "";
+        } else {
+            return root.toStringPost();
+        }
     }
 
     /**
@@ -107,14 +119,5 @@ public class Tree<T extends Comparable<? super T>> {
         } else {
             return root.find(value);
         }
-    }
-
-    /**
-     * Returns true if <code>value</code> is removed from the tree. Otherwise,
-     * returns false.
-     */
-    public boolean delete(T value) {
-        // TODO
-        return false;
     }
 }
