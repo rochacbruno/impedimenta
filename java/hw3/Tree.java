@@ -1,5 +1,6 @@
 package hw3;
 import hw3.TreeNode;
+import java.lang.Comparable;
 
 // Instructions: https://moodle.vsc.edu/file.php/7387/assign3.html
 
@@ -9,9 +10,14 @@ import hw3.TreeNode;
  * All nodes in a tree must be of the same type. No automatic or explicit
  * balancing can be performed on the tree.
  *
+ * <code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code> means:
+ * "<code>T</code> is a type that is comparable to itself or to some superclass
+ * of itself." See:
+ * http://onjava.com/pub/a/onjava/excerpt/javaian5_chap04/index1.html
+ *
  * @author Jeremy Audet &lt;ichimonji10@gmail.com&gt;
  */
-public class Tree<T> {
+public class Tree<T extends Comparable<? super T>> {
     private TreeNode<T> root;
 
     /**

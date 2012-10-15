@@ -1,30 +1,36 @@
 package hw3;
+import java.lang.Comparable;
 
 /**
  * A node which can be used to construct binary search trees.
  *
+ * <code>&lt;T extends Comparable&lt;? super T&gt;&gt;</code> means:
+ * "<code>T</code> is a type that is comparable to itself or to some superclass
+ * of itself." See:
+ * http://onjava.com/pub/a/onjava/excerpt/javaian5_chap04/index1.html
+ *
  * @author Jeremy Audet &lt;ichimonji10@gmail.com&gt;
  */
-public class TreeNode<T> {
-    private T data;
+public class TreeNode<T extends Comparable<? super T>> {
+    private T value;
     private TreeNode<T> left;
     private TreeNode<T> right;
 
     /**
-     * Constructs a node containing <code>data</code>. The new node has no
+     * Constructs a node containing <code>value</code>. The new node has no
      * children or parent.
      */
-    public TreeNode(T data) {
-        this.data = data;
+    public TreeNode(T value) {
+        this.value = value;
         left = null;
         right = null;
     }
 
     /**
-     * Returns <code>data</code> from this node.
+     * Returns <code>value</code> from this node.
      */
     public T getValue() {
-        return data;
+        return value;
     }
 
     /**
@@ -61,9 +67,28 @@ public class TreeNode<T> {
 
     /**
      * Adds <code>value</code> to this node or one of it's subtrees.
+     *
+     * This method will not function unless type <code>T</code> implements the
+     * <code>Comparable</code> interface.
      */
     public void add(T value) {
-        // TODO
+        if(0 > value.compareTo(this.value)) {
+            // new value less than this.value
+            if(null == left) {
+                left = new TreeNode<T>(value);
+            } else {
+                left.add(value);
+            }
+        } else if(0 < value.compareTo(this.value)) {
+            // new value greater than this.value
+            if(null == right) {
+                right = new TreeNode<T>(value);
+            } else {
+                right.add(value);
+            }
+        }
+        // else if (value == this.value)
+            // do nothing, because value is already in tree
     }
 
     /**
@@ -71,8 +96,9 @@ public class TreeNode<T> {
      * subtrees.
      */
     public String toString() {
-        // TODO
-        return "blargh";
+        String leftString = (null == left) ? "" : left.toString();
+        String rightString = (null == right) ? "" : right.toString();
+        return leftString + ", " + value.toString() + ", " + rightString;
     }
 
     /**
@@ -80,8 +106,9 @@ public class TreeNode<T> {
      * subtrees.
      */
     public String toStringPre() {
-        // TODO
-        return "blargh";
+        String leftString = (null == left) ? "" : left.toString();
+        String rightString = (null == right) ? "" : right.toString();
+        return value.toString() + ", " + leftString + ", " + rightString;
     }
 
     /**
@@ -89,8 +116,9 @@ public class TreeNode<T> {
      * it's subtrees.
      */
     public String toStringPost() {
-        // TODO
-        return "blargh";
+        String leftString = (null == left) ? "" : left.toString();
+        String rightString = (null == right) ? "" : right.toString();
+        return leftString + ", " + rightString + ", " + value.toString();
     }
 
     /**
