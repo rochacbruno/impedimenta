@@ -46,7 +46,11 @@ public class Tree<T extends Comparable<? super T>> {
      * Adds <code>value</code> to the tree.
      */
     public void add(T value) {
-        root.add(value);
+        if(null == root) {
+            root = new TreeNode<T>(value);
+        } else {
+            root.add(value);
+        }
     }
 
     /**
