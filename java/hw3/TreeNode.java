@@ -116,12 +116,12 @@ public class TreeNode<T extends Comparable<? super T>> {
         if(null == left && null == right) {
             return value.toString();
         } else if(null == left && null != right) {
-            return value.toString() + ", " + right.toString();
+            return value.toString() + ", " + right.toStringPre();
         } else if(null != left && null == right) {
-            return value.toString() + ", " + left.toString();
+            return value.toString() + ", " + left.toStringPre();
         } else {
-            return value.toString() + ", " + left.toString() +
-                right.toString();
+            return value.toString() + ", " + left.toStringPre() + ", " +
+                right.toStringPre();
         }
     }
 
@@ -133,11 +133,11 @@ public class TreeNode<T extends Comparable<? super T>> {
         if(null == left && null == right) {
             return value.toString();
         } else if(null == left && null != right) {
-            return right.toString() + ", " + value.toString();
+            return right.toStringPost() + ", " + value.toString();
         } else if(null != left && null == right) {
-            return left.toString() + ", " + value.toString();
+            return left.toStringPost() + ", " + value.toString();
         } else {
-            return left.toString() + ", " + right.toString() + ", " +
+            return left.toStringPost() + ", " + right.toStringPost() + ", " +
                 value.toString();
         }
     }

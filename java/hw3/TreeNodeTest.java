@@ -15,118 +15,152 @@ public class TreeNodeTest {
      */
     @Test
     public void singleNodes() {
-        // do Integers work?
+        // Can I create a TreeNode<Integer>?
         TreeNode<Integer> nodeInt = new TreeNode<Integer>(42);
         assertTrue(42 == nodeInt.getValue());
         assertEquals("42", nodeInt.toString());
-        // do Strings work?
+
+        // Can I create a TreeNode<String>?
         TreeNode<String> nodeString = new TreeNode<String>("Hullabaloo");
         assertEquals("Hullabaloo", nodeString.getValue());
         assertEquals("Hullabaloo", nodeString.toString());
     }
 
     /**
-     * Ensure nodes can have children. Test the add(), left(), right(), and
-     * getValue() methods.
+     * Create a <code>TreeNode&lt;Integer&gt;</code> and add children to it.
+     * Test the add(), left(), right(), getValue(), and various toString()
+     * methods.
      */
     @Test
-    public void traverseManually() {
+    public void createReadInteger() {
         // try adding nodes to the left side
-        TreeNode<Integer> nodeInt = new TreeNode<Integer>(10);
-        nodeInt.add(9);
-        nodeInt.add(8);
-        assertTrue(10 == nodeInt.getValue());
-        assertTrue(9  == nodeInt.left().getValue());
-        assertTrue(8  == nodeInt.left().left().getValue());
+        TreeNode<Integer> node = new TreeNode<Integer>(10);
+        node.add(9);
+        node.add(8);
+        assertTrue(10 == node.getValue());
+        assertTrue(9  == node.left().getValue());
+        assertTrue(8  == node.left().left().getValue());
+        assertEquals("10, 9, 8", node.toStringPre());
+        assertEquals("8, 9, 10", node.toString());
+        assertEquals("8, 9, 10", node.toStringPost());
 
         // now try adding them to the right side
-        nodeInt = new TreeNode<Integer>(10);
-        nodeInt.add(11);
-        nodeInt.add(12);
-        assertTrue(10 == nodeInt.getValue());
-        assertTrue(11 == nodeInt.right().getValue());
-        assertTrue(12 == nodeInt.right().right().getValue());
+        node = new TreeNode<Integer>(10);
+        node.add(11);
+        node.add(12);
+        assertTrue(10 == node.getValue());
+        assertTrue(11 == node.right().getValue());
+        assertTrue(12 == node.right().right().getValue());
+        assertEquals("10, 11, 12", node.toStringPre());
+        assertEquals("10, 11, 12", node.toString());
+        assertEquals("12, 11, 10", node.toStringPost());
 
         // create a fully populated, balanced tree with a height of 2
-        nodeInt = new TreeNode<Integer>(10);
-        nodeInt.add(0);
-        nodeInt.add(-1);
-        nodeInt.add(1);
-        nodeInt.add(20);
-        nodeInt.add(19);
-        nodeInt.add(21);
-        assertTrue(10 == nodeInt.getValue());
-        assertTrue(0  == nodeInt.left().getValue());
-        assertTrue(-1 == nodeInt.left().left().getValue());
-        assertTrue(1  == nodeInt.left().right().getValue());
-        assertTrue(20 == nodeInt.right().getValue());
-        assertTrue(19 == nodeInt.right().left().getValue());
-        assertTrue(21 == nodeInt.right().right().getValue());
+        node = new TreeNode<Integer>(10);
+        node.add(0);
+        node.add(-1);
+        node.add(1);
+        node.add(20);
+        node.add(19);
+        node.add(21);
+        assertTrue(10 == node.getValue());
+        assertTrue(0  == node.left().getValue());
+        assertTrue(-1 == node.left().left().getValue());
+        assertTrue(1  == node.left().right().getValue());
+        assertTrue(20 == node.right().getValue());
+        assertTrue(19 == node.right().left().getValue());
+        assertTrue(21 == node.right().right().getValue());
+        assertEquals("10, 0, -1, 1, 20, 19, 21", node.toStringPre());
+        assertEquals("-1, 0, 1, 10, 19, 20, 21", node.toString());
+        assertEquals("-1, 1, 0, 19, 21, 20, 10", node.toStringPost());
 
         // create another fully populated, balanced tree with a height of 2
         // create the children in a different order
-        nodeInt = new TreeNode<Integer>(10);
-        nodeInt.add(20);
-        nodeInt.add(21);
-        nodeInt.add(19);
-        nodeInt.add(0);
-        nodeInt.add(1);
-        nodeInt.add(-1);
-        assertTrue(10 == nodeInt.getValue());
-        assertTrue(0  == nodeInt.left().getValue());
-        assertTrue(-1 == nodeInt.left().left().getValue());
-        assertTrue(1  == nodeInt.left().right().getValue());
-        assertTrue(20 == nodeInt.right().getValue());
-        assertTrue(19 == nodeInt.right().left().getValue());
-        assertTrue(21 == nodeInt.right().right().getValue());
+        node = new TreeNode<Integer>(10);
+        node.add(20);
+        node.add(21);
+        node.add(19);
+        node.add(0);
+        node.add(1);
+        node.add(-1);
+        assertTrue(10 == node.getValue());
+        assertTrue(0  == node.left().getValue());
+        assertTrue(-1 == node.left().left().getValue());
+        assertTrue(1  == node.left().right().getValue());
+        assertTrue(20 == node.right().getValue());
+        assertTrue(19 == node.right().left().getValue());
+        assertTrue(21 == node.right().right().getValue());
+        assertEquals("10, 0, -1, 1, 20, 19, 21", node.toStringPre());
+        assertEquals("-1, 0, 1, 10, 19, 20, 21", node.toString());
+        assertEquals("-1, 1, 0, 19, 21, 20, 10", node.toStringPost());
+    }
 
+    /**
+     * Create a <code>TreeNode&lt;String&gt;</code> and add children to it.
+     * Test the add(), left(), right(), getValue(), and various toString()
+     * methods.
+     */
+    @Test
+    public void createReadString() {
         // try adding children to the left side
-        TreeNode<String>  nodeString = new TreeNode<String>("h");
-        nodeString.add("g");
-        nodeString.add("f");
-        assertEquals("h", nodeString.getValue());
-        assertEquals("g", nodeString.left().getValue());
-        assertEquals("f", nodeString.left().left().getValue());
+        TreeNode<String> node = new TreeNode<String>("h");
+        node.add("g");
+        node.add("f");
+        assertEquals("h", node.getValue());
+        assertEquals("g", node.left().getValue());
+        assertEquals("f", node.left().left().getValue());
+        assertEquals("h, g, f", node.toStringPre());
+        assertEquals("f, g, h", node.toString());
+        assertEquals("f, g, h", node.toStringPost());
 
         // now try adding them to the right side
-        nodeString = new TreeNode<String>("h");
-        nodeString.add("i");
-        nodeString.add("j");
-        assertEquals("h", nodeString.getValue());
-        assertEquals("i", nodeString.right().getValue());
-        assertEquals("j", nodeString.right().right().getValue());
+        node = new TreeNode<String>("h");
+        node.add("i");
+        node.add("j");
+        assertEquals("h", node.getValue());
+        assertEquals("i", node.right().getValue());
+        assertEquals("j", node.right().right().getValue());
+        assertEquals("h, i, j", node.toStringPre());
+        assertEquals("h, i, j", node.toString());
+        assertEquals("j, i, h", node.toStringPost());
 
         // create fully populated, balanced tree with a height of 2
-        nodeString = new TreeNode<String>("h");
-        nodeString.add("b");
-        nodeString.add("a");
-        nodeString.add("c");
-        nodeString.add("y");
-        nodeString.add("x");
-        nodeString.add("z");
-        assertEquals("h", nodeString.getValue());
-        assertEquals("b", nodeString.left().getValue());
-        assertEquals("a", nodeString.left().left().getValue());
-        assertEquals("c", nodeString.left().right().getValue());
-        assertEquals("y", nodeString.right().getValue());
-        assertEquals("x", nodeString.right().left().getValue());
-        assertEquals("z", nodeString.right().right().getValue());
+        node = new TreeNode<String>("h");
+        node.add("b");
+        node.add("a");
+        node.add("c");
+        node.add("y");
+        node.add("x");
+        node.add("z");
+        assertEquals("h", node.getValue());
+        assertEquals("b", node.left().getValue());
+        assertEquals("a", node.left().left().getValue());
+        assertEquals("c", node.left().right().getValue());
+        assertEquals("y", node.right().getValue());
+        assertEquals("x", node.right().left().getValue());
+        assertEquals("z", node.right().right().getValue());
+        assertEquals("h, b, a, c, y, x, z", node.toStringPre());
+        assertEquals("a, b, c, h, x, y, z", node.toString());
+        assertEquals("a, c, b, x, z, y, h", node.toStringPost());
 
         // create another fully populated, balanced tree with a height of 2
         // create the children in a different order
-        nodeString = new TreeNode<String>("h");
-        nodeString.add("y");
-        nodeString.add("z");
-        nodeString.add("x");
-        nodeString.add("b");
-        nodeString.add("c");
-        nodeString.add("a");
-        assertEquals("h", nodeString.getValue());
-        assertEquals("b", nodeString.left().getValue());
-        assertEquals("a", nodeString.left().left().getValue());
-        assertEquals("c", nodeString.left().right().getValue());
-        assertEquals("y", nodeString.right().getValue());
-        assertEquals("x", nodeString.right().left().getValue());
-        assertEquals("z", nodeString.right().right().getValue());
+        node = new TreeNode<String>("h");
+        node.add("y");
+        node.add("z");
+        node.add("x");
+        node.add("b");
+        node.add("c");
+        node.add("a");
+        assertEquals("h", node.getValue());
+        assertEquals("b", node.left().getValue());
+        assertEquals("a", node.left().left().getValue());
+        assertEquals("c", node.left().right().getValue());
+        assertEquals("y", node.right().getValue());
+        assertEquals("x", node.right().left().getValue());
+        assertEquals("z", node.right().right().getValue());
+        assertEquals("h, b, a, c, y, x, z", node.toStringPre());
+        assertEquals("a, b, c, h, x, y, z", node.toString());
+        assertEquals("a, c, b, x, z, y, h", node.toStringPost());
     }
 }
