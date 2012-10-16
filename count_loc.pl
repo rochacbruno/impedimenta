@@ -17,6 +17,7 @@ my %filetypes = (   # files with any other extension will be ignored
     pde     => 0,   # arduino
     pl      => 0,   # Perl
     py      => 0,   # Python
+    rb      => 0,   # Ruby
     sh      => 0,   # shell
 );
 
