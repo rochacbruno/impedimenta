@@ -1,4 +1,4 @@
-Notes on django
+notes on django
 ===============
 
 Create a new django project:
@@ -10,3 +10,17 @@ By default, the development webserver runs on localhost:8000.
     python2.7 manage.py runserver
     python2.7 manage.py runserver 8001
     python2.7 manage.py runserver 0.0.0.0:8002
+
+`settings.py` should be edited. Assuming the use of SQLite, edit `ENGINE` and
+`NAME` in the `DATABASES` dict. `NAME` should be an absolute path. Also of
+interest are:
+
+* `TIME_ZONE` (e.g. `America/New_York`)
+* `INSTALLED_APPS`
+* `ROOT_URLCONF`
+* `DEBUG`
+
+Database tables need to be created for each of the `INSTALLED_APPS`. The
+`syncdb` command will never alter an already-created table.
+
+    python2.7 manage.py syncdb
