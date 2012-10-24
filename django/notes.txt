@@ -1,0 +1,12 @@
+Notes on django
+===============
+
+Create a new django project:
+
+    django-admin.py startproject site_xyz
+
+By default, the development webserver runs on localhost:8000.
+
+    python2.7 manage.py runserver
+    python2.7 manage.py runserver 8001
+    python2.7 manage.py runserver 0.0.0.0:8002
