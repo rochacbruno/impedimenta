@@ -12,7 +12,7 @@ set laststatus=2        " always show the status line
 set rnu                 " relative line numbers, not absolute numbers
 set cursorline          " highlight the current row
 set foldmethod=indent   " more convenient than manual, easier than custom
-set nofoldenable        " enable folding by default?
+set foldenable          " enable folding by default?
 let mapleader=","
 
 "nmap n nzz              " center display around cursor when searching for terms
