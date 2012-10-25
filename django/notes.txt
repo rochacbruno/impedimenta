@@ -1,11 +1,15 @@
 notes on django
 ===============
 
-Create a new django project:
+Some good guides to django [are](https://docs.djangoproject.com/en/1.4/intro/)
+[available](http://www.djangobook.com/en/2.0/index.html). To create a new django
+project:
 
     django-admin.py startproject site_xyz
 
-By default, the development webserver runs on localhost:8000.
+By default, the development webserver runs on localhost:8000. You can view the
+full documentation on the `django-admin.py` and `manage.py` commands
+[here](https://docs.djangoproject.com/en/dev/ref/django-admin/).
 
     python2.7 manage.py runserver
     python2.7 manage.py runserver 8001
@@ -24,3 +28,17 @@ Database tables need to be created for each of the `INSTALLED_APPS`. The
 `syncdb` command will never alter an already-created table.
 
     python2.7 manage.py syncdb
+
+When django receives a request for a web page, it imports `ROOT_URLCONF` (by
+convention, `<project_name>/urls.py`) and evaluates `urlpatterns`. If a match
+is found, the appropriate view (just a function) is called.
+
+    urlpatterns = patterns('',
+        url(r'^$', views.index),
+        url(r'^hello/$', views.hello),
+    )
+
+Views render a response, either directly or with the assistance of a template.
+
+    def hello(request):
+        return http.HttpResponse("Hello world")

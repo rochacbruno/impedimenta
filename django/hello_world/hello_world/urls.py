@@ -1,10 +1,13 @@
 from django.conf.urls import patterns, include, url
+from hello_world import views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
 urlpatterns = patterns('',
+    url(r'^$', views.index),
+    url(r'^hello/$', views.hello),
     # Examples:
     # url(r'^$', 'hello_world.views.home', name='home'),
     # url(r'^hello_world/', include('hello_world.foo.urls')),
