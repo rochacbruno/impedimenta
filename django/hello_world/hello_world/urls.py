@@ -8,6 +8,7 @@ from hello_world import views
 urlpatterns = patterns('',
     url(r'^$', views.index),
     url(r'^hello/$', views.hello),
+    url(r'^time/$', views.time),
     # Examples:
     # url(r'^$', 'hello_world.views.home', name='home'),
     # url(r'^hello_world/', include('hello_world.foo.urls')),
