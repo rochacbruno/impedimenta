@@ -9,5 +9,4 @@ if [ -z "$1" ]; then
 fi
 find "$1" -type f -name \*.markdown | while read filename; do
     markdown "$filename" > "${filename%markdown}html"
-    rm "$filename"
 done
