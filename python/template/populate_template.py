@@ -25,7 +25,11 @@ def main():
 
     # Ensure dependencies exist.
     for dependency in DEPENDENCIES:
-        if(0 != subprocess.call(['which', dependency])):
+        if(0 != subprocess.call(
+            ['which', dependency],
+            stdout = subprocess.DEVNULL,
+            stderr = subprocess.DEVNULL,
+        )):
             print("Missing dependency: {}".format(dependency))
             return 1
 
@@ -39,7 +43,8 @@ def main():
     try:
         html = subprocess.check_output(
             ['markdown', markdown_path],
-            universal_newlines = True
+            stderr = subprocess.DEVNULL,
+            universal_newlines = True,
         )
     except subprocess.CalledProcessError as err:
         print("Error: {}".format(err))
