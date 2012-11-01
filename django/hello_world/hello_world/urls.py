@@ -10,10 +10,7 @@ One can extract named arguments from a URL, which are then passed to a view. ::
     url(r'^echo/(?P<message>.*)/$', 'echo'),
 
 '''
-# I map URLs...
 from django.conf.urls import patterns, url, include
-# ... to views.
-from hello_world import views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -21,11 +18,11 @@ from hello_world import views
 
 urlpatterns = patterns('hello_world.views',
     url(r'^$',                        'index'),
+    url(r'^echo/$',                   'echo_instructions'),
+    url(r'^echo/(?P<message>.*)/$',   'echo'),
     url(r'^hello/$',                  'hello'),
     url(r'^time/$',                   'time'),
     url(r'^time/plus/(-?\d{1,3})/$',  'time_plus'),
-    url(r'^echo/$',                   'echo_instructions'),
-    url(r'^echo/(?P<message>.*)/$',   'echo'),
 
     # Examples:
     # url(r'^$', 'hello_world.views.home', name='home'),
@@ -36,4 +33,7 @@ urlpatterns = patterns('hello_world.views',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
+)
+urlpatterns += patterns('',
+    url(r'^decoupled_app/', include('decoupled_app.urls')),
 )
