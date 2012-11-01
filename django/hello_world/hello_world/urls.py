@@ -24,6 +24,7 @@ urlpatterns = patterns('hello_world.views',
     url(r'^hello/$',                  'hello'),
     url(r'^time/$',                   'time'),
     url(r'^time/plus/(-?\d{1,3})/$',  'time_plus'),
+    url(r'^echo/$',                   'echo_instructions'),
     url(r'^echo/(?P<message>.*)/$',   'echo'),
 
     # Examples:

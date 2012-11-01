@@ -55,3 +55,13 @@ def echo(request, message):
         'body': message
     })
     return http.HttpResponse(tplate.render(ctext))
+
+def echo_instructions(request):
+    tplate = template.loader.get_template('default.html')
+    message = 'To use the "echo" page, type something like this into your '\
+        'address bar: .../echo/blergh-de-blergh/'
+    ctext = template.Context({
+        'title': 'Echo',
+        'body': message
+    })
+    return http.HttpResponse(tplate.render(ctext))
