@@ -23,6 +23,7 @@ interest are:
 * `INSTALLED_APPS`
 * `ROOT_URLCONF`
 * `DEBUG`
+* `TEMPLATE_DIRS`
 
 Database tables need to be created for each of the `INSTALLED_APPS`. The
 `syncdb` command will never alter an already-created table.
@@ -33,23 +34,32 @@ When django receives a request for a web page, it imports `ROOT_URLCONF` (by
 convention, `<project_name>.urls.py`) and evaluates `urlpatterns`. If a match
 is found, the appropriate view (just a function) is called.
 
-    urlpatterns = patterns('',
-        url(r'^$', views.index),
-        url(r'^hello/$', views.hello),
+    urlpatterns = patterns('views',
+        url(r'^$', index),
+        url(r'^hello/$', hello),
     )
 
-Views render a response, either directly or with the assistance of a template.
+Views render a response.
 
     def hello(request):
         return http.HttpResponse("Hello world")
 
-It's possible to capture values from URLs and pass them to views.
+If `TEMPLATE_DIRS` is specified, a view may use a template.
 
+    def echo(request, message):
+        tplate = template.loader.get_template('default.html')
+        ctext = template.Context({
+            'title': 'Echo',
+            'body': message
+        })
+        return http.HttpResponse(tplate.render(ctext))
+
+It's possible to capture values from URLs and pass them to views. The values may
+be named, too.
+
+    # Unnamed.
     url(r'^time/plus/(-?\d{1,3})/$', views.time_plus),
-    ...
     def time_plus(request, hour_offset):
-        try:
-            hour_offset = int(hour_offset)
-        except ValueError:
-            raise http.Http404()
-        # render HttpResponse()
+    # Named.
+    url(r'^echo/(?P<message>.*)/$', 'echo'),
+    def echo(request, message):

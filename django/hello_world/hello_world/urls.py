@@ -1,15 +1,31 @@
-from django.conf.urls import patterns, include, url
+'''Given a URL, chooses a view with which to render a response.
+
+``patterns`` and ``urls`` are the minimum necessary imports to define a
+``urlpatterns`` variable. ``include`` allows you to reference another URLConf
+file. You can match part of a URL pattern here and pass the remaining portion of
+the url to the referenced URLConf.
+
+One can extract named arguments from a URL, which are then passed to a view. ::
+
+    url(r'^echo/(?P<message>.*)/$', 'echo'),
+
+'''
+# I map URLs...
+from django.conf.urls import patterns, url, include
+# ... to views.
 from hello_world import views
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
 
-urlpatterns = patterns('',
-    url(r'^$', views.index),
-    url(r'^hello/$', views.hello),
-    url(r'^time/$', views.time),
-    url(r'^time/plus/(-?\d{1,3})/$', views.time_plus),
+urlpatterns = patterns('hello_world.views',
+    url(r'^$',                        'index'),
+    url(r'^hello/$',                  'hello'),
+    url(r'^time/$',                   'time'),
+    url(r'^time/plus/(-?\d{1,3})/$',  'time_plus'),
+    url(r'^echo/(?P<message>.*)/$',   'echo'),
+
     # Examples:
     # url(r'^$', 'hello_world.views.home', name='home'),
     # url(r'^hello_world/', include('hello_world.foo.urls')),
