@@ -5,9 +5,11 @@
     <head>
         <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
         <title>
-            {% if title %}
-                {{ title }}
-            {% endif %}
+            {% block title %}
+                {% if title %}
+                    {{ title }}
+                {% endif %}
+            {% endblock %}
         </title>
         <style type="text/css">
             <!-- add css here -->
@@ -15,8 +17,10 @@
     </head>
 
     <body>
-        {% if body %}
-            {{ body }}
-        {% endif %}
+        {% block body %}
+            {% if body %}
+                {{ body }}
+            {% endif %}
+        {% endblock %}
     </body>
 </html>

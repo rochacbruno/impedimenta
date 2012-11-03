@@ -1,0 +1,7 @@
+{% extends "default.html" %}
+
+{% block body %}
+    {% if body %}
+        {{ body|safe }}
+    {% endif %}
+{% endblock %}

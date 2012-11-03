@@ -12,18 +12,19 @@ documentation on the `django-admin.py` and `manage.py` commands
     python2.7 manage.py runserver 8001
     python2.7 manage.py runserver 0.0.0.0:8002
 
-`settings.py` should be edited. Assuming the use of SQLite, edit `ENGINE` and
-`NAME` in the `DATABASES` dict. `NAME` should be an absolute path. Also of
-interest are:
+`settings.py` should be edited. Of interest are:
 
+* `DATABASES` dict
+  * `ENGINE`
+  * `NAME` (should be an absolute path)
 * `DEBUG`
 * `INSTALLED_APPS`
 * `ROOT_URLCONF`
 * `TEMPLATE_DIRS`
 * `TIME_ZONE` (e.g. `America/New_York`)
 
-Database tables need to be created for each `INSTALLED_APPS`. The `syncdb`
-command will never alter an already-created table.
+Database tables need to be created for each of the `INSTALLED_APPS`. The
+`syncdb` command will never alter an already-created table.
 
     python2.7 manage.py syncdb
 
@@ -31,27 +32,27 @@ When django receives a request for a web page, it imports `ROOT_URLCONF` (by
 convention, `<project_name>.urls.py`) and evaluates `urlpatterns`. If a match
 is found, the appropriate view (just a function) is called.
 
-    # The ROOT_URLCONF or one of the modules it imports.
+    # If the regex matches, views.hello will be called.
     urlpatterns = patterns('views',
-        url(r'^$', index),
         url(r'^hello/$', hello),
     )
+    # The additional urls here don't use the "views" prefix as above.
     urlpatterns += patterns('',
         url(r'^admin/', include(admin.site.urls)),
     )
 
-    # A view called by django when one of the url objects matches.
+    # A minimal view.
     def hello(request):
         return http.HttpResponse("Hello world")
 
 It's possible to capture values from URLs and pass them to views. The values may
-be named. If `TEMPLATE_DIRS` is specified, a view may use a template.
+be named. A view may use a template if `TEMPLATE_DIRS` is specified.
 
-    # The two URLs capture anonymous and named variables, respectively.
-    url(r'^time/plus/(-?\d{1,3})/$', views.time_plus),
-    url(r'^echo/(?P<message>.*)/$', 'echo'),
+    # These two URLs capture anonymous and named variables, respectively.
+    url(r'^time/plus/(-?\d{1,3})/$', time_plus)
+    url(r'^echo/(?P<message>.*)/$', 'echo')
 
-    # Demonstrates usage of template.
+    # Demonstrates usage of a template.
     def echo(request, message):
         tplate = template.loader.get_template('default.html')
         ctext = template.Context({

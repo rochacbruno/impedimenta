@@ -21,7 +21,7 @@ You can use templates from ``TEMPLATE_DIRS``.
 # For creating http.HttpResponse objects.
 from django import http
 # Used to spice up the logic of some views.
-import datetime
+import datetime, os, subprocess
 # Allows templates to be used.
 from django import template
 
@@ -61,7 +61,25 @@ def echo_instructions(request):
     message = 'To use the "echo" page, type something like this into your '\
         'address bar: .../echo/blergh-de-blergh/'
     ctext = template.Context({
-        'title': 'Echo',
+        'title': 'echo',
         'body': message
+    })
+    return http.HttpResponse(tplate.render(ctext))
+
+def notes(request):
+    file_path = os.path.abspath(os.path.dirname(__file__) + '/../../notes.markdown')
+    try:
+        html = subprocess.check_output(['markdown', file_path])
+        tplate = template.loader.get_template('noautoescape_body.html')
+    except CalledProcessError as err:
+        html = 'Error while rendering notes: {}\nFile loaded: {}'.format(
+            err,
+            file_path
+        )
+        tplate = template.loader.get_template('default.html')
+
+    ctext = template.Context({
+        'title': 'notes',
+        'body': html
     })
     return http.HttpResponse(tplate.render(ctext))
