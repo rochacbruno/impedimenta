@@ -12,13 +12,10 @@ documentation on the `django-admin.py` and `manage.py` commands
     python2.7 manage.py runserver 8001
     python2.7 manage.py runserver 0.0.0.0:8002
 
-`settings.py` should be edited. Of interest are:
+`settings.py` should be edited. You'll want to read through the entire file,
+especially once you start doing things like, say, using CSS. For starters, you
+should look at:
 
-* `DATABASES` dict
-  * `ENGINE`
-  * `NAME` (should be an absolute path)
-* `DEBUG`
-* `INSTALLED_APPS`
 * `ROOT_URLCONF`
 * `TEMPLATE_DIRS`
 * `TIME_ZONE` (e.g. `America/New_York`)

@@ -5,12 +5,11 @@
     <head>
         <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
         <title>
-            {% block title %}
-                {% if title %}
-                    {{ title }}
-                {% endif %}
-            {% endblock %}
+            {% if title %}
+                {{ title }}
+            {% endif %}
         </title>
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}mhs/css/default.css" />
         {% block css %}
         {% endblock %}
     </head>

@@ -37,4 +37,5 @@ urlpatterns = patterns('hello_world.views',
 )
 urlpatterns += patterns('',
     url(r'^decoupled_app/', include('decoupled_app.urls')),
+    url(r'^mhs/',           include('mhs.urls')),
 )
