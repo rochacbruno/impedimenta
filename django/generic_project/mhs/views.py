@@ -39,7 +39,7 @@ def login(request):
     ):
         # Yes, all fields filled out. Are their credentials correct?
         # TODO: must implement users before able to check credentials
-        return http.HttpResponseRedirect('../')
+        return http.HttpResponseRedirect('../home')
 
     # Not all fields were filled out. Give them login form with error message.
     tplate = template.loader.get_template('mhs/login.html')
