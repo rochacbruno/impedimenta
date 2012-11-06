@@ -2,15 +2,18 @@ notes on django
 ===============
 
 Some good guides to django [are](https://docs.djangoproject.com/en/1.4/intro/)
-[available](http://www.djangobook.com/en/2.0/index.html). By default, the
-development webserver runs on localhost:8000. You can view the full
+[available](http://www.djangobook.com/en/2.0/index.html). You can view the full
 documentation on the `django-admin.py` and `manage.py` commands
 [here](https://docs.djangoproject.com/en/dev/ref/django-admin/).
 
-    django-admin.py startproject site_xyz
-    python2.7 manage.py runserver
-    python2.7 manage.py runserver 8001
-    python2.7 manage.py runserver 0.0.0.0:8002
+    # Remember, the built-in webserver is NOT appropriate for production use.
+    django-admin.py startproject site_xyz   # New project with default settings.
+    python2.7 manage.py runserver           # localhost:8000
+    python2.7 manage.py runserver 8001      # localhost:8001
+    python2.7 manage.py runserver 0.0.0.0:8002  # all:8002
+    python2.7 manage.py shell               # For e.g. creating a user.
+    python2.7 manage.py dbshell             # Reads ENGINE, creates connection.
+    python2.7 manage.py diffsettings        # Diff settings.py against defaults.
 
 `settings.py` should be edited. You'll want to read through the entire file,
 especially once you start doing things like, say, using CSS. For starters, you

@@ -13,8 +13,8 @@ One can extract named arguments from a URL, which are then passed to a view. ::
 from django.conf.urls import patterns, url, include
 
 # Uncomment the next two lines to enable the admin:
-# from django.contrib import admin
-# admin.autodiscover()
+from django.contrib import admin
+admin.autodiscover()
 
 urlpatterns = patterns('hello_world.views',
     url(r'^$',                        'index'),
@@ -33,7 +33,7 @@ urlpatterns = patterns('hello_world.views',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 )
 urlpatterns += patterns('',
     url(r'^decoupled_app/', include('decoupled_app.urls')),
