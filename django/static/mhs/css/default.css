@@ -1,4 +1,12 @@
-/*-= INLINE ELEMENTS ========================================================-*/
-h1, h2, h3, h4, h5, h6 {
-    text-shadow: 2px 2px 2px #888;
+p#err_msg {
+    color: red;
+}
+
+p#titlebar {
+    font-size: larger;
+    text-align: center;
+    border: thin solid gray;
+    border-radius: 0.5em;
+    padding: 0.5em;
+    box-shadow: 0 0 2px 0 gray inset;
 }

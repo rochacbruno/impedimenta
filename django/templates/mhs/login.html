@@ -1,16 +1,16 @@
-{% extends "default.html" %}
+{% extends "mhs/default.html" %}
 
 {% block title %}login{% endblock %}
 
 {% block body %}
-    <h1>Log In</h1>
     {% if err_msg %}
-        <p>{{ err_msg }}</p>
+        <p id="err_msg">{{ err_msg }}</p>
     {% endif %}
     <form action="{{ form_url }}" method="post">
         {% csrf_token %}
-        <p><label>Username<input name="username" type="text" size="25" /></label></p>
-        <p><label>Password<input name="password" type="password" size="25" /></label></p>
+        <h1>Log In</h1>
+        <p><label><input name="username" type="text" required size="25" /> Username</label></p>
+        <p><label><input name="password" type="password" required size="25" /> Password</label></p>
         <p><button>Submit</button></p>
     </form>
 {% endblock %}
