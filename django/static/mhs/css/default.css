@@ -1,7 +1,7 @@
-p#err_msg {
-    color: red;
-}
-
+/* The title bar simply announces "this is application XYZ". Don't waste space
+at the top or bottom of this block: it's effectively window dressing, and space
+can better be used for more interesting content. Also, the #home and #logout
+links should be close. */
 p#titlebar {
     font-size: larger;
     text-align: center;
@@ -9,4 +9,19 @@ p#titlebar {
     border-radius: 0.5em;
     padding: 0.5em;
     box-shadow: 0 0 2px 0 gray inset;
+    margin: 0.1em auto;
+}
+
+/* Navigation links appear at the top of a page, just below the titlebar. */
+p#home {
+    text-align: left;
+    width: 50%;
+    float: left;
+    margin-top: 0.1em;
+}
+p#logout {
+    text-align: right;
+    width: 50%;
+    float: right;
+    margin-top: 0.1em;
 }

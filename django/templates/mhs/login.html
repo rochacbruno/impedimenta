@@ -4,9 +4,9 @@
 
 {% block body %}
     {% if err_msg %}
-        <p id="err_msg">{{ err_msg }}</p>
+        <p><em>{{ err_msg }}</em></p>
     {% endif %}
-    <form action="{{ form_url }}" method="post">
+    <form action="{{ login_form_url }}" method="post">
         {% csrf_token %}
         <h1>Log In</h1>
         <p><label><input name="username" type="text" required size="25" /> Username</label></p>

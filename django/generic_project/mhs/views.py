@@ -8,20 +8,23 @@ from django.contrib import auth
 
 def home_redirect(request):
     '''Redirects the user to their homepage.'''
+    # FIXME: integrate into URLConf
     # (unused argument 'request') pylint: disable-msg=W0613
-    return http.HttpResponseRedirect('./home')
+    return http.HttpResponseRedirect('./home/')
 
 def home(request):
+    # FIXME use decorator instead
     if not request.user.is_authenticated():
         return http.HttpResponseRedirect('../login/')
 
     tplate = template.loader.get_template('mhs/default.html')
-    message = 'Your current user is: {}'.format(request.user)
     ctext = template.RequestContext(
         request,
         {
             'title': 'home',
-            'body': message,
+            'body': 'Current user: {}'.format(request.user),
+            'home_url': '../home/',
+            'logout_url': '../logout',
         }
     )
     return http.HttpResponse(tplate.render(ctext))
@@ -40,10 +43,13 @@ def login(request):
     # Give the user a login form.
     if "POST" != request.method:
         tplate = template.loader.get_template('mhs/login.html')
-        ctext = template.RequestContext(request, {'dest_url': '../login/'})
+        ctext = template.RequestContext(
+            request,
+            {'login_form_url': '../login/'}
+        )
         return http.HttpResponse(tplate.render(ctext))
 
-    # User submitted the login form. Did they fill out all its fields?
+    # Did they fill out all of the form's fields?
     submission = request.POST.dict()
     try:
         username = submission['username']
@@ -53,42 +59,42 @@ def login(request):
         ctext = template.RequestContext(
             request,
             {
-                'dest_url': '../login/',
+                'login_form_url': '../login/',
                 'err_msg': 'Error: Not all fields were filled out.'
             }
         )
         return http.HttpResponse(tplate.render(ctext))
 
-    # All form fields were filled out. Are the credentials ok?
+    # Are the credentials indicated on the form valid?
     user = auth.authenticate(username = username, password = password)
-    if None == user:
-        # Credentials are not ok.
+    if user is None:
         tplate = template.loader.get_template('mhs/login.html')
         ctext = template.RequestContext(
             request,
             {
-                'dest_url': '../login/',
+                'login_form_url': '../login/',
                 'err_msg': 'Error: Your username and password were incorrect.'
             }
         )
         return http.HttpResponse(tplate.render(ctext))
 
-    # Credentials are ok. Is the user's account active?
+    # Is the user's account active?
     if not user.is_active:
         tplate = template.loader.get_template('mhs/login.html')
         ctext = template.RequestContext(
             request,
             {
-                'dest_url': '../login/',
+                'login_form_url': '../login/',
                 'err_msg': 'Error: Your account has been disabled.'
             }
         )
         return http.HttpResponse(tplate.render(ctext))
 
-    # Yes, user account is active.
-    return http.HttpResponseRedirect('../home')
+    # Form was filled out, credentials are OK, and user is active.
+    auth.login(request, user)
+    return http.HttpResponseRedirect('../home/')
 
 def logout(request):
-    '''Logs out the current user and forwards them to the login page.'''
+    '''Logs out the current user and redirects them to the login page.'''
     auth.logout(request)
     return http.HttpResponseRedirect('../login/')
