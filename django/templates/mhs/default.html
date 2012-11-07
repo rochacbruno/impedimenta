@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>
+            {% block title %}
+                {{ title }}
+            {% endblock %}
+        </title>
+        {% block css %}
+            <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}mhs/css/default.css" />
+        {% endblock %}
+    </head>
+
+    <body>
+        <p id="titlebar">Modern Hospital Systems Patient Tracking &amp; Analysis</p>
+        {% block body %}
+            <p id="home"><a href="{{ home_url }}">Home</a></p>
+            <p id="logout"><a href="{{ logout_url }}">Logout</a></p>
+            {{ body }}
+        {% endblock %}
+    </body>
+</html>

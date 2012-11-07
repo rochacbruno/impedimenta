@@ -1,3 +1,6 @@
+About
+=====
+
 This repository is a warehouse for all the code I have ever written. Most of
 this code has been written for school assignments, but there may also be
 personal projects and non-critical code from work. There is no particular focus
