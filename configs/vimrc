@@ -19,7 +19,7 @@ let mapleader=","
 "nmap N Nzz              " .
 nmap <F5> :tabprev<CR>
 nmap <F6> :tabnew<CR>:NERDTreeToggle<CR>:TagbarToggle<CR>
-nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
+nmap <F7> :!ctags -R -o ~/.mytags --exclude='chroot' --exclude='pkg-src' ~/code<CR>
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
