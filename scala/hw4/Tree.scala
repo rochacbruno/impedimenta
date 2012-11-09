@@ -17,6 +17,16 @@ case class Node[+A](left: Tree[A], data: A, right: Tree[A]) extends Tree[A]
 object Tree {
     class EmptyTreeException(message: String) extends Exception(message)
 
+    /**
+     * Returns the number of nodes in Tree t.
+     *
+     * Note that t is covariant. Therefore, it's possible to write code like
+     * this:
+     *
+     *     val ints: Node[Int] = new Node[Int](Leaf, 10, Leaf)
+     *     println(Tree.size(ints))
+     *
+     */
     def size[A](t: Tree[A]): Int =
         t match {
             case Leaf => 0
