@@ -8,10 +8,28 @@
 // -----------------------------------------------------------------------
 package hw4
 
+/**
+ * Classes that implement <code>OrderedProperties[A]</code> must implement
+ * <code>minimum</code>, <code>maximum</code>, and <code>compare</code>.
+ */
+abstract class OrderedProperties[A] extends Ordered[A] {
+    def minimum(): A
+    def maximum(): A
+}
+
 sealed abstract class Tree[+A]
 
+/**
+ * An empty sub-tree in a tree.
+ */
 case object Leaf extends Tree
 
+/**
+ * <code>Node</code> contains <code>data</code> and two sub-trees, <code>left
+ * </code> and <code>right</code>. Note that <code>Leaf</code> is also a <code>
+ * Tree</code>, so each sub-tree may be either another <code>Node</code> or a
+ * <code>Leaf</code>.
+ */
 case class Node[+A](left: Tree[A], data: A, right: Tree[A]) extends Tree[A]
 
 object Tree {
@@ -51,7 +69,7 @@ object Tree {
                 else lookup(right, value)
         }
 
-/*
+    /*
     def min[A](t: Tree[A]): A = {
         def minHelper[A](t: Tree[A], currentMin: A): A =
             t match {
@@ -71,5 +89,5 @@ object Tree {
         if (t == Leaf) throw new EmptyTreeException("No maximum element in an empty tree")
         else maxHelper(t, Int.MinValue)
     }
-*/
+    */
 }
