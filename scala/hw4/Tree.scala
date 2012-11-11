@@ -32,17 +32,19 @@ case object Leaf extends Tree
  */
 case class Node[+A](left: Tree[A], data: A, right: Tree[A]) extends Tree[A]
 
+/**
+ * Companion object to abstract class <code>Tree</code>. Provides methods for
+ * working with binary trees.
+ */
 object Tree {
-    class EmptyTreeException(message: String) extends Exception(message)
-
     /**
-     * Returns the number of nodes in Tree t.
+     * Returns the number of nodes in tree <code>t</code>.
      *
-     * Note that t is covariant. Therefore, it's possible to write code like
-     * this:
+     * Note that <code>t</code> is covariant. Therefore, it's possible to write
+     * the following:
      *
-     *     val ints: Node[Int] = new Node[Int](Leaf, 10, Leaf)
-     *     println(Tree.size(ints))
+     *     val tree = new Node[Int](Leaf, 10, Leaf)
+     *     println(Tree.size(tree))
      *
      */
     def size[A](t: Tree[A]): Int =
@@ -51,43 +53,52 @@ object Tree {
             case Node(left, _, right) => size(left) + size(right) + 1
         }
 
+    /**
+     * Returns a tree identical to <code>t</code>, but into which <code>value
+     * </code> has been inserted.
+     */
     def insert[A <: Ordered[A]](t: Tree[A], value: A): Tree[A] = 
         t match {
             case Leaf => Node(Leaf, value, Leaf)
             case Node(left, data, right) =>
-                if (value == data) Node(left, data, right)
-                else if (value < data) Node(insert(left, value), data, right)
-                else Node(left, data, insert(right, value))
+                if     (value == data) Node(left, data, right)
+                else if(value <  data) Node(insert(left, value), data, right)
+                else                   Node(left, data, insert(right, value))
         }
 
+    /**
+     * Returns true if <code>value</code> is in tree <code>t</code>, else false.
+     */
     def lookup[A <: Ordered[A]](t: Tree[A], value: A): Boolean =
         t match {
             case Leaf => false
             case Node(left, data, right) =>
-                if (value == data) true
-                else if (value < data) lookup(left, value)
-                else lookup(right, value)
+                if     (value == data) true
+                else if(value <  data) lookup(left, value)
+                else                   lookup(right, value)
         }
 
-    /*
-    def min[A](t: Tree[A]): A = {
+    /**
+     * Returns the minimum value in tree <code>t</code>.
+     */
+    def min[A <: OrderedProperties[A]](t: Node[A]): A = {
         def minHelper[A](t: Tree[A], currentMin: A): A =
             t match {
-                case Leaf => currentMin
+                case Leaf                => currentMin
                 case Node(left, data, _) => minHelper(left, data)
             }
-        if (t == Leaf) throw new EmptyTreeException("No minimum element in an empty tree")
-        else minHelper(t, Int.MaxValue)
+        minHelper(t, t.data.minimum())
     }
 
-    def max[A](t: Tree[A]): A = {
+    /**
+     * Returns the maximum value in tree <code>t</code>.
+     */
+    def max[A <: OrderedProperties[A]](t: Node[A]): A = {
         def maxHelper[A](t: Tree[A], currentMax: A): A =
             t match {
                 case Leaf => currentMax
                 case Node(_, data, right) => maxHelper(right, data)
             }
-        if (t == Leaf) throw new EmptyTreeException("No maximum element in an empty tree")
-        else maxHelper(t, Int.MinValue)
+        maxHelper(t, t.data.maximum())
     }
-    */
 }
