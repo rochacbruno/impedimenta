@@ -37,16 +37,7 @@ case class Node[+A](left: Tree[A], data: A, right: Tree[A]) extends Tree[A]
  * working with binary trees.
  */
 object Tree {
-    /**
-     * Returns the number of nodes in tree <code>t</code>.
-     *
-     * Note that <code>t</code> is covariant. Therefore, it's possible to write
-     * the following:
-     *
-     *     val tree = new Node[Int](Leaf, 10, Leaf)
-     *     println(Tree.size(tree))
-     *
-     */
+    /** Returns the number of nodes in tree <code>t</code>. */
     def size[A](t: Tree[A]): Int =
         t match {
             case Leaf => 0
