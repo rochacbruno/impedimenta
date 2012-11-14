@@ -1,9 +1,0 @@
-1) 8 8
-4 4
-0 0
-2 2
-2) The array ref has five elements; four for the numbers, and one for the ending \0.
-3) ref is the address of its first element, 8. ref + 1 is the address of its second element, 4. ++ref points to its second element, 4.
-4a) 12, 16
-4b) 12, 14
-5a) ? Need to read further.

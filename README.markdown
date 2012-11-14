@@ -1,7 +1,9 @@
 About
 =====
 
-This repository is a warehouse for all the code I have ever written. Most of
-this code has been written for school assignments, but there may also be
-personal projects and non-critical code from work. There is no particular focus
-to this repository, nor should there be.
+This repo is a warehouse for code I've written. Much of it has been written for
+school assignment, but there's also personal projects and non-critical code from
+work. Most of this code is utter crap, and there's no guarantee about when I'll
+decide to do some spring cleaning.
+
+There is no particular focus to this repo, nor should there be.

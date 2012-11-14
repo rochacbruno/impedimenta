@@ -1,7 +1,0 @@
-factors.c -- a program to find factors of a given number
-
-ask for input int
-scan for int
-check for errors (num < 2, num > 32766)
-	if error is found, rescan for input
-factoring time!!

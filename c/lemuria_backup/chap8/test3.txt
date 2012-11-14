@@ -1,6 +1,0 @@
-test file for the EOF character
-negative 1 coming on the next line
--1
-letters e o f next line
-EOF
-END

@@ -1,1 +1,0 @@
-ichimonji10:x:1000:1000:Jeremy,,,:/home/ichimonji10:/bin/bash
