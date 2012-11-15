@@ -5,13 +5,15 @@
 #include <stdio.h>
 #include "mpi.h"
 
+#define MSG_LEN 100
+
 main(int argc, char ** argv) {
     int my_rank;        // Rank of process
     int p;              // Number of processes
     int source;         // Rank of sender
     int dest;           // Rank of receiver
     int tag = 50;       // Tag for messages
-    char message[100];  // Storage for the message
+    char message[MSG_LEN];  // Storage for the message
     MPI_Status status;  // Return status for receive
 
     // Launch MPI processes on each node
@@ -27,22 +29,23 @@ main(int argc, char ** argv) {
         sprintf(message, "Greeting from process %d!", my_rank);
         dest = 0;
         MPI_Send(
-            message,
-            strlen(message) + 1, // +1 to include '\0'
-            MPI_CHAR,
-            dest,
-            tag,
-            MPI_COMM_WORLD
+            message,            // message being sent
+            strlen(message) + 1, // how much to send? +1 to include '\0'
+            MPI_CHAR,           // data type of message
+            dest,               // rank of dest (no MPI_ANY_DEST exists)
+            tag,                // tag          (cannot use MPI_ANY_TAG)
+            MPI_COMM_WORLD      // communicator (message space partition)
         );
     } else {
         for(source = 1; source < p; source++) {
-            MPI_Recv(message,
-                100,
-                MPI_CHAR,
-                source,
-                tag,
-                MPI_COMM_WORLD,
-                &status
+            MPI_Recv(
+                message,        // where to put received data
+                MSG_LEN,        // length of message
+                MPI_CHAR,       // data type of message
+                source,         // rank of source (also: MPI_ANY_SOURCE)
+                tag,            // tag          (also: MPI_ANY_TAG)
+                MPI_COMM_WORLD, // communicator (message space partition)
+                &status // rank and tag of msg rcvd (useful if using MPI_ANY_*)
             );
             printf("%s\n", message);
         }
