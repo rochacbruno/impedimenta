@@ -8,6 +8,7 @@
 #define OBJECT_H
 
 #include "Vector3.h"
+#include "Timer.h"
 
 // These constants can change the behavior of all programs that share this header.
 #define OBJECT_COUNT     500
@@ -48,7 +49,11 @@ extern ObjectDynamics * next_dynamics;
  * This function takes one step of simulated time. my_rank is the rank of the
  * current MPI process.
  */
-void time_step(int my_rank);
+void time_step(
+    int my_rank,
+    Timer * stopwatch1,
+    Timer * stopwatch2
+);
 
 
 //! Print the current dynamics.

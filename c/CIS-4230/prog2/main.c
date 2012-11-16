@@ -42,34 +42,44 @@ int main(int argc, char ** argv) {
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank); // get rank from MPI master process
     MPI_Comm_size(MPI_COMM_WORLD, &n_procs); // get number of MPI processes
 
-    // other prep work
-    Timer stopwatch;
-    Timer_initialize(&stopwatch);
+    // Prep work on solar system.
     initialize_object_arrays();
     // dump_dynamics(); // only have root print this?
+
+    // Create benchmarks.
+    Timer stopwatch_self;
+    Timer stopwatch1;
+    Timer stopwatch2;
+    Timer_initialize(&stopwatch1);
+    Timer_initialize(&stopwatch2);
+    Timer_initialize(&stopwatch_self);
     if(ROOT == my_rank) {
         printf("Number of MPI processes = %d\n", n_procs);
-        printf("Starting stopwatch.\n");
-        Timer_start(&stopwatch);
+        printf("Starting stopwatch_self.\n");
+        Timer_start(&stopwatch_self);
     }
 
     // do an n-body simulation!
     long long total_steps;
     for(total_steps = 0; STEP_LIMIT > total_steps; total_steps++) {
-        time_step(my_rank);
-        if(0 == total_steps % 100) { // BENCHMARK
+        time_step(my_rank, &stopwatch1, &stopwatch2);
+        if(ROOT == my_rank && 0 == total_steps % 100) { // BENCHMARK
             printf("time steps = %lld\n", total_steps);
         }
     }
 
-    // clean-up work
+    // Allow all processes to print benchmark info.
     if(ROOT == my_rank) {
-        Timer_stop(&stopwatch);
+        Timer_stop(&stopwatch_self);
+        printf("Stopwatch stopped.\n");
+        printf("Total time elapsed = %ld milliseconds\n", Timer_time(&stopwatch_self));
         printf("Years simulated = %.3Lf\n", (long double)total_steps / (long double)STEPS_PER_YEAR);
         printf("Total time steps = %lld\n", total_steps);
-        printf("Total time elapsed = %ld milliseconds\n", Timer_time(&stopwatch));
-        fflush(stdout);
     }
+    printf("process %d stopwatch1 = %ld milliseconds\n", my_rank, Timer_time(&stopwatch1));
+    printf("process %d stopwatch2 = %ld milliseconds\n", my_rank, Timer_time(&stopwatch2));
+    fflush(stdout);
+
     // dump_dynamics();
     MPI_Finalize();
     return 0;

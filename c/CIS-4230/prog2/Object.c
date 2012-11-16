@@ -18,10 +18,15 @@ Box overall_region = {
     .z_interval = { -100.0 * AU, 100.0 * AU }
 };
 
-void time_step(int my_rank) {
+void time_step(
+    int my_rank,
+    Timer * stopwatch1,
+    Timer * stopwatch2
+) {
     Octree spacial_tree;
 
     Octree_init(&spacial_tree, &overall_region);
+    Timer_start(stopwatch1);
     for(int i = 0; i < OBJECT_COUNT; ++i) {
         Octree_insert(
             &spacial_tree,
@@ -29,9 +34,11 @@ void time_step(int my_rank) {
             object_array[i].mass
         );
     }
+    Timer_stop(stopwatch1);
     Octree_refresh_interior(&spacial_tree);
 
     // For each object...
+    Timer_start(stopwatch2);
     for(int object_i = 0; object_i < OBJECT_COUNT; ++object_i) {
         Vector3 total_force = Octree_force(
             &spacial_tree,
@@ -54,6 +61,7 @@ void time_step(int my_rank) {
             delta_position
         );
     }
+    Timer_stop(stopwatch2);
     Octree_destroy(&spacial_tree);
 
     // Swap the dynamics arrays.
