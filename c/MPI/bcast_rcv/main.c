@@ -1,6 +1,6 @@
 // To compile and run:
-// mpicc -o main main.c
-// mpirun -np 4 ./main
+// mpicc main.c
+// mpirun -np 4 ./a.out
 
 #include <stdio.h>
 #include "mpi.h"
