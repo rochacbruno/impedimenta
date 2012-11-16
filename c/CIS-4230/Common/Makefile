@@ -6,7 +6,7 @@ CC=clang
 CFLAGS=-c -O -emit-llvm
 LD=llvm-ld
 LDFLAGS=-link-as-library
-SOURCES=ProblemFile.c str.c Timer.c Tree.c Vector3.c
+SOURCES=Interval.c Octree.c ProblemFile.c str.c ThreadPool.c Timer.c Tree.c Vector3.c
 OBJECTS=$(SOURCES:.c=.bc)
 LIBRARY=Common.bc
 
@@ -19,9 +19,15 @@ $(LIBRARY):	$(OBJECTS)
 # File Dependencies
 ###################
 
+Interval.bc:	Interval.c
+
+Octree.bc:	Octree.c
+
 ProblemFile.bc:	ProblemFile.c
 
 str.bc:		str.c
+
+ThreadPool.bc:	ThreadPool.c ThreadPool.h
 
 Timer.bc:	Timer.c environ.h
 

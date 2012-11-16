@@ -6,7 +6,7 @@ CC=gcc
 CFLAGS=-c -O
 AR=ar
 ARFLAGS=rcs
-SOURCES=ProblemFile.c str.c Timer.c Tree.c Vector3.c
+SOURCES=Interval.c Octree.c ProblemFile.c str.c ThreadPool.c Timer.c Tree.c Vector3.c
 OBJECTS=$(SOURCES:.c=.o)
 LIBRARY=libCommon.a
 
@@ -19,9 +19,15 @@ $(LIBRARY):	$(OBJECTS)
 # File Dependencies
 ###################
 
+Interval.o:     Interval.c
+
+Octree.o:       Octree.c
+
 ProblemFile.o:	ProblemFile.c
 
 str.o:		str.c
+
+ThreadPool.o:	ThreadPool.c ThreadPool.h
 
 Timer.o:	Timer.c environ.h
 

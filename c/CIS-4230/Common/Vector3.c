@@ -24,25 +24,25 @@ Vector3 v3_subtract( Vector3 a, Vector3 b )
 	return result;
 }
 
-Vector3 v3_multiply( floating_t scale_factor, Vector3 a )
+Vector3 v3_multiply( double scale_factor, Vector3 a )
 {
-	Vector3 result;
+	Vector3 result = a;
 	result.x *= scale_factor;
 	result.y *= scale_factor;
 	result.z *= scale_factor;
 	return result;
 }
 
-Vector3 v3_divide( Vector3 a, floating_t scale_factor )
+Vector3 v3_divide( Vector3 a, double scale_factor )
 {
-	Vector3 result;
+	Vector3 result = a;
 	result.x /= scale_factor;
 	result.y /= scale_factor;
 	result.z /= scale_factor;
 	return result;
 }
 
-floating_t magnitude_squared( Vector3 a )
+double magnitude_squared( Vector3 a )
 {
 	return (a.x * a.x) + (a.y * a.y) + (a.z * a.z);
 }
