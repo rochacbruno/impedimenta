@@ -2,6 +2,9 @@
     \brief   Main program of the serial solar system simulator.
     \author  Peter C. Chapin <PChapin@vtc.vsc.edu>
 
+When benchmarking, search for and comment out lines or blocks of code marked
+with the word BENCHMARK.
+
 LICENSE
 
 This program is free software; you can redistribute it and/or modify it under the terms of the
@@ -26,10 +29,12 @@ not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Bo
 #include "Timer.h"
 
 #define STEPS_PER_YEAR 8766 // Number of hours in a year.
+#define STEP_LIMIT 300 // after how many steps should the program stop?
 #define ROOT 0 // rank of root process
-#define STEPS_LIMIT 300 // after how many steps should the program stop?
 
-main(int argc, char ** argv) {
+// Initializes MPI, stopwatch, and objects to be simulated. Calls simulation
+// functions. Prints out stats to user.
+int main(int argc, char ** argv) {
     // MPI initialization
     int my_rank; // Rank   of process
     int n_procs; // Number of processes
@@ -40,7 +45,6 @@ main(int argc, char ** argv) {
     // other prep work
     Timer stopwatch;
     Timer_initialize(&stopwatch);
-    long total_steps = 0;
     initialize_object_arrays();
     // dump_dynamics(); // only have root print this?
     if(ROOT == my_rank) {
@@ -50,19 +54,23 @@ main(int argc, char ** argv) {
     }
 
     // do an n-body simulation!
-    while(STEPS_LIMIT > total_steps) {
-        time_step();
-        total_steps++;
+    long long total_steps;
+    for(total_steps = 0; STEP_LIMIT > total_steps; total_steps++) {
+        time_step(my_rank);
+        if(0 == total_steps % 100) { // BENCHMARK
+            printf("time steps = %lld\n", total_steps);
+        }
     }
 
     // clean-up work
     if(ROOT == my_rank) {
         Timer_stop(&stopwatch);
-        printf("Years simulated = %.3lf\n", (double)total_steps / (double)STEPS_PER_YEAR);
-        printf("Time steps = %d\n", total_steps);
-        printf("Time elapsed = %ld milliseconds\n", Timer_time(&stopwatch));
+        printf("Years simulated = %.3Lf\n", (long double)total_steps / (long double)STEPS_PER_YEAR);
+        printf("Total time steps = %lld\n", total_steps);
+        printf("Total time elapsed = %ld milliseconds\n", Timer_time(&stopwatch));
         fflush(stdout);
     }
     // dump_dynamics();
     MPI_Finalize();
+    return 0;
 } // main

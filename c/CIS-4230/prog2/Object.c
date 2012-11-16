@@ -18,17 +18,8 @@ Box overall_region = {
     .z_interval = { -100.0 * AU, 100.0 * AU }
 };
 
-void time_step() {
-    static int tick_count = 0;
+void time_step(int my_rank) {
     Octree spacial_tree;
-
-    tick_count++;
-    // Print the number of times this function is called.
-    // FIXME: when benchmarking program, don't use this. Probably throws off
-    // stopwatch.
-    if(tick_count % 100 == 0) {
-        printf("time steps = %d\n", tick_count);
-    }
 
     Octree_init(&spacial_tree, &overall_region);
     for(int i = 0; i < OBJECT_COUNT; ++i) {

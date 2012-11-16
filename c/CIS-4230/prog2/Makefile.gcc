@@ -3,7 +3,7 @@
 #
 
 CC=mpicc
-CFLAGS=-c -I../Common -std=c99
+CFLAGS=-c -I../Common -std=c99 -Wall
 LD=mpicc
 LDFLAGS=
 SOURCES=main.c Initialize.c Object.c

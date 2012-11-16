@@ -39,18 +39,19 @@ typedef struct {
 // all the objects. The next_dynamics array contains the estimated position and velocity of all
 // the objects after the current time step.
 //
-extern Object         *object_array;
-extern ObjectDynamics *current_dynamics;
-extern ObjectDynamics *next_dynamics;
+extern Object         * object_array;
+extern ObjectDynamics * current_dynamics;
+extern ObjectDynamics * next_dynamics;
 
 //! Compute the next dynamics from the current dynamics.
 /*!
- * This function takes one step of simulated time.
+ * This function takes one step of simulated time. my_rank is the rank of the
+ * current MPI process.
  */
-void time_step( );
+void time_step(int my_rank);
 
 
 //! Print the current dynamics.
-void dump_dynamics( );
+void dump_dynamics();
 
 #endif
