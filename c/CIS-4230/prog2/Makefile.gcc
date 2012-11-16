@@ -1,0 +1,31 @@
+#
+# Makefile for the CIS-4230 Solar System Simulator project (MPI version)
+#
+
+CC=mpicc
+CFLAGS=-c -I../Common -std=c99
+LD=mpicc
+LDFLAGS=
+SOURCES=main.c Initialize.c Object.c
+OBJECTS=$(SOURCES:.c=.o)
+EXECUTABLE=MPI
+
+%.o:	%.c
+	$(CC) $(CFLAGS) $< -o $@
+
+$(EXECUTABLE):	$(OBJECTS)
+	$(LD) $(LDFLAGS) $(OBJECTS) -L../Common -lCommon -lm -o $@
+
+# File Dependencies
+###################
+
+main.o:         main.c
+
+Initialize.o:	Initialize.c
+
+Object.o:	Object.c
+
+# Additional Rules
+##################
+clean:
+	rm -f *.o *.bc *.s *.ll *~ $(EXECUTABLE)
