@@ -22,10 +22,12 @@ void time_step() {
     static int tick_count = 0;
     Octree spacial_tree;
 
-    // Print the number of times this function is called.
     tick_count++;
+    // Print the number of times this function is called.
+    // FIXME: when benchmarking program, don't use this. Probably throws off
+    // stopwatch.
     if(tick_count % 100 == 0) {
-        printf("TICK %d\n", tick_count);
+        printf("time steps = %d\n", tick_count);
     }
 
     Octree_init(&spacial_tree, &overall_region);

@@ -25,46 +25,44 @@ not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Bo
 #include "Object.h"
 #include "Timer.h"
 
-#define STEPS_PER_YEAR 8766  // Number of hours in a year.
-#define ROOT 0
+#define STEPS_PER_YEAR 8766 // Number of hours in a year.
+#define ROOT 0 // rank of root process
+#define STEPS_LIMIT 300 // after how many steps should the program stop?
 
 main(int argc, char ** argv) {
-    int my_rank; // Rank of process
+    // MPI initialization
+    int my_rank; // Rank   of process
     int n_procs; // Number of processes
-
     MPI_Init(&argc, &argv);                  // Launch MPI processes on nodes
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank); // get rank from MPI master process
     MPI_Comm_size(MPI_COMM_WORLD, &n_procs); // get number of MPI processes
 
+    // other prep work
     Timer stopwatch;
-    long long total_steps = 0;
-    int total_years       = 0;
-
-    initialize_object_arrays();
-    // dump_dynamics();
     Timer_initialize(&stopwatch);
-    Timer_start(&stopwatch);
-    while(1) {
+    long total_steps = 0;
+    initialize_object_arrays();
+    // dump_dynamics(); // only have root print this?
+    if(ROOT == my_rank) {
+        printf("Number of MPI processes = %d\n", n_procs);
+        printf("Starting stopwatch.\n");
+        Timer_start(&stopwatch);
+    }
+
+    // do an n-body simulation!
+    while(STEPS_LIMIT > total_steps) {
         time_step();
         total_steps++;
-
-        // Terminate prematurely for test purposes.
-        // if(total_steps == 200) break;
-
-        if(total_steps % STEPS_PER_YEAR == 0) {
-            total_years++;
-            if(total_years % 10 == 0) {
-                printf( "Years simulated = %d\r", total_years );
-                fflush( stdout );
-            }
-
-            // For now, stop the simulation after 100 years.
-            if(total_years == 100) break;
-        }
     }
-    Timer_stop(&stopwatch);
-    printf("Time elapsed = %ld milliseconds\n", Timer_time(&stopwatch));
-    // dump_dynamics();
 
+    // clean-up work
+    if(ROOT == my_rank) {
+        Timer_stop(&stopwatch);
+        printf("Years simulated = %.3lf\n", (double)total_steps / (double)STEPS_PER_YEAR);
+        printf("Time steps = %d\n", total_steps);
+        printf("Time elapsed = %ld milliseconds\n", Timer_time(&stopwatch));
+        fflush(stdout);
+    }
+    // dump_dynamics();
     MPI_Finalize();
 } // main
