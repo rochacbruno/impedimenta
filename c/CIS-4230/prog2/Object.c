@@ -25,6 +25,8 @@ void time_step(
 ) {
     Octree spacial_tree;
 
+    // TODO: Broadcast current_dynamics from ROOT to all other processes.
+
     Octree_init(&spacial_tree, &overall_region);
     Timer_start(stopwatch1);
     for(int i = 0; i < OBJECT_COUNT; ++i) {
@@ -36,6 +38,9 @@ void time_step(
     }
     Timer_stop(stopwatch1);
     Octree_refresh_interior(&spacial_tree);
+
+    // TODO: Make each process calculate only some of the next_dynamics. That
+    // is, make each process run only part of the for loop below.
 
     // For each object...
     Timer_start(stopwatch2);
@@ -63,6 +68,8 @@ void time_step(
     }
     Timer_stop(stopwatch2);
     Octree_destroy(&spacial_tree);
+
+    // TODO: gather next_dynamics from each process.
 
     // Swap the dynamics arrays.
     ObjectDynamics *temp = current_dynamics;
