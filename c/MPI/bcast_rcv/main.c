@@ -5,16 +5,11 @@
 #include <stdio.h>
 #include "mpi.h"
 
-#define MSG_LEN 100
+#define ROOT 0
 
 main(int argc, char ** argv) {
     int my_rank;        // Rank of process
     int n_procs;        // Number of processes
-    int source;         // Rank of sender
-    int dest;           // Rank of receiver
-    int tag = 50;       // Tag for messages
-    char message[MSG_LEN];  // Storage for the message
-    MPI_Status status;  // Return status for receive
 
     // Launch MPI processes on each node
     MPI_Init(&argc, &argv);
@@ -30,7 +25,7 @@ main(int argc, char ** argv) {
         &number,    // message
         1,          // how many `message` to send to each process?
         MPI_INT,    // data type of `message`
-        0,          // rank of process that sends `message` (typically: root)
+        ROOT,       // rank of process that sends `message` (typically: root)
         MPI_COMM_WORLD // communicator
     );
     number *= my_rank;
@@ -43,7 +38,7 @@ main(int argc, char ** argv) {
         1,       // count: num of `datatype` being fetched from each process
         MPI_INT, // datatype
         MPI_SUM, // operation
-        0,       // rank of process that gets result (typically: root)
+        ROOT,    // rank of process that gets result (typically: root)
         MPI_COMM_WORLD  // communicator
     );
     if(0 == my_rank) {

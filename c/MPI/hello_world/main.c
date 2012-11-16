@@ -9,7 +9,7 @@
 
 main(int argc, char ** argv) {
     int my_rank;        // Rank of process
-    int p;              // Number of processes
+    int num_procs;      // Number of processes
     int source;         // Rank of sender
     int dest;           // Rank of receiver
     int tag = 50;       // Tag for messages
@@ -22,11 +22,11 @@ main(int argc, char ** argv) {
     // rank == 0
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     // Get the number of processes launched by MPI.
-    MPI_Comm_size(MPI_COMM_WORLD, &p);
+    MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 
     // All processes > 0 send messages to processes 0.
     if(0 != my_rank) {
-        sprintf(message, "Greeting from process %d!", my_rank);
+        sprintf(message, "Greetings from process %d!", my_rank);
         dest = 0;
         MPI_Send(
             message,            // message being sent
@@ -37,13 +37,13 @@ main(int argc, char ** argv) {
             MPI_COMM_WORLD      // communicator (message space partition)
         );
     } else {
-        for(source = 1; source < p; source++) {
+        for(source = 1; source < num_procs; source++) {
             MPI_Recv(
                 message,        // where to put received data
                 MSG_LEN,        // length of message
                 MPI_CHAR,       // data type of message
                 source,         // rank of source (also: MPI_ANY_SOURCE)
-                tag,            // tag          (also: MPI_ANY_TAG)
+                tag,            // tag            (also: MPI_ANY_TAG)
                 MPI_COMM_WORLD, // communicator (message space partition)
                 &status // rank and tag of msg rcvd (useful if using MPI_ANY_*)
             );
