@@ -3,7 +3,7 @@
 #
 
 CC=gcc
-CFLAGS=-c -O
+CFLAGS=-c -O -std=c99
 AR=ar
 ARFLAGS=rcs
 SOURCES=Interval.c Octree.c ProblemFile.c str.c ThreadPool.c Timer.c Tree.c Vector3.c
