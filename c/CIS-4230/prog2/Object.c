@@ -5,12 +5,12 @@
 
 #include "Object.h"
 
-/*-==========================================================================-*\
-BEGIN definitions of private functions
-\*-==========================================================================-*/
+// BEGIN private function definitions ==========================================
 
-/* Given an Vector3 instance, create a corresponding MPI_Datatype. Allows one to
-send Vector3 instances. */
+/*-==========================================================================-*\
+Given an Vector3 instance, create a corresponding MPI_Datatype. Allows one to
+send Vector3 instances.
+\*-==========================================================================-*/
 void _describe_vector3(
     Vector3 * input_data,
     MPI_Datatype * message_type_ptr
@@ -53,8 +53,10 @@ void _describe_vector3(
     MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
 }
 
-/* Given an ObjectDynamics instance, create a corresponding MPI_Datatype. Allows
-one to send ObjectDynamics instances. */
+/*-==========================================================================-*\
+Given an ObjectDynamics instance, create a corresponding MPI_Datatype. Allows
+one to send ObjectDynamics instances.
+\*-==========================================================================-*/
 void _describe_object_dynamics(
     ObjectDynamics * input_data,
     MPI_Datatype * message_type_ptr
@@ -97,45 +99,39 @@ void _describe_object_dynamics(
     MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
 }
 
-/* Allows an array to be split into a set of smaller arrays. The start_indices
-and end_indices point to the start and end of each chunk inside a larger array.
-start_indices and end_indices must be arrays with n_chunks elements each.
+/*-==========================================================================-*\
+Helps you split an array of arr_len into n_chunks.
 
 For example, let's assume:
-
-    arr_len = 500
-    n_chunks = 2
+- arr_len = 200
+- n_chunks = 4
 
 The result woudld be (pseudocode):
-
-    start_indices == [0, 249]
-    end_indices == [250, 499]
-
-*/
+- start_indices == [0, 50, 100, 150]
+- chunk_sizes == [50, 50, 50, 50]
+\*-==========================================================================-*/
 void _chunk_array(
     const int arr_len, // in
     const int n_chunks, // in
     int * const start_indices, // out
-    int * const end_indices // out
+    int * const chunk_sizes // out
 ) {
-    const int chunk_size = arr_len / n_chunks;
-    int start = 0;
-    int end;
+    const int chunk_size = arr_len / n_chunks; // default chunk size
+    int start_i = 0;
+    int end_i;
 
-    for(int chunk = 0; chunk < n_chunks; chunk++) {
-        end = start + chunk_size;
-        if(chunk >= arr_len % n_chunks) {
-            end -= 1;
+    for(int i = 0; i < n_chunks; i++) {
+        end_i = start_i + chunk_size;
+        if(i >= arr_len % n_chunks) {
+            end_i -= 1;
         }
-        start_indices[chunk] = start;
-        end_indices[chunk] = end;
-        start = end + 1;
+        start_indices[i] = start_i;
+        chunk_sizes[i] = end_i - start_i;
+        start_i = end_i + 1;
     }
 }
 
-/*-==========================================================================-*\
-END definitions of private functions
-\*-==========================================================================-*/
+// END private function definitions ============================================
 
 Object         * object_array;
 ObjectDynamics * current_dynamics;
@@ -147,6 +143,9 @@ Box overall_region = {
     .z_interval = { -100.0 * AU, 100.0 * AU }
 };
 
+/*-==========================================================================-*\
+time_step
+\*-==========================================================================-*/
 void time_step(
     const int n_procs,
     const int my_rank,
@@ -158,7 +157,7 @@ void time_step(
     Octree_init(&spacial_tree, &overall_region);
     Timer_start(stopwatch1);
     for(int i = 0; i < OBJECT_COUNT; ++i) {
-        if(ROOT == my_rank && DEBUG) printf("(%d) iteration %d\n", my_rank, i);
+        //if(ROOT == my_rank && DEBUG) printf("(%d) iteration %d\n", my_rank, i);
         Octree_insert(
             &spacial_tree,
             current_dynamics[i].position,
@@ -183,14 +182,14 @@ void time_step(
     // Determine which indices of the for loop each process should do.
     if(DEBUG) printf("(%d) Running calculations\n", my_rank);
     int start_indices[n_procs];
-    int end_indices[n_procs];
-    _chunk_array(OBJECT_COUNT, n_procs, start_indices, end_indices);
+    int chunk_sizes[n_procs];
+    _chunk_array(OBJECT_COUNT, n_procs, start_indices, chunk_sizes);
 
     // For each object...
     Timer_start(stopwatch2);
     for(
         int object_i = start_indices[my_rank];
-        object_i <= end_indices[my_rank];
+        object_i <= start_indices[my_rank] + chunk_sizes[my_rank];
         object_i++
     ) {
         Vector3 total_force = Octree_force(
@@ -220,11 +219,10 @@ void time_step(
     // Gather a portion of current_dynamics from each process. Concatenate into
     // buffer.
     if(ROOT != my_rank) {
-        const int msg_size = end_indices[my_rank] - start_indices[my_rank] + 1;
-        if(DEBUG) printf("(%d) MPI_Send %d elements\n", my_rank, msg_size);
+        if(DEBUG) printf("(%d) MPI_Send %d elements\n", my_rank, chunk_sizes[my_rank]);
         MPI_Send(
             &(current_dynamics[start_indices[my_rank]]), // message
-            msg_size,               // send count
+            chunk_sizes[my_rank],   // send count
             object_dynamics_type,   // data type of message
             ROOT,                   // rank of dest
             SEND_RECV_TAG,          // tag
@@ -234,11 +232,10 @@ void time_step(
         MPI_Status status; // don't really care about status
         for(int rank_i = 0; rank_i < n_procs; rank_i++) {
             if(ROOT != rank_i) {
-                const int msg_size = end_indices[rank_i] - start_indices[rank_i] + 1;
-                if(DEBUG) printf("(%d) MPI_Recv %d elements from %d\n", my_rank, msg_size, rank_i);
+                if(DEBUG) printf("(%d) MPI_Recv %d elements from %d\n", my_rank, chunk_sizes[rank_i], rank_i);
                 MPI_Recv(
                     &(current_dynamics[start_indices[rank_i]]), // recv buff
-                    msg_size,               // msg len
+                    chunk_sizes[my_rank],   // msg len
                     object_dynamics_type,   // data type of message
                     rank_i,                 // rank of source
                     SEND_RECV_TAG,          // tag
@@ -258,6 +255,9 @@ void time_step(
     }
 }
 
+/*-==========================================================================-*\
+dump_dynamics
+\*-==========================================================================-*/
 void dump_dynamics() {
     for(int object_i = 0; object_i < OBJECT_COUNT; ++object_i) {
         printf("%4d: x = %10.3E, y = %10.3E, z = %10.3E\n",
