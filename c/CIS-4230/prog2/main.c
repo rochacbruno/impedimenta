@@ -20,17 +20,7 @@ not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Bo
 02111-1307 USA
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "Initialize.h"
-#include "mpi.h"
-#include "Object.h"
-#include "Timer.h"
-
-#define STEPS_PER_YEAR 8766 // Number of hours in a year.
-#define STEP_LIMIT 300 // after how many steps should the program stop?
-#define ROOT 0 // rank of root process
+#include "main.h"
 
 // Initializes MPI, stopwatch, and objects to be simulated. Calls simulation
 // functions. Prints out stats to user.

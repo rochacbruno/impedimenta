@@ -5,15 +5,13 @@
 
 #include "Object.h"
 
-#define ROOT 0 // rank of root process
-
 /*-==========================================================================-*\
 BEGIN definitions of private functions
 \*-==========================================================================-*/
 
 // Given an Vector3 instance, create a corresponding MPI_Datatype. Allows one to
 // send Vector3 instances.
-void _create_derived_vector3(
+void _describe_vector3(
     Vector3 * input_data,
     MPI_Datatype * message_type_ptr
 ) {
@@ -24,7 +22,7 @@ void _create_derived_vector3(
 
     // Specify datatypes of blocks.
     MPI_Datatype typelist[3];
-    typelist[0] = typelist[1] = typelist[2] = MPI_FLOAT;
+    typelist[0] = typelist[1] = typelist[2] = MPI_DOUBLE;
 
     // How many items will go into each block?
     int block_lengths[3];
@@ -57,27 +55,23 @@ void _create_derived_vector3(
 
 // Given an ObjectDynamics instance, create a corresponding MPI_Datatype. Allows
 // one to send ObjectDynamics instances.
-void _create_derived_object_dynamics(
+void _describe_object_dynamics(
     ObjectDynamics * input_data,
     MPI_Datatype * message_type_ptr
 ) {
     /* The struct we're describing contains Vector3's, which is a non-standard
     datatype. We've got to tell MPI about those Vector3's before we can tell MPI
     about `input_data`. */
-
-    MPI_Datatype vector3_position;
-    _create_derived_vector3(&(input_data->position), &vector3_position);
-
-    MPI_Datatype vector3_velocity;
-    _create_derived_vector3(&(input_data->velocity), &vector3_velocity);
+    MPI_Datatype vector3;
+    _describe_vector3(&(input_data->position), &vector3);
 
     // Specify datatypes of blocks.
-    MPI_Datatype typelist[2];
-    typelist[0] = vector3_position;
-    typelist[1] = vector3_velocity;
+    MPI_Datatype typelist[2]; // 1 for each block
+    typelist[0] = vector3;
+    typelist[1] = vector3;
 
     // How many items will go into each block?
-    int block_lengths[2];
+    int block_lengths[2]; // 1 for each block
     block_lengths[0] = block_lengths[1] = 1;
 
     // What's the address of each item in `input_data`? Used for discovering
@@ -88,7 +82,7 @@ void _create_derived_object_dynamics(
     MPI_Address(&(input_data->velocity), &addresses[2]);
 
     // What's the size of each item in `input_data`?
-    MPI_Aint displacements[2]; // 1 for each member of `input_data`
+    MPI_Aint displacements[2]; // 1 for each struct member
     displacements[0] = addresses[1] - addresses[0];
     displacements[1] = addresses[2] - addresses[1];
 
@@ -118,13 +112,13 @@ Box overall_region = {
 };
 
 void time_step(
-    int n_procs,
-    int my_rank,
-    Timer * stopwatch1,
-    Timer * stopwatch2
+    const int n_procs,
+    const int my_rank,
+    Timer * const stopwatch1,
+    Timer * const stopwatch2
 ) {
+    // Initialize and populate the octree.
     Octree spacial_tree;
-
     Octree_init(&spacial_tree, &overall_region);
     Timer_start(stopwatch1);
     for(int i = 0; i < OBJECT_COUNT; ++i) {
@@ -137,13 +131,45 @@ void time_step(
     Timer_stop(stopwatch1);
     Octree_refresh_interior(&spacial_tree);
 
-    // TODO: Create a derived datatype for current_dynamics and next_dynamics.
-    // TODO: Broadcast current_dynamics from ROOT to all other processes.
-    //MPI_Datatype mpi_object_dynamics;
-    //_create_derived_object_dynamics(&current_dynamcs[0], &mpi_object_dynamics);
+    // Describe the ObjectDynamics type to MPI.
+    MPI_Datatype object_dynamics_type;
+    _describe_object_dynamics(&current_dynamics[0], &object_dynamics_type);
 
-    // TODO: Make each process calculate only some of the next_dynamics. That
-    // is, make each process run only part of the for loop below.
+    // Create a buffer to hold current_dynamics and next_dynamics while they're
+    // being sent between MPI nodes.
+    const int BUFF_SIZE = OBJECT_COUNT * (6 * sizeof(double)); // FIXME
+    char * buffer = (char *)malloc(BUFF_SIZE);
+
+    // Pack current_dynamics into `buffer`, broadcast, and unpack.
+    int buff_pos = 0;       // i.e. beginning of buffer
+    MPI_Pack(
+        current_dynamics,   // item being packed into buffer
+        OBJECT_COUNT,       // number of contiguous items to pack
+        object_dynamics_type, // data type of item
+        buffer,             // buffer for items
+        BUFF_SIZE,          // size of buffer
+        &buff_pos,          // position in buffer in which to place item
+        MPI_COMM_WORLD      // communicator that will be using buffer
+    );
+    MPI_Bcast(
+        buffer,
+        BUFF_SIZE,
+        MPI_PACKED,
+        ROOT,
+        MPI_COMM_WORLD
+    );
+    if(ROOT != my_rank) {
+        buff_pos = 0;
+        MPI_Unpack(
+            buffer, // Unpacking from a buffer
+            BUFF_SIZE, // of this size
+            &buff_pos, // starting at this point in the buffer
+            current_dynamics, // into this destination.
+            OBJECT_COUNT, // Unpack this many contiguous objects
+            object_dynamics_type, // of this type.
+            MPI_COMM_WORLD
+        );
+    }
 
     // For each object...
     Timer_start(stopwatch2);
@@ -178,6 +204,8 @@ void time_step(
     ObjectDynamics *temp = current_dynamics;
     current_dynamics     = next_dynamics;
     next_dynamics        = temp;
+
+    free(buffer);
 }
 
 void dump_dynamics() {

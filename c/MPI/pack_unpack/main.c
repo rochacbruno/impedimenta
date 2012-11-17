@@ -69,8 +69,8 @@ main(int argc, char ** argv) {
             buffer,
             BUFF_SIZE,
             &position,
-            &a,
-            1,
+            &a, // Unpacking from `buffer` into `a`.
+            1, // Unpacking n contiguous items from `buffer`.
             MPI_FLOAT,
             MPI_COMM_WORLD
         );

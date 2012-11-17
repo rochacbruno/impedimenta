@@ -35,6 +35,11 @@ loop in `time_step()`. A sample run-through of the program produces this:
 The output empirically demonstrates that the maximum resolution of a timer from
 `Timer.h` is one millisecond.
 
+Note: When the above output was obtained, the program did not yet perform any
+significant MPI-related actions, such as broadcasting or gathering data. It is
+essentially the same as the vanilla serial program, despite a contrary
+appearance.
+
 Question 2
 ----------
 Parallelize Barnes-Hut using MPI as described above and measure how long each
