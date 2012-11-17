@@ -158,6 +158,7 @@ void time_step(
     Octree_init(&spacial_tree, &overall_region);
     Timer_start(stopwatch1);
     for(int i = 0; i < OBJECT_COUNT; ++i) {
+        if(ROOT == my_rank && DEBUG) printf("(%d) iteration %d\n", my_rank, i);
         Octree_insert(
             &spacial_tree,
             current_dynamics[i].position,
@@ -167,47 +168,20 @@ void time_step(
     Timer_stop(stopwatch1);
     Octree_refresh_interior(&spacial_tree);
 
-    // Describe the ObjectDynamics type to MPI.
+    // Describe the ObjectDynamics type to MPI, then broadcast current_dynamics.
+    if(DEBUG) printf("(%d) Calling MPI_Bcast\n", my_rank);
     MPI_Datatype object_dynamics_type;
     _describe_object_dynamics(&current_dynamics[0], &object_dynamics_type);
-
-    // Create a buffer, pack current_dynamics into it, broadcast, and unapck.
-    const int BUFF_SIZE = OBJECT_COUNT * (6 * sizeof(double)); // FIXME
-    char * buffer = (char *)malloc(BUFF_SIZE);
-    int buff_pos;
-    if(ROOT == my_rank) {
-        buff_pos = 0; // beginning of buffer
-        MPI_Pack(
-            current_dynamics,   // item being packed into buffer
-            OBJECT_COUNT,       // number of contiguous items to pack
-            object_dynamics_type, // data type of item
-            buffer,             // buffer for items
-            BUFF_SIZE,          // size of buffer
-            &buff_pos,          // position in buffer in which to place item
-            MPI_COMM_WORLD      // communicator that will be using buffer
-        );
-    }
     MPI_Bcast(
-        buffer,
-        BUFF_SIZE,
-        MPI_PACKED,
+        &(current_dynamics[0]),
+        OBJECT_COUNT,
+        object_dynamics_type,
         ROOT,
         MPI_COMM_WORLD
     );
-    if(ROOT != my_rank) {
-        buff_pos = 0;
-        MPI_Unpack(
-            buffer, // Unpacking from a buffer
-            BUFF_SIZE, // of this size
-            &buff_pos, // starting at this point in the buffer
-            current_dynamics, // into this destination.
-            OBJECT_COUNT, // Unpack this many contiguous objects
-            object_dynamics_type, // of this type.
-            MPI_COMM_WORLD
-        );
-    }
 
     // Determine which indices of the for loop each process should do.
+    if(DEBUG) printf("(%d) Running calculations\n", my_rank);
     int start_indices[n_procs];
     int end_indices[n_procs];
     _chunk_array(OBJECT_COUNT, n_procs, start_indices, end_indices);
@@ -243,15 +217,45 @@ void time_step(
     Timer_stop(stopwatch2);
     Octree_destroy(&spacial_tree);
 
-    // Each process is done working on current_dynamics. Gather results.
-    // TODO
+    // Gather a portion of current_dynamics from each process. Concatenate into
+    // buffer.
+    if(ROOT != my_rank) {
+        const int msg_size = end_indices[my_rank] - start_indices[my_rank] + 1;
+        if(DEBUG) printf("(%d) MPI_Send %d elements\n", my_rank, msg_size);
+        MPI_Send(
+            &(current_dynamics[start_indices[my_rank]]), // message
+            msg_size,               // send count
+            object_dynamics_type,   // data type of message
+            ROOT,                   // rank of dest
+            SEND_RECV_TAG,          // tag
+            MPI_COMM_WORLD          // communicator
+        );
+    } else {
+        MPI_Status status; // don't really care about status
+        for(int rank_i = 0; rank_i < n_procs; rank_i++) {
+            if(ROOT != rank_i) {
+                const int msg_size = end_indices[rank_i] - start_indices[rank_i] + 1;
+                if(DEBUG) printf("(%d) MPI_Recv %d elements from %d\n", my_rank, msg_size, rank_i);
+                MPI_Recv(
+                    &(current_dynamics[start_indices[rank_i]]), // recv buff
+                    msg_size,               // msg len
+                    object_dynamics_type,   // data type of message
+                    rank_i,                 // rank of source
+                    SEND_RECV_TAG,          // tag
+                    MPI_COMM_WORLD,         // communicator
+                    &status                 // rank and tag of msg rcvd
+                );
+            }
+        }
+    }
 
     // Swap current_dynamics and next_dynamics.
-    ObjectDynamics *temp = current_dynamics;
-    current_dynamics     = next_dynamics;
-    next_dynamics        = temp;
-
-    free(buffer);
+    if(ROOT == my_rank) {
+        if(DEBUG) printf("(%d) Swapping current_dynamics and next_dynamics.\n", my_rank);
+        ObjectDynamics *temp = current_dynamics;
+        current_dynamics     = next_dynamics;
+        next_dynamics        = temp;
+    }
 }
 
 void dump_dynamics() {
