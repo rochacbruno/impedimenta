@@ -126,7 +126,7 @@ void _chunk_array(
             end_i -= 1;
         }
         start_indices[i] = start_i;
-        chunk_sizes[i] = end_i - start_i;
+        chunk_sizes[i] = end_i + 1 - start_i;
         start_i = end_i + 1;
     }
 }
@@ -168,16 +168,16 @@ void time_step(
     Octree_refresh_interior(&spacial_tree);
 
     // Determine which indices of the for loop each process should run.
-    if(DEBUG) printf("(%d) Running calculations\n", my_rank);
     int start_indices[n_procs];
     int chunk_sizes[n_procs];
     _chunk_array(OBJECT_COUNT, n_procs, start_indices, chunk_sizes);
 
     // For each object...
+    if(DEBUG) printf("(%d) Running calculations\n", my_rank);
     Timer_start(stopwatch2);
     for(
         int object_i = start_indices[my_rank];
-        object_i <= start_indices[my_rank] + chunk_sizes[my_rank];
+        object_i < start_indices[my_rank] + chunk_sizes[my_rank];
         object_i++
     ) {
         Vector3 total_force = Octree_force(
@@ -209,12 +209,11 @@ void time_step(
     MPI_Datatype object_dynamics_type;
     _describe_object_dynamics(&current_dynamics[0], &object_dynamics_type);
 
-    // FIXME: gather next_dynamics
-    // Gather a portion of current_dynamics from each non-root process.
+    // Gather a portion of next_dynamics from each non-root process.
     if(ROOT != my_rank) {
         if(DEBUG) printf("(%d) MPI_Send %d elements\n", my_rank, chunk_sizes[my_rank]);
         MPI_Send(
-            &(current_dynamics[start_indices[my_rank]]), // message
+            &(next_dynamics[start_indices[my_rank]]), // message
             chunk_sizes[my_rank],   // send count
             object_dynamics_type,   // data type of message
             ROOT,                   // rank of dest
@@ -222,24 +221,23 @@ void time_step(
             MPI_COMM_WORLD          // communicator
         );
     } else {
-        MPI_Status status; // don't really care about status
+        MPI_Status status;
         for(int rank_i = 0; rank_i < n_procs; rank_i++) {
-            if(ROOT != rank_i) {
-                if(DEBUG) printf("(%d) MPI_Recv %d elements from %d\n", my_rank, chunk_sizes[rank_i], rank_i);
-                MPI_Recv(
-                    &(current_dynamics[start_indices[rank_i]]), // recv buff
-                    chunk_sizes[my_rank],   // msg len
-                    object_dynamics_type,   // data type of message
-                    rank_i,                 // rank of source
-                    SEND_RECV_TAG,          // tag
-                    MPI_COMM_WORLD,         // communicator
-                    &status                 // rank and tag of msg rcvd
-                );
-            }
+            if(my_rank == rank_i) continue;
+            if(DEBUG) printf("(%d) MPI_Recv %d elements from %d\n", my_rank, chunk_sizes[rank_i], rank_i);
+            MPI_Recv(
+                &(next_dynamics[start_indices[rank_i]]), // recv buff
+                chunk_sizes[rank_i],    // msg len
+                object_dynamics_type,   // data type of message
+                rank_i,                 // rank of source
+                SEND_RECV_TAG,          // tag
+                MPI_COMM_WORLD,         // communicator
+                &status                 // rank and tag of msg rcvd
+            );
         }
     }
 
-    // Swap current_dynamics and next_dynamics.
+    // Swap next_dynamics and current_dynamics.
     if(ROOT == my_rank) {
         if(DEBUG) printf("(%d) Swapping current_dynamics and next_dynamics.\n", my_rank);
         ObjectDynamics *temp = current_dynamics;
@@ -247,7 +245,7 @@ void time_step(
         next_dynamics        = temp;
     }
 
-    // Broadcast all of current_dynamics to each process.
+    // Broadcast current_dynamics to each non-root process.
     if(DEBUG) printf("(%d) Calling MPI_Bcast\n", my_rank);
     MPI_Bcast(
         &(current_dynamics[0]),
