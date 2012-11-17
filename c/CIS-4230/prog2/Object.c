@@ -7,6 +7,106 @@
 
 #define ROOT 0 // rank of root process
 
+/*-==========================================================================-*\
+BEGIN definitions of private functions
+\*-==========================================================================-*/
+
+// Given an Vector3 instance, create a corresponding MPI_Datatype. Allows one to
+// send Vector3 instances.
+void _create_derived_vector3(
+    Vector3 * input_data,
+    MPI_Datatype * message_type_ptr
+) {
+    /* The resultant MPI_Datatype is composed of several blocks. Each block can
+    hold an arbitrary number of variables, but we're going to hold a single
+    variable in each block here, both for simplicity's sake, and because the
+    MPI User's Guide that I'm using does it this way. */
+
+    // Specify datatypes of blocks.
+    MPI_Datatype typelist[3];
+    typelist[0] = typelist[1] = typelist[2] = MPI_FLOAT;
+
+    // How many items will go into each block?
+    int block_lengths[3];
+    block_lengths[0] = block_lengths[1] = block_lengths[2] = 1;
+
+    // What's the address of each item in `input_data`? Used for discovering
+    // size of each item in `input_data`.
+    MPI_Aint addresses[4]; // 1 for struct itself, 1 for each struct member
+    MPI_Address(input_data, &addresses[0]);
+    MPI_Address(&(input_data->x), &addresses[1]);
+    MPI_Address(&(input_data->y), &addresses[2]);
+    MPI_Address(&(input_data->z), &addresses[3]);
+
+    // What's the size of each item in `input_data`?
+    MPI_Aint displacements[3]; // 1 for each member of `input_data`
+    displacements[0] = addresses[1] - addresses[0];
+    displacements[1] = addresses[2] - addresses[1];
+    displacements[2] = addresses[3] - addresses[2];
+
+    // Create a complete description of the new custom datatype.
+    MPI_Type_struct(
+        3, // Number of blocks being packed.
+        block_lengths,
+        displacements,
+        typelist,
+        message_type_ptr
+    );
+    MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
+}
+
+// Given an ObjectDynamics instance, create a corresponding MPI_Datatype. Allows
+// one to send ObjectDynamics instances.
+void _create_derived_object_dynamics(
+    ObjectDynamics * input_data,
+    MPI_Datatype * message_type_ptr
+) {
+    /* The struct we're describing contains Vector3's, which is a non-standard
+    datatype. We've got to tell MPI about those Vector3's before we can tell MPI
+    about `input_data`. */
+
+    MPI_Datatype vector3_position;
+    _create_derived_vector3(&(input_data->position), &vector3_position);
+
+    MPI_Datatype vector3_velocity;
+    _create_derived_vector3(&(input_data->velocity), &vector3_velocity);
+
+    // Specify datatypes of blocks.
+    MPI_Datatype typelist[2];
+    typelist[0] = vector3_position;
+    typelist[1] = vector3_velocity;
+
+    // How many items will go into each block?
+    int block_lengths[2];
+    block_lengths[0] = block_lengths[1] = 1;
+
+    // What's the address of each item in `input_data`? Used for discovering
+    // size of each item in `input_data`.
+    MPI_Aint addresses[3]; // 1 for struct itself, 1 for each struct member
+    MPI_Address(input_data, &addresses[0]);
+    MPI_Address(&(input_data->position), &addresses[1]);
+    MPI_Address(&(input_data->velocity), &addresses[2]);
+
+    // What's the size of each item in `input_data`?
+    MPI_Aint displacements[2]; // 1 for each member of `input_data`
+    displacements[0] = addresses[1] - addresses[0];
+    displacements[1] = addresses[2] - addresses[1];
+
+    // Create a complete description of the new custom datatype.
+    MPI_Type_struct(
+        2, // Number of blocks being packed.
+        block_lengths,
+        displacements,
+        typelist,
+        message_type_ptr
+    );
+    MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
+}
+
+/*-==========================================================================-*\
+END definitions of private functions
+\*-==========================================================================-*/
+
 Object         * object_array;
 ObjectDynamics * current_dynamics;
 ObjectDynamics * next_dynamics;
@@ -25,8 +125,6 @@ void time_step(
 ) {
     Octree spacial_tree;
 
-    // TODO: Broadcast current_dynamics from ROOT to all other processes.
-
     Octree_init(&spacial_tree, &overall_region);
     Timer_start(stopwatch1);
     for(int i = 0; i < OBJECT_COUNT; ++i) {
@@ -38,6 +136,11 @@ void time_step(
     }
     Timer_stop(stopwatch1);
     Octree_refresh_interior(&spacial_tree);
+
+    // TODO: Create a derived datatype for current_dynamics and next_dynamics.
+    // TODO: Broadcast current_dynamics from ROOT to all other processes.
+    //MPI_Datatype mpi_object_dynamics;
+    //_create_derived_object_dynamics(&current_dynamcs[0], &mpi_object_dynamics);
 
     // TODO: Make each process calculate only some of the next_dynamics. That
     // is, make each process run only part of the for loop below.
@@ -86,48 +189,4 @@ void dump_dynamics() {
             current_dynamics[object_i].position.z
         );
     }
-}
-
-// Given a Vector3 struct, create a derived MPI datatype that can be broadcast.
-void _create_derived_vector3(
-    Vector3 * input_data,
-    MPI_Datatype * message_type_ptr
-) {
-    // A resultant MPI_Datatype is composed of blocks. Each block can hold an
-    // arbitrary number of variables, but all variables in a block must be of
-    // the same type. In this function, we'll create three separate blocks, not
-    // because it's necessarily the "right" way to create a derived datatype,
-    // but because the example in the MPI User's Guide does it this way.
-
-    // Specify datatypes of blocks.
-    MPI_Datatype typelist[3];
-    typelist[0] = typelist[1] = typelist[2] = MPI_FLOAT;
-
-    // How many items will go into each block?
-    int block_lengths[3];
-    block_lengths[0] = block_lengths[1] = block_lengths[2] = 1;
-
-    // What's the address of each item in `input_data`? Used for discovering
-    // size of each item in `input_data`.
-    MPI_Aint addresses[4]; // 1 for struct itself, 1 for each struct member
-    MPI_Address(input_data, &addresses[0]);
-    MPI_Address(&(input_data->x), &addresses[1]);
-    MPI_Address(&(input_data->y), &addresses[2]);
-    MPI_Address(&(input_data->z), &addresses[3]);
-
-    // What's the size of each item in `input_data`?
-    MPI_Aint displacements[3]; // 1 for each member of `input_data`
-    displacements[0] = addresses[1] - addresses[0];
-    displacements[1] = addresses[2] - addresses[1];
-    displacements[2] = addresses[3] - addresses[2];
-
-    // Create a complete description of the new custom datatype.
-    MPI_Type_struct(
-        3, // Number of blocks being packed.
-        block_lengths,
-        displacements,
-        typelist,
-        message_type_ptr
-    );
-    MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
 }
