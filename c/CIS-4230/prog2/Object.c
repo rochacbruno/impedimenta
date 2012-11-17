@@ -9,8 +9,8 @@
 BEGIN definitions of private functions
 \*-==========================================================================-*/
 
-// Given an Vector3 instance, create a corresponding MPI_Datatype. Allows one to
-// send Vector3 instances.
+/* Given an Vector3 instance, create a corresponding MPI_Datatype. Allows one to
+send Vector3 instances. */
 void _describe_vector3(
     Vector3 * input_data,
     MPI_Datatype * message_type_ptr
@@ -53,8 +53,8 @@ void _describe_vector3(
     MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
 }
 
-// Given an ObjectDynamics instance, create a corresponding MPI_Datatype. Allows
-// one to send ObjectDynamics instances.
+/* Given an ObjectDynamics instance, create a corresponding MPI_Datatype. Allows
+one to send ObjectDynamics instances. */
 void _describe_object_dynamics(
     ObjectDynamics * input_data,
     MPI_Datatype * message_type_ptr
@@ -97,6 +97,42 @@ void _describe_object_dynamics(
     MPI_Type_commit(message_type_ptr); // "commit" data type so it can be used.
 }
 
+/* Allows an array to be split into a set of smaller arrays. The start_indices
+and end_indices point to the start and end of each chunk inside a larger array.
+start_indices and end_indices must be arrays with n_chunks elements each.
+
+For example, let's assume:
+
+    arr_len = 500
+    n_chunks = 2
+
+The result woudld be (pseudocode):
+
+    start_indices == [0, 249]
+    end_indices == [250, 499]
+
+*/
+void _chunk_array(
+    const int arr_len, // in
+    const int n_chunks, // in
+    int * const start_indices, // out
+    int * const end_indices // out
+) {
+    const int chunk_size = arr_len / n_chunks;
+    int start = 0;
+    int end;
+
+    for(int chunk = 0; chunk < n_chunks; chunk++) {
+        end = start + chunk_size;
+        if(chunk >= arr_len % n_chunks) {
+            end -= 1;
+        }
+        start_indices[chunk] = start;
+        end_indices[chunk] = end;
+        start = end + 1;
+    }
+}
+
 /*-==========================================================================-*\
 END definitions of private functions
 \*-==========================================================================-*/
@@ -135,22 +171,22 @@ void time_step(
     MPI_Datatype object_dynamics_type;
     _describe_object_dynamics(&current_dynamics[0], &object_dynamics_type);
 
-    // Create a buffer to hold current_dynamics and next_dynamics while they're
-    // being sent between MPI nodes.
+    // Create a buffer, pack current_dynamics into it, broadcast, and unapck.
     const int BUFF_SIZE = OBJECT_COUNT * (6 * sizeof(double)); // FIXME
     char * buffer = (char *)malloc(BUFF_SIZE);
-
-    // Pack current_dynamics into `buffer`, broadcast, and unpack.
-    int buff_pos = 0;       // i.e. beginning of buffer
-    MPI_Pack(
-        current_dynamics,   // item being packed into buffer
-        OBJECT_COUNT,       // number of contiguous items to pack
-        object_dynamics_type, // data type of item
-        buffer,             // buffer for items
-        BUFF_SIZE,          // size of buffer
-        &buff_pos,          // position in buffer in which to place item
-        MPI_COMM_WORLD      // communicator that will be using buffer
-    );
+    int buff_pos;
+    if(ROOT == my_rank) {
+        buff_pos = 0; // beginning of buffer
+        MPI_Pack(
+            current_dynamics,   // item being packed into buffer
+            OBJECT_COUNT,       // number of contiguous items to pack
+            object_dynamics_type, // data type of item
+            buffer,             // buffer for items
+            BUFF_SIZE,          // size of buffer
+            &buff_pos,          // position in buffer in which to place item
+            MPI_COMM_WORLD      // communicator that will be using buffer
+        );
+    }
     MPI_Bcast(
         buffer,
         BUFF_SIZE,
@@ -171,9 +207,18 @@ void time_step(
         );
     }
 
+    // Determine which indices of the for loop each process should do.
+    int start_indices[n_procs];
+    int end_indices[n_procs];
+    _chunk_array(OBJECT_COUNT, n_procs, start_indices, end_indices);
+
     // For each object...
     Timer_start(stopwatch2);
-    for(int object_i = 0; object_i < OBJECT_COUNT; ++object_i) {
+    for(
+        int object_i = start_indices[my_rank];
+        object_i <= end_indices[my_rank];
+        object_i++
+    ) {
         Vector3 total_force = Octree_force(
             &spacial_tree,
             current_dynamics[object_i].position,
@@ -198,9 +243,10 @@ void time_step(
     Timer_stop(stopwatch2);
     Octree_destroy(&spacial_tree);
 
-    // TODO: gather next_dynamics from each process.
+    // Each process is done working on current_dynamics. Gather results.
+    // TODO
 
-    // Swap the dynamics arrays.
+    // Swap current_dynamics and next_dynamics.
     ObjectDynamics *temp = current_dynamics;
     current_dynamics     = next_dynamics;
     next_dynamics        = temp;
