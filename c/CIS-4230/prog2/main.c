@@ -62,7 +62,12 @@ int main(int argc, char ** argv) {
     // do an n-body simulation!
     long long total_steps;
     for(total_steps = 0; STEP_LIMIT > total_steps; total_steps++) {
-        time_step(my_rank, &stopwatch1, &stopwatch2);
+        time_step(
+            n_procs,
+            my_rank,
+            &stopwatch1,
+            &stopwatch2
+        );
         if(ROOT == my_rank && 0 == total_steps % 100) { // BENCHMARK
             printf("time steps = %lld\n", total_steps);
         }

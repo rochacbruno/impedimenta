@@ -7,8 +7,12 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <stdio.h>
+#include <math.h>
+#include "mpi.h" // for MPI functions and constants
+#include "Octree.h"
+#include "Timer.h" // for benchmarking
 #include "Vector3.h"
-#include "Timer.h"
 
 // These constants can change the behavior of all programs that share this header.
 #define OBJECT_COUNT     500
@@ -50,6 +54,7 @@ extern ObjectDynamics * next_dynamics;
  * current MPI process.
  */
 void time_step(
+    int n_procs,
     int my_rank,
     Timer * stopwatch1,
     Timer * stopwatch2

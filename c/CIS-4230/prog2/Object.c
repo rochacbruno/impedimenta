@@ -3,10 +3,9 @@
     \author  Peter C. Chapin <PChapin@vtc.vsc.edu>
 */
 
-#include <stdio.h>
-#include <math.h>
 #include "Object.h"
-#include "Octree.h"
+
+#define ROOT 0 // rank of root process
 
 Object         * object_array;
 ObjectDynamics * current_dynamics;
@@ -19,6 +18,7 @@ Box overall_region = {
 };
 
 void time_step(
+    int n_procs,
     int my_rank,
     Timer * stopwatch1,
     Timer * stopwatch2
