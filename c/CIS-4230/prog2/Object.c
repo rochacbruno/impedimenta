@@ -167,19 +167,7 @@ void time_step(
     Timer_stop(stopwatch1);
     Octree_refresh_interior(&spacial_tree);
 
-    // Describe the ObjectDynamics type to MPI, then broadcast current_dynamics.
-    if(DEBUG) printf("(%d) Calling MPI_Bcast\n", my_rank);
-    MPI_Datatype object_dynamics_type;
-    _describe_object_dynamics(&current_dynamics[0], &object_dynamics_type);
-    MPI_Bcast(
-        &(current_dynamics[0]),
-        OBJECT_COUNT,
-        object_dynamics_type,
-        ROOT,
-        MPI_COMM_WORLD
-    );
-
-    // Determine which indices of the for loop each process should do.
+    // Determine which indices of the for loop each process should run.
     if(DEBUG) printf("(%d) Running calculations\n", my_rank);
     int start_indices[n_procs];
     int chunk_sizes[n_procs];
@@ -216,8 +204,13 @@ void time_step(
     Timer_stop(stopwatch2);
     Octree_destroy(&spacial_tree);
 
-    // Gather a portion of current_dynamics from each process. Concatenate into
-    // buffer.
+    // Inform MPI about the size and contents of an ObjectDynamics instance.
+    if(DEBUG) printf("(%d) Describing ObjectDynamics to MPI\n", my_rank);
+    MPI_Datatype object_dynamics_type;
+    _describe_object_dynamics(&current_dynamics[0], &object_dynamics_type);
+
+    // FIXME: gather next_dynamics
+    // Gather a portion of current_dynamics from each non-root process.
     if(ROOT != my_rank) {
         if(DEBUG) printf("(%d) MPI_Send %d elements\n", my_rank, chunk_sizes[my_rank]);
         MPI_Send(
@@ -253,6 +246,16 @@ void time_step(
         current_dynamics     = next_dynamics;
         next_dynamics        = temp;
     }
+
+    // Broadcast all of current_dynamics to each process.
+    if(DEBUG) printf("(%d) Calling MPI_Bcast\n", my_rank);
+    MPI_Bcast(
+        &(current_dynamics[0]),
+        OBJECT_COUNT,
+        object_dynamics_type,
+        ROOT,
+        MPI_COMM_WORLD
+    );
 }
 
 /*-==========================================================================-*\
