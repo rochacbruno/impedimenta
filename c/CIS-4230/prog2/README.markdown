@@ -5,6 +5,9 @@ Author: Jeremy Audet
 Professor: Peter Chapin  
 Due: Fri Nov 16 2012
 
+Note: The gcc makefile works (Makefile.gcc), but I don't know how to update the
+clang makefile (Makefile) for MPI.
+
 Question 1
 ----------
 Analyze the serial version of Barnes-Hut to determine the percentage of time
