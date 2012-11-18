@@ -248,7 +248,7 @@ void time_step(
     // Broadcast current_dynamics to each non-root process.
     if(DEBUG) printf("(%d) Calling MPI_Bcast\n", my_rank);
     MPI_Bcast(
-        &(current_dynamics[0]),
+        current_dynamics,
         OBJECT_COUNT,
         object_dynamics_type,
         ROOT,
