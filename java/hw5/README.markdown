@@ -92,4 +92,4 @@ To compile code:
 
 To execute unit tests:
 
-    TODO
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestInsertionSort
