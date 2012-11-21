@@ -5,6 +5,9 @@ Class: CIS-3050 Algorithms and Data Structures
 Professor: Leslie Damon  
 Due: Nov 27th 1pm  
 
+Instructions
+------------
+
 Your task is to implement two sorting algorithms and collect timings on them.
 You need to implement one of the quadratic sorts (bubble, selection or
 insertion), and one sort that is better than quadratic (heap, quicksort, merge
@@ -75,3 +78,18 @@ code (the two sort classes plus your main), plus a printout of the output of
 your sorts. This print should include what the name of each sort is, the number
 of elements being sorted, plus the timings. Also submit your source code file on
 line via moodle. 
+
+Response
+--------
+
+To generate documentation:
+
+    javadoc sorts -d </destination/directory>
+
+To compile code:
+
+    javac -Xlint -cp .:/usr/share/java/junit.jar sorts/*.java
+
+To execute unit tests:
+
+    TODO

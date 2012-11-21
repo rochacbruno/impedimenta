@@ -46,7 +46,7 @@ public class Timer {
      *  by 1000 to convert to seconds.
      */
     public long time() {
-        if (_hasRun)
+        if(_hasRun)
             return _endTime - _startTime;
         else
             return -1;

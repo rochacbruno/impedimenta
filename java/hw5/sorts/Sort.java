@@ -48,7 +48,7 @@ public abstract class Sort {
     private int[] generateArray(int numElements) {
         // Allocate our test array and fill it with random data.
         int[] arr = new int[numElements];
-        for (int i = 0; i < numElements; ++i)
+        for(int i = 0; i < numElements; ++i)
             arr[i] = (int)(Math.random()*1000) + 1;
         return arr;
     }
