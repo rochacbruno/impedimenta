@@ -19,11 +19,11 @@ public class TestMergeSort {
         new MergeSort();
 
         MergeSort numbers = new MergeSort(5);
-        assertTrue(5 == numbers.getArray().length);
+        assertEquals(5, numbers.getArray().length);
 
         int[] numList = new int[]{1, 2, 3, 4, 5};
         numbers = new MergeSort(numList);
-        assertTrue(5 == numbers.getArray().length);
+        assertEquals(5, numbers.getArray().length);
         assertEquals("1, 2, 3, 4, 5", numbers.toString());
     }
 
@@ -31,7 +31,6 @@ public class TestMergeSort {
      * Test the MergeSort sort algorithm. Also tests <code>toString()</code>
      * and <code>getArray()</code>.
      */
-    /*
     @Test
     public void TestSort() {
         int[] numList = new int[]{2, 5, 1, 4, 3};
@@ -40,11 +39,13 @@ public class TestMergeSort {
         numbers.sort();
         assertEquals("1, 2, 3, 4, 5", numbers.toString());
 
-        numbers = new MergeSort(5);
-        numbers.sort();
-        numList = numbers.getArray();
-        for(int i = 0; i < numList.length - 1; i++) {
-            assertTrue(numList[i] <= numList[i + 1]);
+        for(int listLen = 0; listLen < 5; listLen++) {
+            numbers = new MergeSort(listLen);
+            numbers.sort();
+            numList = numbers.getArray();
+            for(int i = 0; i < numList.length - 1; i++) {
+                assertTrue(numList[i] <= numList[i + 1]);
+            }
         }
 
         numbers = new MergeSort();
@@ -54,5 +55,4 @@ public class TestMergeSort {
             assertTrue(numList[i] <= numList[i + 1]);
         }
     }
-    */
 }

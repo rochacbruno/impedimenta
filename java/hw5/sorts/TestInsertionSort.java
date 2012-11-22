@@ -39,11 +39,13 @@ public class TestInsertionSort {
         numbers.sort();
         assertEquals("1, 2, 3, 4, 5", numbers.toString());
 
-        numbers = new InsertionSort(5);
-        numbers.sort();
-        numList = numbers.getArray();
-        for(int i = 0; i < numList.length - 1; i++) {
-            assertTrue(numList[i] <= numList[i + 1]);
+        for(int listLen = 0; listLen < 5; listLen++) {
+            numbers = new InsertionSort(listLen);
+            numbers.sort();
+            numList = numbers.getArray();
+            for(int i = 0; i < numList.length - 1; i++) {
+                assertTrue(numList[i] <= numList[i + 1]);
+            }
         }
 
         numbers = new InsertionSort();
