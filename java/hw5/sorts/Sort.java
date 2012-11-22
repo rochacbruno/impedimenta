@@ -52,4 +52,23 @@ public abstract class Sort {
             arr[i] = (int)(Math.random()*1000) + 1;
         return arr;
     }
+
+    /**
+     * Returns the array being sorted.
+     */
+    public int[] getArray() {
+        return this._array;
+    }
+
+    public String toString() {
+        if(0 == _array.length) {
+            return "";
+        } else {
+            String str = "" + _array[0];
+            for(int i = 1; i < _array.length; i++) {
+                str += ", " + _array[i];
+            }
+            return str;
+        }
+    }
 }
