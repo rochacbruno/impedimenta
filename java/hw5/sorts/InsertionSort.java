@@ -1,12 +1,13 @@
 package sorts;
 
 /**
- * A class that can sort an <code>int</code> array using the (really crappy
- * quadratic) insertion sort algorithm.
+ * A class that can sort an <code>int</code> array using the insertion sort
+ * algorithm.
  */
 public class InsertionSort extends Sort {
     /**
-     * Constructor. Creates a randomly initizlied array with 1000 elements.
+     * Constructor. Creates a randomly initizlied array with
+     * Sort.DEFAULT_ARRAY_SIZE elements.
      */
     public InsertionSort() {
         super();

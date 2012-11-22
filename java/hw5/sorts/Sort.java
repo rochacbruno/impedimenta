@@ -1,55 +1,63 @@
 package sorts;
 
 /**
- * A class for testing sorts.  This is an abstract class that contains some
- * basic functionality related to randomly filling test arrays. To use, create a
- * subclass of this class which implements a sort() method that actually
- * performs the desired sort.
+ * An abstract class that is useful for testing out various sorting algorithms.
+ * This class provides some niceties like randomly filling an array with values,
+ * returning the array, and printing out the array. To use, create a subclass
+ * with a sort() method that actually sorts the array of values.
  *
  * @author ldamon
  *
  */
 public abstract class Sort {
     int[] _array;
+    final static int DEFAULT_ARRAY_SIZE = 1000;
 
     /**
-     * create a Sort, generating an array with a default 1000 elements
+     * Constructor. Creates an array with <code>DEFAULT_ARRAY_SIZE</code>
+     * elements and populates it with random values.
      */
     public Sort() {
-        _array = generateArray(1000);
+        _array = generateArray(DEFAULT_ARRAY_SIZE);
     }
 
     /**
-     * create a Sort, generating an randome array with numElements elements
-     * @param numElements the number of elements in the array to be sorted
+     * Constructor. Creates an array with <code>numElements</code> elements and
+     * populates it with random values.
+     * @param numElements The size of the array to be sorted.
      */
     public Sort(int numElements) {
         _array = generateArray(numElements);
     }
 
     /**
-     * create a Sort, which can be used to sort the passed in array
-     * @param array the array to sort
+     * Constructor. Uses <code>array</code> as the array to be sorted.
+     * @param array The array to be sorted.
      */
     public Sort(int[] array) {
         _array = array;
     }
 
     /**
-     * perform the sort
+     * Actually sorts the array.
      */
     public abstract void sort();
 
     /**
-     * generate an array with numElements random ints between 1 and 1000
-     * @param numElements number of elements to put in the array
-     * @return the generated array
+     * Creates an array of size <code>numElements</code> and populates it with
+     * random integers between -1000 and 1000, inclusive.
+     * @param numElements Size of the new array.
+     * @return The newly created array.
      */
     private int[] generateArray(int numElements) {
         // Allocate our test array and fill it with random data.
         int[] arr = new int[numElements];
-        for(int i = 0; i < numElements; ++i)
-            arr[i] = (int)(Math.random()*1000) + 1;
+        for(int i = 0; i < numElements; ++i) {
+            arr[i] = (int)(Math.random() * 1001); // 0 to 1000
+            if(0 == (int)(Math.random() * 2)) { // 0 to 1
+                arr[i] *= -1;
+            }
+        }
         return arr;
     }
 
@@ -60,6 +68,10 @@ public abstract class Sort {
         return this._array;
     }
 
+    /**
+     * Returns a string representation of the array to be sorted. For example:
+     * "2, 5, 1, 4, 3".
+     */
     public String toString() {
         if(0 == _array.length) {
             return "";
