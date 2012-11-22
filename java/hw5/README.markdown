@@ -93,4 +93,12 @@ To compile code:
 To execute unit tests:
 
     java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestInsertionSort
-    TODO: add directions for testing second sort class
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestMergeSort
+
+To benchmark sorting algorithms:
+
+    java -cp . sorts.BenchmarkSorts
+
+Sample usage:
+
+
