@@ -5,6 +5,9 @@ Class: CIS-3050 Algorithms and Data Structures
 Professor: Leslie Damon  
 Due: Nov 27th 1pm  
 
+Instructions
+------------
+
 Your task is to implement two sorting algorithms and collect timings on them.
 You need to implement one of the quadratic sorts (bubble, selection or
 insertion), and one sort that is better than quadratic (heap, quicksort, merge
@@ -75,3 +78,113 @@ code (the two sort classes plus your main), plus a printout of the output of
 your sorts. This print should include what the name of each sort is, the number
 of elements being sorted, plus the timings. Also submit your source code file on
 line via moodle. 
+
+Response
+--------
+
+To generate documentation:
+
+    javadoc sorts -d </destination/directory>
+
+To compile code:
+
+    javac -Xlint -cp .:/usr/share/java/junit.jar sorts/*.java
+
+To execute unit tests:
+
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestInsertionSort
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestMergeSort
+
+To benchmark sorting algorithms:
+
+    java -cp . sorts.BenchmarkSorts
+
+Sample usage:
+
+    Script started on Thu 22 Nov 2012 05:19:05 PM EST
+    $ javac -Xlint -cp .:/usr/share/java/junit.jar sorts/*.java
+    $ java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestInsertionSort
+    JUnit version 4.10
+    ..
+    Time: 0.015
+
+    OK (2 tests)
+
+    $ java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestMergeSort
+    JUnit version 4.10
+    ..
+    Time: 0.014
+
+    OK (2 tests)
+
+    $ java -cp . sorts.BenchmarkSorts
+    Array lengths: 40000
+    Runs for each algorithm: 30
+
+    benchmarking merge sort
+    =======================
+    89 ms
+    11 ms
+    12 ms
+    8 ms
+    12 ms
+    8 ms
+    9 ms
+    10 ms
+    12 ms
+    8 ms
+    8 ms
+    8 ms
+    8 ms
+    11 ms
+    8 ms
+    9 ms
+    8 ms
+    8 ms
+    11 ms
+    10 ms
+    12 ms
+    10 ms
+    12 ms
+    8 ms
+    8 ms
+    9 ms
+    8 ms
+    8 ms
+    8 ms
+    8 ms
+    average runtime: 11 ms
+
+    benchmarking insertion sort
+    ===========================
+    769 ms
+    765 ms
+    699 ms
+    706 ms
+    704 ms
+    698 ms
+    701 ms
+    701 ms
+    702 ms
+    699 ms
+    705 ms
+    697 ms
+    707 ms
+    699 ms
+    700 ms
+    703 ms
+    699 ms
+    703 ms
+    702 ms
+    704 ms
+    700 ms
+    704 ms
+    698 ms
+    696 ms
+    701 ms
+    696 ms
+    700 ms
+    701 ms
+    696 ms
+    704 ms
+    average runtime: 705 ms
