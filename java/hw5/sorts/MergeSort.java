@@ -30,7 +30,9 @@ public class MergeSort extends Sort {
     }
 
     /**
-     * Perform the actual sort.
+     * Perform the actual sort. The pseudo-code on Wikipedia's
+     * <a href="http://en.wikipedia.org/wiki/Merge_sort">"Merge Sort"</a>
+     * page was used for guidance.
      */
     public void sort() {
         _array = mergeSort(_array);
