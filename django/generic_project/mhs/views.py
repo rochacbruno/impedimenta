@@ -5,6 +5,7 @@ from django import http
 from django import template
 # For user authentication
 from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 def home_redirect(request):
     '''Redirects the user to their homepage.'''
@@ -12,11 +13,8 @@ def home_redirect(request):
     # (unused argument 'request') pylint: disable-msg=W0613
     return http.HttpResponseRedirect('./home/')
 
+@login_required(login_url = '../login')
 def home(request):
-    # FIXME use decorator instead
-    if not request.user.is_authenticated():
-        return http.HttpResponseRedirect('../login/')
-
     tplate = template.loader.get_template('mhs/default.html')
     ctext = template.RequestContext(
         request,
@@ -49,23 +47,9 @@ def login(request):
         )
         return http.HttpResponse(tplate.render(ctext))
 
-    # Did they fill out all of the form's fields?
-    submission = request.POST.dict()
-    try:
-        username = submission['username']
-        password = submission['password']
-    except KeyError:
-        tplate = template.loader.get_template('mhs/login.html')
-        ctext = template.RequestContext(
-            request,
-            {
-                'login_form_url': '../login/',
-                'err_msg': 'Error: Not all fields were filled out.'
-            }
-        )
-        return http.HttpResponse(tplate.render(ctext))
-
     # Are the credentials indicated on the form valid?
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
     user = auth.authenticate(username = username, password = password)
     if user is None:
         tplate = template.loader.get_template('mhs/login.html')

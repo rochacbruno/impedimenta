@@ -1,7 +1,7 @@
 notes on django
 ===============
 
-Some good guides to django [are](https://docs.djangoproject.com/en/1.4/intro/)
+Some good guides to django [are](https://docs.djangoproject.com/en/1.4/)
 [available](http://www.djangobook.com/en/2.0/index.html). You can view the full
 documentation on the `django-admin.py` and `manage.py` commands
 [here](https://docs.djangoproject.com/en/dev/ref/django-admin/).
