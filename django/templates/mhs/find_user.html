@@ -11,5 +11,10 @@
 
 {% block content %}
     <h1>Find User</h1>
-    <p><a href="../edit_user/">Edit User</a></p>
+    {% if is_mhs_admin %}
+        <p>You're an MHS admin, so you can find users.</p>
+        <p><a href="../edit_user/">Edit User</a></p>
+    {% else %}
+        <p>You're not an MHS admin, so you can't find users.</p>
+    {% endif %}
 {% endblock %}

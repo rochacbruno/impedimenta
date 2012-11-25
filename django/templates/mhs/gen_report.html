@@ -11,4 +11,9 @@
 
 {% block content %}
     <h1>Generate Report</h1>
+    {% if is_mhs_admin %}
+        <p>You're an MHS admin, so you can generate reports.</p>
+    {% else %}
+        <p>You're not an MHS admin, so you can't generate reports.</p>
+    {% endif %}
 {% endblock %}

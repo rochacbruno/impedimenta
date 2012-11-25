@@ -15,8 +15,13 @@ def home_redirect(request):
 
 @login_required(login_url = '../login/')
 def home(request):
+    '''Provides links to other sections of the MHS website.'''
+    is_mhs_admin = False
+    for group in request.user.groups.all():
+        if "mhs-admin" == group.name:
+            is_mhs_admin = True
     tplate = template.loader.get_template('mhs/home.html')
-    ctext = template.RequestContext(request, {})
+    ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
     return http.HttpResponse(tplate.render(ctext))
 
 def login(request):
@@ -99,9 +104,12 @@ def edit_patient(request):
 @login_required(login_url = '../login/')
 def gen_report(request):
     '''Allow user to generate statistical reports about patients.'''
-    # TODO: restrict access to users in mhs-admin group
+    is_mhs_admin = False
+    for group in request.user.groups.all():
+        if "mhs-admin" == group.name:
+            is_mhs_admin = True
     tplate = template.loader.get_template('mhs/gen_report.html')
-    ctext = template.RequestContext(request, {})
+    ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
     return http.HttpResponse(tplate.render(ctext))
 
 @login_required(login_url = '../login/')
@@ -114,15 +122,21 @@ def change_password(request):
 @login_required(login_url = '../login/')
 def find_user(request):
     '''Find a system user.'''
-    # TODO: restrict access to users in mhs-admin group
+    is_mhs_admin = False
+    for group in request.user.groups.all():
+        if "mhs-admin" == group.name:
+            is_mhs_admin = True
     tplate = template.loader.get_template('mhs/find_user.html')
-    ctext = template.RequestContext(request, {})
+    ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
     return http.HttpResponse(tplate.render(ctext))
 
 @login_required(login_url = '../login/')
 def edit_user(request):
     '''Edit information about a system user.'''
-    # TODO: restrict access to users in mhs-admin group
+    is_mhs_admin = False
+    for group in request.user.groups.all():
+        if "mhs-admin" == group.name:
+            is_mhs_admin = True
     tplate = template.loader.get_template('mhs/edit_user.html')
-    ctext = template.RequestContext(request, {})
+    ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
     return http.HttpResponse(tplate.render(ctext))

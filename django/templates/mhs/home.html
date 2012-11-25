@@ -14,12 +14,10 @@
             <li><a href="../find_patient/">Find Patient</a></li>
             <li><a href="../add_patient/">Add Patient</a></li>
             <li><a href="../change_password/">Change Password</a></li>
-            {% for group in user.groups.all %}
-                {% if "mhs-admin" == group.name %}
-                    <li><a href="../find_user/">Find User</a></li>
-                    <li><a href="../gen_report/">Generate Report</a></li>
-                {% endif %}
-            {% endfor %}
+            {% if is_mhs_admin %}
+                <li><a href="../find_user/">Find User</a></li>
+                <li><a href="../gen_report/">Generate Report</a></li>
+            {% endif %}
         </ul>
     </div>
 {% endblock %}
