@@ -1,5 +1,7 @@
-from django.conf.urls import patterns, url, include
+'''Defines which URLs comprise the Modern Hospital Systems django app.'''
+from django.conf.urls import patterns, url
 
+# (Invalid name "urlpatterns" for type constant) pylint: disable-msg=C0103
 urlpatterns = patterns('mhs.views',
     url(r'^$', 'home_redirect'),
     url(r'^home/$', 'home'),
