@@ -14,11 +14,13 @@
     </head>
 
     <body>
-        <p id="titlebar">Modern Hospital Systems Patient Tracking &amp; Analysis</p>
         {% block body %}
-            <p id="home"><a href="{{ home_url }}">Home</a></p>
-            <p id="logout"><a href="{{ logout_url }}">Logout</a></p>
-            {{ body }}
+            <div id="titlebar">
+                <p id="title">Modern Hospital Systems Patient Tracking &amp; Analysis</p>
+                <p id="home"><a href="../home/">Home</a></p>
+                <p id="logout"><a href="../logout/">Logout</a></p>
+                <div style="clear: both;"></div> <!-- Don't allow paragraphs to overflow div. -->
+            </div>
         {% endblock %}
     </body>
 </html>

@@ -1,39 +1,57 @@
 /* The title bar simply announces "this is application XYZ". Don't waste space
-at the top or bottom of this block: it's effectively window dressing, and space
-can better be used for more interesting content. Also, the #home and #logout
-links should be close by. */
-p#titlebar {
-    font-size: larger;
-    text-align: center;
+on padding: this block is window dressing, and that space should be used for
+more interesting content. All items inside the titlebar have 0 margin, relying
+instead on the padding provided by the titlebar. */
+div#titlebar {
+    padding: 0.5em;
+    margin: 0.5em;
     border: thin solid gray;
     border-radius: 0.5em;
-    padding: 0.5em;
-    box-shadow: 0 0 2px 0 gray inset;
-    margin: 0.1em auto;
 }
 
-/* Navigation links appear at the top of a page, just below the titlebar. */
+p#title {
+    margin: 0;
+    text-align: center;
+    font-size: larger;
+}
+
 p#home {
-    text-align: left;
-    width: 50%;
+    width: 49%;
     float: left;
-    margin-top: 0.1em;
-}
-p#logout {
-    text-align: right;
-    width: 50%;
-    float: right;
-    margin-top: 0.1em;
+    margin: 0;
+    text-align: left;
 }
 
-/* The login form should have labels to the left of inputs, with all of the
-input boxes lining up into a column. */
-.login_row input {
-    width: 15em;
+p#logout {
+    width: 49%;
+    float: right;
+    margin: 0;
+    text-align: right;
 }
+
+/* The login form should be centered in the page and use visual cues to separate
+it from the substantial amount of surrounding whitespace. Labels should be to
+the left of inputs, and all inputs should line up into a column. */
+#login_form {
+    width: 22em;
+    margin: auto;
+    text-align: center;
+}
+
 .login_row label {
     float: left;
     width: 8em;
     text-align: right;
-    margin-right: 0.5em;
+}
+
+.login_row input {
+    width: 14em;
+}
+
+/* The navigation links on the homepage should be centered in the page and use
+vidual cues to separate it from the substantial amount of surrounding
+whitespace. */
+div#home_navigation {
+    max-width: 30em;
+    margin: auto;
 }

@@ -13,18 +13,10 @@ def home_redirect(request):
     # (unused argument 'request') pylint: disable-msg=W0613
     return http.HttpResponseRedirect('./home/')
 
-@login_required(login_url = '../login')
+@login_required(login_url = '../login/')
 def home(request):
-    tplate = template.loader.get_template('mhs/default.html')
-    ctext = template.RequestContext(
-        request,
-        {
-            'title': 'home',
-            'body': 'Current user: {}'.format(request.user),
-            'home_url': '../home/',
-            'logout_url': '../logout',
-        }
-    )
+    tplate = template.loader.get_template('mhs/home.html')
+    ctext = template.RequestContext(request, {})
     return http.HttpResponse(tplate.render(ctext))
 
 def login(request):
@@ -82,3 +74,55 @@ def logout(request):
     '''Logs out the current user and redirects them to the login page.'''
     auth.logout(request)
     return http.HttpResponseRedirect('../login/')
+
+@login_required(login_url = '../login/')
+def find_patient(request):
+    '''Find a hospital patient.'''
+    tplate = template.loader.get_template('mhs/find_patient.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def add_patient(request):
+    '''Add a new hospital patient.'''
+    tplate = template.loader.get_template('mhs/add_patient.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def edit_patient(request):
+    '''Edit information about a hospital patient.'''
+    tplate = template.loader.get_template('mhs/edit_patient.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def gen_report(request):
+    '''Allow user to generate statistical reports about patients.'''
+    # TODO: restrict access to users in mhs-admin group
+    tplate = template.loader.get_template('mhs/gen_report.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def change_password(request):
+    '''Allows a user to change their password.'''
+    tplate = template.loader.get_template('mhs/change_password.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def find_user(request):
+    '''Find a system user.'''
+    # TODO: restrict access to users in mhs-admin group
+    tplate = template.loader.get_template('mhs/find_user.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def edit_user(request):
+    '''Edit information about a system user.'''
+    # TODO: restrict access to users in mhs-admin group
+    tplate = template.loader.get_template('mhs/edit_user.html')
+    ctext = template.RequestContext(request, {})
+    return http.HttpResponse(tplate.render(ctext))
