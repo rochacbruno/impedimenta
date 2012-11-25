@@ -2,7 +2,14 @@
 
 {% block title %}Find Patient{% endblock %}
 
-{% block body %}
-    {{ block.super }}
+{% block navbar %}
+    <p id="bread_crumb_nav">
+        You are here: <a href="../home/">Home</a> / Find Patient
+    </p>
+    <p id="logout"><a href="../logout/">Logout</a></p>
+{% endblock %}
+
+{% block content %}
     <h1>Find Patient</h1>
+    <p><a href="../edit_patient/">Edit Patient</a></p>
 {% endblock %}

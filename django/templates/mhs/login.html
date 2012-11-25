@@ -2,11 +2,7 @@
 
 {% block title %}Log In{% endblock %}
 
-{% block body %}
-    <div id="titlebar">
-        <p id="title">Modern Hospital Systems Patient Tracking &amp; Analysis</p>
-    </div>
-
+{% block content %}
     <form action="{{ login_form_url }}" method="post" id="login_form">
         {% csrf_token %}
         <h1>Log In</h1>

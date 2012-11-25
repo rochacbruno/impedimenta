@@ -2,8 +2,12 @@
 
 {% block title %}Home{% endblock %}
 
-{% block body %}
-    {{ block.super }}
+{% block navbar %}
+    <p id="bread_crumb_nav">You are here: Home</p>
+    <p id="logout"><a href="../logout/">Logout</a></p>
+{% endblock %}
+
+{% block content %}
     <div id="home_navigation">
         <h1>Home</h1>
         <ul>

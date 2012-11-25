@@ -5,7 +5,6 @@
         <meta charset="utf-8">
         <title>
             {% block title %}
-                {{ title }}
             {% endblock %}
         </title>
         {% block css %}
@@ -14,13 +13,14 @@
     </head>
 
     <body>
-        {% block body %}
-            <div id="titlebar">
-                <p id="title">Modern Hospital Systems Patient Tracking &amp; Analysis</p>
-                <p id="home"><a href="../home/">Home</a></p>
-                <p id="logout"><a href="../logout/">Logout</a></p>
-                <div style="clear: both;"></div> <!-- Don't allow paragraphs to overflow div. -->
-            </div>
+        <div id="titlebar">
+            <p id="title">Modern Hospital Systems Patient Tracking &amp; Analysis</p>
+            {% block navbar %}
+            {% endblock %}
+            <div style="clear: both;"></div> <!-- Don't allow paragraphs to overflow div. -->
+        </div>
+
+        {% block content %}
         {% endblock %}
     </body>
 </html>

@@ -11,22 +11,27 @@ div#titlebar {
 
 p#title {
     margin: 0;
+
     text-align: center;
     font-size: larger;
 }
 
-p#home {
-    width: 49%;
+p#bread_crumb_nav {
+    width: 79%;
     float: left;
     margin: 0;
+
     text-align: left;
+    font-size: smaller;
 }
 
 p#logout {
-    width: 49%;
+    width: 19%;
     float: right;
     margin: 0;
+
     text-align: right;
+    font-size: smaller;
 }
 
 /* The login form should be centered in the page and use visual cues to separate

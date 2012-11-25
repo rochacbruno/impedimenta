@@ -2,7 +2,13 @@
 
 {% block title %}Generate Report{% endblock %}
 
-{% block body %}
-    {{ block.super }}
+{% block navbar %}
+    <p id="bread_crumb_nav">
+        You are here: <a href="../home/">Home</a> / Generate Report
+    </p>
+    <p id="logout"><a href="../logout/">Logout</a></p>
+{% endblock %}
+
+{% block content %}
     <h1>Generate Report</h1>
 {% endblock %}
