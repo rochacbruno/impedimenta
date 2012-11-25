@@ -9,8 +9,13 @@
     <form action="{{ login_form_url }}" method="post">
         {% csrf_token %}
         <h1>Log In</h1>
-        <p><label><input name="username" type="text" required size="25" /> Username</label></p>
-        <p><label><input name="password" type="password" required size="25" /> Password</label></p>
+        <p class="login_row">
+            <label for="id_username">Username:</label>
+            <input id="id_username" name="username" type="text" required />
+        <p class="login_row">
+            <label for="id_password">Password:</label>
+            <input id="id_password" name="password" type="password" required />
+       </p>
         <p><button>Submit</button></p>
     </form>
 {% endblock %}

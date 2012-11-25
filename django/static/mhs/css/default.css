@@ -1,7 +1,7 @@
 /* The title bar simply announces "this is application XYZ". Don't waste space
 at the top or bottom of this block: it's effectively window dressing, and space
 can better be used for more interesting content. Also, the #home and #logout
-links should be close. */
+links should be close by. */
 p#titlebar {
     font-size: larger;
     text-align: center;
@@ -24,4 +24,16 @@ p#logout {
     width: 50%;
     float: right;
     margin-top: 0.1em;
+}
+
+/* The login form should have labels to the left of inputs, with all of the
+input boxes lining up into a column. */
+.login_row input {
+    width: 15em;
+}
+.login_row label {
+    float: left;
+    width: 8em;
+    text-align: right;
+    margin-right: 0.5em;
 }
