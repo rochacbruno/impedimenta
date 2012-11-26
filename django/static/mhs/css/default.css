@@ -5,8 +5,7 @@ instead on the padding provided by the titlebar. */
 div#titlebar {
     padding: 0.5em;
     margin: 0.5em;
-    border: thin solid gray;
-    border-radius: 0.5em;
+    border-bottom: thin solid gray;
 }
 
 p#title {
@@ -37,20 +36,22 @@ p#logout {
 /* The login form should be centered in the page and use visual cues to separate
 it from the substantial amount of surrounding whitespace. Labels should be to
 the left of inputs, and all inputs should line up into a column. */
-#login_form {
+form#login_form {
     width: 22em;
     margin: auto;
-    text-align: center;
 }
 
-.login_row label {
+form#login_form p label {
     float: left;
     width: 8em;
-    text-align: right;
 }
 
-.login_row input {
+form#login_form p input {
     width: 14em;
+}
+
+form#login_form p#submit_button {
+    text-align: center;
 }
 
 /* The navigation links on the homepage should be centered in the page and use

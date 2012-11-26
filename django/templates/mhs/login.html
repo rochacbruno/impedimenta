@@ -6,14 +6,14 @@
     <form action="{{ login_form_url }}" method="post" id="login_form">
         {% csrf_token %}
         <h1>Log In</h1>
-        <p class="login_row">
+        <p>
             <label for="id_username">Username:</label>
             <input id="id_username" name="username" type="text" required />
-        <p class="login_row">
+        <p>
             <label for="id_password">Password:</label>
             <input id="id_password" name="password" type="password" required />
        </p>
-        <p><button>Submit</button></p>
+        <p id="submit_button"><button>Submit</button></p>
         {% if err_msg %}
             <p><em>{{ err_msg }}</em></p>
         {% endif %}
