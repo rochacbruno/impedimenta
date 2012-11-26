@@ -120,7 +120,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',   # static files such as CSS
     'django.contrib.admin',         # admin site
     #'django.contrib.admindocs',     # admin documentation
-    #'generic_project.mhs',          # Modern Hospital Systems patient tracking
+    'mhs',                          # Modern Hospital Systems patient tracking
 )
 
 # A sample logging configuration. The only tangible logging

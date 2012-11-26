@@ -1,7 +1,5 @@
 from django.db import models
 
-# TODO: Flesh out Visit. Allow Patient to reference Visit.
-
 class Patient(models.Model):
     '''A patient of Modern Hospital Systems.'''
     first_name = models.CharField(max_length = 30)
@@ -12,7 +10,6 @@ class Patient(models.Model):
     social_security = models.CharField(max_length = 9)
     health_issues = models.TextField()
     number = models.CharField(max_length = 25)
-    # emergency contact, primary care doctor, insurance providres, history of visits...
 
     def __unicode__(self):
         return '{} {}'.format(first_name, last_name)
@@ -22,6 +19,7 @@ class EmergencyContact(models.Model):
     first_name = models.CharField(max_length = 30)
     last_name = models.CharField(max_length = 30)
     number = models.CharField(max_length = 25)
+    patient = models.ForeignKey(Patient)
 
     def __unicode__(self):
         return '{} {}'.format(first_name, last_name)
@@ -32,6 +30,7 @@ class Doctor(models.Model):
     last_name = models.CharField(max_length = 30)
     address = models.CharField(max_length = 100)
     number = models.CharField(max_length = 25)
+    patient = models.ForeignKey(Patient)
 
     def __unicode__(self):
         return '{} {}'.format(first_name, last_name)
@@ -41,6 +40,7 @@ class InsuranceProvider(models.Model):
     name = models.CharField(max_length = 100)
     address = models.CharField(max_length = 100)
     number = models.CharField(max_length = 25)
+    patient = models.ForeignKey(Patient)
 
     def __unicode__(self):
         return self.name
@@ -49,12 +49,9 @@ class Visit(models.Model):
     '''Represents a single visit by a ``Patient`` to an MHS location.'''
     date = models.DateTimeField()
     location = models.CharField(max_length = 50)
+    reason_for_visit = models.CharField(max_length = 30)
     notes = models.TextField()
-    # reason for visit
-    #     emergency
-    #     see specialist
-    #     surgery
-    #     outpatient procedure
-    #     rehab
-    #     follow up visit
-    #     other
+    patient = models.ForeignKey(Patient)
+
+    def __unicode__(self):
+        return self.reason_for_visit
