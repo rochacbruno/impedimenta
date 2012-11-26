@@ -8,7 +8,7 @@ class Person(models.Model):
     address = models.CharField(max_length = 100)
 
     def __unicode__(self):
-        return '{} {}'.format(first_name, last_name)
+        return '{} {}'.format(self.first_name, self.last_name)
 
 class InsuranceProvider(models.Model):
     '''An insurance provider for a ``Patient``.'''
@@ -31,7 +31,7 @@ class Patient(models.Model):
     insurance_provider = models.OneToOneField(InsuranceProvider)
 
     def __unicode__(self):
-        return self.basic_info
+        return unicode(self.basic_info)
 
 class Visit(models.Model):
     '''Represents a single visit by a ``Patient`` to an MHS location.'''
@@ -42,4 +42,4 @@ class Visit(models.Model):
     patient = models.ForeignKey(Patient)
 
     def __unicode__(self):
-        return self.patient
+        return '{}, {}'.format(self.patient, self.date)
