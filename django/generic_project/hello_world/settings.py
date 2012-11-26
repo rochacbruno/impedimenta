@@ -112,16 +112,15 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'django.contrib.auth',         # user, authentication, admin site
-    'django.contrib.contenttypes', # user, authentication, admin site
-    'django.contrib.sessions',     # for admin site
+    'django.contrib.auth',          # user authentication, admin site
+    'django.contrib.contenttypes',  # "a high-level, generic interface for working with your models"
+    'django.contrib.sessions',      # admin site
     #'django.contrib.sites',
     #'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'django.contrib.staticfiles',   # static files such as CSS
+    'django.contrib.admin',         # admin site
+    #'django.contrib.admindocs',     # admin documentation
+    #'generic_project.mhs',          # Modern Hospital Systems patient tracking
 )
 
 # A sample logging configuration. The only tangible logging

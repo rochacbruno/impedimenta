@@ -1,10 +1,10 @@
-notes on django
-===============
+django basics
+=============
 
 Some good guides to django [are](https://docs.djangoproject.com/en/1.4/)
-[available](http://www.djangobook.com/en/2.0/index.html). You can view the full
-documentation on the `django-admin.py` and `manage.py` commands
-[here](https://docs.djangoproject.com/en/dev/ref/django-admin/).
+[available](http://www.djangobook.com/en/2.0/index.html). The django project
+[documents](https://docs.djangoproject.com/en/dev/ref/django-admin/) the
+`django-admin.py` and `manage.py` commands.
 
     # Remember, the built-in webserver is NOT appropriate for production use.
     django-admin.py startproject site_xyz   # New project with default settings.
@@ -15,9 +15,8 @@ documentation on the `django-admin.py` and `manage.py` commands
     python2.7 manage.py dbshell             # Reads ENGINE, creates connection.
     python2.7 manage.py diffsettings        # Diff settings.py against defaults.
 
-`settings.py` should be edited. You'll want to read through the entire file,
-especially once you start doing things like, say, using CSS. For starters, you
-should look at:
+`settings.py` should be edited. You'll want to read through the entire file. For
+starters, you should look at:
 
 * `ROOT_URLCONF`
 * `TEMPLATE_DIRS`
@@ -30,9 +29,9 @@ Database tables need to be created for each of the `INSTALLED_APPS`. The
 
 When django receives a request for a web page, it imports `ROOT_URLCONF` (by
 convention, `<project_name>.urls.py`) and evaluates `urlpatterns`. If a match
-is found, the appropriate view (just a function) is called.
+is found, the appropriate "view" function is called.
 
-    # If the regex matches, views.hello will be called.
+    # If the regex matches, views.hello will be called, not hello.
     urlpatterns = patterns('views',
         url(r'^hello/$', hello),
     )
@@ -64,3 +63,56 @@ be named. A view may use a template if `TEMPLATE_DIRS` is specified.
 If you set `DEBUG = False` in your settings.py file, you should define a
 `404.html` file in the root of your templates directory. Django will use the
 template automatically.
+
+django models
+=============
+
+The [official django documentation](https://docs.djangoproject.com/en/1.4/ref/models/fields/)
+details the field types and field options available to you. The django book also
+provides excellent guides on how to use
+[models](http://www.djangobook.com/en/2.0/chapter05.html) and
+[forms](http://www.djangobook.com/en/2.0/chapter07.html) (the typical way of
+querying and populating a database).
+
+You don't need to create an app to use django. However, "if you're using
+Django's database layer (models), you must create a Django app. Models must live
+within apps." You can create an app manually, or you can use `manage.py`.
+
+    $ python2.7 manage.py startapp foo
+    $ touch foo/urls.py
+    $ tree foo
+    foo
+    |-- __init__.py
+    |-- models.py
+    |-- tests.py
+    |-- urls.py
+    '-- views.py
+
+The models.py file contains a series of class definitions. For example:
+
+    from django.db import models
+    class Author(models.Model):
+        first_name = models.CharField(max_length=30)
+        last_name = models.CharField(max_length=40)
+        email = models.EmailField()
+
+An app must be added to a project before it can be used.
+
+    INSTALLED_APPS = (
+        'my_project.foo',
+    )
+
+You can then validate your models, inspect the resultant SQL statements, create
+the corresponding database tables, and inspect the changes in the database
+itself.
+
+    python2.7 manage.py validate
+    python2.7 manage.py sqlall foo
+    python2.7 manage.py syncdb
+    python2.7 manage.py dbshell
+
+If you make changes to a Django model, you'll need to make the same changes
+inside your database to keep your database consistent with the model. `syncdb`
+does not sync changes in models or deletions of models; if you make a change to
+a model or delete a model, and you want to update the database, syncdb will not
+handle that.
