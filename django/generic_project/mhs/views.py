@@ -82,7 +82,7 @@ def find_patient(request):
     tplate = template.loader.get_template('mhs/find_patient.html')
     ctext = template.RequestContext(
         request,
-        {'patients': models.Patient.objects.all()}
+        {'patients': models.Patient.objects.order_by('basic_info__last_name')[0:50]}
     )
     return http.HttpResponse(tplate.render(ctext))
 

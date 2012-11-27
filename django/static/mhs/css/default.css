@@ -5,7 +5,7 @@ instead on the padding provided by the titlebar. */
 div#titlebar {
     padding: 0.5em;
     margin: 0.5em;
-    border-bottom: thin solid gray;
+    border-bottom: medium solid gray;
 }
 
 p#title {
@@ -35,9 +35,9 @@ p#logout {
 
 /* Forms should be centered in the page. Labels should be to the left of inputs,
 and all inputs should line up into a column. */
-form {
+form, .centered_content {
     width: 30em;
-    margin: auto;
+    margin: auto auto 1em auto;
 }
 
 form#login_form {
@@ -93,6 +93,6 @@ td {
     border-bottom: thin solid #7AB0CC;
 }
 
-tr:hover {
+tr:hover td {
     background-color: #E6F2F7;
 }
