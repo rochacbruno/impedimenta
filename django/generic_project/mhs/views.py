@@ -79,10 +79,63 @@ def logout(request):
 @login_required(login_url = '../login/')
 def find_patient(request):
     '''Find a hospital patient.'''
+    # Show user search form and some patients.
+    if "POST" != request.method:
+        tplate = template.loader.get_template('mhs/find_patient.html')
+        ctext = template.RequestContext(
+            request,
+            {
+                'patients': models.Patient.objects.order_by(
+                    'basic_info__last_name',
+                    'basic_info__first_name'
+                )[0:50]
+            }
+        )
+        return http.HttpResponse(tplate.render(ctext))
+
+    # Grab fields submitted by user.
+    first_name = request.POST.get('first name', '')
+    last_name = request.POST.get('last name', '')
+    phone_number = request.POST.get('phone number', '')
+    date_of_birth = request.POST.get('date of birth', '')
+    doctor_first_name = request.POST.get('doctor first name', '')
+    doctor_last_name = request.POST.get('doctor last name', '')
+    insurance_provider = request.POST.get('insurance provider', '')
+
+    # Perform search
+    query = models.Patient.objects
+    if(first_name):
+        query = query.filter(basic_info__first_name__icontains = first_name)
+    if(last_name):
+        query = query.filter(basic_info__last_name__icontains = last_name)
+    if(phone_number):
+        query = query.filter(basic_info__phone_number__icontains = phone_number)
+    if(date_of_birth):
+        pass # FIXME: implement date of birth query
+    if(doctor_first_name):
+        query = query.filter(primary_care_doctor__first_name__icontains = doctor_first_name)
+    if(doctor_last_name):
+        query = query.filter(primary_care_doctor__last_name__icontains = doctor_last_name)
+    if(insurance_provider):
+        query = query.filter(insurance_provider__name__icontains = insurance_provider)
+
+    # Render results.
     tplate = template.loader.get_template('mhs/find_patient.html')
     ctext = template.RequestContext(
         request,
-        {'patients': models.Patient.objects.order_by('basic_info__last_name')[0:50]}
+        {
+            'patients': query.order_by(
+                'basic_info__last_name',
+                'basic_info__first_name'
+            )[0:50],
+            'first_name': first_name,
+            'last_name': last_name,
+            'phone_number': phone_number,
+            'date_of_birth': date_of_birth,
+            'doctor_first_name': doctor_first_name,
+            'doctor_last_name': doctor_last_name,
+            'insurance_provider': insurance_provider,
+        }
     )
     return http.HttpResponse(tplate.render(ctext))
 

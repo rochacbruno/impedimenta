@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method="post" class="centered_content">
         {% csrf_token %}
         <h1>Edit Patient</h1>
         {% include "mhs/patient_form_subtemplate.html" %}

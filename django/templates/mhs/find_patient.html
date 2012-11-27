@@ -10,24 +10,71 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        <h1>Find Patient</h1>
+    <form method="post" class="centered_content">
         {% csrf_token %}
+        <h1>Find Patient</h1>
+        <p>Search terms are ANDed, so each additional term further narrows
+        results. Searching for nothing allows you to browse through a list of
+        all patients.</p>
+
         <label for="id_first_name">First Name:</label>
-        <input id="id_first_name" type="search" name="first name" />
+        <input
+            id="id_first_name"
+            type="search"
+            name="first name"
+            value="{{ first_name }}"
+            />
         <label for="id_last_name">Last Name:</label>
-        <input id="id_last_name" type="search" name="last name" />
+        <input
+            id="id_last_name"
+            type="search"
+            name="last name"
+            value="{{ last_name }}"
+            />
         <label for="id_phone_number">Phone Number:</label>
-        <input id="id_phone_number" type="search" name="phone number" />
+        <input
+            id="id_phone_number"
+            type="search"
+            name="phone number"
+            value="{{ phone_number }}"
+            />
+        <!--
         <label for="id_date_of_birth">Date of Birth</label>
-        <input id="id_date_of_birth" type="search" name="date of birth" />
-        <label for="id_doctor">Doctor:</label>
-        <input id="id_doctor" type="search" name="doctor" />
+        -->
+        <!--
+        <input
+            id="id_date_of_birth"
+            type="search"
+            name="date of birth"
+            value="{{ date_of_birth }}"
+            />
+        -->
+        <label for="id_doctor_first_name">Doctor's First Name:</label>
+        <input
+            id="id_doctor_first_name"
+            type="search"
+            name="doctor first name"
+            value="{{ doctor_first_name }}"
+            />
+        <label for="id_doctor_last_name">Doctor's Last Name:</label>
+        <input
+            id="id_doctor_last_name"
+            type="search"
+            name="doctor last name"
+            value="{{ doctor_last_name }}"
+            />
         <label for="id_insurance_provider">Insurance Provider:</label>
-        <input id="id_insurance_provider" type="search" name="insurance provider" />
+        <input
+            id="id_insurance_provider"
+            type="search"
+            name="insurance provider"
+            value="{{ insurance_provider }}"
+            />
+
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Search" />
     </form>
+
     <table>
         <caption>Hospital patients, past and present</caption>
         <thead>
@@ -36,7 +83,8 @@
                 <th>Last Name</th>
                 <th>Phone Number</th>
                 <th>Date of Birth</th>
-                <th>Doctor</th>
+                <th>Dr's First Name</th>
+                <th>Dr's Last Name</th>
                 <th>Insurance Provider</th>
                 <th>Action</th>
             </tr>
@@ -48,7 +96,8 @@
                 <td>{{ patient.basic_info.last_name }}</td>
                 <td>{{ patient.basic_info.phone_number }}</td>
                 <td>{{ patient.birth_date }}</td>
-                <td>{{ patient.primary_care_doctor }}</td>
+                <td>{{ patient.primary_care_doctor.first_name }}</td>
+                <td>{{ patient.primary_care_doctor.last_name }}</td>
                 <td>{{ patient.insurance_provider }}</td>
                 <td><a href="../edit_patient_{{ patient.id}}/">Edit</a></td>
             </tr>

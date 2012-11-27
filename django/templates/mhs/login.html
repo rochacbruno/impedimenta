@@ -3,7 +3,7 @@
 {% block title %}Log In{% endblock %}
 
 {% block content %}
-    <form method="post" id="login_form">
+    <form method="post" class="centered_content">
         {% csrf_token %}
         <h1>Log In</h1>
         {% if err_msg %}

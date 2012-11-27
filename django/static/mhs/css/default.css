@@ -35,13 +35,9 @@ p#logout {
 
 /* Forms should be centered in the page. Labels should be to the left of inputs,
 and all inputs should line up into a column. */
-form, .centered_content {
+.centered_content {
     width: 30em;
     margin: auto auto 1em auto;
-}
-
-form#login_form {
-    width: 20em;
 }
 
 form label {
@@ -51,11 +47,7 @@ form label {
 
 form input {
     display: inline-block;
-    width: 60%;
-}
-
-form textarea {
-    width: 97%;
+    max-width: 60%;
 }
 
 form input#submit_form {
