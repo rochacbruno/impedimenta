@@ -23,11 +23,14 @@ class InsuranceProvider(models.Model):
 
 class Patient(models.Model):
     '''A patient of Modern Hospital Systems.'''
-    basic_info = models.OneToOneField(Person, related_name = 'basic_info')
     birth_date = models.DateField()
     birth_place = models.CharField(max_length = 100)
     social_security = models.CharField(max_length = 9)
     health_issues = models.TextField()
+    basic_info = models.OneToOneField(
+        Person,
+        related_name = 'basic_info'
+    )
     emergency_contact = models.OneToOneField(
         Person,
         related_name = 'emergency_contact',
@@ -46,6 +49,8 @@ class Patient(models.Model):
 
 class PatientForm(forms.Form):
     '''A form which can be used to populate a ``Person`` object.'''
+
+    # Info about the patient himself.
     patient_first_name = forms.CharField(max_length = 30)
     patient_last_name = forms.CharField(max_length = 30)
     patient_birth_date = forms.DateField()
@@ -72,6 +77,7 @@ class PatientForm(forms.Form):
         required = False,
     )
 
+    # The patient's emergency contact.
     emergency_contact_first_name = forms.CharField(
         max_length = 30,
         required = False,
@@ -90,6 +96,7 @@ class PatientForm(forms.Form):
         required = False,
     )
 
+    # The patient's primary care doctor.
     doctor_first_name = forms.CharField(
         max_length = 30,
         required = False,
@@ -108,6 +115,7 @@ class PatientForm(forms.Form):
         required = False,
     )
 
+    # The patient's insurance.
     insurance_name = forms.CharField(
         max_length = 100,
         required = False,
@@ -121,6 +129,9 @@ class PatientForm(forms.Form):
         widget = forms.Textarea,
         required = False,
     )
+
+    def __unicode__(self):
+        return '{}, {}'.format(self.patient_first_name, self.patient_last_name)
 
 class Visit(models.Model):
     '''Represents a single visit by a ``Patient`` to an MHS location.'''

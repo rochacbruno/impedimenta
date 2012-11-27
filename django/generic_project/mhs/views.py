@@ -96,11 +96,58 @@ def add_patient(request):
         )
         return http.HttpResponse(tplate.render(ctext))
 
-    # TODO: Form is valid. Create a new patient and redirect user to the
-    # appropriate "edit patient" page.
+    # TODO: does person already exist? if so, immediately redirect
+
+    # Assemble each portion of the new Patient object in turn. Each object must
+    # be saved before it's ID is available.
+    person = models.Person(
+        first_name = form.cleaned_data['patient_first_name'],
+        last_name = form.cleaned_data['patient_last_name'],
+        phone_number = form.cleaned_data['patient_phone_number'],
+        address = form.cleaned_data['patient_address'],
+    )
+    person.save()
+
+    emergency_contact = models.Person(
+        first_name = form.cleaned_data['emergency_contact_first_name'],
+        last_name = form.cleaned_data['emergency_contact_last_name'],
+        phone_number = form.cleaned_data['emergency_contact_phone_number'],
+        address = form.cleaned_data['emergency_contact_address'],
+    )
+    emergency_contact.save()
+
+    doctor = models.Person(
+        first_name = form.cleaned_data['doctor_first_name'],
+        last_name = form.cleaned_data['doctor_last_name'],
+        phone_number = form.cleaned_data['doctor_phone_number'],
+        address = form.cleaned_data['doctor_address'],
+    )
+    doctor.save()
+
+    insurance = models.InsuranceProvider(
+        name = form.cleaned_data['insurance_name'],
+        phone_number = form.cleaned_data['insurance_phone_number'],
+        address = form.cleaned_data['insurance_address'],
+    )
+    insurance.save()
+
+    patient = models.Patient(
+        birth_date = form.cleaned_data['patient_birth_date'],
+        birth_place = form.cleaned_data['patient_birth_place'],
+        social_security = form.cleaned_data['patient_social_security'],
+        health_issues = form.cleaned_data['patient_health_issues'],
+        basic_info_id = person.id,
+        emergency_contact_id = emergency_contact.id,
+        primary_care_doctor_id = doctor.id,
+        insurance_provider_id = insurance.id,
+    )
+    patient.save()
+
+    # TODO: Redirect user to the appropriate "edit patient" page.
     tplate = template.loader.get_template('mhs/add_patient.html')
     ctext = template.RequestContext(request, {'form': models.PatientForm()})
     return http.HttpResponse(tplate.render(ctext))
+    # return http.HttpResponseRedirect('./home/')
 
 @login_required(login_url = '../login/')
 def edit_patient(request):
