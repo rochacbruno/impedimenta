@@ -4,9 +4,9 @@
 
 {% block navbar %}
     <p id="bread_crumb_nav">
-        Welcome, {{ user.first_name }}. Location: <a href="../../home/">Home</a> / <a href="../../find_patient">Find Patient</a> / Edit Patient
+        Welcome, {{ user.first_name }}. Location: <a href="../home/">Home</a> / <a href="../find_patient">Find Patient</a> / Edit Patient
     </p>
-    <p id="logout"><a href="../../logout/">Logout</a></p>
+    <p id="logout"><a href="../logout/">Logout</a></p>
 {% endblock %}
 
 {% block content %}
@@ -15,6 +15,6 @@
         <h1>Edit Patient</h1>
         {% include "mhs/patient_form_subtemplate.html" %}
         <label>&nbsp;</label>
-        <input id="submit_form" type="submit" value="Submit" />
+        <input id="submit_form" type="submit" value="Save" />
     </form>
 {% endblock %}

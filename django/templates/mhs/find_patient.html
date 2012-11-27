@@ -11,4 +11,29 @@
 
 {% block content %}
     <h1>Find Patient</h1>
+    <table>
+        <caption>Hospital patients, past and present</caption>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Phone Number</th>
+                <th>Date of Birth</th>
+                <th>Doctor</th>
+                <th>Insurance Provider</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for patient in patients %}
+            <tr>
+                <td>{{ patient }}</td>
+                <td>{{ patient.basic_info.phone_number }}</td>
+                <td>{{ patient.birth_date }}</td>
+                <td>{{ patient.primary_care_doctor }}</td>
+                <td>{{ patient.insurance_provider }}</td>
+                <td><a href="../edit_patient_{{ patient.id}}/">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

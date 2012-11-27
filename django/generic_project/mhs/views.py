@@ -80,7 +80,10 @@ def logout(request):
 def find_patient(request):
     '''Find a hospital patient.'''
     tplate = template.loader.get_template('mhs/find_patient.html')
-    ctext = template.RequestContext(request, {})
+    ctext = template.RequestContext(
+        request,
+        {'patients': models.Patient.objects.all()}
+    )
     return http.HttpResponse(tplate.render(ctext))
 
 @login_required(login_url = '../login/')
@@ -152,7 +155,7 @@ def add_patient(request):
     )
     patient.save()
 
-    return http.HttpResponseRedirect('../edit_patient/{}'.format(patient.id))
+    return http.HttpResponseRedirect('../edit_patient_{}'.format(patient.id))
 
 @login_required(login_url = '../login/')
 def edit_patient(request, patient_id):
