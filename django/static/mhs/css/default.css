@@ -68,13 +68,9 @@ formatted, though, because they're ugly as sin. Sample HTML produced by django:
     <ul class="errorlist"><li>This field is required.</li></ul>
 
 */
-form ul.errorlist {
+form .errorlist {
     margin: 0.5em 0 0 0;
     color: red;
     list-style-type: none; /* no bullets on list items */
     padding: 0;
-}
-
-form ul.errorlist li {
-    margin: 0;
 }

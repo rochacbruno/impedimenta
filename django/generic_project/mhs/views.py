@@ -12,6 +12,12 @@ def home_redirect(request):
     # (unused argument 'request') pylint: disable-msg=W0613
     return http.HttpResponseRedirect('./home/')
 
+def admin_redirect(request):
+    '''Redirects the user to the django admin interface.'''
+    # FIXME: integrate into URLConf
+    # (unused argument 'request') pylint: disable-msg=W0613
+    return http.HttpResponseRedirect('/admin/')
+
 @login_required(login_url = '../login/')
 def home(request):
     '''Provides links to other sections of the MHS website.'''
@@ -131,6 +137,9 @@ def add_patient(request):
     )
     insurance.save()
 
+    # (Instance of 'Person' has no 'id' member) pylint: disable-msg=E1101
+    # True, neither Person nor InsuranceProvider have an 'id' member. Upon
+    # calling save(), however, such a member is made available.
     patient = models.Patient(
         birth_date = form.cleaned_data['patient_birth_date'],
         birth_place = form.cleaned_data['patient_birth_place'],
@@ -150,11 +159,12 @@ def add_patient(request):
     # return http.HttpResponseRedirect('./home/')
 
 @login_required(login_url = '../login/')
-def edit_patient(request):
+def edit_patient(request, patient_id):
     '''Edit information about a hospital patient.'''
     tplate = template.loader.get_template('mhs/edit_patient.html')
     ctext = template.RequestContext(request, {})
     return http.HttpResponse(tplate.render(ctext))
+    # TODO
 
 @login_required(login_url = '../login/')
 def gen_report(request):
@@ -164,34 +174,5 @@ def gen_report(request):
         if "mhs-admin" == group.name:
             is_mhs_admin = True
     tplate = template.loader.get_template('mhs/gen_report.html')
-    ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
-    return http.HttpResponse(tplate.render(ctext))
-
-@login_required(login_url = '../login/')
-def change_password(request):
-    '''Allows a user to change their password.'''
-    tplate = template.loader.get_template('mhs/change_password.html')
-    ctext = template.RequestContext(request, {})
-    return http.HttpResponse(tplate.render(ctext))
-
-@login_required(login_url = '../login/')
-def find_user(request):
-    '''Find a system user.'''
-    is_mhs_admin = False
-    for group in request.user.groups.all():
-        if "mhs-admin" == group.name:
-            is_mhs_admin = True
-    tplate = template.loader.get_template('mhs/find_user.html')
-    ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
-    return http.HttpResponse(tplate.render(ctext))
-
-@login_required(login_url = '../login/')
-def edit_user(request):
-    '''Edit information about a system user.'''
-    is_mhs_admin = False
-    for group in request.user.groups.all():
-        if "mhs-admin" == group.name:
-            is_mhs_admin = True
-    tplate = template.loader.get_template('mhs/edit_user.html')
     ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
     return http.HttpResponse(tplate.render(ctext))

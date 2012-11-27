@@ -13,6 +13,9 @@
     <form action="../add_patient/" method="post">
         {% csrf_token %}
         <h1>Add Patient</h1>
+        {% if form.errors %}
+            <p class="errorlist">Please correct the errors below.</p>
+        {% endif %}
         <h2>Patient</h2>
         {{ form.patient_first_name.errors }}
         <label for="id_patient_first_name">First Name:</label>
