@@ -81,9 +81,46 @@ def find_patient(request):
 @login_required(login_url = '../login/')
 def add_patient(request):
     '''Prompts user to create a new patient and processes those requests.'''
-    tplate = template.loader.get_template('mhs/add_patient.html')
-    ctext = template.RequestContext(request, {})
-    return http.HttpResponse(tplate.render(ctext))
+    # Give the user a login form.
+    if "POST" != request.method:
+        tplate = template.loader.get_template('mhs/add_patient.html')
+        ctext = template.RequestContext(request, {})
+        return http.HttpResponse(tplate.render(ctext))
+
+    errors = ['I herped a derp!']
+    # TODO: validate form and populate `errors`
+
+    if errors:
+        tplate = template.loader.get_template('mhs/add_patient.html')
+        ctext = template.RequestContext(
+            request,
+            {
+                'errors': errors,
+                'patient_first_name': request.POST.get('patient first name', ''),
+                'patient_last_name': request.POST.get('patient last name', ''),
+                'patient_phone_number': request.POST.get('patient phone number', ''),
+                'patient_address': request.POST.get('patient address', ''),
+                'patient_birth_date': request.POST.get('patient birth date', ''),
+                'patient_birth_place': request.POST.get('patient birth place', ''),
+                'patient_social_security': request.POST.get('patient social security', ''),
+                'patient_health_issues': request.POST.get('patient health issues', ''),
+                'emergency_contact_first_name': request.POST.get('emergency contact first name', ''),
+                'emergency_contact_last_name': request.POST.get('emergency contact last name', ''),
+                'emergency_contact_phone_number': request.POST.get('emergency contact phone number', ''),
+                'emergency_contact_address': request.POST.get('emergency contact address', ''),
+                'doctor_first_name': request.POST.get('doctor first name', ''),
+                'doctor_last_name': request.POST.get('doctor last name', ''),
+                'doctor_phone_number': request.POST.get('doctor phone number', ''),
+                'doctor_address': request.POST.get('doctor address', ''),
+                'insurance_name': request.POST.get('insurance name', ''),
+                'insurance_phone_number': request.POST.get('insurance phone number', ''),
+                'insurance_address': request.POST.get('insurance address', ''),
+            }
+        )
+        return http.HttpResponse(tplate.render(ctext))
+
+    # TODO: Form was OK. Create a new patient and redirect user to the
+    # appropriate "edit patient" page.
 
 @login_required(login_url = '../login/')
 def edit_patient(request):

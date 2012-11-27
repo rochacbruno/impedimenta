@@ -6,14 +6,14 @@
     <form action="../login/" method="post" id="login_form">
         {% csrf_token %}
         <h1>Log In</h1>
+        {% if err_msg %}
+            <p><em>{{ err_msg }}</em></p>
+        {% endif %}
         <label for="username">Username:</label>
         <input id="username" type="text" name="username" required />
         <label for="password">Password:</label>
         <input id="password" type="password" name="password" required />
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Submit" />
-        {% if err_msg %}
-            <p><em>{{ err_msg }}</em></p>
-        {% endif %}
     </form>
 {% endblock %}

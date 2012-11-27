@@ -13,51 +13,149 @@
     <form action="../add_patient/" method="post">
         {% csrf_token %}
         <h1>Add Patient</h1>
-        {% if err_msg %}
-            <p><em>{{ err_msg }}</em></p>
+        {% if errors %}
+            <h2>Errors</h2>
+            <ul>
+                {% for error in errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
+
         <h2>Patient</h2>
         <label for="patient_first_name">First Name:</label>
-        <input id="patient_first_name" type="text" name="patient first name" required />
+        <input
+            type="text"
+            name="patient first name"
+            value="{{ patient_first_name }}"
+            id="patient_first_name"
+            required
+            />
         <label for="patient_last_name">Last Name:</label>
-        <input id="patient_last_name" type="text" name="patient last name" required />
+        <input
+            type="text"
+            name="patient last name"
+            value="{{ patient_last_name }}"
+            id="patient_last_name"
+            required
+            />
         <label for="patient_phone_number">Phone Number:</label>
-        <input id="patient_phone_number" type="text" name="patient phone number" />
+        <input
+            type="text"
+            name="patient phone number"
+            value="{{ patient_phone_number }}"
+            id="patient_phone_number"
+            />
         <label for="patient_address">Address:</label><br />
-        <textarea id="patient_address" name="patient address"></textarea>
+        <textarea
+            id="patient_address"
+            name="patient address">
+        </textarea>
         <label for="patient_birth_date">Date of Birth:</label>
-        <input id="patient_birth_date" type="text" name="patient birth date" />
+        <input
+            type="text"
+            name="patient birth date"
+            value="{{ patient_birth_date }}"
+            id="patient_birth_date"
+            required
+            />
         <label for="patient_birth_place">Place of Birth:</label>
-        <input id="patient_birth_place" type="text" name="patient birth place" />
+        <input
+            type="text"
+            name="patient birth place"
+            value="{{ patient_birth_place }}"
+            id="patient_birth_place"
+            />
         <label for="patient_social_security">Social Security Number:</label>
-        <input id="patient_social_security" type="text" name="patient social security" />
+        <input
+            type="text"
+            name="patient social security"
+            value="{{ patient_social_security }}"
+            id="patient_social_security"
+            />
         <label for="patient_health_issues">Health Issues:</label><br />
-        <textarea id="patient_health_issues" name="patient health issues"></textarea>
+        <textarea
+            id="patient_health_issues"
+            name="patient health issues">
+        </textarea>
+
         <h2>Emergency Contact</h2>
         <label for="emergency_contact_first_name">First Name:</label>
-        <input id="emergency_contact_first_name" type="text" name="emergency contact first name" />
+        <input
+            type="text"
+            name="emergency contact first name"
+            value="{{ emergency_contact_first_name }}"
+            id="emergency_contact_first_name"
+            />
         <label for="emergency_contact_last_name">Last Name:</label>
-        <input id="emergency_contact_last_name" type="text" name="emergency contact last name" />
+        <input
+            type="text"
+            name="emergency contact last name"
+            value="{{ emergency_contact_last_name }}"
+            id="emergency_contact_last_name"
+            />
         <label for="emergency_contact_phone_number">Phone Number:</label>
-        <input id="emergency_contact_phone_number" type="text" name="emergency contact phone number" />
+        <input
+            type="text"
+            name="emergency contact phone number"
+            value="{{ emergency_contact_phone_number }}"
+            id="emergency_contact_phone_number"
+            />
         <label for="emergency_contact_address">Address:</label><br />
-        <textarea id="emergency_contact_address" name="emergency contact address"></textarea>
+        <textarea
+            id="emergency_contact_address"
+            name="emergency contact address">
+        </textarea>
+
         <h2>Doctor</h2>
         <label for="doctor_first_name">First Name:</label>
-        <input id="doctor_first_name" type="text" name="doctor first name" />
+        <input
+            type="text"
+            name="doctor first name"
+            value="{{ doctor_first_name }}"
+            id="doctor_first_name"
+            />
         <label for="doctor_last_name">Last Name:</label>
-        <input id="doctor_last_name" type="text" name="doctor last name" />
+        <input
+            type="text"
+            name="doctor last name"
+            value="{{ doctor_last_name }}"
+            id="doctor_last_name"
+            />
         <label for="doctor_phone_number">Phone Number:</label>
-        <input id="doctor_phone_number" type="text" name="doctor phone number" />
+        <input
+            type="text"
+            name="doctor phone number"
+            value="{{ doctor_phone_number }}"
+            id="doctor_phone_number"
+            />
         <label for="doctor_address">Address:</label><br />
-        <textarea id="doctor_address" name="doctor address"></textarea>
+        <textarea
+            id="doctor_address"
+            name="doctor address">
+        </textarea>
+
         <h2>Insurance Provider</h2>
         <label for="insurance_name">Name:</label>
-        <input id="insurance_name" type="text" name="insurance name" />
+        <input
+            type="text"
+            name="insurance name"
+            value="{{ insurance_name }}"
+            id="insurance_name"
+            />
         <label for="insurance_phone_number">Phone Number:</label>
-        <input id="insurance_phone_number" type="text" name="insurance phone number" />
+        <input
+            type="text"
+            name="insurance phone number"
+            value="{{ insurance_phone_number }}"
+            id="insurance_phone_number"
+            />
         <label for="insurance_address">Address:</label><br />
-        <textarea id="insurance_address" name="insurance address"></textarea>
+        <textarea
+            id="insurance_address"
+            name="insurance address">
+        </textarea>
+
         <!-- Phew! Watch out for carpal tunnel. -->
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Submit" />
