@@ -13,148 +13,70 @@
     <form action="../add_patient/" method="post">
         {% csrf_token %}
         <h1>Add Patient</h1>
-        {% if errors %}
-            <h2>Errors</h2>
-            <ul>
-                {% for error in errors %}
-                    <li>{{ error }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-
         <h2>Patient</h2>
-        <label for="patient_first_name">First Name:</label>
-        <input
-            type="text"
-            name="patient first name"
-            value="{{ patient_first_name }}"
-            id="patient_first_name"
-            required
-            />
-        <label for="patient_last_name">Last Name:</label>
-        <input
-            type="text"
-            name="patient last name"
-            value="{{ patient_last_name }}"
-            id="patient_last_name"
-            required
-            />
-        <label for="patient_phone_number">Phone Number:</label>
-        <input
-            type="text"
-            name="patient phone number"
-            value="{{ patient_phone_number }}"
-            id="patient_phone_number"
-            />
-        <label for="patient_address">Address:</label><br />
-        <textarea
-            id="patient_address"
-            name="patient address">
-        </textarea>
-        <label for="patient_birth_date">Date of Birth:</label>
-        <input
-            type="text"
-            name="patient birth date"
-            value="{{ patient_birth_date }}"
-            id="patient_birth_date"
-            required
-            />
-        <label for="patient_birth_place">Place of Birth:</label>
-        <input
-            type="text"
-            name="patient birth place"
-            value="{{ patient_birth_place }}"
-            id="patient_birth_place"
-            />
-        <label for="patient_social_security">Social Security Number:</label>
-        <input
-            type="text"
-            name="patient social security"
-            value="{{ patient_social_security }}"
-            id="patient_social_security"
-            />
-        <label for="patient_health_issues">Health Issues:</label><br />
-        <textarea
-            id="patient_health_issues"
-            name="patient health issues">
-        </textarea>
+        {{ form.patient_first_name.errors }}
+        <label for="id_patient_first_name">First Name:</label>
+        {{ form.patient_first_name }}
+        {{ form.patient_last_name.errors }}
+        <label for="id_patient_last_name">Last Name:</label>
+        {{ form.patient_last_name }}
+        {{ form.patient_phone_number.errors }}
+        <label for="id_patient_phone_number">Phone Number:</label>
+        {{ form.patient_phone_number }}
+        {{ form.patient_address.errors }}
+        <label for="id_patient_address">Address:</label><br />
+        {{ form.patient_address }}
+        {{ form.patient_birth_date.errors }}
+        <label for="id_patient_birth_date">Date of Birth:</label>
+        {{ form.patient_birth_date }}
+        {{ form.patient_birth_place.errors }}
+        <label for="id_patient_birth_place">Place of Birth:</label>
+        {{ form.patient_birth_place }}
+        {{ form.patient_social_security.errors }}
+        <label for="id_patient_social_security">Social Security Number:</label>
+        {{ form.patient_social_security }}
+        {{ form.patient_health_issues.errors }}
+        <label for="id_patient_health_issues">Health Issues:</label><br />
+        {{ form.patient_health_issues }}
 
         <h2>Emergency Contact</h2>
-        <label for="emergency_contact_first_name">First Name:</label>
-        <input
-            type="text"
-            name="emergency contact first name"
-            value="{{ emergency_contact_first_name }}"
-            id="emergency_contact_first_name"
-            />
-        <label for="emergency_contact_last_name">Last Name:</label>
-        <input
-            type="text"
-            name="emergency contact last name"
-            value="{{ emergency_contact_last_name }}"
-            id="emergency_contact_last_name"
-            />
-        <label for="emergency_contact_phone_number">Phone Number:</label>
-        <input
-            type="text"
-            name="emergency contact phone number"
-            value="{{ emergency_contact_phone_number }}"
-            id="emergency_contact_phone_number"
-            />
-        <label for="emergency_contact_address">Address:</label><br />
-        <textarea
-            id="emergency_contact_address"
-            name="emergency contact address">
-        </textarea>
+        {{ form.emergency_contact_first_name.errors }}
+        <label for="id_emergency_contact_first_name">First Name:</label>
+        {{ form.emergency_contact_first_name }}
+        {{ form.emergency_contact_last_name.errors }}
+        <label for="id_emergency_contact_last_name">Last Name:</label>
+        {{ form.emergency_contact_last_name }}
+        {{ form.emergency_contact_phone_number.errors }}
+        <label for="id_emergency_contact_phone_number">Phone Number:</label>
+        {{ form.emergency_contact_phone_number }}
+        {{ form.emergency_contact_address.errors }}
+        <label for="id_emergency_contact_address">Address:</label><br />
+        {{ form.emergency_contact_address }}
 
         <h2>Doctor</h2>
-        <label for="doctor_first_name">First Name:</label>
-        <input
-            type="text"
-            name="doctor first name"
-            value="{{ doctor_first_name }}"
-            id="doctor_first_name"
-            />
-        <label for="doctor_last_name">Last Name:</label>
-        <input
-            type="text"
-            name="doctor last name"
-            value="{{ doctor_last_name }}"
-            id="doctor_last_name"
-            />
-        <label for="doctor_phone_number">Phone Number:</label>
-        <input
-            type="text"
-            name="doctor phone number"
-            value="{{ doctor_phone_number }}"
-            id="doctor_phone_number"
-            />
-        <label for="doctor_address">Address:</label><br />
-        <textarea
-            id="doctor_address"
-            name="doctor address">
-        </textarea>
+        {{ form.doctor_first_name.errors }}
+        <label for="id_doctor_first_name">First Name:</label>
+        {{ form.doctor_first_name }}
+        {{ form.doctor_last_name.errors }}
+        <label for="id_doctor_last_name">Last Name:</label>
+        {{ form.doctor_last_name }}
+        {{ form.doctor_phone_number.errors }}
+        <label for="id_doctor_phone_number">Phone Number:</label>
+        {{ form.doctor_phone_number }}
+        {{ form.doctor_address.errors }}
+        <label for="id_doctor_address">Address:</label><br />
+        {{ form.doctor_address }}
 
         <h2>Insurance Provider</h2>
-        <label for="insurance_name">Name:</label>
-        <input
-            type="text"
-            name="insurance name"
-            value="{{ insurance_name }}"
-            id="insurance_name"
-            />
-        <label for="insurance_phone_number">Phone Number:</label>
-        <input
-            type="text"
-            name="insurance phone number"
-            value="{{ insurance_phone_number }}"
-            id="insurance_phone_number"
-            />
-        <label for="insurance_address">Address:</label><br />
-        <textarea
-            id="insurance_address"
-            name="insurance address">
-        </textarea>
+        {{ form.insurance_name.errors }}
+        <label for="id_insurance_name">Name:</label>
+        {{ form.insurance_name }}
+        {{ form.insurance_phone_number.errors }}
+        <label for="id_insurance_phone_number">Phone Number:</label>
+        {{ form.insurance_phone_number }}
+        {{ form.insurance_address.errors }}
+        <label for="id_insurance_address">Address:</label><br />
+        {{ form.insurance_address }}
 
         <!-- Phew! Watch out for carpal tunnel. -->
         <label>&nbsp;</label>

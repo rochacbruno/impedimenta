@@ -33,9 +33,8 @@ p#logout {
     font-size: smaller;
 }
 
-/* The login form should be centered in the page and use visual cues to separate
-it from the substantial amount of surrounding whitespace. Labels should be to
-the left of inputs, and all inputs should line up into a column. */
+/* Forms should be centered in the page. Labels should be to the left of inputs,
+and all inputs should line up into a column. */
 form {
     width: 30em;
     margin: auto;
@@ -61,4 +60,21 @@ form textarea {
 
 form input#submit_form {
     width: auto;
+}
+
+/* django forms are capable of producing useful error messages. They should be
+formatted, though, because they're ugly as sin. Sample HTML produced by django:
+
+    <ul class="errorlist"><li>This field is required.</li></ul>
+
+*/
+form ul.errorlist {
+    margin: 0.5em 0 0 0;
+    color: red;
+    list-style-type: none; /* no bullets on list items */
+    padding: 0;
+}
+
+form ul.errorlist li {
+    margin: 0;
 }
