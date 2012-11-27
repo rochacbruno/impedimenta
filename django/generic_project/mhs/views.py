@@ -152,19 +152,101 @@ def add_patient(request):
     )
     patient.save()
 
-    # TODO: Redirect user to the appropriate "edit patient" page.
-    tplate = template.loader.get_template('mhs/add_patient.html')
-    ctext = template.RequestContext(request, {'form': models.PatientForm()})
-    return http.HttpResponse(tplate.render(ctext))
-    # return http.HttpResponseRedirect('./home/')
+    return http.HttpResponseRedirect('../edit_patient/{}'.format(patient.id))
 
 @login_required(login_url = '../login/')
 def edit_patient(request, patient_id):
     '''Edit information about a hospital patient.'''
-    tplate = template.loader.get_template('mhs/edit_patient.html')
-    ctext = template.RequestContext(request, {})
-    return http.HttpResponse(tplate.render(ctext))
-    # TODO
+    # Give the user info about the patient they're querying. If that patient
+    # does not exist, inform them of the error of their ways.
+    if "POST" != request.method:
+        # The django framework does magic here that's impenetrable to pylint.
+        # I don't think those members are in the Patient class definition.
+        # ( Class 'Patient' has no 'objects' member) pylint: disable-msg=E1101
+        # ( Class 'Patient' has no 'DoesNotExist' member) pylint: disable-msg=E1101
+        try:
+            patient = models.Patient.objects.get(pk=patient_id)
+        except models.Patient.DoesNotExist:
+            tplate = template.loader.get_template('404.html')
+            ctext = template.RequestContext(request, {})
+            return http.HttpResponse(tplate.render(ctext))
+
+        # Patient exists. Use their info to pre-populate the edit patient form.
+        form = models.PatientForm(
+            initial = {
+                'patient_first_name': patient.basic_info.first_name,
+                'patient_last_name': patient.basic_info.last_name,
+                'patient_phone_number': patient.basic_info.phone_number,
+                'patient_address': patient.basic_info.address,
+                'patient_birth_date': patient.birth_date,
+                'patient_birth_place': patient.birth_place,
+                'patient_social_security': patient.social_security,
+                'patient_health_issues': patient.health_issues,
+                'doctor_first_name': patient.primary_care_doctor.first_name,
+                'doctor_last_name': patient.primary_care_doctor.last_name,
+                'doctor_phone_number': patient.primary_care_doctor.phone_number,
+                'doctor_address': patient.primary_care_doctor.address,
+                'emergency_contact_first_name': patient.emergency_contact.first_name,
+                'emergency_contact_last_name': patient.emergency_contact.last_name,
+                'emergency_contact_phone_number': patient.emergency_contact.phone_number,
+                'emergency_contact_address': patient.emergency_contact.address,
+                'insurance_name': patient.insurance_provider.name,
+                'insurance_phone_number': patient.insurance_provider.phone_number,
+                'insurance_address': patient.insurance_provider.address,
+            }
+        )
+
+        tplate = template.loader.get_template('mhs/edit_patient.html')
+        ctext = template.RequestContext(request, {'form': form})
+        return http.HttpResponse(tplate.render(ctext))
+
+    # User is trying to make changes. Are there errors in the submitted form?
+    form = models.PatientForm(request.POST)
+    if not form.is_valid():
+        tplate = template.loader.get_template('mhs/edit_patient.html')
+        ctext = template.RequestContext(
+            request,
+            {'form': form}
+        )
+        return http.HttpResponse(tplate.render(ctext))
+
+    # Save the requested changes.
+    # ( Class 'Patient' has no 'objects' member) pylint: disable-msg=E1101
+    patient = models.Patient.objects.get(pk=patient_id)
+    patient.birth_date = form.cleaned_data['patient_birth_date']
+    patient.birth_place = form.cleaned_data['patient_birth_place']
+    patient.social_security = form.cleaned_data['patient_social_security']
+    patient.health_issues = form.cleaned_data['patient_health_issues']
+    patient.save()
+
+    person = patient.basic_info
+    person.first_name = form.cleaned_data['patient_first_name']
+    person.last_name = form.cleaned_data['patient_last_name']
+    person.phone_number = form.cleaned_data['patient_phone_number']
+    person.address = form.cleaned_data['patient_address']
+    person.save()
+
+    doctor = patient.primary_care_doctor
+    doctor.first_name = form.cleaned_data['doctor_first_name']
+    doctor.last_name = form.cleaned_data['doctor_last_name']
+    doctor.phone_number = form.cleaned_data['doctor_phone_number']
+    doctor.address = form.cleaned_data['doctor_address']
+    doctor.save()
+
+    emergency_contact = patient.emergency_contact
+    emergency_contact.first_name = form.cleaned_data['emergency_contact_first_name']
+    emergency_contact.last_name = form.cleaned_data['emergency_contact_last_name']
+    emergency_contact.phone_number = form.cleaned_data['emergency_contact_phone_number']
+    emergency_contact.address = form.cleaned_data['emergency_contact_address']
+    emergency_contact.save()
+
+    insurance_provider = patient.insurance_provider
+    insurance_provider.name = form.cleaned_data['insurance_name']
+    insurance_provider.phone_number = form.cleaned_data['insurance_phone_number']
+    insurance_provider.address = form.cleaned_data['insurance_address']
+    insurance_provider.save()
+
+    return http.HttpResponseRedirect(request.path)
 
 @login_required(login_url = '../login/')
 def gen_report(request):

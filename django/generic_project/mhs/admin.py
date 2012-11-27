@@ -1,3 +1,4 @@
+'''Makes this app's models available in the django admin app.'''
 from django.contrib import admin
 from mhs import models
 
