@@ -36,22 +36,44 @@ p#logout {
 /* The login form should be centered in the page and use visual cues to separate
 it from the substantial amount of surrounding whitespace. Labels should be to
 the left of inputs, and all inputs should line up into a column. */
-form#login_form {
-    width: 22em;
+form {
+    width: 30em;
     margin: auto;
 }
 
-form#login_form p label {
+form#login_form {
+    width: 20em;
+}
+
+form h2 {
+    clear: both;
+}
+
+form label {
     float: left;
-    width: 8em;
+    width: 35%;
+    clear: left;
+    margin-bottom: 0.5em;
 }
 
-form#login_form p input {
-    width: 14em;
+form input {
+    float: right;
+    width: 60%;
+    clear: right;
+    margin-bottom: 0.5em;
 }
 
-form#login_form p#submit_button {
-    text-align: center;
+form input#submit_form {
+    float: left;
+    width: auto;
+    clear: both;
+}
+
+form textarea {
+    float: left;
+    width: 100%;
+    clear: both;
+    margin-bottom: 0.5em;
 }
 
 /* The navigation links on the homepage should be centered in the page and use

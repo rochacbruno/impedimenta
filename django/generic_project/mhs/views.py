@@ -38,10 +38,7 @@ def login(request):
     # Give the user a login form.
     if "POST" != request.method:
         tplate = template.loader.get_template('mhs/login.html')
-        ctext = template.RequestContext(
-            request,
-            {'login_form_url': '../login/'}
-        )
+        ctext = template.RequestContext(request, {})
         return http.HttpResponse(tplate.render(ctext))
 
     # Are the credentials indicated on the form valid?
@@ -52,10 +49,7 @@ def login(request):
         tplate = template.loader.get_template('mhs/login.html')
         ctext = template.RequestContext(
             request,
-            {
-                'login_form_url': '../login/',
-                'err_msg': 'Error: Your username and password were incorrect.'
-            }
+            {'err_msg': 'Error: Your username and password were incorrect.'}
         )
         return http.HttpResponse(tplate.render(ctext))
 
@@ -64,10 +58,7 @@ def login(request):
         tplate = template.loader.get_template('mhs/login.html')
         ctext = template.RequestContext(
             request,
-            {
-                'login_form_url': '../login/',
-                'err_msg': 'Error: Your account has been disabled.'
-            }
+            {'err_msg': 'Error: Your account has been disabled.'}
         )
         return http.HttpResponse(tplate.render(ctext))
 
@@ -89,7 +80,7 @@ def find_patient(request):
 
 @login_required(login_url = '../login/')
 def add_patient(request):
-    '''Add a new hospital patient.'''
+    '''Prompts user to create a new patient and processes those requests.'''
     tplate = template.loader.get_template('mhs/add_patient.html')
     ctext = template.RequestContext(request, {})
     return http.HttpResponse(tplate.render(ctext))
