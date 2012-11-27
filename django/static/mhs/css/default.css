@@ -41,45 +41,28 @@ form {
     margin: auto;
 }
 
+form p {
+    margin: 0;
+}
+
 form#login_form {
     width: 20em;
 }
 
-form h2 {
-    clear: both;
-}
-
 form label {
-    float: left;
+    display: inline-block;
     width: 35%;
-    clear: left;
-    margin-bottom: 0.5em;
 }
 
 form input {
-    float: right;
+    display: inline-block;
     width: 60%;
-    clear: right;
-    margin-bottom: 0.5em;
-}
-
-form input#submit_form {
-    float: left;
-    width: auto;
-    clear: both;
 }
 
 form textarea {
-    float: left;
-    width: 100%;
-    clear: both;
-    margin-bottom: 0.5em;
+    width: 97%;
 }
 
-/* The navigation links on the homepage should be centered in the page and use
-vidual cues to separate it from the substantial amount of surrounding
-whitespace. */
-div#home_navigation {
-    max-width: 30em;
-    margin: auto;
+form input#submit_form {
+    width: auto;
 }
