@@ -14,6 +14,9 @@ set cursorline          " highlight the current row
 set foldmethod=indent   " more convenient than manual, easier than custom
 set nofoldenable        " enable folding by default?
 let mapleader=","
+" TODO: automatically save undo file upon file close
+set undofile            " Should the undo tree be saved? Allows persistent undo.
+set undodir="~/.vim/undo" " This directory is NOT automatically created.
 
 "nmap n nzz              " center display around cursor when searching for terms
 "nmap N Nzz              " .
@@ -26,10 +29,10 @@ nmap <F10> :UndotreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
 set tags=~/.mytags      " where to find the tags that exuberant ctags generates?
 
-syntax enable               " enable syntax coloring
-"color default               " :'(
-"color jellybeans            " Pleasant colors and low contrast. A bit too low.
-color badwolf               " Bright colors and high contrast.
-set background=light        " badwolf's dark variation looks nicer
+syntax enable           " enable syntax coloring
+"color default           " :'(
+"color jellybeans        " Pleasant colors and low contrast. A bit too low.
+color badwolf           " Bright colors and high contrast.
+set background=light    " badwolf's dark variation looks nicer
 " Syntax coloring for arduino .pde filetype is horrid, but better than nothing.
 autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino.vim
