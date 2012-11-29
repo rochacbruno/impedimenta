@@ -135,27 +135,44 @@ class PatientSearchForm(forms.Form):
     '''A form which can be used to search for a ``Person`` object.'''
     # Info about the patient himself.
     patient_first_name = forms.CharField(
+        label = 'First Name:',
         max_length = 30,
         required = False,
     )
     patient_last_name = forms.CharField(
+        label = 'Last Name:',
         max_length = 30,
         required = False,
     )
     patient_date_of_birth_start = forms.DateField(
+        label = 'Date of Birth (start):',
         required = False,
     )
     patient_date_of_birth_end = forms.DateField(
+        label = 'Date of Birth (end):',
         required = False,
     )
     patient_social_security_number = forms.CharField(
+        label = 'SSN:',
         max_length = 9,
         required = False,
     )
     patient_phone_number = forms.CharField(
+        label = 'Phone Number:',
         max_length = 25,
         required = False,
     )
+
+    class Meta:
+        # The Form iterator respects the ordering of fields here.
+        fields = (
+            'patient_first_name',
+            'patient_last_name',
+            'patient_date_of_birth_start',
+            'patient_date_of_birth_end',
+            'patient_social_security_number',
+            'patient_phone_number',
+        )
 
     def clean_patient_social_security_number(self):
         '''Ensures that ``self.social_security_number`` is valid.'''
@@ -201,3 +218,7 @@ class ChangePasswordForm(forms.Form):
         widget = forms.PasswordInput,
         max_length = 30,
     )
+
+    class Meta:
+        # The Form iterator respects the ordering of fields here.
+        fields = ('old_password', 'new_password_1', 'new_password_2')

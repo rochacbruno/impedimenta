@@ -13,24 +13,10 @@
     <form method="post" class="centered_content">
         {% csrf_token %}
         <h1>Find Patient</h1>
-        {{ form.patient_first_name.errors }}
-        <label for="id_patient_first_name">First Name:</label>
-        {{ form.patient_first_name }}
-        {{ form.patient_last_name.errors }}
-        <label for="id_last_name">Last Name:</label>
-        {{ form.patient_last_name }}
-        {{ form.patient_date_of_birth_start.errors }}
-        <label for="id_date_of_birth_start">Date of Birth (start):</label>
-        {{ form.patient_date_of_birth_start }}
-        {{ form.patient_date_of_birth_end.errors }}
-        <label for="id_date_of_birth_end">Date of Birth (end):</label>
-        {{ form.patient_date_of_birth_end }}
-        {{ form.patient_social_security_number.errors }}
-        <label for="id_social_security_number">SSN:</label>
-        {{ form.patient_social_security_number }}
-        {{ form.patient_phone_number.errors }}
-        <label for="id_phone_number">Phone Number:</label>
-        {{ form.patient_phone_number }}
+        {% for field in form %}
+            {{ field.errors }}
+            {{ field.label_tag }} {{ field }}
+        {% endfor %}
 
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Search" />
