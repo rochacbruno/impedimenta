@@ -1,6 +1,7 @@
 '''Defines the data models (database tables) used in the MHS app.'''
 from django.db import models
 from django import forms
+import re
 
 class Person(models.Model):
     '''Basic information about a person and their contact info.'''
@@ -130,8 +131,47 @@ class PatientForm(forms.Form):
         required = False,
     )
 
-    def __unicode__(self):
-        return '{}, {}'.format(self.patient_first_name, self.patient_last_name)
+class PatientSearchForm(forms.Form):
+    '''A form which can be used to search for a ``Person`` object.'''
+    # Info about the patient himself.
+    patient_first_name = forms.CharField(
+        max_length = 30,
+        required = False,
+    )
+    patient_last_name = forms.CharField(
+        max_length = 30,
+        required = False,
+    )
+    patient_date_of_birth_start = forms.DateField(
+        required = False,
+    )
+    patient_date_of_birth_end = forms.DateField(
+        required = False,
+    )
+    patient_social_security_number = forms.CharField(
+        max_length = 9,
+        required = False,
+    )
+    patient_phone_number = forms.CharField(
+        max_length = 25,
+        required = False,
+    )
+
+    def clean_patient_social_security_number(self):
+        '''Ensures that ``self.social_security_number`` is valid.'''
+        ssn = self.cleaned_data['patient_social_security_number']
+        if 0 == len(ssn):
+            return ssn
+        if not re.search('^\d{9}$', ssn):
+            raise forms.ValidationError("Must be a series of nine digits.")
+        return ssn
+
+    def clean_patient_phone_number(self):
+        '''Ensures that ``self.patient_phone_number`` is valid.'''
+        num = self.cleaned_data['patient_phone_number']
+        if not re.search('^\d*$', num):
+            raise forms.ValidationError("Must be a series of digits. (no dashes)")
+        return num
 
 class Visit(models.Model):
     '''Represents a single visit by a ``Patient`` to an MHS location.'''

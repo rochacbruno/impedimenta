@@ -79,12 +79,29 @@ def logout(request):
 @login_required(login_url = '../login/')
 def find_patient(request):
     '''Find a hospital patient.'''
-    # Show user search form and some patients.
+    # Give the user a form to fill out. Also show some patients.
     if "POST" != request.method:
         tplate = template.loader.get_template('mhs/find_patient.html')
         ctext = template.RequestContext(
             request,
             {
+                'form': models.PatientSearchForm(),
+                'patients': models.Patient.objects.order_by(
+                    'basic_info__last_name',
+                    'basic_info__first_name'
+                )[0:50]
+            }
+        )
+        return http.HttpResponse(tplate.render(ctext))
+
+    # Are there errors in the submitted form?
+    form = models.PatientSearchForm(request.POST)
+    if not form.is_valid():
+        tplate = template.loader.get_template('mhs/find_patient.html')
+        ctext = template.RequestContext(
+            request,
+            {
+                'form': form,
                 'patients': models.Patient.objects.order_by(
                     'basic_info__last_name',
                     'basic_info__first_name'
@@ -94,31 +111,43 @@ def find_patient(request):
         return http.HttpResponse(tplate.render(ctext))
 
     # Grab fields submitted by user.
-    first_name = request.POST.get('first name', '')
-    last_name = request.POST.get('last name', '')
-    date_of_birth = request.POST.get('date of birth', '')
-    social_security_number = request.POST.get('social security number', '')
-    phone_number = request.POST.get('phone number', '')
+    first_name = form.cleaned_data['patient_first_name']
+    last_name = form.cleaned_data['patient_last_name']
+    date_of_birth_start = form.cleaned_data['patient_date_of_birth_start']
+    date_of_birth_end = form.cleaned_data['patient_date_of_birth_end']
+    social_security_number = form.cleaned_data['patient_social_security_number']
+    phone_number = form.cleaned_data['patient_phone_number']
 
     # Perform search
     query = models.Patient.objects
-    if(first_name):
+    if first_name:
         query = query.filter(basic_info__first_name__icontains = first_name)
-    if(last_name):
+    if last_name:
         query = query.filter(basic_info__last_name__icontains = last_name)
-    if(date_of_birth):
-        pass # FIXME: implement date of birth query
-    if(social_security_number):
+    if social_security_number:
         query = query.filter(social_security_number__icontains = social_security_number)
-    if(phone_number):
+    if phone_number:
         query = query.filter(basic_info__phone_number__icontains = phone_number)
+
+    if date_of_birth_start or date_of_birth_end:
+        # If both a start and end date are given, search within that range.
+        # Else if a single date is given, search for an exact match.
+        if date_of_birth_start and date_of_birth_end:
+            query = query.filter(date_of_birth__range = (
+                date_of_birth_start,
+                date_of_birth_end,
+            ))
+        elif date_of_birth_start:
+            query = query.filter(date_of_birth = date_of_birth_start)
+        else:
+            query = query.filter(date_of_birth = date_of_birth_end)
 
     # Render results.
     tplate = template.loader.get_template('mhs/find_patient.html')
     ctext = template.RequestContext(
         request,
         {
-            # Used by the form to fill in a table of results.
+            'form': form,
             'patients': query.order_by(
                 'basic_info__last_name',
                 'basic_info__first_name'
@@ -241,18 +270,17 @@ def edit_patient(request, patient_id):
             }
         )
 
-        # FIXME: this is dusgusting. But &&-ing these statements fails. :(
         # Did the user just finish creating or editing this patient? Or are they
         # requesting this page for the first time?
-        message = ''
-        if 'edit_patient_success' in request.session:
-            if True == request.session['edit_patient_success']:
-                message = 'Changes saved.'
-                del(request.session['edit_patient_success'])
-        if 'add_patient_success' in request.session:
-            if True == request.session['add_patient_success']:
-                message = 'Patient added.'
-                del(request.session['add_patient_success'])
+        if 'edit_patient_success' in request.session \
+        and request.session['edit_patient_success']:
+            message = 'Changes saved.'
+            del request.session['edit_patient_success']
+
+        if 'add_patient_success' in request.session \
+        and request.session['add_patient_success']:
+            message = 'Patient added.'
+            del(request.session['add_patient_success'])
 
         # Give back the pre-populated form.
         tplate = template.loader.get_template('mhs/edit_patient.html')

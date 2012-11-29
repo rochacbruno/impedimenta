@@ -13,48 +13,31 @@
     <form method="post" class="centered_content">
         {% csrf_token %}
         <h1>Find Patient</h1>
-        <p>Search terms are ANDed, so each additional term further narrows
-        results. Searching for nothing allows you to browse through a list of
-        all patients.</p>
-
-        <label for="id_first_name">First Name:</label>
-        <input
-            id="id_first_name"
-            type="search"
-            name="first name"
-            value="{{ first_name }}"
-            />
+        {{ form.patient_first_name.errors }}
+        <label for="id_patient_first_name">First Name:</label>
+        {{ form.patient_first_name }}
+        {{ form.patient_last_name.errors }}
         <label for="id_last_name">Last Name:</label>
-        <input
-            id="id_last_name"
-            type="search"
-            name="last name"
-            value="{{ last_name }}"
-            />
-        <label for="id_date_of_birth">Date of Birth:</label>
-        <input
-            id="id_date_of_birth"
-            type="search"
-            name="date of birth"
-            value="{{ date_of_birth }}"
-            />
+        {{ form.patient_last_name }}
+        {{ form.patient_date_of_birth_start.errors }}
+        <label for="id_date_of_birth_start">Date of Birth (start):</label>
+        {{ form.patient_date_of_birth_start }}
+        {{ form.patient_date_of_birth_end.errors }}
+        <label for="id_date_of_birth_end">Date of Birth (end):</label>
+        {{ form.patient_date_of_birth_end }}
+        {{ form.patient_social_security_number.errors }}
         <label for="id_social_security_number">SSN:</label>
-        <input
-            id="id_social_security_number"
-            type="search"
-            name="social security number"
-            value="{{ social_security_number }}"
-            />
+        {{ form.patient_social_security_number }}
+        {{ form.patient_phone_number.errors }}
         <label for="id_phone_number">Phone Number:</label>
-        <input
-            id="id_phone_number"
-            type="search"
-            name="phone number"
-            value="{{ phone_number }}"
-            />
+        {{ form.patient_phone_number }}
 
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Search" />
+
+        <p>Search terms are AND-ed, so each additional term further narrows
+        results. Searching for a single date yields exact matches, whereas
+        searching for two dates yields dates within that range.</p>
     </form>
 
     <table>
