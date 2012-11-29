@@ -23,9 +23,9 @@ class InsuranceProvider(models.Model):
 
 class Patient(models.Model):
     '''A patient of Modern Hospital Systems.'''
-    birth_date = models.DateField()
-    birth_place = models.CharField(max_length = 100)
-    social_security = models.CharField(max_length = 9)
+    date_of_birth = models.DateField()
+    place_of_birth = models.CharField(max_length = 100)
+    social_security_number = models.CharField(max_length = 9)
     health_issues = models.TextField()
     basic_info = models.OneToOneField(
         Person,
@@ -53,7 +53,7 @@ class PatientForm(forms.Form):
     # Info about the patient himself.
     patient_first_name = forms.CharField(max_length = 30)
     patient_last_name = forms.CharField(max_length = 30)
-    patient_birth_date = forms.DateField()
+    patient_date_of_birth = forms.DateField()
     patient_phone_number = forms.CharField(
         max_length = 25,
         required = False,
@@ -63,11 +63,11 @@ class PatientForm(forms.Form):
         widget = forms.Textarea,
         required = False,
     )
-    patient_birth_place = forms.CharField(
+    patient_place_of_birth = forms.CharField(
         max_length = 100,
         required = False,
     )
-    patient_social_security = forms.CharField(
+    patient_social_security_number = forms.CharField(
         max_length = 9,
         required = False,
     )

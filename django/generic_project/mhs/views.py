@@ -96,11 +96,9 @@ def find_patient(request):
     # Grab fields submitted by user.
     first_name = request.POST.get('first name', '')
     last_name = request.POST.get('last name', '')
-    phone_number = request.POST.get('phone number', '')
     date_of_birth = request.POST.get('date of birth', '')
-    doctor_first_name = request.POST.get('doctor first name', '')
-    doctor_last_name = request.POST.get('doctor last name', '')
-    insurance_provider = request.POST.get('insurance provider', '')
+    social_security_number = request.POST.get('social security number', '')
+    phone_number = request.POST.get('phone number', '')
 
     # Perform search
     query = models.Patient.objects
@@ -108,33 +106,23 @@ def find_patient(request):
         query = query.filter(basic_info__first_name__icontains = first_name)
     if(last_name):
         query = query.filter(basic_info__last_name__icontains = last_name)
-    if(phone_number):
-        query = query.filter(basic_info__phone_number__icontains = phone_number)
     if(date_of_birth):
         pass # FIXME: implement date of birth query
-    if(doctor_first_name):
-        query = query.filter(primary_care_doctor__first_name__icontains = doctor_first_name)
-    if(doctor_last_name):
-        query = query.filter(primary_care_doctor__last_name__icontains = doctor_last_name)
-    if(insurance_provider):
-        query = query.filter(insurance_provider__name__icontains = insurance_provider)
+    if(social_security_number):
+        query = query.filter(social_security_number__icontains = social_security_number)
+    if(phone_number):
+        query = query.filter(basic_info__phone_number__icontains = phone_number)
 
     # Render results.
     tplate = template.loader.get_template('mhs/find_patient.html')
     ctext = template.RequestContext(
         request,
         {
+            # Used by the form to fill in a table of results.
             'patients': query.order_by(
                 'basic_info__last_name',
                 'basic_info__first_name'
             )[0:50],
-            'first_name': first_name,
-            'last_name': last_name,
-            'phone_number': phone_number,
-            'date_of_birth': date_of_birth,
-            'doctor_first_name': doctor_first_name,
-            'doctor_last_name': doctor_last_name,
-            'insurance_provider': insurance_provider,
         }
     )
     return http.HttpResponse(tplate.render(ctext))
@@ -197,9 +185,9 @@ def add_patient(request):
     # True, neither Person nor InsuranceProvider have an 'id' member. Upon
     # calling save(), however, such a member is made available.
     patient = models.Patient(
-        birth_date = form.cleaned_data['patient_birth_date'],
-        birth_place = form.cleaned_data['patient_birth_place'],
-        social_security = form.cleaned_data['patient_social_security'],
+        date_of_birth = form.cleaned_data['patient_date_of_birth'],
+        place_of_birth = form.cleaned_data['patient_place_of_birth'],
+        social_security_number = form.cleaned_data['patient_social_security_number'],
         health_issues = form.cleaned_data['patient_health_issues'],
         basic_info_id = person.id,
         emergency_contact_id = emergency_contact.id,
@@ -235,9 +223,9 @@ def edit_patient(request, patient_id):
                 'patient_last_name': patient.basic_info.last_name,
                 'patient_phone_number': patient.basic_info.phone_number,
                 'patient_address': patient.basic_info.address,
-                'patient_birth_date': patient.birth_date,
-                'patient_birth_place': patient.birth_place,
-                'patient_social_security': patient.social_security,
+                'patient_date_of_birth': patient.date_of_birth,
+                'patient_place_of_birth': patient.place_of_birth,
+                'patient_social_security_number': patient.social_security_number,
                 'patient_health_issues': patient.health_issues,
                 'doctor_first_name': patient.primary_care_doctor.first_name,
                 'doctor_last_name': patient.primary_care_doctor.last_name,
@@ -290,9 +278,9 @@ def edit_patient(request, patient_id):
     # Save the requested changes.
     # ( Class 'Patient' has no 'objects' member) pylint: disable-msg=E1101
     patient = models.Patient.objects.get(pk=patient_id)
-    patient.birth_date = form.cleaned_data['patient_birth_date']
-    patient.birth_place = form.cleaned_data['patient_birth_place']
-    patient.social_security = form.cleaned_data['patient_social_security']
+    patient.date_of_birth = form.cleaned_data['patient_date_of_birth']
+    patient.place_of_birth = form.cleaned_data['patient_place_of_birth']
+    patient.social_security_number = form.cleaned_data['patient_social_security_number']
     patient.health_issues = form.cleaned_data['patient_health_issues']
     patient.save()
 

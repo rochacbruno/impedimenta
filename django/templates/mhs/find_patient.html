@@ -31,6 +31,20 @@
             name="last name"
             value="{{ last_name }}"
             />
+        <label for="id_date_of_birth">Date of Birth:</label>
+        <input
+            id="id_date_of_birth"
+            type="search"
+            name="date of birth"
+            value="{{ date_of_birth }}"
+            />
+        <label for="id_social_security_number">SSN:</label>
+        <input
+            id="id_social_security_number"
+            type="search"
+            name="social security number"
+            value="{{ social_security_number }}"
+            />
         <label for="id_phone_number">Phone Number:</label>
         <input
             id="id_phone_number"
@@ -38,54 +52,21 @@
             name="phone number"
             value="{{ phone_number }}"
             />
-        <!--
-        <label for="id_date_of_birth">Date of Birth</label>
-        -->
-        <!--
-        <input
-            id="id_date_of_birth"
-            type="search"
-            name="date of birth"
-            value="{{ date_of_birth }}"
-            />
-        -->
-        <label for="id_doctor_first_name">Doctor's First Name:</label>
-        <input
-            id="id_doctor_first_name"
-            type="search"
-            name="doctor first name"
-            value="{{ doctor_first_name }}"
-            />
-        <label for="id_doctor_last_name">Doctor's Last Name:</label>
-        <input
-            id="id_doctor_last_name"
-            type="search"
-            name="doctor last name"
-            value="{{ doctor_last_name }}"
-            />
-        <label for="id_insurance_provider">Insurance Provider:</label>
-        <input
-            id="id_insurance_provider"
-            type="search"
-            name="insurance provider"
-            value="{{ insurance_provider }}"
-            />
 
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Search" />
     </form>
 
     <table>
-        <caption>Hospital patients, past and present</caption>
+        <caption>Patients</caption>
         <thead>
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
-                <th>Phone Number</th>
                 <th>Date of Birth</th>
-                <th>Dr's First Name</th>
-                <th>Dr's Last Name</th>
-                <th>Insurance Provider</th>
+                <th>Social Security Number</th>
+                <th>Phone Number</th>
+                <th>Primary Care Doctor</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -94,11 +75,10 @@
             <tr>
                 <td>{{ patient.basic_info.first_name }}</td>
                 <td>{{ patient.basic_info.last_name }}</td>
+                <td>{{ patient.date_of_birth }}</td>
+                <td>{{ patient.social_security_number }}</td>
                 <td>{{ patient.basic_info.phone_number }}</td>
-                <td>{{ patient.birth_date }}</td>
-                <td>{{ patient.primary_care_doctor.first_name }}</td>
-                <td>{{ patient.primary_care_doctor.last_name }}</td>
-                <td>{{ patient.insurance_provider }}</td>
+                <td>{{ patient.primary_care_doctor }}</td>
                 <td><a href="../edit_patient_{{ patient.id}}/">Edit</a></td>
             </tr>
             {% endfor %}

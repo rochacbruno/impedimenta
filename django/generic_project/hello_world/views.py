@@ -26,7 +26,9 @@ import datetime, os, subprocess
 from django import template
 
 def index(request):
-    return http.HttpResponse("At index page.")
+    return http.HttpResponse(
+        "The django generic_project/hello_world app is working."
+    )
 
 def hello(request):
     return http.HttpResponse("Hello, world!")

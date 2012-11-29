@@ -13,19 +13,19 @@
         {{ form.patient_phone_number }}
         {{ form.patient_address.errors }}
         <label for="id_patient_address">Address:</label><br />
-        {{ form.patient_address }}
-        {{ form.patient_birth_date.errors }}
-        <label for="id_patient_birth_date">Date of Birth:</label>
-        {{ form.patient_birth_date }}
-        {{ form.patient_birth_place.errors }}
-        <label for="id_patient_birth_place">Place of Birth:</label>
-        {{ form.patient_birth_place }}
-        {{ form.patient_social_security.errors }}
-        <label for="id_patient_social_security">Social Security Number:</label>
-        {{ form.patient_social_security }}
+        {{ form.patient_address }}<br />
+        {{ form.patient_date_of_birth.errors }}
+        <label for="id_patient_date_of_birth">Date of Birth:</label>
+        {{ form.patient_date_of_birth }}
+        {{ form.patient_place_of_birth.errors }}
+        <label for="id_patient_place_of_birth">Place of Birth:</label>
+        {{ form.patient_place_of_birth }}
+        {{ form.patient_social_security_number.errors }}
+        <label for="id_patient_social_security_number">SSN:</label>
+        {{ form.patient_social_security_number }}
         {{ form.patient_health_issues.errors }}
         <label for="id_patient_health_issues">Health Issues:</label><br />
-        {{ form.patient_health_issues }}
+        {{ form.patient_health_issues }}<br />
 
         <h2>Emergency Contact</h2>
         {{ form.emergency_contact_first_name.errors }}
@@ -39,7 +39,7 @@
         {{ form.emergency_contact_phone_number }}
         {{ form.emergency_contact_address.errors }}
         <label for="id_emergency_contact_address">Address:</label><br />
-        {{ form.emergency_contact_address }}
+        {{ form.emergency_contact_address }}<br />
 
         <h2>Doctor</h2>
         {{ form.doctor_first_name.errors }}
@@ -53,7 +53,7 @@
         {{ form.doctor_phone_number }}
         {{ form.doctor_address.errors }}
         <label for="id_doctor_address">Address:</label><br />
-        {{ form.doctor_address }}
+        {{ form.doctor_address }}<br />
 
         <h2>Insurance Provider</h2>
         {{ form.insurance_name.errors }}
@@ -64,4 +64,4 @@
         {{ form.insurance_phone_number }}
         {{ form.insurance_address.errors }}
         <label for="id_insurance_address">Address:</label><br />
-        {{ form.insurance_address }}
+        {{ form.insurance_address }}<br />
