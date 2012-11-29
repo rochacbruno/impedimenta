@@ -352,3 +352,35 @@ def gen_report(request):
     tplate = template.loader.get_template('mhs/gen_report.html')
     ctext = template.RequestContext(request, {"is_mhs_admin": is_mhs_admin})
     return http.HttpResponse(tplate.render(ctext))
+
+@login_required(login_url = '../login/')
+def change_password(request):
+    '''Allows user to change their password.'''
+    message = ''
+
+    if "POST" == request.method:
+        form = models.ChangePasswordForm(request.POST)
+        if form.is_valid():
+            user       = request.user
+            old_pass   = form.cleaned_data['old_password']
+            new_pass_1 = form.cleaned_data['new_password_1']
+            new_pass_2 = form.cleaned_data['new_password_2']
+
+            if new_pass_1 == new_pass_2 and user.check_password(old_pass):
+                user.set_password(new_pass_1)
+                user.save()
+                message = 'Password changed.'
+            else:
+                message = 'Password not changed.'
+    else:
+        form = models.ChangePasswordForm()
+
+    tplate = template.loader.get_template('mhs/change_password.html')
+    ctext = template.RequestContext(
+        request,
+        {
+            'form': form,
+            'message': message,
+        }
+    )
+    return http.HttpResponse(tplate.render(ctext))

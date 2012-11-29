@@ -183,3 +183,21 @@ class Visit(models.Model):
 
     def __unicode__(self):
         return '{}, {}'.format(self.patient, self.date)
+
+class ChangePasswordForm(forms.Form):
+    '''A form which a user can use to change their password.'''
+    old_password = forms.CharField(
+        label = 'Old password:',
+        widget = forms.PasswordInput,
+        max_length = 30,
+    )
+    new_password_1 = forms.CharField(
+        label = 'New password:',
+        widget = forms.PasswordInput,
+        max_length = 30,
+    )
+    new_password_2 = forms.CharField(
+        label = 'New password (again):',
+        widget = forms.PasswordInput,
+        max_length = 30,
+    )

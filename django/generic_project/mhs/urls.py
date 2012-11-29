@@ -11,6 +11,6 @@ urlpatterns = patterns('mhs.views',
     url(r'^add_patient/$', 'add_patient'),
     url(r'^edit_patient_(?P<patient_id>\d+)/$', 'edit_patient'),
     url(r'^gen_report/$', 'gen_report'),
-    url(r'^change_password/$', 'admin_redirect'),
+    url(r'^change_password/$', 'change_password'),
     url(r'^manage_users/$', 'admin_redirect'),
 )
