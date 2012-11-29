@@ -67,6 +67,12 @@ form .errorlist {
     padding: 0;
 }
 
+/* The user should also be informed when something is done correctly with a
+form. */
+#success_message {
+    color: green;
+}
+
 /* MHS uses tables to display sets of patients (and, hopefully, users) */
 table {
     width: 100%;

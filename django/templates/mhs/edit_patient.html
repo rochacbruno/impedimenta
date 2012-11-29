@@ -13,6 +13,9 @@
     <form method="post" class="centered_content">
         {% csrf_token %}
         <h1>Edit Patient</h1>
+        {% if success_message %}
+            <p id="success_message">{{ success_message }}</p>
+        {% endif %}
         {% include "mhs/patient_form_subtemplate.html" %}
         <label>&nbsp;</label>
         <input id="submit_form" type="submit" value="Save" />

@@ -208,6 +208,7 @@ def add_patient(request):
     )
     patient.save()
 
+    request.session['add_patient_success'] = True
     return http.HttpResponseRedirect('../edit_patient_{}'.format(patient.id))
 
 @login_required(login_url = '../login/')
@@ -252,8 +253,28 @@ def edit_patient(request, patient_id):
             }
         )
 
+        # FIXME: this is dusgusting. But &&-ing these statements fails. :(
+        # Did the user just finish creating or editing this patient? Or are they
+        # requesting this page for the first time?
+        message = ''
+        if 'edit_patient_success' in request.session:
+            if True == request.session['edit_patient_success']:
+                message = 'Changes saved.'
+                del(request.session['edit_patient_success'])
+        if 'add_patient_success' in request.session:
+            if True == request.session['add_patient_success']:
+                message = 'Patient added.'
+                del(request.session['add_patient_success'])
+
+        # Give back the pre-populated form.
         tplate = template.loader.get_template('mhs/edit_patient.html')
-        ctext = template.RequestContext(request, {'form': form})
+        ctext = template.RequestContext(
+            request,
+            {
+                'form': form,
+                'success_message': message,
+            }
+        )
         return http.HttpResponse(tplate.render(ctext))
 
     # User is trying to make changes. Are there errors in the submitted form?
@@ -302,6 +323,7 @@ def edit_patient(request, patient_id):
     insurance_provider.address = form.cleaned_data['insurance_address']
     insurance_provider.save()
 
+    request.session['edit_patient_success'] = True
     return http.HttpResponseRedirect(request.path)
 
 @login_required(login_url = '../login/')
