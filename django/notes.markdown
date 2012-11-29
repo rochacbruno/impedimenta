@@ -116,3 +116,17 @@ inside your database to keep your database consistent with the model. `syncdb`
 does not sync changes in models or deletions of models; if you make a change to
 a model or delete a model, and you want to update the database, syncdb will not
 handle that.
+
+FastCGI
+=======
+
+The django docs outline
+[how to](https://docs.djangoproject.com/en/dev/howto/deployment/fastcgi/) set up
+FastCGI in detail.
+
+As a prerequisite, you'll need to install flup, a Python library for dealing
+with FastCGI. You can then start a server on either a TCP port or a Unix domain
+socket.
+
+    python2.7 manage.py runfcgi method=threaded host=127.0.0.1 port=4001 \
+    daemonize=false debug=true
