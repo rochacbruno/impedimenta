@@ -272,11 +272,11 @@ def edit_patient(request, patient_id):
 
         # Did the user just finish creating or editing this patient? Or are they
         # requesting this page for the first time?
+        message = ''
         if 'edit_patient_success' in request.session \
         and request.session['edit_patient_success']:
             message = 'Changes saved.'
             del request.session['edit_patient_success']
-
         if 'add_patient_success' in request.session \
         and request.session['add_patient_success']:
             message = 'Patient added.'
