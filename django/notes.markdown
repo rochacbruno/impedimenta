@@ -128,5 +128,5 @@ As a prerequisite, you'll need to install flup, a Python library for dealing
 with FastCGI. You can then start a server on either a TCP port or a Unix domain
 socket.
 
-    python2.7 manage.py runfcgi method=threaded host=127.0.0.1 port=4001 \
+    python2.7 manage.py runfcgi method=threaded host=127.0.0.1 port=4000 \
     daemonize=false debug=true
