@@ -7,13 +7,11 @@ Some good guides to django [are](https://docs.djangoproject.com/en/1.4/)
 `django-admin.py` and `manage.py` commands.
 
     # Remember, the built-in webserver is NOT appropriate for production use.
-    django-admin.py startproject site_xyz   # New project with default settings.
-    python2.7 manage.py runserver           # localhost:8000
-    python2.7 manage.py runserver 8001      # localhost:8001
-    python2.7 manage.py runserver 0.0.0.0:8002  # all:8002
-    python2.7 manage.py shell               # For e.g. creating a user.
-    python2.7 manage.py dbshell             # Reads ENGINE, creates connection.
-    python2.7 manage.py diffsettings        # Diff settings.py against defaults.
+    django-admin.py startproject site_xyz # New project with default settings.
+    python2.7 manage.py runserver         # localhost:8000
+    python2.7 manage.py shell             # For e.g. creating a user.
+    python2.7 manage.py dbshell           # Reads ENGINE, creates db connection.
+    python2.7 manage.py diffsettings      # Diff settings.py against defaults.
 
 `settings.py` should be edited. You'll want to read through the entire file. For
 starters, you should look at:
@@ -31,13 +29,13 @@ When django receives a request for a web page, it imports `ROOT_URLCONF` (by
 convention, `<project_name>.urls.py`) and evaluates `urlpatterns`. If a match
 is found, the appropriate "view" function is called.
 
-    # If the regex matches, views.hello will be called, not hello.
-    urlpatterns = patterns('views',
-        url(r'^hello/$', hello),
+    # If r'^hello/$' matches, ``views.hello`` will be called.
+    urlpatterns = patterns('',
+        url(r'^hello/$', views.hello),
     )
-    # The additional urls here don't use the "views" prefix as above.
-    urlpatterns += patterns('',
-        url(r'^admin/', include(admin.site.urls)),
+    # Note the use of the prefix. If r'^foo/$' matches, ``views.foo`` is called.
+    urlpatterns += patterns('views',
+        url(r'^foo/$', foo),
     )
 
     # A minimal view.
