@@ -45,5 +45,5 @@ To compile code:
 
 To execute unit tests:
 
-    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestNode
-    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore sorts.TestGraph
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore dag_sorter.TestNode
+    java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore dag_sorter.TestGraph

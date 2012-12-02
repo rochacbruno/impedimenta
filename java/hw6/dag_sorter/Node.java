@@ -47,10 +47,16 @@ public class Node implements Comparator<Node> {
         }
     }
 
+    /**
+     * Returns <code>true</code> if this <code>Node</code> object is equal to
+     * <code>obj</code>, else <code>false</code>.
+     */
     @Override
     public boolean equals(Object obj) {
+        if(!(obj instanceof Node)) {
+            return false;
+        }
         Node node = (Node) obj;
-        // FIXME: what if cast fails?
         return id == node.id;
     }
 }

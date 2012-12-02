@@ -1,8 +1,8 @@
 package sorts;
 
+import org.junit.Test;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
-import org.junit.Test;
 
 /**
  * Unit tests for class <code>InsertionSort</code>.
