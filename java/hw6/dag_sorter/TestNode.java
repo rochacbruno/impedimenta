@@ -66,4 +66,28 @@ public class TestNode {
         assertEquals(1,  n1.compare(n3, n2));
         assertEquals(0,  n1.compare(n3, n3));
     }
+
+    /**
+     * Ensures that a Node cannot have duplicate Neighbors.
+     */
+    @Test
+    public void TestDuplicateNeighbors() {
+        Node n1 = new Node(0);
+
+        // A node in a graph may have an edge pointing to itself.
+        n1.neighbors.add(n1);
+        assertEquals(1, n1.neighbors.size());
+
+        // But a node in a graph cannot (?) have two edges pointing to itself.
+        n1.neighbors.add(n1);
+        assertEquals(1, n1.neighbors.size());
+
+        // Nodes are equal if they have the same ID.
+        n1.neighbors.add(new Node(0));
+        assertEquals(1, n1.neighbors.size());
+
+        // Nodes are not equal if they have a unique ID.
+        n1.neighbors.add(new Node(1));
+        assertEquals(2, n1.neighbors.size());
+    }
 }

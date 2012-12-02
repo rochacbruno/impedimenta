@@ -1,9 +1,9 @@
 package dag_sorter;
 
-import java.util.Set;
+import java.util.HashSet;
 
 public class Graph {
-    Set<Node> nodes;
+    HashSet<Node> nodes;
 
     /**
      * Creates an empty graph.

@@ -1,16 +1,16 @@
 package dag_sorter;
 
-import java.util.Set;
+import java.util.HashSet;
 import java.util.Comparator;
 
 /**
  * Represents a node in a directed acyclic graph. A <code>Node</code> may have a
- * <code>Set</code> of neighbors. Nodes are compared for equality based on their
+ * <code>HashSet</code> of neighbors. Nodes are compared for equality based on their
  * id.
  */
 public class Node implements Comparator<Node> {
     final int id;
-    Set<Node> neighbors;
+    HashSet<Node> neighbors = new HashSet<Node>();
     boolean visited;
 
     /**
@@ -58,5 +58,10 @@ public class Node implements Comparator<Node> {
         }
         Node node = (Node) obj;
         return id == node.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
     }
 }
