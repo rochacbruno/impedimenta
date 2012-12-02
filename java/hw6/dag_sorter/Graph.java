@@ -8,7 +8,8 @@ public class Graph {
     /**
      * Creates an empty graph.
      */
-    public Graph() {};
+    public Graph() {
+    }
 
     /**
      * Adds a new ndoe to this graph.

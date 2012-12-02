@@ -1,12 +1,14 @@
 package dag_sorter;
 
 import java.util.Set;
+import java.util.Comparator;
 
-// TODO: add methods necessary for this Node to be used in a Set
 /**
- * Represents a node in a directed acyclic graph.
+ * Represents a node in a directed acyclic graph. A <code>Node</code> may have a
+ * <code>Set</code> of neighbors. Nodes are compared for equality based on their
+ * id.
  */
-public class Node {
+public class Node implements Comparator<Node> {
     final int id;
     Set<Node> neighbors;
     boolean visited;
@@ -26,5 +28,29 @@ public class Node {
     @Override
     public String toString() {
         return "" + id;
+    }
+
+    /**
+     * Indicates the ordering of two Node objects. Compares the two objects
+     * based on their id.
+     * @return -1, 0, or 1 if <code>obj1</code> is less than, equal to, or
+     * greater than <code>obj2</code>, respectively.
+     */
+    @Override
+    public int compare(Node node1, Node node2) {
+        if(node1.id < node2.id) {
+            return -1;
+        } else if(node1.id > node2.id) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Node node = (Node) obj;
+        // FIXME: what if cast fails?
+        return id == node.id;
     }
 }
