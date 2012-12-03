@@ -5,21 +5,24 @@ import java.util.Comparator;
 
 /**
  * Represents a node in a directed acyclic graph. A <code>Node</code> may have a
- * set of neighbors. Nodes are equal if their <code>id</code>s are equal.
+ * set of incoming and outgoing edges. Two nodes are equal if their <code>id
+ * </code>s are equal.
  */
 public class Node implements Comparator<Node> {
     final Integer id;
-    HashMap<Integer, Node> neighbors;
+    HashMap<Integer, Node> inEdges;
+    HashMap<Integer, Node> outEdges;
     boolean visited;
 
     /**
      * Creates a node with ID <code>id</code>, <code>visited = false</code>, and
-     * no neighbors.
+     * no edges.
      */
     public Node(Integer id) {
         this.id = id;
         visited = false;
-        neighbors = new HashMap<Integer, Node>();
+        inEdges = new HashMap<Integer, Node>();
+        outEdges = new HashMap<Integer, Node>();
     }
 
     /**

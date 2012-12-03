@@ -27,7 +27,8 @@ public class Graph {
             nodes.put(dest, new Node(dest));
         }
 
-        nodes.get(src).neighbors.put(dest, nodes.get(dest));
+        nodes.get(src).outEdges.put(dest, nodes.get(dest));
+        nodes.get(dest).inEdges.put(src, nodes.get(src));
     }
 
     /**

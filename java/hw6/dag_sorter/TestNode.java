@@ -18,8 +18,8 @@ public class TestNode {
 
         assertTrue(15 == node.id);
         assertEquals(false, node.visited);
-        assertEquals(true, node.neighbors.isEmpty());
-        assertEquals(0, node.neighbors.size());
+        assertEquals(true, node.inEdges.isEmpty());
+        assertEquals(true, node.outEdges.isEmpty());
     }
 
     /**
