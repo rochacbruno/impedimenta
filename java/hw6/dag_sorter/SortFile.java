@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Reads in a text file whose contents describe an acyclic directed graph, and
@@ -34,23 +36,47 @@ public class SortFile {
     public static void main(String[] args) throws IOException {
         // Check arguments.
         if(args.length < 1) {
-            System.out.println("Usage: java dag_sorter.SortFile </path/to/file>");
+            System.out.println(
+                "Usage: java dag_sorter.SortFile </path/to/file>"
+            );
             return;
         }
 
-        // Read file.
+        Graph graph = new Graph();
+
+        // Read file and populate graph.
         try {
             BufferedReader handle = new BufferedReader(new FileReader(args[0]));
+            Pattern p = Pattern.compile("^\\s*(\\d+)\\s+(\\d+)\\s*$");
             String line = null;
+
             while(null != (line = handle.readLine())) {
-                // TODO: split line, construct graph
-                System.out.println(line);
+                Matcher m = p.matcher(line);
+                if(! m.matches()) {
+                    System.out.println("Discarding malformed line: " + line);
+                    continue;
+                }
+                graph.addEdge(
+                    Integer.decode(m.group(1)),
+                    Integer.decode(m.group(2))
+                );
             }
+
             handle.close();
         } catch(FileNotFoundException err) {
             System.out.println("File not found: " + args[0]);
         }
 
-        // TODO: print out results sorting graph
+        // Print out graph, topologically sorted.
+        Node[] sortedNodes = graph.sortNodes();
+        if(0 == sortedNodes.length)
+            System.out.println("No nodes in graph.");
+
+        String repr = "";
+        for(int i = 0; i < sortedNodes.length; i++) {
+            repr += sortedNodes[i] + ", ";
+        }
+        repr = repr.split(", $")[0]; // strip trailing ", "
+        System.out.println(repr);
     }
 }

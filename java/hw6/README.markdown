@@ -48,6 +48,44 @@ To execute unit tests:
     java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore \
     dag_sorter.TestNode dag_sorter.TestGraph
 
-To read and sort a directed acyclic graph from a file:
+To read and sort the provided graphs:
 
     java dag_sorter.SortFile </path/to/file>
+
+Sample run:
+
+    Script started on Mon 03 Dec 2012 05:05:33 PM EST
+    $ javac -Xlint -cp .:/usr/share/java/junit.jar dag_sorter/*.java
+    $ java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore dag_sorter.Test{Node,Graph}
+    JUnit version 4.11
+    .......
+    Time: 0.011
+
+    OK (7 tests)
+
+    $ for i in `seq 1 3`; do java dag_sorter.SortFile graphs/graph${i}.txt; echo; done
+    Discarding malformed line: #     1
+    Discarding malformed line: #    / \
+    Discarding malformed line: #   2   3
+    Discarding malformed line: #  / \ / \
+    Discarding malformed line: # 4   5   6
+    1, 2, 4, 3, 5, 6
+
+    Discarding malformed line: # 6   5   4
+    Discarding malformed line: #  \ / \ /
+    Discarding malformed line: #   3   2
+    Discarding malformed line: #    \ /
+    Discarding malformed line: #     1
+    4, 5, 2, 6, 3, 1
+
+    Discarding malformed line: # 5    7   3
+    Discarding malformed line: #  \  / \ /|
+    Discarding malformed line: #   11   8 |
+    Discarding malformed line: #  /  \ /  |
+    Discarding malformed line: # 2    9   10
+    5, 7, 11, 2, 3, 8, 9, 10
+
+    $ exit
+    exit
+
+    Script done on Mon 03 Dec 2012 05:06:05 PM EST
