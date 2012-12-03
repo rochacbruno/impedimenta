@@ -1,8 +1,9 @@
 package dag_sorter;
 
 import java.util.HashMap;
-import java.util.Set;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.Vector;
 
 public class Graph {
     HashMap<Integer, Node> nodes;
@@ -19,7 +20,6 @@ public class Graph {
      * </code> nodes to the graph if necessary.
      */
     public void addEdge(Integer src, Integer dest) {
-        // Create graph vertices if they do not already exist.
         if(! nodes.containsKey(src)) {
             nodes.put(src, new Node(src));
         }
@@ -32,11 +32,60 @@ public class Graph {
     }
 
     /**
-     * Returns the nodes in this graph, topologically sorted.
+     * Returns a topologically sorted array of nodes in this graph.
      */
-    public Node[] sortNodes() { // TODO: implement this method
-        Node[] orderedNodes = new Node[nodes.size()];
-        return new Node[]{new Node(0)};
+    public Node[] sortNodes() {
+        // Nodes which have no outgoing edges.
+        Vector<Node> sinkNodes = new Vector<Node>();
+        // The topologically sorted list of nodes.
+        Vector<Node> sortedNodes = new Vector<Node>();
+
+        // Populate sinkNodes.
+        Set<Integer> keys = nodes.keySet();
+        for(Iterator<Integer> iter = keys.iterator(); iter.hasNext();) {
+            Integer key = iter.next();
+            if(0 == nodes.get(key).outEdges.size()) {
+                sinkNodes.add(nodes.get(key));
+            }
+        }
+
+        // Populate sortedNodes.
+        for(int i = 0; i < sinkNodes.size(); i++) {
+            visitNode(sinkNodes.get(i), sortedNodes);
+        }
+
+        // Set all the nodes to the "not visited" state.
+        keys = nodes.keySet();
+        for(Iterator<Integer> iter = keys.iterator(); iter.hasNext();) {
+            Integer key = iter.next();
+            nodes.get(key).visited = false;
+        }
+
+        return sortedNodes.toArray(new Node[0]);
+    }
+
+    /**
+     * Visits all nodes leading to <code>node</code>, then appends each of those
+     * nodes to <code>sortedNodes</code>. Useful for topologically sorting a
+     * directed acyclic graph.
+     *
+     * A depth-first algorithm is used. If this <code>node</code> has not yet
+     * been visited:
+     * 1. mark <code>node</code> as visited
+     * 2. recursively visit each node in <code>node.inEdges</code>
+     * 3. append <code>node</code> to <code>sortedNodes </code>
+     */
+    private void visitNode(Node node, Vector<Node> sortedNodes) {
+        if(true == node.visited)
+            return;
+
+        node.visited = true;
+        Set<Integer> keys = node.inEdges.keySet();
+        for(Iterator<Integer> iter = keys.iterator(); iter.hasNext();) {
+            Integer key = iter.next();
+            visitNode(node.inEdges.get(key), sortedNodes);
+        }
+        sortedNodes.add(node);
     }
 
     /**
