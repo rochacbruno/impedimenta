@@ -10,7 +10,7 @@ import java.util.Comparator;
  */
 public class Node implements Comparator<Node> {
     final int id;
-    HashSet<Node> neighbors = new HashSet<Node>();
+    HashSet<Node> neighbors;
     boolean visited;
 
     /**
@@ -20,6 +20,7 @@ public class Node implements Comparator<Node> {
     public Node(int id) {
         this.id = id;
         visited = false;
+        neighbors = new HashSet<Node>();
     }
 
     /**

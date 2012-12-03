@@ -9,13 +9,7 @@ public class Graph {
      * Creates an empty graph.
      */
     public Graph() {
-    }
-
-    /**
-     * Adds a new ndoe to this graph.
-     */
-    public void addNode(Node node) {
-        nodes.add(node);
+        nodes = new HashSet<Node>();
     }
 
     // TODO: implement topological sort
@@ -41,6 +35,7 @@ public class Graph {
             Node node = iter.next();
             repr += node.toString() + ", ";
         }
+        repr = repr.split(", $")[0]; // strip trailing ", "
         return repr;
     }
 }

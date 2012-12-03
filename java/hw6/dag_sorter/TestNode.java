@@ -74,20 +74,18 @@ public class TestNode {
     public void TestDuplicateNeighbors() {
         Node n1 = new Node(0);
 
-        // A node in a graph may have an edge pointing to itself.
+        // A node in a graph may have an edge pointing to itself, but it cannot
+        // have two nodes pointing to itself. Two nodes are equal if they have
+        // the same ID.
         n1.neighbors.add(n1);
         assertEquals(1, n1.neighbors.size());
-
-        // But a node in a graph cannot (?) have two edges pointing to itself.
         n1.neighbors.add(n1);
         assertEquals(1, n1.neighbors.size());
-
-        // Nodes are equal if they have the same ID.
         n1.neighbors.add(new Node(0));
         assertEquals(1, n1.neighbors.size());
-
-        // Nodes are not equal if they have a unique ID.
-        n1.neighbors.add(new Node(1));
+        n1.neighbors.add(new Node(15));
         assertEquals(2, n1.neighbors.size());
+        n1.neighbors.add(new Node(-20));
+        assertEquals(3, n1.neighbors.size());
     }
 }
