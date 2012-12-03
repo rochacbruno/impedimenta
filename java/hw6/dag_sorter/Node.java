@@ -1,26 +1,25 @@
 package dag_sorter;
 
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Comparator;
 
 /**
  * Represents a node in a directed acyclic graph. A <code>Node</code> may have a
- * <code>HashSet</code> of neighbors. Nodes are compared for equality based on their
- * id.
+ * set of neighbors. Nodes are equal if their <code>id</code>s are equal.
  */
 public class Node implements Comparator<Node> {
-    final int id;
-    HashSet<Node> neighbors;
+    final Integer id;
+    HashMap<Integer, Node> neighbors;
     boolean visited;
 
     /**
      * Creates a node with ID <code>id</code>, <code>visited = false</code>, and
      * no neighbors.
      */
-    public Node(int id) {
+    public Node(Integer id) {
         this.id = id;
         visited = false;
-        neighbors = new HashSet<Node>();
+        neighbors = new HashMap<Integer, Node>();
     }
 
     /**

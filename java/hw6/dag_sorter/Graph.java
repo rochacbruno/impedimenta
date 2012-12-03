@@ -1,22 +1,40 @@
 package dag_sorter;
 
-import java.util.HashSet;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.Iterator;
 
 public class Graph {
-    HashSet<Node> nodes;
+    HashMap<Integer, Node> nodes;
 
     /**
      * Creates an empty graph.
      */
     public Graph() {
-        nodes = new HashSet<Node>();
+        nodes = new HashMap<Integer, Node>();
     }
 
-    // TODO: implement topological sort
+    /**
+     * Adds an edge to this graph. Creates <code>src</code> and <code>dest
+     * </code> nodes to the graph if necessary.
+     */
+    public void addEdge(Integer src, Integer dest) {
+        // Create graph vertices if they do not already exist.
+        if(! nodes.containsKey(src)) {
+            nodes.put(src, new Node(src));
+        }
+        if(! nodes.containsKey(dest)) {
+            nodes.put(dest, new Node(dest));
+        }
+
+        nodes.get(src).neighbors.put(dest, nodes.get(dest));
+    }
+
     /**
      * Returns the nodes in this graph, topologically sorted.
      */
-    public Node[] sortNodes() {
+    public Node[] sortNodes() { // TODO: implement this method
+        Node[] orderedNodes = new Node[nodes.size()];
         return new Node[]{new Node(0)};
     }
 
@@ -31,9 +49,10 @@ public class Graph {
         }
 
         String repr = "";
-        for(java.util.Iterator<Node> iter = nodes.iterator(); iter.hasNext();) {
-            Node node = iter.next();
-            repr += node.toString() + ", ";
+        Set<Integer> keys = nodes.keySet();
+        for(Iterator<Integer> iter = keys.iterator(); iter.hasNext();) {
+            Integer key = iter.next();
+            repr += nodes.get(key).toString() + ", ";
         }
         repr = repr.split(", $")[0]; // strip trailing ", "
         return repr;

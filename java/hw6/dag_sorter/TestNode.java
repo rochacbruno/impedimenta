@@ -2,6 +2,7 @@ package dag_sorter;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for class <code>Node</code>.
@@ -15,10 +16,10 @@ public class TestNode {
     public void TestConstructor() {
         Node node = new Node(15);
 
-        assertEquals(15,     node.id);
-        assertEquals(false,  node.visited);
-        assertEquals(true,   node.neighbors.isEmpty());
-        assertEquals(0,      node.neighbors.size());
+        assertTrue(15 == node.id);
+        assertEquals(false, node.visited);
+        assertEquals(true, node.neighbors.isEmpty());
+        assertEquals(0, node.neighbors.size());
     }
 
     /**
@@ -65,27 +66,5 @@ public class TestNode {
         assertEquals(1,  n1.compare(n3, n1));
         assertEquals(1,  n1.compare(n3, n2));
         assertEquals(0,  n1.compare(n3, n3));
-    }
-
-    /**
-     * Ensures that a Node cannot have duplicate Neighbors.
-     */
-    @Test
-    public void TestDuplicateNeighbors() {
-        Node n1 = new Node(0);
-
-        // A node in a graph may have an edge pointing to itself, but it cannot
-        // have two nodes pointing to itself. Two nodes are equal if they have
-        // the same ID.
-        n1.neighbors.add(n1);
-        assertEquals(1, n1.neighbors.size());
-        n1.neighbors.add(n1);
-        assertEquals(1, n1.neighbors.size());
-        n1.neighbors.add(new Node(0));
-        assertEquals(1, n1.neighbors.size());
-        n1.neighbors.add(new Node(15));
-        assertEquals(2, n1.neighbors.size());
-        n1.neighbors.add(new Node(-20));
-        assertEquals(3, n1.neighbors.size());
     }
 }
