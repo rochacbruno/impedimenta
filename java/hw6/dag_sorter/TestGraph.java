@@ -112,5 +112,22 @@ public class TestGraph {
         assertTrue(2 == sortedNodes[2].id || 3 == sortedNodes[2].id);
         assertTrue(2 == sortedNodes[3].id || 3 == sortedNodes[3].id);
         assertTrue(sortedNodes[2].id != sortedNodes[3].id);
+
+        // Test a graph consisting of (0, 1 -> 2 -> 3, 4).
+        graph.nodes.clear();
+        graph.addEdge(0, 2);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 3);
+        graph.addEdge(2, 4);
+        sortedNodes = graph.sortNodes();
+        //
+        assertEquals(5, sortedNodes.length);
+        assertTrue(0 == sortedNodes[0].id || 1 == sortedNodes[0].id);
+        assertTrue(0 == sortedNodes[1].id || 1 == sortedNodes[1].id);
+        assertTrue(sortedNodes[0].id != sortedNodes[1].id);
+        assertTrue(2 == sortedNodes[2].id);
+        assertTrue(3 == sortedNodes[3].id || 4 == sortedNodes[3].id);
+        assertTrue(3 == sortedNodes[4].id || 4 == sortedNodes[4].id);
+        assertTrue(sortedNodes[3].id != sortedNodes[4].id);
     }
 }

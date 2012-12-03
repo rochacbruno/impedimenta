@@ -37,7 +37,7 @@ Student Response
 
 To generate documentation:
 
-    javadoc dag-sorter -d </destination/directory>
+    javadoc dag_sorter -d </destination/directory>
 
 To compile code:
 
@@ -47,3 +47,7 @@ To execute unit tests:
 
     java -cp .:/usr/share/java/junit.jar org.junit.runner.JUnitCore \
     dag_sorter.TestNode dag_sorter.TestGraph
+
+To read and sort a directed acyclic graph from a file:
+
+    java dag_sorter.SortFile </path/to/file>
