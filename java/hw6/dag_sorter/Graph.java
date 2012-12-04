@@ -33,6 +33,9 @@ public class Graph {
 
     /**
      * Returns a topologically sorted array of nodes in this graph.
+     *
+     * Thanks to Wikipedia for the pseudocode. See <a
+     * href="https://en.wikipedia.org/wiki/Topological_sorting">here</a>.
      */
     public Node[] sortNodes() {
         // Nodes which have no outgoing edges.

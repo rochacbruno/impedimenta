@@ -32,7 +32,7 @@ import java.util.regex.Pattern;
  *     3 -&gt; 6
  *
  */
-public class SortFile {
+public class ParseFile {
     public static void main(String[] args) throws IOException {
         // Check arguments.
         if(args.length < 1) {
@@ -67,15 +67,14 @@ public class SortFile {
             System.out.println("File not found: " + args[0]);
         }
 
-        // Print out graph, topologically sorted.
         Node[] sortedNodes = graph.sortNodes();
+
+        // Print out graph.
         if(0 == sortedNodes.length)
             System.out.println("No nodes in graph.");
-
         String repr = "";
-        for(int i = 0; i < sortedNodes.length; i++) {
+        for(int i = 0; i < sortedNodes.length; i++)
             repr += sortedNodes[i] + ", ";
-        }
         repr = repr.split(", $")[0]; // strip trailing ", "
         System.out.println(repr);
     }
