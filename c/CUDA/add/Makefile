@@ -5,10 +5,12 @@
 #     target: dependencies
 #     (tab) system command
 #
+# $@ is left side of :
+# $^ is right side of :
+# $< is first item on right side of :
 
 # Constants
 ###########
-
 CC=gcc          # C compiler
 CFLAGS=-c -Wall # C compiler flags
 CUDAC=nvcc      # CUDA compiler
@@ -20,19 +22,15 @@ OBJECTS=add.o   # objects in executable
 
 # Rules
 #######
-
 $(EXECUTABLE): $(OBJECTS)
 	$(LD) $(LDFLAGS) -o $@ $(OBJECTS)
-
 %.o: %.c
-	$(CC) $(CFLAGS) $< -o $@
-
+	$(CC) $(CFLAGS) -o $@ $^
 %.o: %.cu
-	$(CUDAC) $(CUDAC_FLAGS) $< -o $@
+	$(CUDAC) $(CUDAC_FLAGS) -o $@ $^
 
 # File Dependencies
 ###################
-
 add.o: add.cu
 
 # Additional Rules
