@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 /*-==========================================================================-*\
 
 Program Description
@@ -13,8 +10,9 @@ sums the values, and the result is copied back to the host.
 Notes
 =====
 
-The hierarchy for structuring groups of threads is: grid -> block -> thread. A
-kernel has the following predefined data structures available to it:
+The hierarchy for structuring CUDA threads is: grid -> block -> thread. A kernel
+has three predefined data structures available to it: `blockIDx`, `blockDim`,
+and `threadIdx`.
 
 `blockIDx` contains the index of the current block within it's grid. A grid is
 two-dimensional, so available struct members are:
@@ -37,6 +35,9 @@ members are:
 * threadIDx.z
 
 \*-==========================================================================-*/
+
+#include <stdio.h>
+#include <stdlib.h>
 
 // c = a + b
 __global__ void add(
