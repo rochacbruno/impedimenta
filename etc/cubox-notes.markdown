@@ -69,6 +69,13 @@ result
 Success? The kernel and initramfs images are loaded into memory sucessfully, and
 the kernel starts booting.
 
+However, the root filesystem fails to mount sucessfully. That was the intended
+benefit of this exercise.
+
+    Uncompressing Linux... done, booting the kernel.
+    m25p80 spi0.0: unrecognized JEDEC id 20ba16
+    Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+
 get root filesystem off SD card
 ===============================
 
@@ -84,4 +91,48 @@ solution: Create an initramfs.
 
 problem: Don't you need an existing installation to make a new initramfs?
 
-solution: ...maybe?
+solution: ...maybe? Let's [have a
+read](http://en.gentoo-wiki.com/wiki/Initramfs).
+
+big bang approach
+-----------------
+
+1. Extract cubox fs on software raid.
+2. Format SD card as ext3, and move uImage to SD card.
+3. Create custom initramfs, and move to boot.scr. TODO: How?
+4. Create new boot.scr
+5. Boot up. Success?
+
+### Advantages
+
+Potentially more clean from a technical perspective. Extensible -- create any
+root fs you want in advance, and you can just pop it on the machine with a
+minimum of fuss.
+
+### Disadvantages
+
+Potentially less clean from a technical perspective, because knowledge of the
+target setup is required to create the custom initramfs. Also potentially
+kludgy, because knowledge of the current kernel may be required. Also: requires
+research.
+
+mutation approach
+-----------------
+
+1. Install cubox fs on SD card.
+2. Boot up.
+    1. Install mdadm.
+    2. Update mkinitcpio.conf, create an initramfs, package initramfs for uboot.
+    3. Create new boot.scr.
+    4. Update fstab.
+3. Shut down. Move root fs to software raid.
+4. Boot up. Success?
+
+### Advantages:
+
+Should be more straightforward. You can create all the necessary files within
+working OS install.
+
+### Disadvantages:
+
+Slow as death. Kludgy. Tried this already, and it didn't work!
