@@ -11,12 +11,12 @@ hard drives striped together with software raid. (the external enclosure made
 both disks available through the single eSata port via JBOD mode)
 
 Installing the root filesystem onto a software raid device wouldn't be too hard
-with the x86\_64 Arch installer. With that installer, you can simply mount the
+with the x86 Arch installer. With that installer, you can simply mount the
 target partitions together as desired, use `pacstrap` to install a base system,
 chroot in, and configure extras like the initial ramdisk. However, no such
-installer exists for Arch ARM. Instead, you simply download a root filesystem
-tarball and extract it onto the SD card. (or USB drive) While this is
-convenient, it's much more limiting than the x86\_64 Arch installer.
+installer exists for Arch ARM. Instead, you simply download a filesystem tarball
+and extract it onto the SD card. (or USB drive) While this is convenient, it's
+much more limiting than the x86 Arch installer.
 
 I currently don't have the skills to create a custom root filesystem tarball,
 nor do I know how to cross-compile a kernel and initramfs. Thus, the solution I
@@ -24,14 +24,33 @@ lit upon is a bit kludgy. The solution requires you to install Arch on an SD
 card as normal, then create an initramfs and move the root filesystem after the
 fact.
 
-prep work
----------
+install, create software raid
+-----------------------------
 
 If you've not already done so, install Arch onto the SD card. Boot up the system
-and install available updates. Install mdadm and partition the device onto which
-your root filesystem will be moved.
+and install available updates. Install mdadm, partition the device onto which
+your root filesystem will be moved, and format it.
 
-TODO: include output of lsblk as an example
+    # fdisk /dev/sda
+    # fdisk /dev/sdb
+    # mdadm --create /dev/md0 --level=0 --raid-devices=2 /dev/sda1 /dev/sdb1
+    # mkfs.ext4 /dev/md0
+    # lsblk
+    NAME        MAJ:MIN RM   SIZE RO TYPE  MOUNTPOINT
+    sda           8:0    0 298.1G  0 disk
+    '-sda1        8:1    0 298.1G  0 part
+      '-md0       9:0    0 596.2G  0 raid0
+    sdb           8:16   0 298.1G  0 disk
+    '-sdb1        8:17   0 298.1G  0 part
+      '-md0       9:0    0 596.2G  0 raid0
+    mmcblk0       179:0  0   7.4G  0 disk
+    '-mmcblk0p1   179:1  0   7.4G  0 part
+    # cat /proc/mdstat
+    Personalities : [raid0]
+    md0 : active raid0 sdb1[1] sda1[0]
+    625139712 blocks super 1.2 512k chunks
+
+    unused devices: <none>
 
 create an initramfs
 -------------------
@@ -42,7 +61,7 @@ because the partition on my raid device is formatted as such.
 
 1.  update /etc/mkinitcpio.conf
 
-        $ vim mkinitcpio.conf
+        # vim mkinitcpio.conf
         $ grep ^MODULES mkinitcpio.conf && grep ^HOOKS mkinitcpio.conf
         MODULES="raid0 ext4 dm_mod" # FIXME: dm_mod may be unnecessary.
         HOOKS="base udev autodetect filesystems fsck usbinput mdadm_udev"
@@ -50,19 +69,22 @@ because the partition on my raid device is formatted as such.
 2.  verify and generate an initramfs
 
         $ mkinitcpio # this should succeed
-        $ mkinitcpio -g initramfs.gz
+        # mkinitcpio -g initramfs.gz
 
 3.  gunzip the initramfs
 
-        $ bash -c 'gunzip -c initramfs.gz initramfs'
+        # gunzip -c initramfs.gz > initramfs
 
 4.  make the initramfs accessible by u-boot
 
-        $ mkimage -A arm -O linux -T ramdisk -C none -n "Linux" -d initramfs \
-          uInitramfs
+        # mkimage -A arm -O linux -T ramdisk -C none -n "Linux" -d initramfs \
+        uInitramfs
 
-create a boot script
---------------------
+create a boot script, update fstab
+----------------------------------
+
+Up to this point, you've been able to reboot just fine. After this step, that's
+no longer true.
 
 The boot script (the equivalent of the grub2 or syslinux boot script) needs to
 be updated. Otherwise, it won't load your shiny new uInitramfs or point to the
@@ -79,7 +101,7 @@ correct root device.
             console=ttyS0,115200n8
             rw
             vmalloc=384M
-            root=UUID=...
+            root=/dev/md0
             init=/bin/systemd
             video=dovefb:lcd0:1280x720-32@60-edid 
             clcd.lcd0_enable=1
@@ -88,36 +110,92 @@ correct root device.
             usb1Mode=host
             '
         echo ==== Loading kernel ====
-        ext3load mmc 0:1 0x00200000 /boot/uImage
+        ext2load mmc 0:1 0x00200000 /boot/uImage
         echo ==== Loading initramfs ====
-        ext3load mmc 0:1 0x01100000 /boot/uInitramfs
+        ext2load mmc 0:1 0x01100000 /boot/uInitramfs
         echo ==== Booting kernel ====
         bootm 0x00200000 0x01100000
 
 2.  make the boot script accessible by u-boot
 
         $ mkimage -A arm -O linux -T script -C none -a 0 -e 0 -n \
-          'Boot script for CuBox SD card.' -d boot.txt boot.scr
+        'CuBox boot script' -d boot.txt boot.scr
+
+Some pointers:
+
+* I gunzip the initramfs because I've empirically found that booting will fail
+with an "out of memory" error if I leave the initramfs gzipped.
+* Setting root=UUID=... fails
+* setting root=/dev/disk/by-uuid/... fails
 
 move the root filesystem to the device
 --------------------------------------
 
 During the "prep work" step, you created a software raid device. Right? Great.
 Shut down the CuBox and pull out the SD card. Attach both the SD card and raid
-device to another PC. Use this machine to copy the root filesystem from the SD
-card to the raid device.
+device to another PC. Use this machine to shuffle data around. You could
+conceivably do this from the CuBox itself, but I suspect that doing so could
+leave the resultant system in an inconsistent state. The result is something
+like this:
 
-TODO: sample command (preserve attributes while copying!)
+    $ ls /path/to/sd
+    boot.scr
+    boot.scr.mmcblk0p1
+    boot.scr.old
+    boot.scr.sata
+    boot.scr.sda1
+    boot.txt
+    ext4
+    initramfs
+    initramfs.gz
+    lost+found
+    uImage
+    uInitramfs
+    $ ls /path/to/raid-device
+    bin
+    boot
+    dev
+    etc
+    home
+    lib
+    lost+found
+    mnt
+    opt
+    proc
+    root
+    run
+    sbin
+    srv
+    sys
+    tmp
+    usr
+    var
+    $ cat /path/to/raid-device/etc/fstab
+    #
+    # /etc/fstab: static file system information
+    #
+    # <file_system> <dir>  <type>  <options>  <dump>  <pass>
+    /dev/mmcblk0p1  /boot  ext3    defaults   0       2
+    /dev/md0        /      ext4    defaults   0       1
 
-Then, update .../raid-device/etc/fstab.
+Tip: when copying filesystem data, use the --preserve option.
 
-TODO: example output
+    cp -r --preserve /path/to/sd /path/to/raid-device
 
-pray
-----
+Finally, reassemble the CuBox and power it up. Either dance with joy or curse
+the heavens, depending.
 
-Reassemble the CuBox and power it up. Either dance with joy or curse the heavens
-at your misfortune, depending.
+limitations
+-----------
+
+Each time a new kernel is installed, you'll need to create a new intramfs
+manually. Otherwise, booting will fail. I expect there's some method by which
+this can be done automatically, but I don't know what it is.
+
+bonus points
+------------
+
+Make a backup copy of your filesystem. This whole process took long enough.
 
 references
 ----------
