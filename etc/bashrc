@@ -2,9 +2,9 @@
 # ~/.bashrc
 #
 
-# If not running interactively, don't do anything
-# How does this work???
-#[[ $- != *i* ]] && return
+# If not running interactively, don't do anything. Some programs, such as SCP,
+# will malfunction if you run the remaining statements in this bashrc.
+[[ $- != *i* ]] && return
 
 # Do not display hidden characters \[stuff\]
 # Start colorization: \e[XXm
