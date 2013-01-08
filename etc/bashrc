@@ -9,13 +9,14 @@
 # Do not display hidden characters \[stuff\]
 # Start colorization: \e[XXm
 # End colorization: \e[0m
-alias t='todo.sh'
 alias grep='grep --color=auto'
 alias less='less -i'
-alias rm='rm -I'
-alias ls='ls -h --color=auto --group-directories-first'
-alias l='ls -lh --color=auto --group-directories-first'
 alias ll='ls -lha --color=auto --group-directories-first'
+alias l='ls -lh --color=auto --group-directories-first'
+alias ls='ls -h --color=auto --group-directories-first'
+alias pacman='pacman-color'
+alias rm='rm -I'
+alias t='todo.sh'
 export EDITOR="vim"
 export PS1='\u@\[\e[33m\]\h\[\e[0m\]:\[\e[36m\]\W\[\e[0m\]\$ '
 export EMAIL="ichimonji10@gmail.com"
