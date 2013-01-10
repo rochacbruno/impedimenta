@@ -1,7 +1,7 @@
 django basics
 =============
 
-Some good guides to django [are](https://docs.djangoproject.com/en/1.4/)
+Some good guides to django [are](https://docs.djangoproject.com/en/1.5/)
 [available](http://www.djangobook.com/en/2.0/index.html). The django project
 [documents](https://docs.djangoproject.com/en/dev/ref/django-admin/) the
 `django-admin.py` and `manage.py` commands.
@@ -65,7 +65,7 @@ template automatically.
 django models
 =============
 
-The [official django documentation](https://docs.djangoproject.com/en/1.4/ref/models/fields/)
+The [official django documentation](https://docs.djangoproject.com/en/1.5/ref/models/fields/)
 details the field types and field options available to you. The django book also
 provides excellent guides on how to use
 [models](http://www.djangobook.com/en/2.0/chapter05.html) and
