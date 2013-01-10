@@ -9,9 +9,9 @@
 --     L_CONSTANTS
 -- ************************************************************
 
--- DROP DATABASE lunches;
--- CREATE DATABASE lunches;
--- USE lunches;
+DROP DATABASE lunches;
+CREATE DATABASE lunches;
+USE lunches;
 
 CREATE TABLE L_EMPLOYEES
 (
