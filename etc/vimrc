@@ -20,8 +20,9 @@ set undodir="~/.vim/undo" " This directory is NOT automatically created.
 
 "nmap n nzz              " center display around cursor when searching for terms
 "nmap N Nzz              " .
+nmap <F4> :set t_Co=256<CR>:color badwolf<CR>
 nmap <F5> :tabprev<CR>
-nmap <F6> :tabnew<CR>:NERDTreeToggle<CR>:TagbarToggle<CR>
+nmap <F6> :tabnew<CR>
 nmap <F7> :!ctags -R -o ~/.mytags --exclude='logistix-platform' ~/code<CR>
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
@@ -29,10 +30,15 @@ nmap <F10> :UndotreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
 set tags=~/.mytags      " where to find the tags that exuberant ctags generates?
 
-syntax enable           " enable syntax coloring
-"color default           " :'(
-"color jellybeans        " Pleasant colors and low contrast. A bit too low.
-color badwolf           " Bright colors and high contrast.
+nnoremap <up> <nop>
+nnoremap <right> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+
+syntax enable           " Well *yes* I want color.
+"color jellybeans        " Good for diffing.
+color badwolf           " Pink! Red! Lime green!
 set background=light    " badwolf's dark variation looks nicer
-" Syntax coloring for arduino .pde filetype is horrid, but better than nothing.
-autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino.vim
+
+" Vim doesn't have built-in syntax highlighting for *.pde files, last I checked.
+"autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino.vim " Horrid, but better than nothing.
