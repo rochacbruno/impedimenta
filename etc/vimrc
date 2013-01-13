@@ -1,25 +1,28 @@
-set nocompatible        " do not emulate vi's limitations, whatever they are
-set nowrap              " learn how to write 80-character wide code, y'all!
-set tabstop=4           " tab character treated as four characters wide
-set expandtab           " tab inserts spaces instead of tab character...
-set shiftwidth=4        " ...specifically, four spaces
-set autoindent          " keep current indentation level when starting new line
+set nocompatible        " Do not emulate vi's quirks.
+set nowrap              " Don't wrap lines.
+set textwidth=79        " Any line longer than this is automatically broken at
+                        " a whitespace boundary.
+set autoindent          " Keep current indentation level when starting new line
+set expandtab           " Tab key insert spaces instead of tab character.
+set shiftwidth=4        " Number of spaces to insert when indenting.
+set tabstop=4           " Tab character appears as four whitespace characters.
 set incsearch           " incremental search: match as you type
-set ignorecase          " ignore case when searching...
-set smartcase           " ...except when I use caps in a search term
-set scrolloff=2         " start scrolling viewport berore cursor reaches top/bot
-set laststatus=2        " always show the status line
-set rnu                 " relative line numbers, not absolute numbers
-set cursorline          " highlight the current row
-set foldmethod=indent   " more convenient than manual, easier than custom
-set nofoldenable        " enable folding by default?
+set ignorecase          " Ignore case when searching...
+set smartcase           " ...except when I use caps in a search term.
+set cursorline          " Highlight the current row.
+set laststatus=2        " Always show the status line.
+set rnu                 " Display relative line numbers.
+set ruler               " Show cursor's current row and column number.
+set showcmd             " Show (partial) command.
+set foldmethod=indent   " More convenient than manual, easier than custom.
+set nofoldenable        " Don't fold things by default, though.
+set backspace=2         " e.g. allows me to backspace in insert mode.
+set scrolloff=2         " Buffer between cursor and top+bottom edge of viewport.
+"set undofile            " Should the undo tree be saved? Allows persistent undo.
+"set undodir="~/.vim/undo" " This directory is NOT automatically created.
+                        " TODO: automatically save undo file upon file close
 let mapleader=","
-" TODO: automatically save undo file upon file close
-set undofile            " Should the undo tree be saved? Allows persistent undo.
-set undodir="~/.vim/undo" " This directory is NOT automatically created.
 
-"nmap n nzz              " center display around cursor when searching for terms
-"nmap N Nzz              " .
 nmap <F4> :set t_Co=256<CR>:color badwolf<CR>
 nmap <F5> :tabprev<CR>
 nmap <F6> :tabnew<CR>
