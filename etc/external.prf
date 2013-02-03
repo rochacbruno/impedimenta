@@ -1,0 +1,4 @@
+root = /run/media/ichimonji10/external1/ichimonji10
+root = ssh://ichimonji10@ichimonji10.name//mnt/mouse-data/ichimonji10/
+
+auto = true

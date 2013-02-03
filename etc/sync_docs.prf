@@ -1,0 +1,11 @@
+root = /home/ichimonji10/.sync_docs/
+root = ssh://ichimonji10@ichimonji10.name//mnt/mouse-data/ichimonji10/
+
+auto = true
+
+# ichimonji10.name dirs to ignore
+ignore = Path music
+ignore = Path games
+ignore = Path OSs
+ignore = Path videos
+ignore = Path Oscar

@@ -1,5 +1,5 @@
-root = /media/data/ichimonji10/pictures/irl/
-root = /media/6661-6462/DCIM/Camera/
+root = /home/ichimonji10/.sync_docs/pictures/irl/
+root = /run/media/ichimonji10/4F90-61D2/DCIM/Camera
 
 auto = true
 fat = true
