@@ -7,5 +7,5 @@
 # | +----------- hour (0 - 23)
 # +------------- min (0 - 59)
 0 * * * *       reflector -l 5 --sort rate --save /etc/pacman.d/mirrorlist
-0 21 * * *      pkgfile --update
-*/10 * * * *    ctags -R -o ~/.mytags ~/code
+0 */12 * * *    pkgfile --update
+1 */12 * * *    ctags -R -o ~/.mytags ~/code
