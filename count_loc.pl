@@ -5,7 +5,6 @@ use warnings;
 # Finds the total number of lines of code in this repository. Only files with
 # an extension in `%filetypes` are included in the search.
 
-my $loc = 0;        # lines of code
 my @files = ();     # the list of files found
 my %filetypes = (   # files with any other extension will be ignored
     adb     => 0,   # Ada body
@@ -25,14 +24,22 @@ my %filetypes = (   # files with any other extension will be ignored
     sh      => 0,   # shell
 );
 
+# Recursively find all files from the current directory. For each file, if it
+# has a filename extension in `filetypes`, record length of that file.
 foreach my $file (`find . -type f`) {
     chomp $file;
-    # If filename has an extension, and that extension is in `filetypes`...
+    # The leading .* is necessary.
     if(($file =~ m/.*\.(\S+)$/) and exists($filetypes{$1})) {
-        # wc output: lines_in_file words_in_file characters_in_file
-        # Get number of lines in file.
-        `wc "$file"` =~ m/^\s*(\d+)/;
-        $loc += $1;
+        my $extension = $1;
+        `wc -l "$file"` =~ m/^(\d+).*/;
+        $filetypes{$extension} += $1;
     }
 }
-print "TOTAL: $loc\n";
+
+my $loc = 0;
+foreach my $extension (sort(keys(%filetypes))) {
+    my $lines = $filetypes{$extension};
+    $loc += $lines;
+    print "$extension: $lines\n"
+}
+print "total: $loc\n"
