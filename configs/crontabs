@@ -6,6 +6,10 @@
 # | | +--------- day of        month (1 - 31)
 # | +----------- hour (0 - 23)
 # +------------- min (0 - 59)
-0 * * * *       reflector -l 5 --sort rate --save /etc/pacman.d/mirrorlist
+0 *    * * *    reflector -l 5 --sort rate --save /etc/pacman.d/mirrorlist
 0 */12 * * *    pkgfile --update
 1 */12 * * *    ctags -R -o ~/.mytags ~/code
+# /var/lib/mercurial-server => /mnt/mouse-data/hg-backups/YYYY-MM-DD.tar.bz2
+0 5    * * *    tar -cj -f /mnt/mouse-data/hg-backups/`date +%Y-%m-%d`.tar.bz2 -C /var/lib mercurial-server
+# Keep the last 30 backups. Delete the oldest backups first.
+30 4   * * *    for file in `ls /mnt/mouse-data/hg-backups | tail -n +31`; do rm $file; done
