@@ -8,6 +8,10 @@ SAMPLE_USAGE="rawread /dev/sr0 > disc.iso"
 # The naive approach of `dd if=/dev/sr0 of=/my/file.iso` will often result in
 # I/O errors or malformed ISOs. This script checks the blocksize and blockcount
 # of the source disk before reading, and adds a couple useful flags to dd.
+#
+# This script may encounter errors when ripping CDs. An alternative (and
+# easier!) solution is to use either the readcd or readom tools. For example:
+# readcd dev=/dev/sr0 -f=cdrom.iso -notrunc -v
 
 for dependency in dd isoinfo grep cut; do
     which "$dependency" 1>/dev/null 2>/dev/null
