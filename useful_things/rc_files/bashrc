@@ -18,7 +18,7 @@ alias pacman='pacman-color'
 alias rm='rm -I'
 alias t='todo.sh'
 export EDITOR="vim"
-export PS1='\[\e[0;1m\][\u@\h:\W]\$\[\e[0;0m\] '
+export PS1='[\u@\[\e[0;1m\]\h:\W\[\e[0;0m\]]\$ '
 export EMAIL="ichimonji10@gmail.com"
 # for vim colorization
 if [ "xterm" == "$TERM" ]; then
