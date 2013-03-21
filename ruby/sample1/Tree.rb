@@ -1,8 +1,8 @@
 # This module contains classes used for creating binary search trees.
 module Tree
-    # Can be used to construct binary search trees. The data to be stored in
-    # each node *must* be comparable with the <tt><=></tt> operator, or else
-    # +TreeNode+ will malfunction.
+    # Can be used to construct binary search trees. For TreeNode to work, the
+    # data stored in each node *must* be comparable with the <tt><=></tt>
+    # operator.
     class TreeNode
         # The new +TreeNode+ holds +data+ and has children of +nil+.
         def initialize(data)
@@ -39,7 +39,7 @@ module Tree
             #     end
             #
             case data <=> @data
-            when -1 # data < @data
+            when -1
                 if nil == @left
                     @left = TreeNode.new(data)
                 else

@@ -3,7 +3,8 @@
 #
 
 # If not running interactively, don't do anything. Some programs, such as SCP,
-# will malfunction if you run the remaining statements in this bashrc.
+# will malfunction if you run the remaining statements in this bashrc. $-
+# returns a string containing "i" when the shell is interactive.
 [[ $- != *i* ]] && return
 
 # Do not display hidden characters \[stuff\]
