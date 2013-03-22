@@ -1,7 +1,12 @@
 #!/usr/bin/env ruby
 
-require "test/unit"
-require "Tree"
+# Required for Bundler. See {here}[http://gembundler.com/v1.3/rationale.html].
+require 'rubygems'
+require 'bundler/setup'
+# External deps.
+require 'test/unit'
+# Internal deps.
+require 'Tree'
 
 # Unit tests for class +TreeNode+ in module +Tree+.
 class TestTreeNode < Test::Unit::TestCase

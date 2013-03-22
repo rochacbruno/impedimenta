@@ -1,18 +1,19 @@
 = CIS-3030 Sample Program 1
 
-This project demonstrates how to create a simple binary search tree using Ruby.
-It's based off a binary search tree written in Java for Algorithms & Data
-Structures. However, this is not a straight port of Java code: much effort was
-put into writing this "the Ruby way". The code is structured differently (e.g.
-modules don't exist in Java), Ruby-isms are used (e.g. attr_accessor), and the
-docstrings are excellent (try running +rdoc+). Written by Jeremy Audet and Henry
-Michael Corse.
+This program demonstrates how to create a simple binary search tree using Ruby.
+The tree created is extremely simple: you can't do useful things like delete
+tree nodes.
 
-Tree.rb::
-    Defines the module ``Tree`` and two classes: ``TreeNode`` and ``Tree``.
+{Bundler}[http://gembundler.com/] is used to manage the gems upon which this
+application depends. To install dependencies, first install Bundler with
+<tt>gem install bundler</tt> (Bundler is itself a gem), then run <tt>bundle
+install</tt>. At this point, the program can be run.
 
-TestTree.rb::
-    Includes unit tests for the ``Tree`` module.
+This program was originally written by Jeremy Audet and Henry Corse for Vermont
+Technical College's CIS-3030 "Programming Languages" course, taught by Peter
+Chapin.
+
+== How-To
 
 To run unit tests:
 
@@ -21,3 +22,13 @@ To run unit tests:
 To generate documentation:
 
     rdoc
+
+== Files
+
+[Tree.rb]
+
+    Defines the module +Tree+ and two classes: +TreeNode+ and +Tree+.
+
+[TestTree.rb]
+
+    Includes unit tests for the +Tree+ module.
