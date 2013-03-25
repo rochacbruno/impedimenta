@@ -49,6 +49,16 @@ if [[ -d "$HOME/.rbenv/bin" ]]; then
     eval "$(rbenv init -)"
 fi
 
+# bundler
+# This forces bundler to install gems on a per-user basis, instead of
+# system-wide. This matches the default `gem` behaviour on Arch Linux, and it
+# also allows gems to be installed without `sudo`.
+which bundle 2>&1 1>/dev/null && export GEM_HOME=$( \
+    gem env \
+    | grep 'INSTALLATION DIRECTORY' \
+    | sed 's/.*INSTALLATION DIRECTORY: \(.*\)/\1/' \
+)
+
 # mdadm
 if [[ -e /proc/mdstat ]]; then
     cat /proc/mdstat
