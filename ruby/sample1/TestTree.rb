@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
 
-# Required for Bundler. See {here}[http://gembundler.com/v1.3/rationale.html].
+# "This will automatically discover your Gemfile, and make all of the gems in
+# your Gemfile available to Ruby." See a full explanation
+# {here}[http://gembundler.com/v1.3/rationale.html].
 require 'rubygems'
 require 'bundler/setup'
+
 # External deps.
 require 'test/unit'
 # Internal deps.
