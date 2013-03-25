@@ -12,15 +12,18 @@
 # for printing out machine stats _only_ upon first login. `.bashrc` is great
 # for just about everything else.
 #
+# If the shell is not running interactively, immediately return. Some programs,
+# such as SCP, will malfunction if you execute statements such as "cat". ($-
+# returns a string containing "i" if the shell is interactive)
+#
+# PS1 hidden characters should be placed inside \[these\]. If not done, the
+# cursor position and actual character position will be offset incorrectly.
+# Start colorization sequence: \e[XXm
+# End colorization sequence: \e[0m
+#
 
-# If not running interactively, don't do anything. Some programs, such as SCP,
-# will malfunction if you run the remaining statements in this bashrc. $-
-# returns a string containing "i" when the shell is interactive.
 [[ $- != *i* ]] && return
 
-# PS1 hidden characters should be placed inside \[these\]
-# Start colorization: \e[XXm
-# End colorization: \e[0m
 alias grep='grep --color=auto'
 alias less='less -Ri'
 alias ll='ls -lha --color=auto --group-directories-first'
@@ -33,20 +36,20 @@ alias t='todo.sh'
 export EDITOR="vim"
 export EMAIL="ichimonji10@gmail.com"
 export PS1='[\u@\[\e[0;1m\]\h:\W\[\e[0;0m\]]\$ '
+
+# Check window size after each command if update LINES and COLUMNS if necessary
+shopt -s checkwinsize
+
+# Append to the history file instead of overwriting it.
+shopt -s histappend
+
+# rbenv
 if [[ -d "$HOME/.rbenv/bin" ]]; then
     export PATH="$HOME/.rbenv/bin:$PATH"
+    eval "$(rbenv init -)"
 fi
 
-# for vim colorization
-#if [[ "xterm" == "$TERM" ]]; then
-#    export TERM='xterm-256color'
-#fi
-# if raid is plugged in, give status of such when terminal launches
+# mdadm
 if [[ -e /proc/mdstat ]]; then
     cat /proc/mdstat
 fi
-# check the window size after each command and, if necessary, update the values
-# of LINES and COLUMNS.
-shopt -s checkwinsize
-# append to the history file, don't overwrite it
-shopt -s histappend
