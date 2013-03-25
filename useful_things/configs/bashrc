@@ -1,13 +1,24 @@
 #
 # ~/.bashrc
 #
+# .bashrc vs .bash_profile
+# ========================
+#
+# `.bash_profile` is only executed when you initially login to a machine,
+# whether by console, ssh, or otherwise. `.bashrc` is executed every time you
+# open a new command prompt, even if you're already logged in, and it should
+# also be called by `.bash_profile`. `.bash_profile` is great for, say,
+# automatically starting X (if your login manager doesn't do that already), or
+# for printing out machine stats _only_ upon first login. `.bashrc` is great
+# for just about everything else.
+#
 
 # If not running interactively, don't do anything. Some programs, such as SCP,
 # will malfunction if you run the remaining statements in this bashrc. $-
 # returns a string containing "i" when the shell is interactive.
 [[ $- != *i* ]] && return
 
-# Do not display hidden characters \[stuff\]
+# PS1 hidden characters should be placed inside \[these\]
 # Start colorization: \e[XXm
 # End colorization: \e[0m
 alias grep='grep --color=auto'
@@ -18,16 +29,20 @@ alias ls='ls -h --color=auto --group-directories-first'
 alias pacman='pacman-color'
 alias rm='rm -I'
 alias t='todo.sh'
+
 export EDITOR="vim"
-export PS1='[\u@\[\e[0;1m\]\h:\W\[\e[0;0m\]]\$ '
 export EMAIL="ichimonji10@gmail.com"
-# for vim colorization
-if [ "xterm" == "$TERM" ]; then
-    export TERM='xterm-256color'
+export PS1='[\u@\[\e[0;1m\]\h:\W\[\e[0;0m\]]\$ '
+if [[ -d "$HOME/.rbenv/bin" ]]; then
+    export PATH="$HOME/.rbenv/bin:$PATH"
 fi
 
+# for vim colorization
+#if [[ "xterm" == "$TERM" ]]; then
+#    export TERM='xterm-256color'
+#fi
 # if raid is plugged in, give status of such when terminal launches
-if [ -e /proc/mdstat ]; then
+if [[ -e /proc/mdstat ]]; then
     cat /proc/mdstat
 fi
 # check the window size after each command and, if necessary, update the values
