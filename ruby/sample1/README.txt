@@ -18,7 +18,7 @@ Chapin.
 
 To run unit tests:
 
-    bundle exec ruby -I . TestTree.rb
+    bundle exec ./TestTree.rb
 
 To generate documentation:
 

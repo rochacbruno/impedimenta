@@ -9,7 +9,7 @@ require 'bundler/setup'
 # External deps.
 require 'test/unit'
 # Internal deps.
-require 'Tree'
+require_relative 'Tree'
 
 # Unit tests for class +TreeNode+ in module +Tree+.
 class TestTreeNode < Test::Unit::TestCase
