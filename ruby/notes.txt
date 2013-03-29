@@ -5,10 +5,6 @@ To execute a single line of Ruby code:
 
     ruby -e 'puts "Hello, world!"'
 
-To execute a Ruby script:
-
-    ruby script.rb
-
 To check the syntax of a Ruby script:
 
     ruby -c script.rb
@@ -22,12 +18,11 @@ To view Ruby documentation:
     # Ruby Index? Ruby Information? Ruby Interactive?
     ri
 
-To manage Ruby packages:
+To bootstrap a rails project:
 
-    gem --help
-    gem help commands
-    gem list
-    gem update
-    gem update --system
-    gem install rails
-    gem uninstall rails
+    rbenv local <ruby_version>
+    vim Gemfile
+    bundle install
+    rails myapp
+    mv -t myapp Gemfile Gemfile.lock .ruby-version
+    cd myapp # now using correct ruby version and gem versions
