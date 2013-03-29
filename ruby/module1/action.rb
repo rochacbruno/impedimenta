@@ -3,14 +3,13 @@ module Action
     VERY_BAD = 1
 
     def Action.sin(badness)
-        punishment = case badness
+        case badness
             when BAD
-                "five Hail Marys"
+                "name variables badly"
             when VERY_BAD
-                "purgatory"
+                "write incorrect comments"
             else
-                "excommunication"
+                "use APL"
             end
-        "Thine punishment is: #{punishment}"
     end
 end

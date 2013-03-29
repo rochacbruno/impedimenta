@@ -1,14 +1,13 @@
 #!/usr/bin/env ruby
+# Demonstrates the use of modules as namespaces.
 
-# expand_path assumes that it's second argument (in this case, __FILE__) is a
-# directory.
 require_relative 'action'
 require_relative 'trig'
 
-# Even though PI is only available in one of mixed-in modules, it must be
-# referenced as Trig::PI
+# Even though PI is only available in one of the two required modules, it must
+# be referenced as Trig::PI
 puts "pi ~= #{Trig::PI}"
 
 # Module::Constant
 # Module.method
-puts Action.sin(Trig.sin(-1))
+puts "Sin of the day: #{Action.sin(Trig.sin(1))}"
