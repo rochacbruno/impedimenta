@@ -20,9 +20,8 @@ To view Ruby documentation:
 
 To bootstrap a rails project:
 
-    rbenv local <ruby_version>
-    vim Gemfile
-    bundle install
-    rails myapp
+    rbenv local <ruby_vers> # sets Ruby version only in this directory
+    vim Gemfile             # list dependencies, such as rails
+    bundle install          # ensure deps are available
+    bundle exec rails myapp # create rails app w/specified Ruby and gem versions
     mv -t myapp Gemfile Gemfile.lock .ruby-version
-    cd myapp # now using correct ruby version and gem versions
