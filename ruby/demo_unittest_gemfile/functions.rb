@@ -2,8 +2,8 @@
 
 # Accepts a String and rearranges all the words in ascending order, by length.
 # Returns a new String. The only word separators are spaces. For example, given
-# the string Given a string "Sort words in a sentence", it should return "a in
-# Sort words sentence".
+# the string Given a string "Sort the words in a sentence", it should return "a
+# in the Sort words sentence".
 def sort_string(string)
     words = string.split
     # insertion sort, from left to right

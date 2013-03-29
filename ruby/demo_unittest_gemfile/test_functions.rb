@@ -1,7 +1,16 @@
 #!/usr/bin/env ruby
 
+# "This will automatically discover your Gemfile, and make all of the gems in
+# your Gemfile available to Ruby." See a full explanation
+# {here}[http://gembundler.com/v1.3/rationale.html].
+require 'rubygems'
+require 'bundler/setup'
+
 require 'test/unit'
 require_relative 'functions'
+
+# Fails?!
+#puts "Unit testing with test-unit v#{Test::Unit::VERSION}"
 
 # Unit tests for the methods in module +functions+.
 class TestFunctions < Test::Unit::TestCase

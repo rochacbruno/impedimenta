@@ -1,5 +1,5 @@
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     test-unit (2.5.4)
 
@@ -7,4 +7,4 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  test-unit (>= 2.5.4)
+  test-unit (~> 2.5.4)
