@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'test/unit'
-require 'functions'
+require_relative 'functions'
 
 # Unit tests for the methods in module +functions+.
 class TestFunctions < Test::Unit::TestCase

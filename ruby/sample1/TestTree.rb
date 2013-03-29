@@ -6,9 +6,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
-# External deps.
 require 'test/unit'
-# Internal deps.
 require_relative 'Tree'
 
 # Unit tests for class +TreeNode+ in module +Tree+.

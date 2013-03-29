@@ -1,14 +1,12 @@
-# Demonstrates ruby's +load+ and +require+, singleton methods, mixins, dynamic
-# class alteration, and reflection.
+#!/usr/bin/env ruby
+# Demonstrates +load+, +require+, +require_relative+, singleton methods,
+# mixins, dynamic class alteration, and reflection.
 
-# Ruby searches the +$LOAD_PATH+, or +$:+, for files to include. Programs may
-# modify the load path at runtime. Calling ruby with the -I option (e.g. ruby
-# -I . Main.rb) also appends to +$LOAD_PATH+.
 require 'tempfile'
-require 'Dependencies'
+require_relative 'Dependencies'
 
-#The loader function demonstrates use of load to repeatedly include a file
-#See loader definition for details
+# The loader function demonstrates uses +load+ to repeatedly include a file.
+# Note the lack of parentheses.
 puts "Demonstration of `load`"
 puts "======================="
 loader

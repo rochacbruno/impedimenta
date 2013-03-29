@@ -2,7 +2,7 @@
 
 To run the program:
 
-    ruby -I . Main.rb
+    ./Main.rb
 
 To generate documentation:
 
