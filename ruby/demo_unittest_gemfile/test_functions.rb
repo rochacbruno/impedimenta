@@ -1,8 +1,7 @@
 #!/usr/bin/env ruby
 
 # "This will automatically discover your Gemfile, and make all of the gems in
-# your Gemfile available to Ruby." See a full explanation
-# {here}[http://gembundler.com/v1.3/rationale.html].
+# your Gemfile available to Ruby." http://gembundler.com/v1.3/rationale.html
 require 'rubygems'
 require 'bundler/setup'
 
