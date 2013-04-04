@@ -1,5 +1,5 @@
-Overview
-========
+Ruby Environment Configuration
+==============================
 
 rbenv, ruby-build, and Bundler together allow you to control which ruby
 version, gems, and gem versions an application uses. This document outlines how
