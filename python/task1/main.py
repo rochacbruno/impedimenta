@@ -5,6 +5,7 @@ import tasks, time
 
 class CustomTask(tasks.Task):
     """A simple task that yields three states before ending."""
+
     def do_run(self):
         for status in ('staring', 'working', 'ending',):
             yield [self.change('status', status)]
