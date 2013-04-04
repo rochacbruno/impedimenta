@@ -62,17 +62,17 @@ priority to highest:
 
 1. The `~/.rbenv/version` file.
 
-    $ rbenv global 2.0.0-p0
+        $ rbenv global 2.0.0-p0
 
 2. A `.ruby-version` file in the current directory.
 
-    $ rbenv local echo 2.0.0-p0
-    $ rbenv local --unset
+        $ rbenv local echo 2.0.0-p0
+        $ rbenv local --unset
 
 3. The `RBENV\_VERSION` environment variable.
 
-    $ rbenv shell 2.0.0-p0
-    $ rbenv shell --unset
+        $ rbenv shell 2.0.0-p0
+        $ rbenv shell --unset
 
 To see which version of Ruby is currently being used, call `ruby --version`.
 *Do not* call `which ruby`, as this will always return `~/.rbenv/shims/ruby`.
