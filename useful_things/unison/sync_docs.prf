@@ -1,5 +1,5 @@
 root = /home/ichimonji10/.sync_docs/
-root = ssh://ichimonji10@ichimonji10.name//mnt/mouse-data/ichimonji10/
+root = ssh://ichimonji10@srv1.ichimonji10.name//mnt/mouse-data/ichimonji10/
 
 auto = true
 
@@ -7,5 +7,6 @@ auto = true
 ignore = Path music
 ignore = Path games
 ignore = Path OSs
-ignore = Path videos
+ignore = Path Movies
+ignore = Path TV Shows
 ignore = Path Oscar

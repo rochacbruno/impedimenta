@@ -1,0 +1,5 @@
+root = /run/media/ichimonji10/GARMIN/Garmin/GPX/
+root = /home/ichimonji10/docs/OSM/garmin_dakota_20/
+
+auto = true
+fat = true

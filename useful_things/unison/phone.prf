@@ -1,5 +1,5 @@
-root = /home/ichimonji10/.sync_docs/pictures/irl/
 root = /run/media/ichimonji10/4F90-61D2/DCIM/Camera
+root = ssh://ichimonji10@srv1.ichimonji10.name//mnt/mouse-data/ichimonji10/pictures/irl/
 
 auto = true
 fat = true
