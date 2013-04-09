@@ -26,9 +26,9 @@
 
 alias grep='grep --color=auto'
 alias less='less -R'
+alias ls='ls      --color=auto --group-directories-first'
+alias l='ls       --color=auto --group-directories-first'
 alias ll='ls -lha --color=auto --group-directories-first'
-alias l='ls --color=auto --group-directories-first'
-alias ls='ls --color=auto --group-directories-first'
 alias rm='rm -I'
 alias t='todo.sh'
 
