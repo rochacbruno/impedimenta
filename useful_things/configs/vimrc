@@ -1,6 +1,6 @@
 set nocompatible        " Do not emulate vi's quirks.
 set nowrap              " Don't wrap lines.
-set textwidth=79        " Any line longer than this is automatically broken at
+set textwidth=80        " Any line longer than this is automatically broken at
                         " a whitespace boundary.
 set autoindent          " Keep current indentation level when starting new line
 set expandtab           " Tab key insert spaces instead of tab character.
@@ -26,7 +26,7 @@ let mapleader=","
 nmap <F4> :set t_Co=256<CR>:color badwolf<CR>
 nmap <F5> :tabprev<CR>
 nmap <F6> :tabnew<CR>
-nmap <F7> :!ctags -R -o ~/.mytags --exclude='logistix-platform' ~/code<CR>
+nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
 nmap <F10> :UndotreeToggle<CR>
