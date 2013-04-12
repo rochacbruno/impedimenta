@@ -1,0 +1,10 @@
+<% content_for :title do %>
+    Index
+<% end %>
+
+<% content_for :body do %>
+    <h1>Message</h1>
+    <% @count.times do %>
+        <p><%= @message %></p>
+    <% end %>
+<% end %>
