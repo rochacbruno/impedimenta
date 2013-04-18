@@ -7,9 +7,9 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: comments_dev
+  database: comment_dev
   pool: 5
-  username: comments
+  username: comment
   password: hackme
   socket:
 
@@ -18,7 +18,7 @@ test:
   encoding: utf8
   database:
   pool: 5
-  username: comments
+  username: comment
   password: hackme
   socket:
 
@@ -27,6 +27,6 @@ production:
   encoding: utf8
   database:
   pool: 5
-  username: comments
+  username: comment
   password: hackme
   socket:

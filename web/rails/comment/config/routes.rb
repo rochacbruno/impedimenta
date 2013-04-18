@@ -1,4 +1,6 @@
-Comments::Application.routes.draw do
+# Rails pushes you to create RESTful applications with the `resources` keyword.
+# For example: `resources :comment`.
+Comment::Application.routes.draw do
     # The priority is based upon order of creation:
     # first created -> highest priority.
 
@@ -27,13 +29,13 @@ Comments::Application.routes.draw do
 
     # Sample resource route with sub-resources:
     #   resources :products do
-    #     resources :comments, :sales
+    #     resources :comment, :sales
     #     resource :seller
     #   end
 
     # Sample resource route with more complex sub-resources
     #   resources :products do
-    #     resources :comments
+    #     resources :comment
     #     resources :sales do
     #       get 'recent', :on => :collection
     #     end
