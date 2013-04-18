@@ -8,6 +8,18 @@
         <%= yield :head %>
     </head>
     <body>
+        <div class="navbar">
+            <h1>Site Nav</h1>
+            <ul>
+                <li><%=
+                    link_to(
+                        'Home',
+                        :controller => 'foo',
+                        :action => 'index'
+                    )
+                %></li>
+            </ul>
+        </div>
         <%= yield :body %>
     </body>
 </html>
