@@ -16,6 +16,7 @@ div.navbar {
     margin-right: 0.5em;
     padding-right: 0.5em;
     border-right: thin dotted black;
+    border-bottom: thin dotted black;
 }
 
 div.navbar ul {

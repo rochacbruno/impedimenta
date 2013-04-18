@@ -8,7 +8,7 @@
 #
 #     resources :photos
 #
-# Produces the following:
+# Makes the following HTTP calls available:
 #
 #     ========= ================ ===============================================
 #     HTTP Verb Path             Description
@@ -26,20 +26,22 @@
 # with +match+. For example, this:
 #
 #     match(
-#         'photos' => 'photos#index',
-#         :via => :get
+#         'photos' => 'photos#create',
+#         :via => :post
 #     )
 #
-# Produces the following:
+# Makes the following HTTP calls available:
 #
 #     ========= ================ ===============================================
 #     HTTP Verb Path             Description
 #     ========= ================ ===============================================
-#     GET       /photos          Return a list of all photos.
+#     POST      /photos          Create a new photo.
 #     ========= ================ ===============================================
 #
 Comment::Application.routes.draw do
-    root :to => 'foo#index'
+    match(''        => redirect('/comment'), :via => :get)
+    match('comment' => 'main#create',        :via => :post)
+    match('comment' => 'main#read',          :via => :get)
 
     # This is a legacy wild controller route that's not recommended for RESTful
     # applications.  This route will make all actions in every controller

@@ -1,0 +1,14 @@
+<% content_for(:title) do %>Read<% end %>
+
+<% content_for(:body) do %>
+    <h1>Read</h1>
+    <% if 0 == @comments.size%>
+        <p>No comments.</p>
+    <% else %>
+        <ol>
+        <% @comments.each do |comment| %>
+            <li><%= comment.name %>: <%= comment.message %></li>
+        <% end %>
+        </ol>
+    <% end %>
+<% end %>
