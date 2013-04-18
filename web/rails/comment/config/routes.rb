@@ -1,60 +1,50 @@
-# Rails pushes you to create RESTful applications with the `resources` keyword.
-# For example: `resources :comment`.
+# Use <tt>rake routes<tt> to see all available routes. Remember that route
+# priority is based upon order of creation. The first route to match a URL is
+# applied, even if multiple routes match a given URL.
+#
+# Rails pushes you to create RESTful applications using the +resources+ keyword.
+# Unfortunately, a single invocation of the +resources+ keyword creates _seven_
+# different routes. For example, this:
+#
+#     resources :photos
+#
+# Produces the following:
+#
+#     ========= ================ ===============================================
+#     HTTP Verb Path             Description
+#     ========= ================ ===============================================
+#     GET       /photos          Return a list of all photos.
+#     GET       /photos/new      Return HTML form for creating a new photo.
+#     POST      /photos          Create a new photo.
+#     GET       /photos/:id      Display a specific photo.
+#     GET       /photos/:id/edit Return HTML for for editing a photo.
+#     PUT       /photos/:id      Update a specific photo.
+#     DELETE    /photos:id       Delete a specific photo.
+#     ========= ================ ===============================================
+#
+# This is overkill in many cases. Thankfully, you can get a bit more surgical
+# with +match+. For example, this:
+#
+#     match(
+#         'photos' => 'photos#index',
+#         :via => :get
+#     )
+#
+# Produces the following:
+#
+#     ========= ================ ===============================================
+#     HTTP Verb Path             Description
+#     ========= ================ ===============================================
+#     GET       /photos          Return a list of all photos.
+#     ========= ================ ===============================================
+#
 Comment::Application.routes.draw do
-    # The priority is based upon order of creation:
-    # first created -> highest priority.
-
-    # Sample of regular route:
-    #   match 'products/:id' => 'catalog#view'
-    # Keep in mind you can assign values other than :controller and :action
-
-    # Sample of named route:
-    #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
-    # This route can be invoked with purchase_url(:id => product.id)
-
-    # Sample resource route (maps HTTP verbs to controller actions automatically):
-    #   resources :products
-
-    # Sample resource route with options:
-    #   resources :products do
-    #     member do
-    #       get 'short'
-    #       post 'toggle'
-    #     end
-    #
-    #     collection do
-    #       get 'sold'
-    #     end
-    #   end
-
-    # Sample resource route with sub-resources:
-    #   resources :products do
-    #     resources :comment, :sales
-    #     resource :seller
-    #   end
-
-    # Sample resource route with more complex sub-resources
-    #   resources :products do
-    #     resources :comment
-    #     resources :sales do
-    #       get 'recent', :on => :collection
-    #     end
-    #   end
-
-    # Sample resource route within a namespace:
-    #   namespace :admin do
-    #     # Directs /admin/products/* to Admin::ProductsController
-    #     # (app/controllers/admin/products_controller.rb)
-    #     resources :products
-    #   end
-
-    # You can have the root of your site routed with "root"
-    # just remember to delete public/index.html.
     root :to => 'foo#index'
 
-    # See how all your routes lay out with "rake routes"
-
-    # This is a legacy wild controller route that's not recommended for RESTful applications.
-    # Note: This route will make all actions in every controller accessible via GET requests.
-    # match ':controller(/:action(/:id))(.:format)'
+    # This is a legacy wild controller route that's not recommended for RESTful
+    # applications.  This route will make all actions in every controller
+    # accessible via GET requests.
+    #
+    #     match ':controller(/:action(/:id))(.:format)'
+    #
 end
