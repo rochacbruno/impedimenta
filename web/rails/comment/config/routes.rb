@@ -39,10 +39,11 @@
 #     ========= ================ ===============================================
 #
 Comment::Application.routes.draw do
-    match(''             =>  redirect('/comment'),    :via  =>  :get)
-    match('comment'      =>  'main#create_comment',   :via  =>  :post)
-    match('comment'      =>  'main#read_comment',     :via  =>  :get)
-    match('comment/:id'  =>  'main#read_comment_id',  :via  =>  :get)
+    match(''                =>  redirect('/comment'),  :via  =>  :get)
+    match('comment'         =>  'main#create',         :via  =>  :post)
+    match('comment/create'  =>  'main#create',         :via  =>  :get)
+    match('comment'         =>  'main#read',           :via  =>  :get)
+    match('comment/:id'     =>  'main#read_id',        :via  =>  :get)
 
     # This is a legacy wild controller route that's not recommended for RESTful
     # applications.  This route will make all actions in every controller
