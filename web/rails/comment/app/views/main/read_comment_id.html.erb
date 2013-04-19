@@ -1,0 +1,11 @@
+<% title = "Comment #{@id}" %>
+<% content_for(:title) do %><%= title %><% end %>
+
+<% content_for(:body) do %>
+    <h1><%= title %></h1>
+    <% if nil == @comment %>
+        <p>That comment doesn't exist!</p>
+    <% else %>
+        <p><%= comment.name %>: <%= comment.message %></p>
+    <% end %>
+<% end %>
