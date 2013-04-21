@@ -1,8 +1,0 @@
-root = /run/media/ichimonji10/external1/
-root = ssh://ichimonji10@srv1.ichimonji10.name//mnt/mouse-data/
-
-auto = true
-
-ignore = Path lost+found
-ignore = Path deluge
-ignore = Path ftp_upload
