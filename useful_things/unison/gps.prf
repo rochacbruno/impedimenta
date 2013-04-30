@@ -1,5 +1,0 @@
-root = /run/media/ichimonji10/GARMIN/Garmin/GPX/
-root = ssh://ichimonji10@srv1.ichimonji10.name//mnt/mouse-data/ichimonji10/docs/OSM/garmin_dakota_20/
-
-auto = true
-fat = true
