@@ -1,4 +1,4 @@
 source 'http://rubygems.org'
 
-gem 'mysql2', '~> 0.3.11'
+gem 'sqlite3'
 gem 'rails', '= 3.2.13'
