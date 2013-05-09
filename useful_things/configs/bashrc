@@ -50,7 +50,7 @@ shopt -s histappend
 # Adds rbenv shims to `PATH`, enables auto-completion, automatically rehashes
 # shims upon shell launch, and makes `rbenv shell` and `rbenv rehash` function
 # correctly.
-if [[ -a `which rbenv` ]]; then
+if [[ -a `which rbenv 2>/dev/null` ]]; then
     eval "$(rbenv init -)"
 fi
 
