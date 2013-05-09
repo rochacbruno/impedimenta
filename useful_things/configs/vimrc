@@ -1,37 +1,76 @@
-set nocompatible        " Do not emulate vi's quirks.
-set nowrap              " Don't wrap lines.
-set textwidth=80        " Any line longer than this is automatically broken at
-                        " a whitespace boundary.
-set autoindent          " Keep current indentation level when starting new line
-set expandtab           " Tab key insert spaces instead of tab character.
-set shiftwidth=4        " Number of spaces to insert when indenting.
-set tabstop=4           " Tab character appears as four whitespace characters.
-set incsearch           " incremental search: match as you type
-set ignorecase          " Ignore case when searching...
-set smartcase           " ...except when I use caps in a search term.
+set nocompatible        " Do not emulate vi.
+set nowrap              " If a line exceeds the width of the viewport, don't
+                        " wrap it.
 set cursorline          " Highlight the current row.
 set laststatus=2        " Always show the status line.
 set rnu                 " Display relative line numbers.
-set ruler               " Show cursor's current row and column number.
-set showcmd             " Show (partial) command.
-set foldmethod=indent   " More convenient than manual, easier than custom.
-set nofoldenable        " Don't fold things by default, though.
+set ruler               " Show cursor position in status bar.
+set showcmd             " Show partial commands.
 set backspace=2         " e.g. allows me to backspace in insert mode.
 set scrolloff=2         " Buffer between cursor and top+bottom edge of viewport.
-"set undofile            " Should the undo tree be saved? Allows persistent undo.
-"set undodir="~/.vim/undo" " This directory is NOT automatically created.
-                        " TODO: automatically save undo file upon file close
+
+" Undo Tree
+" =========
+" Should the undo tree be saved? Allows for persistent undos.
+set undofile
+" "Undo files are normally saved in the same directory as the file. This can be
+" changed with the 'undodir' option." Remember to create this directory, as it
+" is NOT automatically created.
+"set undodir="~/.vim/undo"
+" Automatically write and read unfo files. These functions specify where the
+" undofiles should go, so the `undodir` command is unnecessary.
+autocmd BufReadPost * call ReadUndo()
+autocmd BufWritePost * call WriteUndo()
+
+" Searching
+" =========
+" When searching, should the cursor move through the file to the current match
+" as you type?
+set incsearch
+" Ignore case when searching...
+set ignorecase
+" ...except when I use caps in a search term.
+set smartcase
+
+" Folding
+" =======
+" Should code be folded by default?
+set foldenable
+" How should code be folded?
+set foldmethod=indent
+" When a file is read, should all folds automatically be opened? `*` matches all
+" files, and `normal` tells vim to execute the following command in normal mode
+" (as opposed to prepending the command with a `:`).
+autocmd BufRead * normal zR
+
+" Line Width
+" ==========
+" If a line exceeds this width, break it into multiple lines. Do so at a
+" whitespace boundary.
+set textwidth=80
+" Keep current indentation level when starting new line
+set autoindent
+
+" Tabbing
+" =======
+" What is the apparent width of the tab character?
+set tabstop=4
+" When the tab key is pressed, should it be expanded to spaces?
+set expandtab
+" How many spaces should be inserted when indenting or retabbing?
+set shiftwidth=4
+
 let mapleader=","
 
 nmap <F4> :set t_Co=256<CR>:color badwolf<CR>
 nmap <F5> :tabprev<CR>
 nmap <F6> :tabnew<CR>
 nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
+set tags=~/.mytags      " where to find the tags that exuberant ctags generates?
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
 nmap <F10> :UndotreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
-set tags=~/.mytags      " where to find the tags that exuberant ctags generates?
 
 nnoremap <up> <nop>
 nnoremap <right> <nop>
@@ -43,5 +82,15 @@ syntax enable           " Well *yes* I want color.
 color badwolf           " Pink! Red! Lime green!
 set background=light    " badwolf's dark variation looks nicer
 
-" Vim doesn't have built-in syntax highlighting for *.pde files, last I checked.
-"autocmd! BufNewFile,BufRead *.pde setlocal ft=arduino.vim " Horrid, but better than nothing.
+func ReadUndo()
+    if filereadable(expand('%:h') . '/.undo/' . expand('%:t'))
+        rundo %:h/.undo/%:t
+    endif
+endfunc
+func WriteUndo()
+    let dirname = expand('%:h') . '/.undo'
+    if !isdirectory(dirname)
+        call mkdir(dirname)
+    endif
+    wundo %:h/.undo/%:t
+endfunc
