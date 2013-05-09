@@ -1,26 +1,48 @@
-set nocompatible        " Do not emulate vi.
-set nowrap              " If a line exceeds the width of the viewport, don't
-                        " wrap it.
-set cursorline          " Highlight the current row.
-set laststatus=2        " Always show the status line.
-set rnu                 " Display relative line numbers.
-set ruler               " Show cursor position in status bar.
-set showcmd             " Show partial commands.
-set backspace=2         " e.g. allows me to backspace in insert mode.
-set scrolloff=2         " Buffer between cursor and top+bottom edge of viewport.
+" Other Settings
+" ==============
+" Do not emulate vi.
+set nocompatible
+" If a line exceeds the width of the viewport, don't wrap it.
+set nowrap
+" e.g. allows me to backspace in insert mode.
+set backspace=2
+" Buffer between cursor and top+bottom edge of viewport.
+set scrolloff=2
+
+" Status Indicators
+" =================
+" Highlight the current row.
+set cursorline
+" Always show the status line.
+set laststatus=2
+" Display relative line numbers.
+set rnu
+" Show cursor position in status bar.
+set ruler
+" Show partial commands.
+set showcmd
+
+" Syntax Highlighting
+" ===================
+syntax enable
+color badwolf
+set background=light " badwolf's dark variation looks nicer
 
 " Undo Tree
 " =========
 " Should the undo tree be saved? Allows for persistent undos.
 set undofile
-" "Undo files are normally saved in the same directory as the file. This can be
-" changed with the 'undodir' option." Remember to create this directory, as it
-" is NOT automatically created.
-"set undodir="~/.vim/undo"
 " Automatically write and read unfo files. These functions specify where the
 " undofiles should go, so the `undodir` command is unnecessary.
 autocmd BufReadPost * call ReadUndo()
 autocmd BufWritePost * call WriteUndo()
+" From the manual:
+"
+"     Undo files are normally saved in the same directory as the file. This can
+"     be changed with the 'undodir' option.
+"
+" Remember to create this directory, as it is NOT automatically created.
+"set undodir="~/.vim/undo"
 
 " Searching
 " =========
@@ -60,33 +82,36 @@ set expandtab
 " How many spaces should be inserted when indenting or retabbing?
 set shiftwidth=4
 
+" Key Bindings
+" ============
+" What key should 'leader' be mapped to?
 let mapleader=","
-
+" Shortcuts.
 nmap <F4> :set t_Co=256<CR>:color badwolf<CR>
 nmap <F5> :tabprev<CR>
 nmap <F6> :tabnew<CR>
 nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
-set tags=~/.mytags      " where to find the tags that exuberant ctags generates?
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
 nmap <F10> :UndotreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
-
+" Where should vim look for the tags that exuberant ctags generates?
+set tags=~/.mytags
+" Force users to use hjkl instead of arrow keys.
 nnoremap <up> <nop>
 nnoremap <right> <nop>
 nnoremap <down> <nop>
 nnoremap <left> <nop>
 
-syntax enable           " Well *yes* I want color.
-"color jellybeans        " Good for diffing.
-color badwolf           " Pink! Red! Lime green!
-set background=light    " badwolf's dark variation looks nicer
+" Functions
+" =========
 
 func ReadUndo()
     if filereadable(expand('%:h') . '/.undo/' . expand('%:t'))
         rundo %:h/.undo/%:t
     endif
 endfunc
+
 func WriteUndo()
     let dirname = expand('%:h') . '/.undo'
     if !isdirectory(dirname)
