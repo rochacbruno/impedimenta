@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title><%= yield(:title) %></title>
+        <%= stylesheet_link_tag('base') %>
+        <%= yield(:head) %>
+    </head>
+    <body>
+        <div class="navbar">
+            <h1>Site Nav</h1>
+            <ul>
+                <li>
+                    <%=
+                    link_to(
+                        'Home',
+                        :controller => 'dashboard',
+                        :action => 'read'
+                    )
+                    %>
+                </li>
+                <li>
+                    <%=
+                    link_to(
+                        'Items',
+                        :controller => 'item',
+                        :action => 'read'
+                    )
+                    %>
+                </li>
+            </ul>
+        </div>
+        <%= yield(:body) %>
+    </body>
+</html>
