@@ -1,4 +1,14 @@
 <% content_for(:body) do %>
     <h1><%= @item.name %></h1>
+    <p><%= link_to('edit', :action => 'id_update_form', :id => @item.id) %></p>
+    <%=
+    button_to(
+        'Delete',
+        :controller => 'item',
+        :action => 'id_delete',
+        :id => @item.id,
+        :method => :delete
+    )
+    %>
     <p><%= @item.description %></p>
 <% end %>

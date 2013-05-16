@@ -27,4 +27,5 @@ Elts::Application.routes.draw do
     match('item/:id/update-form' => 'item#id_update_form', :via => :get)
     match('item/:id'             => 'item#id_update',      :via => :put)
     match('item/:id'             => 'item#id_delete',      :via => :delete)
+    match('item/:id'             => 'item#id_update_delete', :via => :post)
 end

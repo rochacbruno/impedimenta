@@ -1,7 +1,7 @@
 <% content_for(:body) do %>
     <p>
         You can also
-        <%= link_to('create', :controller => 'item', :action => 'create_form') %>
+        <%= link_to('create', :action => 'create_form') %>
         a new item.
     </p>
     <% if 0 < @items.count %>
@@ -23,7 +23,6 @@
                         <td><%=
                             link_to(
                                 'details',
-                                :controller => 'item',
                                 :action => 'id_read',
                                 :id => item.id
                             )

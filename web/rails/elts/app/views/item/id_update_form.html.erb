@@ -1,3 +1,11 @@
 <% content_for(:body) do %>
-    <p>item#id_update_form</p>
+    <%
+    form_tag(
+        :action => 'id_update',
+        :id => @item.id,
+        :method => 'put'
+    ) do
+    %>
+        <%= render('edit_item_form') %>
+    <% end %>
 <% end %>
