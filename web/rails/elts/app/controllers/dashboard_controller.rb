@@ -1,6 +1,6 @@
 class DashboardController < ApplicationController
-  layout('base')
+    layout('base')
 
-  def read
-  end
+    def read
+    end
 end
