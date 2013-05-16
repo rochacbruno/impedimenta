@@ -1,3 +1,17 @@
 <% content_for(:body) do %>
-    <p>item#create_form</p>
+    <%= form_tag(:action => 'create') do %>
+        <p>
+            <label>
+                Name:
+                <input name='item[name]' value='<%= @item.name %>' />
+            </label>
+        </p>
+        <p>
+            <label>
+                Description:
+                <input name='item[description]' value='<%= @item.description %>' />
+            </label>
+        </p>
+        <p><button>Submit</button></p>
+    <% end %>
 <% end %>

@@ -1,3 +1,38 @@
 <% content_for(:body) do %>
-    <p>item#read</p>
+    <p>
+        You can also
+        <%= link_to('create', :controller => 'item', :action => 'create_form') %>
+        a new item.
+    </p>
+    <% if 0 < @items.count %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Tags</th>
+                    <th>Links</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% @items.each do |item| %>
+                    <tr>
+                        <td><%= item.name %></td>
+                        <td><%= item.description %></td>
+                        <td>FIXME</td>
+                        <td><%=
+                            link_to(
+                                'details',
+                                :controller => 'item',
+                                :action => 'id_read',
+                                :id => item.id
+                            )
+                        %></td>
+                    </tr>
+                <% end %>
+            </tbody>
+        </table>
+    <% else %>
+        <p>No items!</p>
+    <% end %>
 <% end %>
