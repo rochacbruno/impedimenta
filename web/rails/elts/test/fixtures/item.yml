@@ -1,0 +1,11 @@
+# This file is used to populate a database table of the same name in
+# anticipation of unit testing. Table descriptions in db/migrate/schema.rb.
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+    name: 'flac'
+    description: 'flac (1) - Free Lossless Audio Codec'
+
+two:
+    name: 'fstab-encode'
+    description: 'fstab-decode (8) - run a command with fstab-encoded arguments'
