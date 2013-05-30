@@ -88,6 +88,8 @@ nmap <F10> :UndotreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
 " Where should vim look for the tags that exuberant ctags generates?
 set tags=~/.mytags
+" Allows e.g. ruby method name `has_key?` to be looked up.
+set iskeyword+=?
 " Force users to use hjkl instead of arrow keys.
 nnoremap <up> <nop>
 nnoremap <right> <nop>
