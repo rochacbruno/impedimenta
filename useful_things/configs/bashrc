@@ -35,10 +35,12 @@ alias t='todo.sh'
 export EDITOR="vim"
 export EMAIL="ichimonji10@gmail.com"
 export GEM_HOME=~/.gem/ruby/2.0.0
+export PATH="${PATH}:/usr/bin/vendor_perl"
 export PS1='[\u@\[\e[1;36m\]\h:\W\[\e[0;0m\]]\$ '
 # GEM_HOME: This forces bundler to install gems on a per-user basis, instead of
 # system-wide. This matches the default `gem` behaviour on Arch Linux, and it
 # also allows gems to be installed without `sudo`.
+# PATH: add `vendor_perl` for `ack` command
 
 # Check window size after each command if update LINES and COLUMNS if necessary
 shopt -s checkwinsize
