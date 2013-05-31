@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Test Page</title>
+        <script>
+            function showme(){
+                var selection = document.form1.select1;
+                var hiddenField = document.form1.input1;
+                if(selection.selectedIndex == 1) {
+                    hiddenField.style.visibility="visible";
+                } else {
+                    hiddenField.style.visibility="hidden";
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <p>If I have a select drop down list and a hidden text field. I want the
+        hidden field to show as a text field when I select option2 in the select
+        box, for example:</p>
+        <form name="form1">
+            <select name="select1" onchange="showme()">
+                <option value="1"> option1
+                <option value="2"> option2
+                <option value="3"> option3
+            </select>
+            <input type ="text" name="input1" style=" position:relative;visibility:hidden;" value="hello">
+        </form>
+    </body>
+</html>
