@@ -4,6 +4,7 @@ root = ssh://ichimonji10@srv1.ichimonji10.name//mnt/mouse-data/ichimonji10/
 auto = true
 
 # ichimonji10.name dirs to ignore
+ignore = Path audiobooks
 ignore = Path music
 ignore = Path games
 ignore = Path OSs
