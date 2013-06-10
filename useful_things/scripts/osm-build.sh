@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 
 region='us-northeast-latest'
+random=`echo $RANDOM | sed -e :a -e 's/^.\{1,7\}$/&0/;ta'`
 
 wget http://download.geofabrik.de/north-america/${region}.osm.pbf
 splitter ${region}.osm.pbf
@@ -13,6 +14,7 @@ osmfilter ${region}.o5m \
 java -cp /usr/share/java/mkgmap/mkgmap.jar \
     uk.me.parabola.mkgmap.reader.osm.boundary.BoundaryPreprocessor \
     ${region}-boundaries.o5m \
+    --mapname=$random \
     bounds
 mkgmap \
     --route \
@@ -20,4 +22,5 @@ mkgmap \
     --bounds=bounds \
     --index \
     --gmapsupp \
+    --mapname=$random \
     6324*.osm.pbf
