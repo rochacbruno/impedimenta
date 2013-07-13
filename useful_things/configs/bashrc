@@ -12,31 +12,48 @@
 # for printing out machine stats _only_ upon first login. `.bashrc` is great
 # for just about everything else.
 #
+# interactive user check
+# ======================
+#
+[[ $- != *i* ]] && return
+#
 # If the shell is not running interactively, immediately return. Some programs,
 # such as SCP, will malfunction if you execute statements such as "cat". ($-
 # returns a string containing "i" if the shell is interactive)
-#
-# PS1 hidden characters should be placed inside \[these\]. If not done, the
-# cursor position and actual character position will be offset incorrectly.
-# Start colorization sequence: \e[XXm
-# End colorization sequence: \e[0m
-#
-
-[[ $- != *i* ]] && return
 
 alias grep='grep --color=auto'
 alias less='less -R'
-alias ls='ls      --color=auto --group-directories-first'
-alias l='ls       --color=auto --group-directories-first'
-alias ll='ls -lha --color=auto --group-directories-first'
+alias ls='ls --color=auto --group-directories-first'
+alias l='ls'
+alias ll='ls -lha'
+alias railsfind='find . \( -path ./vendor/bundle -o -path ./doc/app -o -path ./tmp -o -path ./.svn -o -path ./log \) -prune -o -type f -print'
 alias rm='rm -I'
 alias t='todo.sh'
+
+# TODO: scope variables
+#RESET='0;0'
+#BLACK='0;30'
+#RED='0;31'
+#GREEN='0;32'
+#YELLOW='0;33'
+#BLUE='0;34'
+#PURPLE='0;35'
+#CYAN='0;36'
+#WHITE='0;37'
+
+# Color codes should be placed inside \[these\]. If not done, the apparent and
+# actual cursor position will differ.
+#
+# TODO: expand function definition
+color() {
+    echo "\[\e[${1}m\]"
+}
 
 export EDITOR="vim"
 export EMAIL="ichimonji10@gmail.com"
 export GEM_HOME=~/.gem/ruby/2.0.0
-export PATH="${PATH}:/usr/bin/vendor_perl"
-export PS1='[\u@\[\e[1;36m\]\h:\W\[\e[0;0m\]]\$ '
+export PAGER=less
+export PS1="[\u@$(color '0;36')\h$(color '0;0'):$(color '0;36')\W$(color '0;0')]\$ "
 # GEM_HOME: This forces bundler to install gems on a per-user basis, instead of
 # system-wide. This matches the default `gem` behaviour on Arch Linux, and it
 # also allows gems to be installed without `sudo`.
