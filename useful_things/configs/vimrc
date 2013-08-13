@@ -25,8 +25,8 @@ set showcmd
 " Syntax Highlighting
 " ===================
 syntax enable
-color badwolf
-set background=light " badwolf's dark variation looks nicer
+set t_Co=256
+color jellybeans
 
 " Undo Tree
 " =========
@@ -78,7 +78,6 @@ set shiftwidth=4
 " What key should 'leader' be mapped to?
 let mapleader=","
 " Shortcuts.
-nmap <F4> :color default<CR>:set t_Co=256<CR>:color badwolf<CR>
 nmap <F5> :tabprev<CR>
 nmap <F6> :tab split<CR>
 nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
