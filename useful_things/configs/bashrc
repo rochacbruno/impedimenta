@@ -24,11 +24,11 @@
 alias grep='grep --color=auto'
 alias less='less -R'
 alias ls='ls --color=auto --group-directories-first'
-alias l='ls'
+alias l='ls -1'
 alias ll='ls -lha'
 alias railsfind='find . \( -path ./vendor/bundle -o -path ./doc/app -o -path ./tmp -o -path ./.svn -o -path ./log \) -prune -o -type f -print'
 alias rm='rm -I'
-alias t='todo.sh'
+alias d='dirs -v'
 
 # TODO: scope variables
 #RESET='0;0'
