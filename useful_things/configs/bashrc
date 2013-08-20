@@ -26,7 +26,7 @@ alias less='less -R'
 alias ls='ls --color=auto --group-directories-first'
 alias l='ls -1'
 alias ll='ls -lha'
-alias railsfind='find . \( -path ./vendor/bundle -o -path ./doc/app -o -path ./tmp -o -path ./.svn -o -path ./log \) -prune -o -type f -print'
+alias railsfind='find -L . \( -path ./vendor/bundle -o -path ./doc/app -o -path ./tmp -o -path ./.svn -o -path ./log \) -prune -o -type f -print'
 alias rm='rm -I'
 alias d='dirs -v'
 
@@ -53,7 +53,7 @@ export EDITOR="vim"
 export EMAIL="ichimonji10@gmail.com"
 export GEM_HOME=~/.gem/ruby/2.0.0
 export PAGER=less
-export PS1="[\u@$(color '0;36')\h$(color '0;0'):$(color '0;36')\W$(color '0;0')]\$ "
+export PS1="[$(color '0;36')\u$(color '0;0')@$(color '0;36')\h$(color '0;0'):\W]\$ "
 # GEM_HOME: This forces bundler to install gems on a per-user basis, instead of
 # system-wide. This matches the default `gem` behaviour on Arch Linux, and it
 # also allows gems to be installed without `sudo`.
