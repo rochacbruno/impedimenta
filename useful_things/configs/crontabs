@@ -1,12 +1,11 @@
-# * * * * *     command to be executed
-# - - - - -
-# | | | | |
-# | | | | +----- day of week (0 - 6) (Sunday=0)
-# | | | +------- month (1 - 12)
-# | | +--------- day of        month (1 - 31)
-# | +----------- hour (0 - 23)
-# +------------- min (0 - 59)
-0 *    * * *    reflector -l 5 --sort rate --save /etc/pacman.d/mirrorlist
-0 */12 * * *    pkgfile --update
-1 */12 * * *    ctags -R -o ~/.mytags ~/code
-0 5    * * *    /var/local/bin/hg-bacups.sh
+# * * * * *  command to be executed
+# | | | | `- day of week (0 - 6) (Sunday=0)
+# | | | `--- month (1 - 12)
+# | | `----- day of        month (1 - 31)
+# | `------- hour (0 - 23)
+# `--------- min (0 - 59)
+4  */12 * * * reflector -l 5 --sort rate --save /etc/pacman.d/mirrorlist
+8  */12 * * * pkgfile --update
+12 */12 * * * rsync -rlptgo --delete /mnt/data1/http/        /mnt/data2/http/
+12 */12 * * * rsync -rlptgo --delete /mnt/data1/ftp_upload/  /mnt/data2/ftp_upload/
+12 */12 * * * rsync -rlptgo --delete /mnt/data1/ichimonji10/ /mnt/data2/ichimonji10/
