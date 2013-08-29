@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>Lab 2, Part 3</title>
+    <style type='text/css'>
+        /*
+        Although the whatwg states that "The default value for the type
+        attribute, which is used if the attribute is absent, is 'text/css',"
+        jigsaw.w3.org/css-validator/ will complain if `type` is absent.
+        */
+        canvas#picture {
+            display: block;
+            width: 500px;
+            height: 500px;
+            border: 2px solid black;
+        }
+    </style>
+    <script>
+        function drawPicture() {
+            var picture = document.getElementById('picture');
+            var g = picture.getContext('2d');
+
+            g.fillStyle = 'red';
+            g.fillRect(0, 0, 500, 500);
+
+            g.fillStyle = 'white';
+            g.fillRect(150, 350, 200, 200);
+
+            g.strokeSytle = 'black';
+            g.lineWidth = 5;
+            g.strokeRect(150, 350, 200, 200);
+
+            g.fillStyle = 'yellow';
+            g.strokeStyle = 'black';
+            g.beginPath();
+            g.arc(250, 250, 100, 0, Math.PI * 2, true);
+            g.closePath();
+            g.fill();
+            g.stroke();
+
+            g.strokeStyle = 'black';
+            g.beginPath();
+            g.moveTo(200, 300);
+            g.lineTo(300, 300);
+            g.moveTo(250, 240);
+            g.lineTo(270, 265);
+            g.lineTo(250, 265);
+            g.stroke();
+        }
+    </script>
+    <!-- [if lt IE 9] >
+    <script>
+        var e = (
+            "abbr,article,aside,audio,canvas,datalist,details,figure,footer," +
+            "header,hgroup,mark,menu,meter,nav,output,progress,section,time," +
+            "video"
+        ).split(',');
+        for (var i = 0; i < e.length; i++) {
+            document.createElement(e[i]);
+        }
+    </script>
+    <! [endif] -->
+</head>
+<body onload='drawPicture()'>
+    <canvas id='picture'>
+        Your browser does not support the &lt;canvas&gt; tag.
+    </canvas>
+</body>
+</html>

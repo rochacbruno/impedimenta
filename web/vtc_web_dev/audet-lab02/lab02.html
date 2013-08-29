@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>HTML5 Test</title>
+    <style type='text/css'>
+        /* Although the whatwg states that "The default value for the type
+         * attribute, which is used if the attribute is absent, is 'text/css',"
+         * jigsaw.w3.org/css-validator/ will complain if `type` is absent.
+         */
+        body {
+            max-width: 50em;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #06C;
+        }
+        /* The user agent stylesheets for Firefox, Opera, Chromium, and Google
+         * Chrome all set the `display: block` attribute on `section` and
+         * `header` elements.
+         */
+        body > header,
+        body > section {
+            padding: 0.5em;
+            margin-bottom: 0.5em;
+            background-color: white;
+            box-shadow: 0 0 5em 0 white;
+            border-radius: 0.5em;
+        }
+        nav ul li a {color: #C00;}
+        nav ul li a:hover {color: #FC3;}
+    </style>
+    <!-- [if lt IE 9] >
+    <script>
+        var e = (
+            "abbr,article,aside,audio,canvas,datalist,details,figure,footer," +
+            "header,hgroup,mark,menu,meter,nav,output,progress,section,time," +
+            "video"
+        ).split(',');
+        for (var i = 0; i < e.length; i++) {
+            document.createElement(e[i]);
+        }
+    </script>
+    <! [endif] -->
+</head>
+<body>
+    <header>
+        <!--
+        Notice the absence of a <hgroup> element. This is because "The hgroup
+        element is obsolete" and "Element hgroup not allowed as child of element
+        header in this context."
+        -->
+        <h1>HTML5 Example</h1>
+        <h2>This is an example page with filler content.</h2>
+        <nav>
+            <ul>
+                <li><a href='http://yahoo.com'>Home</a></li>
+                <li><a href='http://www.vtc.edu'>VTC</a></li>
+                <li><a href='http://www.google.com'>Google</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section>
+        <h1>An Example Form</h1>
+        <p>
+            This is a standard HTML form. We haven't written any JavaScript to
+            make it do anything; it is just filler.
+        </p>
+        <form>
+            <p>
+                <label>
+                    Name:<br />
+                    <input
+                        name='name'
+                        type='text'
+                        placeholder='Your Name'
+                        required='required'
+                    >
+                </label>
+            </p>
+            <p>
+                <label>
+                    Email Address:<br />
+                    <input
+                        name='email'
+                        type='email'
+                        placeholder='Your Email'
+                        required='required'
+                    >
+                </label>
+            </p>
+            <p>
+                <label>
+                    Password:<br />
+                    <input
+                        name='pwd'
+                        type='password'
+                        placeholder='Your Password'
+                        required='required'
+                    >
+                </label>
+            </p>
+            <button>Submit</button>
+        </form>
+    </section>
+</body>
+</html>
