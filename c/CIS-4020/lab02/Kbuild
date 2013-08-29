@@ -1,0 +1,3 @@
+obj-m += syscall_counters.o
+
+syscall_counters.o:       syscall_counters.c
