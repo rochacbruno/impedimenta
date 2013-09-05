@@ -1,0 +1,117 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FILE    : lab-report.tex
+% SUBJECT : CIS-4020 Lab 2 report
+% AUTHOR  : Jeremy Audet <ichimonji10 at gmail dot com>
+% LICENSE : Public Domain
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\usepackage{fancyvrb}
+\usepackage[pdftex]{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{url}
+
+% The following are settings for the listings package.
+% See the listings package documentation for more information.
+\lstset{
+    language=C,
+    basicstyle=\small,
+    stringstyle=\ttfamily,
+    commentstyle=\ttfamily,
+    xleftmargin=0.25in,
+    showstringspaces=false
+}
+
+% Macros
+% ------
+% For the names of files in the file system.
+\newcommand{\filename}[1]{\texttt{#1}}
+% For commands typed at a console/terminal prompt.
+\newcommand{\command}[1]{\texttt{#1}}
+% The listings package provides a (better?) alternative.
+\newcommand{\code}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{CIS-4020 Lab \#2\\TITLE}
+\author{Jeremy Audet\thanks{Ichimonji10@gmail.com}\\
+    Vermont Technical College}
+    \date{September 05, 2013}
+    \maketitle
+
+\begin{abstract}
+    The purpose of this lab was to capture information from within the kernel
+    and write a module which exposed that information as a "proc" file. This
+    report details the procedure necessary to accomplish the aforementioned
+    goals.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+The kernel makes several hundred system calls available to user-land programs.
+These system calls provide programs the ability to perform actions such as
+opening a file or determining their current process ID. These system calls are
+typically exposed through standard C functions such as \code{getpid()}, but they
+can be called more directly by including kernel headers and using the
+\code{syscall()} function.
+
+In this lab, the kernel is forced to count how many times each system call is
+used. A loadable module is then written which exposes this information to the
+user as a proc file.
+
+\section{Procedure}
+\label{sec:procedure}
+
+\begin{enumerate}
+    \item Edit \filename{arch/x86/kernel/sys\_x86\_64.c}. Add the following
+        below the \code{\#include} statements:
+        \begin{lstlisting}
+// see arch/x86/include/generated/asm/unistd_64.h
+unsigned long long syscall_counts[313];
+EXPORT_SYMBOL(syscall_counts);
+        \end{lstlisting}
+
+    \item Edit \filename{arch/x86/kernel/entry\_64.S}. Add the following at line
+        531:
+        \begin{lstlisting}
+// Increment syscall_counts[%rax]
+incq syscall_counts(,%rax,8)
+        \end{lstlisting}
+
+\lstset{ language=bash }
+
+    \item Compile the kernel, install it, and see if things are still working.
+        From the root of the linux 3.6.11 source code:
+        \begin{lstlisting}
+$ make
+# make modules_install
+# rsync -t arch/x86/boot/bzImage /boot/vmlinuz-3.6.11
+# rsync -t .config /boot/config-3.6.11
+# rsync -t System.map /boot/System.map-3.6.11
+        \end{lstlisting}
+
+    \item Flesh out the skeleton kernel module provided by Peter Chapin. You can
+        see the results in \filename{syscall\_counters.c}.
+
+    \item Build the new module, insert it, and see what happens.
+        \begin{lstlisting}
+$ ls
+Kbuild  Makefile  syscall_counters.c
+$ make
+# insmod syscall_counters.ko
+$ less /proc/syscall_counters
+# rmmod syscall_counters
+        \end{lstlisting}
+\end{enumerate}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this lab, I forced the kernel to track how many times each system call was
+used. A loadable module was written which exposed this information to userland
+programs as a proc file.
+
+\end{document}
