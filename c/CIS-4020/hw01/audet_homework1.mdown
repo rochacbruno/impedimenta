@@ -1,0 +1,117 @@
+Jeremy Audet  
+Professor Peter Chapin  
+CIS-4020  
+Friday, August 30, 2013  
+
+Homework #1
+===========
+
+Some of the questions below may require you to browse the kernel source code.
+You can use the cscope-linux command on HackBox.
+
+Question 1
+----------
+
+Can a process accidentally try to invoke a system call that does not exist? If
+not, why is it impossible? If so, how could it happen and what does the kernel
+do in response?
+
+Answer 1
+--------
+
+Yes, it is possible for a program to invoke a system call that does not exist.
+All system calls are identified by a certain integer. A non-existent system call
+can be invoked by using an inappropriate integer. On my system, the kernel
+responds to requests for non-existent system calls by returning -1.
+
+See the file q1.c for an example of how to make both correct and incorrect
+system calls.
+
+Question 2
+----------
+
+The system call numbers assigned to each system call can, in effect, never be
+changed once they are assigned. Why not?
+
+Answer 2
+--------
+
+System call numbers can, technically, be changed after they're assigned.
+However, system call numbers are an integral part of the interface between the
+kernel and user mode applications. If a system call number is changed, all
+applications which expect the old system call number to be available will break.
+
+Question 3
+----------
+
+What does the ptrace system call do? If you consult online resources, give
+appropriate references in your answer.
+
+Answer 3
+--------
+
+PTRACE(2) states: "The ptrace() system call provides a means by which one
+process (the "tracer") may observe and control the execution of another process
+(the "tracee"), and examine and change the tracee's memory and registers. It is
+primarily used to implement breakpoint debugging and system call tracing."
+
+In other words, `ptrace()` is a wonderful debugging tool. You can stop, fiddle
+with, and restart individual threads of a program.
+
+Question 4
+----------
+
+In some systems it is possible for a kernel module to "hook" a system call by
+replacing the call's entry in the system call table with a pointer to a function
+provided by the module. That function could then do some extra processing before
+(or after) the original system call. There are a number of applications where
+this is useful (debugging, security, auditing), however Linux does not allow
+modules to hook system calls in this way. Would it be possible to modify the
+Linux kernel to allow modules to hook system calls? If not, why not? If so, how
+would it be done? Why do you think the Linux developers chose not to support
+this feature? Hint: Consider the case where two independent modules try to hook
+the same system call. Consider especially what might happen when the modules are
+unloaded.
+
+Answer 4
+--------
+
+Yes, it is possible to modify the Linux kernel so that modules can hook system
+calls. I don't know exactly how this would be accomplished, but my programming
+common sense tells me that this is possible.
+
+_Consider the case where two independent modules try to hook the same system
+call. Consider especially what might happen when the modules are unloaded._
+
+Let's say a module hooks `getpid` and wraps it with a function called `fn1`.
+Now let's say that another module hooks `getpid` with `fn2`. When `getpid` is
+called, the following set of function calls would be produced:
+
+    fn2() --> fn1() --> getpid() --> ...
+
+Now let's say that the module which provided `fn1` is unloaded. When `getpid` is
+called, `fn2` (the "top" wrapper) will run and attempt to call `fn1`. However,
+`fn1` no longer exists, and some undefined exception would occur. The following
+set of function calls would be produced:
+
+    fn2() --> ???
+
+Question 5
+----------
+
+Traditionally Unix has had a system call creat for creating new files and a
+separate system call open for opening existing files. POSIX requires that open
+be able to also create files given appropriate flags, making creat technically
+unnecessary. In Linux how does creat differ from open? Hint: Look up the
+implementation of creat in the kernel source using cscope. Because system calls
+are defined in a special way you should search for uses of SYSCALL\_DEFINE2 and
+SYSCALL\_DEFINE3 to find all system calls with two or three parameters
+respectively. Then search those lists manually for the calls you are interested
+in studying.
+
+Answer 5
+--------
+
+`sys_creat` simply calls `sys_open` with several arguments set. In other words,
+`sys_creat` is a convenient wrapper for `sys_open` in the same way that
+functions like `getpid` are a convenient wrapper for `syscall`.

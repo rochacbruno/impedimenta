@@ -16,9 +16,12 @@ Useful references:
 
 */
 #include <sys/syscall.h>
+#include <unistd.h>
 #include <stdio.h>
 
 int main(void) {
+    // warning: format '%ld' expects argument of type 'long int', but argument 2
+    // has type '__pid_t' [-Wformat=]
     printf("getpid(): %ld\n", getpid());
     printf("syscall(__NR_getpid): %ld\n", syscall(__NR_getpid));
     printf("syscall(SYS_getpid): %ld\n", syscall(SYS_getpid));
