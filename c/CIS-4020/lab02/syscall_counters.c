@@ -82,7 +82,7 @@ static void counter_seq_stop(struct seq_file *s, void *bookmark) {
 static int counter_seq_show(struct seq_file *s, void *bookmark) {
     // sc_location is the current location within `syscall_counts`
     unsigned long long * sc_location = (unsigned long long *)bookmark;
-    int syscall_id = sc_location - syscall_counts;
+    int syscall_id = sc_location - syscall_counts + 1;
     if(0 > seq_printf(s, "%d %lld\n", syscall_id, *sc_location)) {
         return -1;
     }

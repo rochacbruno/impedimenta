@@ -24,15 +24,6 @@
     showstringspaces=false
 }
 
-% Macros
-% ------
-% For the names of files in the file system.
-\newcommand{\filename}[1]{\texttt{#1}}
-% For commands typed at a console/terminal prompt.
-\newcommand{\command}[1]{\texttt{#1}}
-% The listings package provides a (better?) alternative.
-\newcommand{\code}[1]{\texttt{#1}}
-
 \begin{document}
 
 \title{CIS-4020 Lab \#2\\TITLE}
@@ -42,76 +33,201 @@
     \maketitle
 
 \begin{abstract}
-    The purpose of this lab was to capture information from within the kernel
-    and write a module which exposed that information as a "proc" file. This
-    report details the procedure necessary to accomplish the aforementioned
-    goals.
+The purpose of this lab is to capture information from within the kernel
+and write a module which exposes that information as a "proc" file.
 \end{abstract}
 
 \section{Introduction}
 \label{sec:introduction}
 
-The kernel makes several hundred system calls available to user-land programs.
+The kernel makes several hundred system calls available to usermode programs.
 These system calls provide programs the ability to perform actions such as
 opening a file or determining their current process ID. These system calls are
-typically exposed through standard C functions such as \code{getpid()}, but they
-can be called more directly by including kernel headers and using the
-\code{syscall()} function.
+typically exposed through standard C functions such as \texttt{getpid()}, but
+they can be called more directly by including kernel headers and using the
+\texttt{syscall()} function.
 
-In this lab, the kernel is forced to count how many times each system call is
-used. A loadable module is then written which exposes this information to the
+In this lab, the kernel is instructed to count how many times each system call
+is used. A loadable module is then written which exposes this information to the
 user as a proc file.
 
 \section{Procedure}
 \label{sec:procedure}
 
 \begin{enumerate}
-    \item Edit \filename{arch/x86/kernel/sys\_x86\_64.c}. Add the following
-        below the \code{\#include} statements:
-        \begin{lstlisting}
+\item Edit \texttt{arch/x86/kernel/sys\_x86\_64.c}. Add the following below the
+\texttt{\#include} statements:
+\begin{lstlisting}
 // see arch/x86/include/generated/asm/unistd_64.h
 unsigned long long syscall_counts[313];
 EXPORT_SYMBOL(syscall_counts);
-        \end{lstlisting}
+\end{lstlisting}
 
-    \item Edit \filename{arch/x86/kernel/entry\_64.S}. Add the following at line
-        531:
-        \begin{lstlisting}
+\item Edit \texttt{arch/x86/kernel/entry\_64.S}. Add the following at line 531:
+\begin{lstlisting}
 // Increment syscall_counts[%rax]
 incq syscall_counts(,%rax,8)
-        \end{lstlisting}
+\end{lstlisting}
 
-\lstset{ language=bash }
-
-    \item Compile the kernel, install it, and see if things are still working.
-        From the root of the linux 3.6.11 source code:
-        \begin{lstlisting}
+\item Compile the kernel, install it, and see if things are still working.  From
+the root of the linux 3.6.11 source code:
+\begin{Verbatim}
 $ make
 # make modules_install
 # rsync -t arch/x86/boot/bzImage /boot/vmlinuz-3.6.11
 # rsync -t .config /boot/config-3.6.11
 # rsync -t System.map /boot/System.map-3.6.11
-        \end{lstlisting}
+\end{Verbatim}
 
-    \item Flesh out the skeleton kernel module provided by Peter Chapin. You can
-        see the results in \filename{syscall\_counters.c}.
+\item Flesh out the skeleton kernel module provided by Peter Chapin. The
+interesting changes are shown in figures \ref{fig:start-function},
+\ref{fig:next-function} and \ref{fig:show-function}.
 
-    \item Build the new module, insert it, and see what happens.
-        \begin{lstlisting}
+\item Build the new module, insert it, and see what happens.
+\begin{Verbatim}
 $ ls
 Kbuild  Makefile  syscall_counters.c
 $ make
 # insmod syscall_counters.ko
-$ less /proc/syscall_counters
+$ head /proc/syscall_counters
+1 144825
+2 55604
+3 43613
+4 48671
+5 20792
+6 27382
+7 6413
+8 67908
+9 16230
+10 38263
+$ tail /proc/syscall_counters
+304 0
+305 0
+306 0
+307 0
+308 0
+309 0
+310 0
+311 0
+312 0
+313 0
 # rmmod syscall_counters
-        \end{lstlisting}
+\end{Verbatim}
 \end{enumerate}
+
+\section{Discussion}
+\label{sec:discussion}
+
+It is impossible to collect information about how many times each system call is
+used with user-mode code. If the kernel developers had decided to provide a
+callback mechanism which could call arbitrary code before each system call, this
+might be possible, but no such mechanism has been made available. Instead, the
+kernel itself must be modified to accomplish this task. This is why the
+\texttt{syscall\_counts} array is declared and exported inside
+\texttt{arch/x86/include/generated/asm/unisted\_64.h}.
+
+With the \texttt{syscall\_counts} array in place, it must be populated. The
+assembly code inserted into \texttt{arch/x86/kernel/entry\_64.s} accomplishes
+this task.
+
+The \texttt{counter\_seq\_start}\ref{fig:start-function},
+\texttt{counter\_seq\_next}\ref{fig:next-function} and
+\texttt{counter\_seq\_show}\ref{fig:show-function} functions extract information
+from the \texttt{syscall\_counts} array and present it to the user. They use the
+"seq api" to perform this task.
+
+The first function returns a pointer to the Nth element of array
+\texttt{syscall\_counts}. If the requested array element does not exist, it
+returns \texttt{NULL}.
+
+The second function behaves much like the first function, except that it also
+increments the value pointed to by the \texttt{record\_number} variable.
+
+The third function returns a formatted string containing a system call ID number
+and the number of times that system call has been used. Finding the number of
+times a given system call has been used is simple: just dereference the argument
+\texttt{bookmark}, which is a pointer to a certain element of
+\texttt{syscall\_counts}. Determining which system call ID is being interrogated
+is trickier: the difference between \texttt{bookmark} and the beginning address
+of \texttt{syscall\_counts} must be calculated, like this:
+\begin{lstlisting}
+int syscall_id = sc_location - syscall_counts + 1;
+\end{lstlisting}
 
 \section{Conclusion}
 \label{sec:conclusion}
 
 In this lab, I forced the kernel to track how many times each system call was
-used. A loadable module was written which exposed this information to userland
+used. A loadable module was written which exposed this information to usermode
 programs as a proc file.
+
+\section{Appendix}
+\label{sec:appendix}
+
+\begin{figure}[tbhp] % place fig top, bottom, here, or alone on page
+\label{fig:start-function}
+\begin{lstlisting}[
+    frame=single,
+    caption={Start Function},
+    xleftmargin=0in
+]
+// This function is called each time the application calls read(). It starts the
+// process of accumulating data to fill the application buffer. Return a pointer
+// representing the current item. Return NULL if there are no more items.
+static void *counter_seq_start(struct seq_file *s, loff_t *record_number) {
+    if(NUM_SYSCALLS <= *record_number) {
+        return NULL;
+    }
+    return & syscall_counts[*record_number];
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[tbhp] % place fig top, bottom, here, or alone on page
+\label{fig:next-function}
+\begin{lstlisting}[
+    frame=single,
+    caption={Next Function},
+    xleftmargin=0in
+]
+// This function is called to compute the next record in the sequence given a
+// pointer to the current record (in bookmark). It returns a pointer to the new
+// record (essentially, an updated bookmark) and updates *record_number
+// appropriately. Return NULL if there are no more items.
+static void *counter_seq_next(
+    struct seq_file *s,
+    void *bookmark,
+    loff_t *record_number
+) {
+    (*record_number) += 1;
+    if(NUM_SYSCALLS <= *record_number) {
+        return NULL;
+    }
+    return & syscall_counts[*record_number];
+}
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[tbhp] % place fig top, bottom, here, or alone on page
+\label{fig:show-function}
+\begin{lstlisting}[
+    frame=single,
+    caption={Show Function},
+    xleftmargin=0in
+]
+// This function is called after next to actually compute the output. It can use
+// various seq_... printing functions (such as seq_printf) to format the
+// output. It returns 0 if successful or a negative value if it fails.
+static int counter_seq_show(struct seq_file *s, void *bookmark) {
+    // sc_location is the current location within `syscall_counts`
+    unsigned long long * sc_location = (unsigned long long *)bookmark;
+    int syscall_id = sc_location - syscall_counts + 1;
+    if(0 > seq_printf(s, "%d %lld\n", syscall_id, *sc_location)) {
+        return -1;
+    }
+    return 0;
+}
+\end{lstlisting}
+\end{figure}
 
 \end{document}
