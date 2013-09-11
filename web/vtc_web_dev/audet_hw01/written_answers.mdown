@@ -1,0 +1,137 @@
+Jeremy Audet  
+Jean Hakim  
+CIS-2450-TH1 Advanced Web Technologies  
+Due 2013-09-04  
+
+Assignment 1
+============
+
+Analyzing Existing Mashups (10 points)
+--------------------------------------
+
+### Question 1
+
+There are tradeoffs to consider when deciding whether to implement a mashup on
+the client or on the server. Describe two advantages of client-side mashup
+programming and two advantages of server-side mashup programming.
+
+### Answer 1
+
+Implementing a mashup client-side provides the following advantages:
+
+1.  Lower Overhead
+
+    Implementing a web mashup client-side obviates the need for a server. This
+    means fewer administrative headaches and lesser monetary costs. The more
+    popular a web mashup becomes, the more important this point becomes. A
+    hugely sucessful web mashup may consume terabytes of bandwidth or disk space
+    and considerable processing power, and these resources are not free.
+
+2.  Responsiveness
+
+    Implementing functionality client-side can considerably improve the
+    responsiveness of a mashup. Performing tasks such as communicating with or
+    retriving resources from a server can consume a considerable amount of time.
+
+Implementing a mashup server-side provides the following advantages:
+
+1.  Consistency
+
+    The clients of a web mashup are a highly diverse set of agents. Each client
+    may be using a different web browser, operating system and set of libraries,
+    and each of those may be of a different version. All of this variability
+    presents a strong argument for moving business logic to a server. By moving
+    business logic to a server, you can be assured that those parts of your
+    mashup will act consistently.
+
+2.  Heavy-duty data manipulation
+
+    Some websites cannot, within reason, perform data manipulation client-side.
+    For example, it is unreasonable for each visitor of
+    [HousingMaps](www.housingmaps.com) to independently scrape housing ad data
+    from Craigslist. Craigslist would be flooded with unnecessary web traffic,
+    and clients would experience unnecessary delays as they scraped data, parsed
+    it, and attempted to compile that information into a useful format.
+
+### Question 2
+
+Study each of the following mashups, and determine where the "mashing" is taking
+place. Characterize each mashup as Client-side, Server-side, or Both. If the
+answer is Both, briefly describe what happens in the client and what happens in
+the server. You may need to peek at the source code or read the author's
+documentation in order to uncover enough of the implementation details to answer
+correctly.
+
+* [Twitrans](http://www.onehourtranslation.com/translation/twitrans-translate-your-tweets-any-language-human-translators)
+* [Gimme Shiny!](http://gimmeshiny.com/)
+* [Woozor](http://woozor.com/)
+* [The Ad Generator](http://www.theadgenerator.org/)
+
+### Answer 2
+
+__Twitrans__ is a __server-side__ mashup. The web page states that "we route
+your text to our translators at our translation service, One Hour Translation".
+The translation is clearly being performed server-side.
+
+__Gimme Shiny!__ is a __client-side__ mashup. All necessary business logic is
+expressed as JavaScript. A peek at the JavaScript shows that clients are
+responsible for both fetching and rendering images. Clients _do_ ask servers for
+particular resources, so there is some element of server-side programming. For
+example, a client might ask Reddit for a set of 60 image URLs in the form of an
+RSS feed. However, these server-side resources were already present before the
+mashup was created, so the mashup is best categorized as client-side.
+
+__Woozor__ is a __client-side__ mashup. Just as with Gimme Shiny!, all necessary
+business logic is expressed as JavaScript, and the client is responsible for
+both fetching and rendering map data and weather data. Put another way, all the
+ncessary components, such as map and weather data, were already present, and it
+is the responsiblity of the client to fetch that information and knit it
+together.
+
+__The Ad Generator__ appears to be a __client-side__ mashup. Yet again, the
+client is responsible for pulling together already-existing resources together.
+
+Visualizing the Space of Mashups
+--------------------------------
+
+*apis_and_websites.png* and *apis_and_websites.svg* graph out the relationships
+between some of the most popular APIs and mashups listed on [Programmable
+Web](http://www.programmableweb.com). *apis_and_websites.dot* is the source used
+to generate the graphs.
+
+Healing the Web with Masups
+---------------------------
+
+I maintain several packages for the Arch Linux distribution, and as such, I
+often visit [https://aur.archlinux.org](https://aur.archlinux.org). This site
+summarizes information about the packages I maintain, such as their current
+version and comments users have made about those packages. In some ways, this
+site scales badly, because it is hard to determine which of my packages are out
+of date. Users can flag packages as out of date, but I cannot programmatically
+determine when something is out of date. A mashup that pulled together
+information about the current version of packages and the actual version of
+programs would be immensely useful.
+
+At work, I maintain and update several Ruby on Rails web applications. One of my
+tasks is to bring these applications up to date. For example, I might be tasked
+with turning a Rails 2.3 application into a Rails 3.1 application. Therefore, on
+a given day, I might consult
+[two](http://guides.rubyonrails.org/v2.3.11/association_basics.html)
+[versions](http://guides.rubyonrails.org/v3.2.13/association_basics.html) of _A
+Guide to Active Record Assocations_. Often, I don't care about the specifics of
+how Rails 2.3 or Rails 3.1 performs a given task: instead, I care about whether
+the method of accomplishing a given task has changed. A mashup that visually
+indicated which portions of a guide have changed between versions, and to what
+degree, would be useful to me.
+
+I use [Duck Duck Go](https://duckduckgo.com/) as my primary search engine. If
+you query for an odd term, such as
+[continant](https://duckduckgo.com/?q=continant), Duck Duck Go will ask "Did you
+mean continent?". Though this interjection is usually useful, sometimes I want
+to give feedback and say _No, I did not mean "continent". Give me results for
+"continant"._ I think that the ability to give feedback could significantly
+improve the quality of search results, and the ability to provide this sort of
+feedback would be useful. The best solution to this problem would simply be to
+fix the search engine itself. However, another possible solution would be to
+create a [bang](https://duckduckgo.com/bang.html) such as "!literal" which would
+cause Duck Duck Go to treat a given search term literally.

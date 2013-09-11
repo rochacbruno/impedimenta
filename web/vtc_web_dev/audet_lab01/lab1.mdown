@@ -1,0 +1,141 @@
+Jeremy Audet
+Jean Hakim
+CIS-2450-TH1 Advanced Web Technologies
+Due 2013-08-28
+
+Lab 1
+=====
+
+Exercise 1
+----------
+
+Address: www.housingmaps.com
+
+Q. What is being combined?
+
+Mapping data from Google Maps and posting content from Craigslist are being
+combined.
+
+Q. Why are these elements being combined?
+
+These elements are being combined to make the search for housing easier. By
+combining mapping and posting data together, users can more easily visualize
+where postings refer to and discover postings in a given area.
+
+Q. Where is the remixing or recombination happening?
+
+The remixing appears to be a mix of client-side and server-side actions. The
+google maps data is client-side: the user uses javascript and the google maps
+API to pull down some of google's mapping data. It's not clear where the
+craigslist data comes from, but I'd guess that the www.housingmaps.com server
+scrapes data from craigslist and clients fetch the scraped data from
+www.housingmaps.com.
+
+Q. How are the elements connected toghter - both _visually_ in the interface,
+and _technically_ in the application machinery?
+
+Visually, elements are connected _spatially_. Geographic information from
+craigslist is used to generate markers on the google maps. Technically,
+javascript pulls the two data sources together.
+
+Exercise 2
+----------
+
+Address: www.earthalbum.com
+
+Q. What is being combined?
+
+Photos from Flickr and mapping data from Google Maps are being combined.
+
+Q. Why are these elements being combined?
+
+These elements are being combined to give "armchair tourists" an informal look
+at the world through photographs. A site like this makes it possible to view
+photos of all kinds -- formal and informal -- based on (presumably) their
+embedded geotagging information.
+
+Q. Where is the remixing or recombination happening?
+
+The remixing appears to be happening entirely client-side. Some Javascript pulls
+mapping information from Google Maps, and more javascript pulls photos from
+Flickr.
+
+Q. How are the elements connected toghter - both _visually_ in the interface,
+and _technically_ in the application machinery?
+
+The elements are connected together, visually, through the use of spatial
+information. A rectangle drawn on the map shows the bounds from wherein photos
+are taken. Technically, geotagging information from Flickr's photos is combined
+with geographic information from Google Maps.
+
+Exercise 3
+----------
+
+Address: http://www.josefrichter.com/helvetwitter/
+
+Q. What is being combined?
+
+Well, I couldn't figure out how to use Helvetwitter, so I can't really say.
+
+However, I believe the elements being combined are the twitter website and some
+clever JavaScript. According to the source of the script, it "remove twitter's
+style tag from head", "replace twitter's linked css with my custom css", "reload
+every 5 minutes.", and "don't reload if you're just typing a new tweet".
+
+Q. Why are these elements being combined?
+
+These elements are being combined to clean up Twitter's UI.
+
+Q. Where is the remixing or recombination happening?
+
+The remix is happening almost entirely client-side. The only external data
+sources that need to be pulled in are some CSS files and Twitter's website.
+
+Q. How are the elements connected toghter - both _visually_ in the interface,
+and _technically_ in the application machinery?
+
+Helvetwitter doesn't connect any elements together in a visually obvious way.
+Instead it mashes up behind-the-scenes elements such as CSS and HTML to create
+something new and interesting.
+
+Exercise 4
+----------
+
+Freebie!
+
+Exercise 5
+----------
+
+Address: www.programmableweb.com
+Address: http://minimap.eu/demos/exhibition/mobile/en/map-en/#
+
+Q. What is being combined?
+
+The elements being combined are:
+
+1. A map of an exhibition hall.
+2. Google maps data.
+
+Q. Why are these elements being combined?
+
+These elements are being combined "to display a detailed illustration of the
+Vinexpo 2013 facilities. This allows visitors to easily find exactly what they
+are looking for."
+
+Q. Where is the remixing or recombination happening?
+
+The remixing is happening entirely client-side. A client web browser stitches
+together google maps data and an image of the Vinexpo facilities to create a
+mashup.
+
+Q. How are the elements connected toghter - both _visually_ in the interface,
+and _technically_ in the application machinery?
+
+Visually, the elements are connected _spatially_. Mapping data from Google Maps
+and a map from of the Vinexpo exhibition are stitched together in a spatially
+accurate way to give the user useful information.
+
+Exercise 6
+----------
+
+Examine HTML and CSS files...

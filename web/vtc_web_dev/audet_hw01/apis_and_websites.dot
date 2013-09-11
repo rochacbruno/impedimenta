@@ -1,0 +1,83 @@
+// All information taken from www.programmableweb.com.
+digraph apis_and_websites {
+    rankdir=RL
+
+    api_00 [shape=box label="Amazon Product Advertising"]
+    api_01 [shape=box label="Google Maps"]
+    api_02 [shape=box label="YouTube"]
+    api_03 [shape=box label="Twitter"]
+    api_04 [shape=box label="Flickr"]
+    api_05 [shape=box label="US Postal Service"]
+    api_06 [shape=box label="del.icio.us"]
+    api_07 [shape=box label="Upcoming.org"]
+    api_08 [shape=box label="Google Homepage"]
+    api_09 [shape=box label="Yahoo Map Image"]
+    api_10 [shape=box label="MapLarge"]
+    api_11 [shape=box label="Google Maps Flash"]
+    api_12 [shape=box label="Yahoo Geocoding"]
+    api_13 [shape=box label="Google Social Graph"]
+    api_14 [shape=box label="SimpleAPI"]
+    api_15 [shape=box label="Yahoo Term Extraction"]
+    api_16 [shape=box label="Google Custom Search"]
+    api_17 [shape=box label="Amazon S3"]
+    api_18 [shape=box label="Google Search"]
+
+    site_00 [label="LivePlasma"]
+    site_00 -> api_00
+    site_01 [label="Visitor Map Gadget"]
+    site_01 -> api_01
+    site_01 -> api_08
+    site_01 -> api_09
+    site_02 [label="Similarity Web"]
+    site_02 -> api_00
+    site_03 [label="Adactio Elsewhere"]
+    site_03 -> api_00
+    site_03 -> api_04
+    site_03 -> api_06
+    site_03 -> api_07
+    site_04 [label="Vatsim Flight Tracker"]
+    site_04 -> api_01
+    site_05 [label="USPS Tracking"]
+    site_05 -> api_01
+    site_05 -> api_05
+    site_06 [label="DUI Map"]
+    site_06 -> api_10
+    site_06 -> api_11
+    site_07 [label="Silverlight Photo Carousel"]
+    site_07 -> api_04
+    site_08 [label="Flickr Lightbox Slideshow"]
+    site_08 -> api_04
+    site_09 [label="100 Most Powerful Celebrities"]
+    site_09 -> api_01
+    site_09 -> api_02
+    site_09 -> api_12
+    site_10 [label="Search the Tube"]
+    site_10 -> api_02
+    site_11 [label="#haiku"]
+    site_11 -> api_03
+    site_11 -> api_04
+    site_12 [label="TwitterLove"]
+    site_12 -> api_03
+    site_12 -> api_13
+    site_12 -> api_14
+    site_13 [label="Sad Statements"]
+    site_13 -> api_03
+    site_13 -> api_04
+    site_13 -> api_15
+    site_14 [label="1001 Secret Fishing Holes"]
+    site_14 -> api_01
+    site_15 [label="25 Unsafest US Cities"]
+    site_15 -> api_01
+    site_16 [label="Twitter Top News Trends"]
+    site_16 -> api_17
+    site_16 -> api_16
+    site_16 -> api_18
+    site_16 -> api_03
+    site_16 -> api_15
+    site_17 [label="50 Top US Medical Schools"]
+    site_17 -> api_01
+    site_18 [label="50 Top US Medical Schools"]
+    site_18 -> api_01
+    site_19 [label="YouTube"]
+    site_19 -> api_02
+}
