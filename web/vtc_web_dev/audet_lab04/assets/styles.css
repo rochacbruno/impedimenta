@@ -1,0 +1,19 @@
+ body {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 50em;
+}
+img[alt='Albert Einstein'],
+img[alt='Buster Keaton'],
+img[alt='Charles Darwin'],
+img[alt='Edgar Allan Poe'],
+img[alt='Groucho Marx'],
+img[alt='Karl Marx'] {
+    width: 144px;
+    height: 180px;
+}
+p.choices {border: medium solid #C9BC78;}
+p.correct {color: green;}
+p.incorrect {color: red;}
+img.correct {background-color: green;}
+img.incorrect {background-color: red;}

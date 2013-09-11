@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8' />
+    <title>Audet Lab 4</title>
+    <link rel='stylesheet' type='text/css' href='./assets/styles.css' />
+    <script src='./assets/scripts.js'></script>
+</head>
+<body>
+    <p>
+        One of the images in each set below does not belong with the others.
+        To make a guess, click on an image.
+    </p>
+    <p id='feedback'>Waiting for input.</p>
+    <p class='choices'>
+        <img
+            alt='Groucho Marx'
+            src='./assets/groucho_marx.gif'
+            onclick='checkAnswer("Groucho Marx")'
+        >
+        <img
+            alt='Buster Keaton'
+            src='./assets/keaton.gif'
+            onclick='checkAnswer("Buster Keaton")'
+        >
+        <img
+            alt='Karl Marx'
+            src='./assets/karl_marx.gif'
+            onclick='checkAnswer("Karl Marx")'
+        >
+    </p>
+    <p class='choices'>
+        <img alt='Charles Darwin' src='./assets/darwin.gif' onclick='checkAnswer("Charles Darwin")'>
+        <img alt='Edgar Allan Poe' src='./assets/poe.gif' onclick='checkAnswer("Edgar Allan Poe")'>
+        <img alt='Albert Einstein' src='./assets/einstein.gif' onclick='checkAnswer("Albert Einstein")'>
+    </p>
+</body>
+</html>
