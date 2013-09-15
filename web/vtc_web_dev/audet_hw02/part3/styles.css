@@ -1,0 +1,33 @@
+/* Thanks to http://colorschemedesigner.com/ for assistance in designing the
+ * color scheme.
+ */
+
+body {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 50em;
+}
+
+span.subheading {
+    font-style: italic;
+    font-size: smaller;
+}
+
+header,
+footer {
+    border-left: thick solid #4E95A7;
+    padding-left: 0.5em;
+}
+
+footer {
+    margin-top: 1em;
+}
+
+section {
+    border-left: thin solid #59C575;
+    padding-left: 0.5em;
+}
+
+a:visited {
+    color: #5D70B5;
+}

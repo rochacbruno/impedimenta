@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>CIS-2450 Assignment 2 Part 3</title>
+    <link rel='stylesheet' type='text/css' href='./styles.css' />
+    <script src='./scripts.js'></script>
+</head>
+<body>
+    <header>
+        <h1>Books I Have Read</h1>
+        <p>A short compilation of quality literature.</p>
+        <nav>
+            <ul>
+                <li><a href='#piracy'>Piracy</a></li>
+                <li><a href='#the_sagan_diary'>The Sagan Diary</a></li>
+                <li><a href='#veracity'>Veracity</a></li>
+                <li><a href='#einstein'>Einstein</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section id='piracy'>
+        <!-- "The hgroup element is obsolete. To mark up subheadings, consider
+        either just putting the subheading into a p element after the h1-h6
+        element containing the main heading, or else putting the subheading
+        directly within the h1-h6 element containing the main heading, but
+        separated from the main heading by punctuation and/or within, for
+        example, a span class="subheading" element with differentiated styling.
+        To group headings and subheadings, alternative titles, or taglines,
+        consider using the header or div elements." -->
+        <h1>
+            Piracy<br /><span class='subheading'>The Intellectual Property Wars
+            from Gutenberg to Gates</span>
+        </h1>
+        <dl>
+            <dt>Author</dt>
+            <dd>Adrian Johns</dd>
+            <dt>ISBN</dt>
+            <dd>
+                <a href='http://www.worldcat.org/isbn/9780226401188'>
+                    9780226401188
+                </a>
+            </dd>
+        </dl>
+    </section>
+    <section id='the_sagan_diary'>
+        <h1>The Sagan Diary</h1>
+        <dl>
+            <dt>Author</dt>
+            <dd>John Scalzi</dd>
+            <dt>ISBN</dt>
+            <dd>
+                <a href='http://www.worldcat.org/isbn/9781596061170'>
+                    9781596061170
+                </a>
+            </dd>
+        </dl>
+    </section>
+    <section id='veracity'>
+        <h1>Veracity</h1>
+        <dl>
+            <dt>Author</dt>
+            <dd>Mark Lavorato</dd>
+            <dt>ISBN</dt>
+            <dd>1897381212</dd>
+        </dl>
+    </section>
+    <section id='einstein'>
+        <h1>Einstein<br /><span class='subheading'>His Life and Universe</span></h1>
+        <dl>
+            <dt>Author</dt>
+            <dd>Walter Isaacson</dd>
+            <dt>ISBN</dt>
+            <dd>
+                <a href='http://www.worldcat.org/isbn/9780743264730'>
+                    9780743264730
+                </a>
+            </dd>
+        </dl>
+    </section>
+
+    <header>
+        <h1>The &lt;canvas&gt; Tag</h1>
+        <p>
+            The following section demonstrates how to create and manipulate a
+            &lt;canvas&gt; tag.
+        </p>
+    </header>
+    <section>
+        <p>This canvas should display a simple grid of lines.</p>
+        <canvas width='720' height='480'></canvas>
+    </section>
+
+    <header>
+        <h1>The &lt;video&gt; Tag</h1>
+        <p>
+            The <code>&lt;video&gt;</code> tag can be customized to do things
+            like preloading, autoplaying, and looping. Videos courtesy of <a
+            href='http://archive.org/details/C.E.PriceBoilingStormClouds'>C. E.
+            Price</a>.
+        </p>
+        <nav>
+            <ul>
+                <li><a href='#preload'>Preload</a></li>
+                <li><a href='#autoplay'>Autoplay</a></li>
+                <li><a href='#loop'>Loop</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- As of May 20, 2010, "the iPad has a bug that prevents it from noticing
+    anything but the first video source listed. Sadly, this means you will need
+    to list your MP4 file first, followed by the free video formats." -->
+    <section id='preload'>
+        <h1>Preload</h1>
+        <p>
+            This <code>&lt;video&gt;</code> tag has the <code>preload</code>
+            attribute set.
+        </p>
+        <video width='720' height='480' controls preload>
+            <source src='boiling_storm_clouds_512kb.mp4' type='video/mp4' />
+            <source src='boiling_storm_clouds.ogv' type='application/ogg' />
+            <source src='boiling_storm_clouds.mpg' type='video/mpeg' />
+            <p>Your browser does not support HTML5 video.</p>
+        </video>
+    </section>
+    <section id='autoplay'>
+        <h1>Autoplay</h1>
+        <p>
+            This <code>&lt;video&gt;</code> tag has the <code>autoplay</code>
+            and <code>muted</code> attributes set.
+        </p>
+        <video width='720' height='480' controls autoplay muted>
+            <source src='boiling_storm_clouds_512kb.mp4' type='video/mp4' />
+            <source src='boiling_storm_clouds.ogv' type='application/ogg' />
+            <source src='boiling_storm_clouds.mpg' type='video/mpeg' />
+            <p>Your browser does not support HTML5 video.</p>
+        </video>
+    </section>
+    <section id='loop'>
+        <h1>Loop</h1>
+        <p>
+            This <code>&lt;video&gt;</code> tag has the <code>loop</code>
+            attribute set.
+        </p>
+        <video width='720' height='480' controls loop>
+            <source src='boiling_storm_clouds_512kb.mp4' type='video/mp4' />
+            <source src='boiling_storm_clouds.ogv' type='application/ogg' />
+            <source src='boiling_storm_clouds.mpg' type='video/mpeg' />
+            <p>Your browser does not support HTML5 video.</p>
+        </video>
+    </section>
+
+    <footer>
+        <p>This page was written by Jeremy Audet.</p>
+        <aside>
+            The author makes no guarantee regarding the satisfaction of the
+            reader upon consuming any recommended material.
+        </aside>
+    </footer>
+</body>
+</html>
