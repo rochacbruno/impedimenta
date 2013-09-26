@@ -26,7 +26,7 @@ set showcmd
 " ===================
 syntax enable
 set t_Co=256
-color jellybeans
+color badwolf
 
 " Undo Tree
 " =========
@@ -79,7 +79,7 @@ set shiftwidth=4
 let mapleader=","
 " Shortcuts.
 nmap <F5> :tabprev<CR>
-nmap <F6> :tab split<CR>
+nmap <F6> :tabnew<CR>
 nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
