@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='utf-8'>
+    <title>Pizza Order Form</title>
+    <style type='text/css'>
+        /* Although the whatwg states that "The default value for the type
+         * attribute, which is used if the attribute is absent, is 'text/css',"
+         * jigsaw.w3.org/css-validator/ will complain if `type` is absent.
+         */
+        body {
+            max-width: 40em;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* Use the left half of the `fieldset.destination` area. Leave room for
+         * the `fieldset.destionation > fieldset` elements.
+         */
+        fieldset.destination > p {
+            float: left;
+            clear: left;
+            width: 45%;
+        }
+        /* Use the right half of the `fieldset.destination` area. Leave room for
+         * the `fieldset.destination > p` elements.
+         */
+        fieldset.destination > fieldset {
+            margin-left: 50%;
+            width: 45%;
+        }
+        /* Allow checkboxes to stack left-to-right, top-to-bottom if there's
+         * enough room.
+         */
+        fieldset.checkboxes > p {
+            display: inline-block;
+            padding-right: 0.5em;
+        }
+    </style>
+    <script>
+        /* Well, I originall had some pretty sweet JS that searched the document
+         * for all `button[type='button']`s and attached a callback to each of
+         * them. The button found the first parent of that button whose nodeName
+         * was 'FORM', then walked through all of that form's children,
+         * searching for inputs and clearing them. If no <form> tag was found,
+         * the script would instead gracefully exit.
+         *
+         * Then I discovered the `type='reset'` button attribute.
+         */
+     </script>
+</head>
+<body>
+    <h1>CIS-2450 Lab 5 Challenge Question</h1>
+    <p>
+        OK, I'll admit it: I'm proud to have completely avoided any hacks like
+        using tables for layout in this form. &#9786;
+    </p>
+    <h2>Pizza Order Form</h2>
+    <form>
+        <fieldset class='destination'>
+            <legend>Destination</legend>
+            <p><label>Name<br /><input type='text'></label></p>
+            <p><label>Telephone<br /><input type='text'></label></p>
+            <fieldset>
+                <legend>Address</legend>
+                <p><label>Address<br /><input type='text'></label></p>
+                <p><label>City<br /><input type='text'></label></p>
+                <p><label>State<br /><input type='text'></label></p>
+                <p><label>Zip<br /><input type='text'></label></p>
+            </fieldset>
+        </fieldset>
+        <fieldset>
+            <legend>Pizza Size</legend>
+            <p><label><input type='radio'>Small</label></p>
+            <p><label><input type='radio'>Medium</label></p>
+            <p><label><input type='radio'>Large</label></p>
+        </fieldset>
+        <fieldset class='checkboxes'>
+            <legend>Toppings</legend>
+            <p><label><input type='checkbox'>Pepperoni</label></p>
+            <p><label><input type='checkbox'>Canadian Bacon</label></p>
+            <p><label><input type='checkbox'>Sausage</label></p>
+            <p><label><input type='checkbox'>Mushrooms</label></p>
+            <p><label><input type='checkbox'>Pineapple</label></p>
+            <p><label><input type='checkbox'>Black Olives</label></p>
+        </fieldset>
+        <p>
+            <button>Submit Order</button>
+            <button type='reset'>Reset</button>
+        </p>
+    </form>
+</body>
+</html>

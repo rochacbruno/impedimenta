@@ -1,0 +1,166 @@
+Jeremy Audet
+Jean Hakim
+CIS-2450-TH1 Advanced Web Technologies
+Due 2013-09-18
+
+Lab 5
+=====
+
+I. Forms, Input, Output, and parseInt()
+---------------------------------------
+
+### Step 2
+
+Upon clicking "Process Input", the contents of the input field are copied
+verbatim into the output field. This is true for both words, phrases, and
+numbers.
+
+### Step 5
+
+1. There are two text input fields. Their names are "input" and "output".
+2. The size of the text input fields can be changed with CSS or by setting the
+"size" attribute.
+
+### Step 6
+
+When the button is clicked, the `Process` function is executed with an argument
+of a form object.
+
+### Step 7
+
+Oh goodness, the entire function can be reworked. But one fix (among many) is to
+change `result = n + 1` to `n = n + 1`.
+
+### Step 8
+
+Input, no matter what it is, will be copied verbatim to the output field.
+
+### Step 9
+
+Nothing will change, because `result = text`. There is no path of logic that
+leads from `n` to `result`.
+
+...
+
+OK, fine, here's what I did:
+
+        if(isNaN(n)) {
+            result = text;
+        } else {
+            if (n < 0) {n *= -1;} // get absolute value of n
+            n += 1;
+            result = n;
+        }
+
+II. Conditionals
+----------------
+
+Here's my resultant code:
+
+    function process(form) {
+        var num = parseInt(form.input.value);
+        var reply = 'not a number';
+        if(!isNaN(num)) {
+            if(num < 0) {
+                reply = 'NEGATIVE';
+            } else if(num > 0) {
+                reply = 'POSITIVE';
+            } else {
+                reply = 'ZERO';
+            }
+        }
+        form.output.value = reply;
+        return ""
+    }
+
+III. Random Number Generation
+-----------------------------
+
+### Step 2
+
+1. Tails
+2. Heads
+3. Tails
+4. Heads
+5. Tails
+6. Tails
+7. Tails
+8. Heads
+9. Heads
+10. Heads
+11. Tails
+12. Tails
+13. Heads
+14. Heads
+15. Tails
+16. Tails
+17. Heads
+18. Tails
+19. Tails
+20. Tails
+
+### Step 3
+
+This is the code that generates the "Heads" or "Tails" (I've tweaked it):
+
+    document.write("<hr /><h2>Coin Flip</h2>")
+    if(Math.random() < 0.5) {
+        document.write("Heads")
+    } else {
+        document.write("Tails")
+    }
+
+### Step 4
+
+I can generate an <em>unfair</em> coin toss like this:
+
+    document.write("<hr /><h2>Coin Flip</h2>")
+    if(Math.random() < 0.75) {
+        document.write("Heads")
+    } else {
+        document.write("Tails")
+    }
+
+Here's my results:
+
+1. Heads
+2. Heads
+3. Heads
+4. Heads
+5. Tails
+6. Heads
+7. Heads
+8. Heads
+9. Tails
+10. Tails
+11. Heads
+12. Heads
+13. Heads
+14. Heads
+15. Heads
+16. Heads
+17. Heads
+18. Heads
+19. Tails
+20. Tails
+
+I got many more "Heads" than "Tails".
+
+### Step 5
+
+Here's what I did:
+
+        document.write("<hr /><h2>Coin Flip</h2>")
+        var num = Math.random();
+        if(num < 0.01) {
+            document.write("Landed on its edge");
+        } else if(num < 0.5) {
+            document.write("Heads");
+        } else {
+            document.write("Tails");
+        }
+
+IV. Challenge Question - JavsScript Pizza Order Form
+----------------------------------------------------
+
+See `IV.html`.
