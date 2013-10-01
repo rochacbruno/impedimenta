@@ -1,0 +1,22 @@
+body {
+    max-width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em;
+    border: thin solid goldenrod;
+    }
+/* Tables expand as necessary to wrap block content. By setting a width of 1px,
+ * the table will expand to the width of it's single largest child (the <img>
+ * element). All the other rules are pretty vanilla.
+ */
+figure {
+    display: table;
+    width: 1px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.5em;
+    border-radius: 0.5em;
+    box-shadow: 0 0 1em 1em lightgrey;
+    font-style: italic;
+    text-align: center;
+    }
