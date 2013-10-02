@@ -1,0 +1,9 @@
+body {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 50em;
+    }
+span.subheading {
+    font-style: italic;
+    font-size: smaller;
+    }
