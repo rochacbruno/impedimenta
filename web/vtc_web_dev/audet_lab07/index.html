@@ -3,7 +3,43 @@
 <head>
     <meta charset='utf-8'>
     <title>CIS-2450 Lab 7</title>
+    <style type='text/css'>
+        .hidden {display: none;}
+    </style>
     <link rel='stylesheet' type='text/css' href='./styles.css' />
+    <script src='http://code.jquery.com/jquery-2.0.3.min.js'></script>
+    <script>
+        // Find element `#message` and give it filler text.
+        function showMessage() {
+            $('#message').html(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec' +
+                'a diam lectus. Sed sit amet ipsum mauris.  Maecenas congue' +
+                'ligula ac quam viverra nec consectetur ante hendrerit. Donec et' +
+                'mollis dolor. Praesent et diam eget libero egestas mattis sit' +
+                'amet vitae augue. Nam tincidunt congue enim, ut porta lorem' +
+                'lacinia consectetur. Donec ut libero sed arcu vehicula ultricies' +
+                'a non tortor. Lorem ipsum dolor sit amet, consectetur adipiscing' +
+                'elit. Aenean ut gravida lorem. Ut turpis felis, pulvinar a' +
+                'semper sed, adipiscing id dolor. Pellentesque auctor nisi id' +
+                'magna consequat sagittis. Curabitur dapibus enim sit amet elit' +
+                'pharetra tincidunt feugiat nisl imperdiet. Ut convallis libero' +
+                'in urna ultrices accumsan. Donec sed odio eros. Donec viverra mi' +
+                'quis quam pulvinar at malesuada arcu rhoncus. Cum sociis natoque' +
+                'penatibus et magnis dis parturient montes, nascetur ridiculus' +
+                'mus. In rutrum accumsan ultricies. Mauris vitae nisi at sem' +
+                'facilisis semper ac in est.'
+            );
+        }
+        // Find element #message and remove all text.
+        function hideMessage() {
+            $('#message').html('');
+        }
+        // Bind mouseover and mouseout handlers to all `h1` elements.
+        $(document).ready(function() {
+            $('h1').on('mouseover', showMessage);
+            $('h1').on('mouseout', hideMessage);
+        })
+    </script>
 </head>
 <body>
     <header>
@@ -18,6 +54,12 @@
     <p>
         This site contains filler content, remixed from homework 2, used to
         demonstrate the technical objectives of lab 7.
+    </p>
+    <p>
+        To trigger the display of text, hover your mose over any &lt;h1&gt;
+        above.
+    </p>
+    <p id='message'>
     </p>
 </body>
 </html>
