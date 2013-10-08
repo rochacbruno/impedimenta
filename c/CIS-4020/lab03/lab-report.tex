@@ -1,0 +1,259 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FILE    : lab-report.tex
+% SUBJECT : CIS-4020 Lab 2 report
+% AUTHOR  : Jeremy Audet <ichimonji10 at gmail dot com>
+% LICENSE : Public Domain
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass{article}
+
+\usepackage{fancyvrb}
+\usepackage[pdftex]{graphicx}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{url}
+
+% The following are settings for the listings package.
+% See the listings package documentation for more information.
+\lstset{
+    language=C,
+    basicstyle=\small,
+    stringstyle=\ttfamily,
+    commentstyle=\ttfamily,
+    xleftmargin=0.25in,
+    showstringspaces=false
+}
+
+\begin{document}
+
+\title{CIS-4020 Lab \#3\\TITLE}
+\author{Jeremy Audet\thanks{Ichimonji10@gmail.com}\\
+    Vermont Technical College}
+    \date{October 08, 2013}
+    \maketitle
+
+\begin{abstract}
+The purpose of this lab is to rewrite the scheduler for the Phoenix operating
+system.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+Phoenix is a small micro-kernel operating system created by three VTC students
+as a senior project. Due to it's small size, it is relatively easy to understand
+and manipulate. Phoenix is capable of switching between multiple processes, and
+the process switching logic is very simple. Each time a scheduling interrupt
+occurs, Phoenix searches through a ringbuffer containing process information and
+runs the next viable process.
+
+In this lab, the Phoenix scheduler is rewritten to support process priority
+levels.
+
+\section{Procedure}
+\label{sec:procedure}
+
+\begin{enumerate}
+\item Edit \texttt{src/kernel/xthread.h}. Create a new type called
+\texttt{priority\_t}, then add members \texttt{priority} and \texttt{score} to
+\texttt{struct process}.
+\begin{lstlisting}
+typedef enum {LOW, NORMAL, HIGH} priority_t;
+...
+typedef struct {
+    word       far * stack; // location of stack
+    bool       runnable; // true if thread should be run by scheduler
+    processID  pid; // unique identifier
+    priority_t priority; // used by scheduler
+    int        score; // used by scheduler
+} process;
+\end{lstlisting}
+
+\item Edit \texttt{src/kernel/xtimer.c}. Rewrite function \texttt{Schedule} to
+take advantage of the new struct members. Decide that both function
+\texttt{Schedule} and the backing functions declared in
+\texttt{src/kernel/xrndbuff.h} are unacceptably ugly and should be rewritten
+from scratch. Rewrite them.
+\end{enumerate}
+
+\section{Discussion}
+\label{sec:discussion}
+
+The process scheduler relies heavily on the functions declared in
+\texttt{src/kernel/xrndbuff.h} to determine which process should run next.
+Unfortunately, those functions are ill-documented and over-engineered. For
+example, the documentation for \texttt{get\_next()} states:
+
+\begin{quote}
+This function returns a pointer to the next process that is defined in
+the round buffer. As a side effect it also records this process for use by
+\texttt{set\_current()}.
+\end{quote}
+
+Nowhere is a conceptual model for how to use the internal variables
+\texttt{current} or \texttt{next} laid out. Nor is it a good thing for
+side-effects to be designed into a system: the programmer should not need to
+mentally track invisible side effects. Issues such as these make the existing
+roundbuffer implementation unacceptable.
+
+The solution I designed resolves these issues by providing more thorough
+documentation and reducing the prevalence of side-effects. The solution I
+designed also attempts to break complex actions down into more granular actions.
+For example, if the user wishes to find the next viable process after the
+current process, they must give \texttt{get\_next()} a process ID for use as a
+starting point in it's search, and this can be provided by either
+\texttt{get\_current()}. Formerly, \texttt{get\_next()} would simply find the
+next process after the current process, and no starting point could be provded.
+
+See \texttt{xrndbuff.h}\ref{fig:xrndbuff.h} for more details.
+
+Several other issues were encountered while accomplishing this lab. The
+procedure for compiling Phoenix and starting it with Bochs was labor-intensive,
+requiring the user to type out multiple commands. This procedure has been
+simplified by the creation of a script, \texttt{src/makeandrun.sh}.
+
+It was also discovered that the existing makefiles do not properly clean Phoenix
+after each build. Though \texttt{wmake} and the makefiles should be able to
+detect which files have been changed and recompile those files as necessary,
+this was not the case. This was the cause of many incorrect assumptions and
+frustrations during development. The solution was to update the makefiles to
+clean a greater set of files and ensure that \texttt{src/makeandrun.sh} always
+called \texttt{wmake clean}.
+
+The scheduling system which was devised prevents lower-priority threads from
+starving while still letting higher-priority threads run more often. Each time
+the scheduler is called, each process accrues a certain number of "points" based
+on it's priority, and higher-priority processes accrue points faster than
+lower-priority processes. The scheduler picks the highest-scoring process,
+resets it's score to zero, and then runs it. The docstrings for the
+\texttt{Schedule}\label{fix:Schedule} function contains details.
+
+The end results are as follows:
+
+\begin{enumerate}
+\item Phoenix runs acceptably fast. With the original codebase, programs 0 and 1
+ran at at 90 and 64 IPS, respectively. With the updated codebase, they run at 80
+and 71 IPS, respectively. It should be noted that the author does not really
+know what IPS means, and that these tests were completely informal.
+\item Unfortunately, Phoenix experiences degraded functionality. Test program 0
+no longer works correctly with the updated codebase.
+\end{enumerate}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+In this lab, I examined how the Phoenix micro-kernel operating system keeps
+track of process information and schedules those processes. I rewrote both of
+those pices of functionality. The importance of correct and proper tools, such
+as nicely-maintained makefiles, helper scripts and automated tests was
+reinforced.
+
+\section{Appendix}
+\label{sec:appendix}
+
+\begin{figure}[tbhp] % place fig top, bottom, here, or alone on page
+\label{fig:xrndbuff.h}
+\begin{lstlisting}[
+    frame=single,
+    caption={Process Ringbuffer},
+    xleftmargin=0in
+]
+/*! \\file xrndbuff.h Circular buffer holding process information.
+ *
+ * A ringbuffer is used to store information about processes, and the functions
+ * defined here are used to interact with that ringbuffer. The ringbuffer is of
+ * a fixed size, and each process fills one element of that ringbuffer.
+ * Therefore, not all elements of the ringbuffer are filled with useful
+ * information at all times.
+ *
+ * `add_process()` should be called before any other function, or else undefined
+ * behaviour will occur. When `add_process()` is called for the first time, an
+ * index is initialized which points to the location of the new process in the
+ * ringbuffer. Subsequent calls to `add_process()` do not affect the index.
+ *
+ * Only `add_process()` and `set_current()` affect the index. See the function
+ * definitions for more details.
+ */
+
+#ifndef XROUNDBUFF_H
+#define XROUNDBUFF_H
+
+#include "xthread.h"
+
+int  add_process( process * );
+bool set_current( processID );
+
+process *get_current( );
+process *get_process( processID );
+process *get_next( processID );
+
+#endif
+\end{lstlisting}
+\end{figure}
+
+\begin{figure}[tbhp] % place fig top, bottom, here, or alone on page
+\label{fig:xrndbuff.h}
+\begin{lstlisting}[
+    frame=single,
+    caption={Process Ringbuffer},
+    xleftmargin=0in
+]
+//! Decide which process should run next and return it's stack. Timer interrupt.
+/*!
+ * The following logic is used to select the next process:
+ *
+ * 1. Increment the score of each runnable process. The greater a process's
+ *    priority, the greater the increment.
+ * 2. Select the process with the highest score. If multiple processes have the
+ *    same score, select the first process after the "current" process, where
+ *    the "current" process is the process pointed to by the ringbuffer index.
+ * 3. Make the selected process the "current" process, set it's score to zero
+ *    and run it.
+ *
+ * Note that only runnable processes are given points. If non-runnable processs
+ * are given points, they will attain insane scores. This could be problematic
+ * if numerous non-runnable processes all became runnable at the same time
+ *
+ * This function is inefficient: the score of *every* process is bumped whenever
+ * the function is called. As MAX_THREADS grows, the problem will only get
+ * worse. Better solutions should be considered. One possible solution is to
+ * examine only a limited number of processes each time this interrupt occurs,
+ * rather than examining all processes.
+ */
+word far *Schedule( word far *p )
+{
+    process * const current = get_current( );
+    process * candidate = get_current( ); // Candidate for next runnable process
+    process * choice; // Choice for next runnable process
+    processID idle; // Used to find the idle thread
+
+    if( NULL == current ) {
+        print_at( count++, col, "thread pointing to NULL", 0x04 );
+        print_at( count++, col, "(has add_process() been called?)", 0x04 );
+        return p;
+    }
+    // What does this do? It is necessary for test program 1 to function.
+    current->stack = p;
+
+    // Make a default choice...
+    idle.pid = IDLE;
+    choice = get_process( idle );
+    // ... then see if any other suitable candidates exist.
+    do {
+        candidate = get_next( candidate->pid );
+        if( true == candidate->runnable ) {
+            // Bump score before considering a process. This ensures that
+            // `candidate` will always out-score the idle thread.
+            candidate->score += candidate->priority;
+            if( candidate->score > choice->score ) { choice = candidate; }
+        }
+    } while( candidate->pid.pid != current->pid.pid );
+
+    choice->score = 0;
+    set_current( choice->pid ); // update ringbuffer index
+    return choice->stack;
+}
+\end{lstlisting}
+\end{figure}
+
+\end{document}
