@@ -4,15 +4,20 @@
 set nocompatible
 " If a line exceeds the width of the viewport, don't wrap it.
 set nowrap
-" e.g. allows me to backspace in insert mode.
+" Allow user to backspace in insert mode.
 set backspace=2
 " Buffer between cursor and top+bottom edge of viewport.
 set scrolloff=2
 
 " Status Indicators
 " =================
-" Highlight the current row?
+" Highlight the current row.
 set cursorline
+" Highlight a comma-separated list of columns. Columns can be either absolute
+" (cc=10,20) or relative to `textwidth` (cc=+1).
+"set colorcolumn=+1
+" Highlight the current column.
+"set cursorcolumn
 " Always show the status line.
 set laststatus=2
 " Display relative line numbers.
@@ -24,21 +29,23 @@ set showcmd
 
 " Syntax Highlighting
 " ===================
+" Enable syntax highlighting.
 syntax enable
+" Force vim into 256-color mode (instead of 16).
 set t_Co=256
+" Nice schemes: badwolf, hemisu, jellybeans. (and solarized?)
 color badwolf
 
 " Undo Tree
 " =========
 " Remember to create this directory, as it is NOT automatically created.
 set undodir=~/.vim/undo
-" Should the undo tree be saved? Allows for persistent undos.
+" Save the undo history in `undodir`. Allows persistent undo history.
 set undofile
 
 " Searching
 " =========
-" When searching, should the cursor move through the file to the current match
-" as you type?
+" When searching, move the cursor as you type.
 set incsearch
 " Ignore case when searching...
 set ignorecase
@@ -49,11 +56,10 @@ set smartcase
 " =======
 " Should code be folded by default?
 set nofoldenable
-" How should code be folded?
+" How should code be folded? "indent" is the easiest method.
 set foldmethod=indent
-" When a file is read, should all folds automatically be opened? `*` matches all
-" files, and `normal` tells vim to execute the following command in normal mode
-" (as opposed to prepending the command with a `:`).
+" When a buffer is read, automatically expand all folds. "*" matches all files
+" and "normal" tells vim to execute the following comand in normal mode.
 "autocmd BufRead * normal zR
 
 " Line Width
@@ -80,16 +86,16 @@ let mapleader=","
 " Shortcuts.
 nmap <F5> :tabprev<CR>
 nmap <F6> :tabnew<CR>
-nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
+nmap <F7> :!ctags -R -o ~/.mytags ~/code /srv/http/elts<CR>
 nmap <F8> :tabnext<CR>
 nmap <F9> :NERDTreeToggle<CR>
 nmap <F10> :UndotreeToggle<CR>
 nmap <F12> :TagbarToggle<CR>
 " Where should vim look for the tags that exuberant ctags generates?
 set tags=~/.mytags
-" Allows e.g. ruby method name `has_key?` to be looked up.
+" Allows method names such as `has_key?` to be looked up.
 set iskeyword+=?
-" Force users to use hjkl instead of arrow keys.
+" Disable the arrow keys. hjkl has the same effect.
 nnoremap <up> <nop>
 nnoremap <right> <nop>
 nnoremap <down> <nop>
