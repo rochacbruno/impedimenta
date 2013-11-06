@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-'''Save a copy of SOURCE_FILE as filename.yyyy-mm-dd in the current directory'''
+'''Save a copy of SOURCE_FILE as filename.yyyy-mm-dd in the current directory
+
+This program depends on the curl utility
+
+'''
 
 from datetime import date
 from os.path import basename
