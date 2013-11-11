@@ -1,0 +1,9 @@
+# `obj-m` specifies object files which are built as loadable kernel modules. If
+# object file "foo.o" is added to this array, module file "foo.ko" is created.
+obj-m += example_module.o
+
+# What does object file "example_module.o" depend upon?
+example_module-objs := module.o proc_file.o
+
+module.o: module.c
+proc_file.o: proc_file.h proc_file.c
