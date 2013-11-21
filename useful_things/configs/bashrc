@@ -30,34 +30,27 @@ alias railsfind='find -L . \( -path ./vendor/bundle -o -path ./doc/app -o -path 
 alias rm='rm -I'
 alias d='dirs -v'
 
-# TODO: scope variables
-#RESET='0;0'
-#BLACK='0;30'
-#RED='0;31'
-#GREEN='0;32'
-#YELLOW='0;33'
-#BLUE='0;34'
-#PURPLE='0;35'
-#CYAN='0;36'
-#WHITE='0;37'
-
-# Color codes should be placed inside \[these\]. If not done, the apparent and
-# actual cursor position will differ.
-#
-# TODO: expand function definition
-color() {
-    echo "\[\e[${1}m\]"
-}
+# \[\e[COLORm\]
+# RESET='0;0'
+# BLACK='0;30'
+# RED='0;31'
+# GREEN='0;32'
+# YELLOW='0;33'
+# BLUE='0;34'
+# PURPLE='0;35'
+# CYAN='0;36'
+# WHITE='0;37'
 
 export EDITOR="vim"
 export EMAIL="ichimonji10@gmail.com"
-export GEM_HOME=~/.gem/ruby/2.0.0
 export PAGER=less
-export PS1="[$(color '0;36')\u$(color '0;0')@$(color '0;36')\h$(color '0;0'):\W]\$ "
-# GEM_HOME: This forces bundler to install gems on a per-user basis, instead of
-# system-wide. This matches the default `gem` behaviour on Arch Linux, and it
-# also allows gems to be installed without `sudo`.
-# PATH: add `vendor_perl` for `ack` command
+export PS1="[\[\e[0;36m\]\u\[\e[0;0m\]@\[\e[0;36m\]\h\[\e[0;0m\]:\W]\$ "
+
+if [ -n "$TMUX" ]; then
+    export TERM=screen-256color
+else
+    export TERM=xterm-256color
+fi
 
 # Check window size after each command if update LINES and COLUMNS if necessary
 shopt -s checkwinsize
@@ -69,12 +62,6 @@ shopt -s histappend
 # Adds rbenv shims to `PATH`, enables auto-completion, automatically rehashes
 # shims upon shell launch, and makes `rbenv shell` and `rbenv rehash` function
 # correctly.
-if [[ -a `which rbenv 2>/dev/null` ]]; then
-    eval "$(rbenv init -)"
-fi
-
-# mdadm
-# Show status of mdadm raid array if `/proc/mdstat` is present.
-if [[ -e /proc/mdstat ]]; then
-    cat /proc/mdstat
-fi
+#if [[ -a `which rbenv 2>/dev/null` ]]; then
+#    eval "$(rbenv init -)"
+#fi
