@@ -12,7 +12,7 @@ set -u
 #repo_dir=
 #work_dir=
 #dest_dir=
-prefix=gource
+prefix=$(basename "$repo_dir")
 
 #-------------------------------------------------------------------------------
 
