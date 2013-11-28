@@ -9,9 +9,10 @@
 # Die if an uninitialized var is used.
 set -u
 
-#repo_dir=
-#work_dir=
-#dest_dir=
+# SET THESE VARS!
+repo_dir=
+work_dir=
+dest_dir=
 prefix=$(basename "$repo_dir")
 
 #-------------------------------------------------------------------------------
@@ -32,15 +33,11 @@ xvfb-run \
     --output-ppm-stream "${prefix}.ppm" \
     "$repo_dir"
 
-# `-b:v NNN` is bitrate of video.
-# NNN = 200kB is low quality and consumes 11-12 MB/min.
-
 # create mkv video
 echo Creating mkv video.
 ffmpeg \
     -y -r 30 -f image2pipe -codec:v ppm -i "${prefix}.ppm" \
     -codec:v libx264 \
-    -b:v 1000kB \
     -preset ultrafast \
     -pix_fmt yuv420p \
     -crf 1 \
@@ -49,6 +46,9 @@ ffmpeg \
     "${prefix}.mkv"
 
 # create webm video
+#
+# `-b:v NNN` is bitrate of video.
+# NNN = 200kB is low quality and consumes 11-12 MB/min.
 echo Creating webm video.
 ffmpeg \
     -y -r 30 -f image2pipe -codec:v ppm -i "${prefix}.ppm" \
