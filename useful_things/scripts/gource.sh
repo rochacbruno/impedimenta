@@ -8,6 +8,8 @@
 
 # Die if an uninitialized var is used.
 set -u
+# Die if any command returns non-zero.
+set -e
 
 # SET THESE VARS!
 repo_dir=
@@ -22,6 +24,7 @@ cd "$work_dir"
 # Create uncompressed PPM file. ffmpeg uses this file as input.
 # Gource requires a video display, so create a virtual one with xvfb-run.
 echo Creating PPM file.
+set +e
 xvfb-run \
     --auto-servernum \
     --server-args "-screen 0 1280x720x24" \
@@ -32,13 +35,14 @@ xvfb-run \
     --output-framerate 30 \
     --output-ppm-stream "${prefix}.ppm" \
     "$repo_dir"
+set -e
 
 # create mkv video
 echo Creating mkv video.
 ffmpeg \
     -y -r 30 -f image2pipe -codec:v ppm -i "${prefix}.ppm" \
     -codec:v libx264 \
-    -preset ultrafast \
+    -preset fast \
     -pix_fmt yuv420p \
     -crf 1 \
     -threads 0 \
