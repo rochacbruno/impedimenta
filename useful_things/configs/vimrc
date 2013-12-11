@@ -20,8 +20,9 @@ set cursorline
 "set cursorcolumn
 " Always show the status line.
 set laststatus=2
-" Display relative line numbers.
+" Display relative line numbers. For the current line, show absolute position.
 set rnu
+set number
 " Show cursor position in status bar.
 set ruler
 " Show partial commands.
@@ -32,7 +33,7 @@ set showcmd
 " Enable syntax highlighting.
 syntax enable
 " Force vim into 256-color mode (instead of 16).
-set t_Co=256
+"set t_Co=256
 " Nice schemes: badwolf, hemisu, jellybeans. (and solarized?)
 color badwolf
 
@@ -78,6 +79,8 @@ set tabstop=4
 set expandtab
 " How many spaces should be inserted when indenting or retabbing?
 set shiftwidth=4
+" Round indent to multiple of 'shiftwidth'.  Applies to > and < commands.
+set shiftround
 
 " Key Bindings
 " ============
