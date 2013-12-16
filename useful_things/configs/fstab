@@ -32,4 +32,4 @@ UUID=...  none        swap  defaults                  0  2
 #   important to me than awesome uptime.
 /mnt/data1/http         /srv/http             none  bind  0  0
 /mnt/data1/ichimonji10  /srv/ftp/ichimonji10  none  bind  0  0
-/mnt/data1/ftp_upload   /srv/ftp/ftp_upload   none  bind  0  0
+/mnt/data1/upload       /srv/ftp/upload       none  bind  0  0
