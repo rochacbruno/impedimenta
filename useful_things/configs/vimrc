@@ -1,26 +1,29 @@
-" Other Settings
-" ==============
-" Do not emulate vi.
-set nocompatible
-" If a line exceeds the width of the viewport, don't wrap it.
-set nowrap
-" Allow user to backspace in insert mode.
-set backspace=2
-" Buffer between cursor and top+bottom edge of viewport.
-set scrolloff=2
-" Display certain characters, such as trailing whitespace, in a certain way.
-set list
-set listchars=trail:·,tab:>-,extends:!
+" Key Bindings
+" ============
+" What key should 'leader' be mapped to?
+let mapleader=","
+" Shortcuts.
+nmap <F5> :tabprev<CR>
+nmap <F6> :tabnew<CR>
+nmap <F7> :!ctags -R -o ~/.mytags ~/code<CR>
+nmap <F8> :tabnext<CR>
+nmap <F9> :NERDTreeToggle<CR>
+nmap <F10> :UndotreeToggle<CR>
+nmap <F12> :TagbarToggle<CR>
+" Where should vim look for the tags that exuberant ctags generates?
+set tags=~/.mytags
+" Allows method names such as `has_key?` to be looked up.
+set iskeyword+=?
+" Disable the arrow keys. hjkl has the same effect.
+nnoremap <up> <nop>
+nnoremap <right> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
 
 " Status Indicators
 " =================
 " Highlight the current row.
 set cursorline
-" Highlight a comma-separated list of columns. Columns can be either absolute
-" (cc=10,20) or relative to `textwidth` (cc=+1).
-"set colorcolumn=+1
-" Highlight the current column.
-"set cursorcolumn
 " Always show the status line.
 set laststatus=2
 " Display relative line numbers. For the current line, show absolute position.
@@ -31,29 +34,19 @@ set ruler
 " Show partial commands.
 set showcmd
 
-" Syntax Highlighting
-" ===================
-" Enable syntax highlighting.
-syntax enable
-" Force vim into 256-color mode (instead of 16).
-"set t_Co=256
-" Nice schemes: badwolf, hemisu, jellybeans. (and solarized?)
-color badwolf
-
-" Undo Tree
-" =========
-" Remember to create this directory, as it is NOT automatically created.
-set undodir=~/.vim/undo
-" Save the undo history in `undodir`. Allows persistent undo history.
+" Undo History
+" ============
+" Save the undo history in `undodir`. Make sure to create `undodir`, as it is
+" NOT automatically created.
 set undofile
+set undodir=~/.vim/undo
 
 " Searching
 " =========
-" When searching, move the cursor as you type.
+" Show search results while searching.
 set incsearch
-" Ignore case when searching...
+" Ignore case when searching, unless a capitalized letter is used.
 set ignorecase
-" ...except when I use caps in a search term.
 set smartcase
 
 " Folding
@@ -73,6 +66,8 @@ set foldmethod=indent
 set textwidth=80
 " Keep current indentation level when starting new line
 set autoindent
+" If a line exceeds the width of the viewport, don't wrap it.
+set nowrap
 
 " Tabbing
 " =======
@@ -82,27 +77,20 @@ set tabstop=4
 set expandtab
 " How many spaces should be inserted when indenting or retabbing?
 set shiftwidth=4
-" Round indent to multiple of 'shiftwidth'.  Applies to > and < commands.
+" Round indent to multiple of 'shiftwidth'. Applies to > and < commands.
 set shiftround
 
-" Key Bindings
-" ============
-" What key should 'leader' be mapped to?
-let mapleader=","
-" Shortcuts.
-nmap <F5> :tabprev<CR>
-nmap <F6> :tabnew<CR>
-nmap <F7> :!ctags -R -o ~/.mytags ~/code /srv/http/elts<CR>
-nmap <F8> :tabnext<CR>
-nmap <F9> :NERDTreeToggle<CR>
-nmap <F10> :UndotreeToggle<CR>
-nmap <F12> :TagbarToggle<CR>
-" Where should vim look for the tags that exuberant ctags generates?
-set tags=~/.mytags
-" Allows method names such as `has_key?` to be looked up.
-set iskeyword+=?
-" Disable the arrow keys. hjkl has the same effect.
-nnoremap <up> <nop>
-nnoremap <right> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
+" Other Settings
+" ==============
+" Do not emulate vi.
+set nocompatible
+" Allow user to backspace in insert mode.
+set backspace=2
+" Buffer between cursor and top+bottom edge of viewport.
+set scrolloff=2
+" Use syntax highlighting.
+syntax enable
+color badwolf
+" Display interesting characters, such as trailing whitespace, specially.
+set list
+set listchars=trail:·,tab:>-,extends:!
