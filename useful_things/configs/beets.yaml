@@ -1,7 +1,7 @@
 directory: ~/music
+plugins: inline fetchart chroma
 
 # Create a custom field, available for use in the "path" configuration section.
-plugins: inline
 item_fields:
     album_and_disc:
         u'{} (CD {})'.format(album, disc)
