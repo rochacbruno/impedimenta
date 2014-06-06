@@ -48,6 +48,8 @@ set incsearch
 " Ignore case when searching, unless a capitalized letter is used.
 set ignorecase
 set smartcase
+" Do not highlight search results.
+set nohlsearch
 
 " Folding
 " =======
