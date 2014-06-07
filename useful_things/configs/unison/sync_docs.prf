@@ -1,13 +1,11 @@
 root = /home/ichimonji10/.sync_docs/
-root = ssh://ichimonji10@srv1.ichimonji10.name//mnt/data1/ichimonji10/
+root = ssh://ichimonji10@pine.ichimonji10.name//mnt/data1/ichimonji10/
 
 auto = true
 
-# ichimonji10.name dirs to ignore
 ignore = Path audiobooks
-ignore = Path music
 ignore = Path games
+ignore = Path movies
+ignore = Path music
 ignore = Path OSs
-ignore = Path Movies
-ignore = Path TV Shows
-ignore = Path Oscar
+ignore = Path tv shows
