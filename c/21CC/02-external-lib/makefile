@@ -1,4 +1,4 @@
-EXE = erf
+CFLAGS = -Wall
+LDLIBS = -lm
 
-$(EXE):
-	clang -Wall -o $(EXE) -l m erf.c
+erf:
