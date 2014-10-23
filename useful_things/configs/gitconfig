@@ -7,3 +7,5 @@
 	default = simple
 [alias]
 	hist = log --decorate --graph --pretty=oneline --abbrev-commit --all
+[core]
+	excludesfile = /home/ichimonji10/.gitignore_global
