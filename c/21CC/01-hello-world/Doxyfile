@@ -1,0 +1,4 @@
+# See: http://www.stack.nl/~dimitri/doxygen/manual/config.html
+
+PROJECT_NAME = "Hello, World!"
+PROJECT_BRIEF = "A gold-plated hello world program."
