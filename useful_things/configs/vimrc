@@ -82,6 +82,12 @@ set shiftwidth=4
 " Round indent to multiple of 'shiftwidth'. Applies to > and < commands.
 set shiftround
 
+" File Type
+" =========
+filetype on
+autocmd Filetype gitcommit setlocal spell textwidth=72
+autocmd Filetype python setlocal textwidth=79
+
 " Other Settings
 " ==============
 " Do not emulate vi.
@@ -89,7 +95,7 @@ set nocompatible
 " Allow user to backspace in insert mode.
 set backspace=2
 " Buffer between cursor and top+bottom edge of viewport.
-set scrolloff=2
+set scrolloff=5
 " Use syntax highlighting.
 syntax enable
 color badwolf
