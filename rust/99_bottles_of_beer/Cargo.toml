@@ -1,0 +1,4 @@
+[package]
+name = "99_bottles_of_beer"
+version = "0.1.0"
+authors = [ "Jeremy Audet <ichimonji10@gmail.com>" ]
