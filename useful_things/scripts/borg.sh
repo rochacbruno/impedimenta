@@ -3,6 +3,8 @@
 # Create and prune Borg backups. See: http://borgbackup.readthedocs.org. If the
 # repository is on a remote system, ensure the SSH key is usable.
 #
+set -euo pipefail
+
 export BORG_PASSPHRASE=  # passphrase for repository
 repository=  # e.g. foo.example.com:borgbackup-myname
 archive_prefix="$(hostname --long)"
