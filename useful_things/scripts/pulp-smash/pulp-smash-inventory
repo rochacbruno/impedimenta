@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+# coding=utf-8
+# pylint:disable=invalid-name
+"""Provide an Ansible inventory of Pulp Smash systems.
+
+This script is best used in conjunction with Pulp Packaging. Try spinning up
+several Fedora 24 systems, creating a Pulp Smash config file for each, and
+executing the following:
+
+.. code-block:: bash
+
+    # Ansible and Pulp Smash must be installed.
+    ansible pulp -i pulp-smash-inventory -m raw -a 'dnf -y install python2'
+    ansible pulp -i pulp-smash-inventory -m command \
+        -a 'dnf -y install python2-dnf libselinux-python'
+    git clone https://github.com/pulp/pulp_packaging
+    cd pulp_packaging
+    sed -i -e 's/hosts: all/hosts: pulp/' ci/ansible/pulp_server.yaml
+    ansible-playbook ci/ansible/pulp_server.yaml -i pulp-smash-inventory
+
+For detailed information on Ansible inventories, see see `Developing Dynamic
+Inventory Sources
+<http://docs.ansible.com/ansible/dev_guide/developing_inventory.html>`_.
+"""
+import json
+import argparse
+from pathlib import Path
+from urllib.parse import urlsplit
+
+from pulp_smash.config import ServerConfig
+from xdg import BaseDirectory
+
+
+# TODO: Place this in `pulp_smash.constants`.
+_XDG_CONFIG_DIR = 'pulp_smash'
+
+
+def main():
+    """Parse arguments and return a dynamic inventory, if appropriate."""
+    parser = argparse.ArgumentParser(
+        prog='pulp-smash-inventory',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        # It would be better to wrap this text with something like libwrap. In
+        # lieu of that, we hard-wrap to 72 chars.
+        description='''\
+Return an Ansible inventory Pulp Smash systems.
+
+Pick the first XDG configuration directory named `pulp_smash`. Parse all
+of the configuration files therein, and generate an inventory from them.
+If multiple configuration directories are found, only the first is used.
+For example, if `~/.config/pulp_smash/` and `/etc/xdg/pulp_smash/` are
+present, only the configuration files in `~/.config/pulp_smash/` are
+parsed.
+
+When called with `--list`, print an inventory in the following form:
+
+    {"pulp": {"hosts": ["192.168.100.2", "pulp.example.com"]}}
+
+The "pulp" group name corresponds to the role (a.k.a. section) by the
+same name in each Pulp Smash configuration file. In other words, hosts
+are grouped by the roles they fulfill. In the example above, two hosts
+fulfill the role of being a Pulp server. Spaces in role names are
+replaced with underscores.
+
+When called with `--host <hostname>`, print an inventory in the
+following form:
+
+    {"pulp_version": "2.8.8"}
+
+Any host not in the "pulp" role is ignored. Only the `pulp_version`
+variable is printed.
+'''
+    )
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument(
+        '--list',
+        action='store_true',
+        help='list each host known to Pulp Smash, grouped by role',
+    )
+    group.add_argument('--host', help='list variables for a "pulp" host')
+    args = parser.parse_args()
+
+    # Generate inventory
+    inventory = {}
+    if args.host:
+        for role, cfg in _get_pulp_smash_configs():
+            if role != 'pulp' or urlsplit(cfg.base_url).netloc != args.host:
+                continue
+            # e.g. 1!2.3.4 → 1!2.3
+            inventory['pulp_version'] = '.'.join(
+                str(cfg.version).split('.')[:2]
+            )
+    elif args.list:
+        for role, cfg in _get_pulp_smash_configs():
+            role = role.replace(' ', '_')
+            inventory.setdefault(role, {'hosts': []})['hosts'].append(
+                urlsplit(cfg.base_url).netloc
+            )
+    print(json.dumps(inventory, indent=4))
+
+
+def _get_pulp_smash_configs():
+    """Yield all available iterable of Pulp Smash ``ServerConfig`` objects.
+
+    Yield each config as a tuple of ``(role, config_object)``.
+    """
+    configs_dir = BaseDirectory.load_first_config(_XDG_CONFIG_DIR)
+    if configs_dir is None:
+        return
+    for path in Path(configs_dir).iterdir():
+        if not path.suffix == '.json':
+            continue
+        for role in ServerConfig().sections(xdg_config_file=path.name):
+            yield role, ServerConfig().read(role, xdg_config_file=path.name)
+
+
+if __name__ == '__main__':
+    exit(main())
