@@ -4,6 +4,9 @@
 #
 set -xeuo pipefail
 
+# Don't send DNS name lookups to dnsmasq.
+resolvconf -d br-libvirt
+
 # Stop services.
 systemctl stop dnsmasq libvirtd virtlogd
 

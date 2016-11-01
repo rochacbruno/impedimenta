@@ -24,4 +24,7 @@ sysctl -w net.ipv4.ip_forward=1
 # Start needed services.
 systemctl start dnsmasq libvirtd virtlogd
 
+# Ensure DNS lookups for plain names hit dnsmasq.
+echo 'nameserver 192.168.100.1' | resolvconf -a br-libvirt
+
 # vim:set ts=2 sw=2 et:
