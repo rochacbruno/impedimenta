@@ -45,12 +45,14 @@ def main():
         description='''\
 Return an Ansible inventory Pulp Smash systems.
 
-Pick the first XDG configuration directory named `pulp_smash`. Parse all
-of the configuration files therein, and generate an inventory from them.
-If multiple configuration directories are found, only the first is used.
-For example, if `~/.config/pulp_smash/` and `/etc/xdg/pulp_smash/` are
-present, only the configuration files in `~/.config/pulp_smash/` are
-parsed.
+Pick the first XDG configuration directory named "pulp_smash." If
+multiple XDG configuration directories are present, only the first is
+used. For example, if `~/.config/pulp_smash/` and `/etc/xdg/pulp_smash`
+exist, only the first is used.
+
+Parse all of the configuration files in the chosen directory. A file is
+assumed to be a configuration file if it does not start with "." and
+ends with ".json." Generate an inventory.
 
 When called with `--list`, print an inventory in the following form:
 
@@ -100,18 +102,19 @@ variable is printed.
 
 
 def _get_pulp_smash_configs():
-    """Yield all available iterable of Pulp Smash ``ServerConfig`` objects.
+    """Yield Pulp Smash configuration files as ``ServerConfig`` objects.
 
-    Yield each config as a tuple of ``(role, config_object)``.
+    On each iteration, yield a tuple of ``(role, server_config)``.
     """
     configs_dir = BaseDirectory.load_first_config(_XDG_CONFIG_DIR)
     if configs_dir is None:
         return
     for path in Path(configs_dir).iterdir():
-        if not path.suffix == '.json':
+        path_name = path.name
+        if path_name.startswith('.') or not path_name.endswith('.json'):
             continue
         for role in ServerConfig().sections(xdg_config_file=path.name):
-            yield role, ServerConfig().read(role, xdg_config_file=path.name)
+            yield role, ServerConfig().read(role, xdg_config_file=path_name)
 
 
 if __name__ == '__main__':
