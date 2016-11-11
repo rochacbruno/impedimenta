@@ -1,0 +1,10 @@
+[run]
+source =
+    myapp
+parallel = true
+concurrency =
+    thread
+    multiprocessing
+# http://coverage.readthedocs.io/en/coverage-4.2/cmd.html#diagnostics
+# debug =
+#     trace
