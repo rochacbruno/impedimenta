@@ -1,0 +1,8 @@
+- hosts: all
+  become: true
+  become_user: root
+  roles:
+    - msmtp  # NOTE: Edit the vars for this role before using.
+    - smartd
+
+# vim:set ts=2 sw=2 et:

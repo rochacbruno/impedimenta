@@ -1,0 +1,26 @@
+- name: ensure packages are present
+  pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - msmtp
+    - msmtp-mta
+    - s-nail
+
+- name: set install reason for packages
+  command: "pacman -D --asdeps msmtp-mta"
+
+- name: ensure a group of users authorized to send emails exists
+  group:
+    name: ichi-machines
+    state: present
+
+- name: ensure a system-wide msmtp configuration file is present
+  template:
+    src: msmtprc.j2
+    dest: /etc/msmtprc
+    owner: root
+    group: ichi-machines
+    mode: 0640
+
+# vim:set ts=2 sw=2 et:

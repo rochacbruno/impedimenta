@@ -1,0 +1,20 @@
+- name: ensure packages are present
+  pacman:
+    name: smartmontools
+    state: present
+
+- name: ensure configuration file is present
+  file:
+    src: smartd.conf
+    dest: /etc/smartd.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure smartd daemon is running and enabled
+  systemd:
+    name: smartd
+    state: started
+    enabled: yes
+
+# vim:set ts=2 sw=2 et:
