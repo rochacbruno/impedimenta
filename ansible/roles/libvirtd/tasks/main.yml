@@ -1,0 +1,57 @@
+# After executing this role, add authorized users to 'kvm' and 'libvirt' groups.
+
+- name: ensure packages are present
+  pacman:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - libvirt
+    - qemu  # libvirt backend
+    - openbsd-netcat  # libvirt management over ssh
+    - virt-install  # libvirt management via console (including virt-clone)
+    - dnsmasq
+
+- name: set install reason for packages
+  command: 'pacman -D --asdeps qemu dnsmasq openbsd-netcat'
+
+- name: ensure dnsmasq has a correct configuration file
+  copy:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure local scripts are present
+  copy:
+    src: usr_local_bin/
+    dest: '/usr/local/bin/'
+    owner: root
+    group: root
+    mode: 0744
+
+- name: ensure systemd units are present
+  copy:
+    src: etc_systemd_system/
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure libvirtd is started and enabled
+  systemd:
+    name: libvirtd
+    state: started
+    enabled: yes
+    daemon_reload: yes  # due to /etc/systemd/system/ changes above
+
+# The sysctl module doesn't work well under Python 3 with Ansible 2.2.1.0.
+- name: ensure IPv4 forwarding is enabled at next boot
+  copy:
+    src: 50-libvirtd-networking.conf
+    dest: /etc/sysctl.d/50-libvirtd-networking.conf
+
+- name: ensure IPv4 forwarding is enabled right now
+  command: 'sysctl --load=/etc/sysctl.d/50-libvirtd-networking.conf'
+
+# vim:set ts=2 sw=2 et:

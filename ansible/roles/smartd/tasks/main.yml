@@ -4,7 +4,7 @@
     state: present
 
 - name: ensure configuration file is present
-  file:
+  copy:
     src: smartd.conf
     dest: /etc/smartd.conf
     owner: root

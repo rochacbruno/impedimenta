@@ -2,7 +2,13 @@
   become: true
   become_user: root
   roles:
-    - msmtp  # NOTE: Edit the vars for this role before using.
+    # before running: edit the vars for this role
+    # after running: edit group membership for system users
+    - msmtp
+    # TODO: Schedule disk checks with systemd timers, not via smartd.conf.
     - smartd
+    # after running: edit group membership for system users, and ensure nftables
+    # firewall rules are correct. (Check "chain input" and "table nat".)
+    - libvirtd
 
 # vim:set ts=2 sw=2 et:
