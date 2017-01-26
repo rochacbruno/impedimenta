@@ -28,7 +28,7 @@
     dest: '/usr/local/bin/'
     owner: root
     group: root
-    mode: 0744
+    mode: 0755
 
 - name: ensure systemd units are present
   copy:
