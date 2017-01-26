@@ -3,7 +3,7 @@
     name: smartmontools
     state: present
 
-- name: ensure configuration file is present
+- name: ensure a smartd configuration file is present
   copy:
     src: smartd.conf
     dest: /etc/smartd.conf
@@ -16,5 +16,31 @@
     name: smartd
     state: started
     enabled: yes
+
+- name: ensure scripts for starting SMART scans are installed
+  copy:
+    src: usr_local_bin/
+    dest: /usr/local/bin/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: ensure units for starting SMART scans are installed
+  copy:
+    src: etc_systemd_system/
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure timers for starting SMART scans are started and enabled
+  systemd:
+    name: "{{ item }}"
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  with_items:
+    - smart-test-long.timer
+    - smart-test-short.timer
 
 # vim:set ts=2 sw=2 et:
