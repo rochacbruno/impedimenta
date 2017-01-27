@@ -16,4 +16,7 @@
     # No special requirements.
     - pkgfile
 
+    # No special requirements.
+    - reflector
+
 # vim:set ts=2 sw=2 et:

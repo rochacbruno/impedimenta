@@ -1,0 +1,21 @@
+- name: ensure packages are present
+  pacman:
+    name: reflector
+    state: present
+
+- name: ensure units for periodically calling reflector are installed
+  copy:
+    src: etc_systemd_system/
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure timer for periodically calling reflector is started and enabled
+  systemd:
+    name: reflector-update.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+# vim:set ts=2 sw=2 et:
