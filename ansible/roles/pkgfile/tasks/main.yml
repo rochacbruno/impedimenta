@@ -1,0 +1,13 @@
+- name: ensure packages are present
+  pacman:
+    name: pkgfile
+    state: present
+
+- name: ensure timer for updating pkgfile is started and enabled
+  systemd:
+    name: pkgfile-update.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+# vim:set ts=2 sw=2 et:
