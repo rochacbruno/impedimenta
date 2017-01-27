@@ -1,7 +1,5 @@
 [Unit]
 Description=Start a long SMART scan
-# for email alerts
-Wants=network.service
 
 [Service]
 Type=oneshot
