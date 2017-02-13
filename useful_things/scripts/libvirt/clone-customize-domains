@@ -362,7 +362,7 @@ customize_clones() {
     for base in "${bases[@]}"; do
         # shellcheck disable=SC2016
         for suffix in "${suffixes[@]}"; do
-            cmd='virt-customize '
+            cmd='virt-sysprep '
             cmd+='--connect "$connect" '
             cmd+='--domain "${base}${suffix}" '
             cmd+='--hostname "${base}${suffix}" '
