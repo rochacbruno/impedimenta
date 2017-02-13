@@ -1,0 +1,21 @@
+- name: ensure packages are present
+  pacman:
+    name: btrfs-progs
+    state: present
+
+- name: ensure units for starting a btrfs scrub are installed
+  copy:
+    src: etc_systemd_system/
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: ensure timer for starting a btrfs scrub is started and enabled
+  systemd:
+    name: btrfs-scrub.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+# vim:set ts=2 sw=2 et:

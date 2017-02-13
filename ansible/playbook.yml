@@ -19,4 +19,7 @@
     # No special requirements.
     - reflector
 
+    # /mnt/btrfs must be present
+    - btrfs-scrub
+
 # vim:set ts=2 sw=2 et:

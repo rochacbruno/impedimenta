@@ -1,0 +1,9 @@
+[Unit]
+Description=Periodically start a btrfs scrub
+
+[Timer]
+OnCalendar=Monthly
+Persistent=True
+
+[Install]
+WantedBy=timers.target
