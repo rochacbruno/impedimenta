@@ -1,11 +1,5 @@
 - hosts: all
-  become: true
-  become_user: root
   roles:
-    # after running: edit group membership for system users, and ensure nftables
-    # firewall rules are correct. (Check "chain input" and "table nat".)
-    - libvirtd
-
     # before running: edit the vars for this role
     # after running: edit group membership for system users
     - msmtp
@@ -19,6 +13,14 @@
     # No special requirements.
     - reflector
 
+- hosts: vm-hosts
+  roles:
+    # after running: edit group membership for system users, and ensure nftables
+    # firewall rules are correct. (Check "chain input" and "table nat".)
+    - libvirtd
+
+- hosts: btrfs-hosts
+  roles:
     # /mnt/btrfs must be present
     - btrfs-scrub
 
