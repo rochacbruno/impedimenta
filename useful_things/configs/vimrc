@@ -87,6 +87,7 @@ set shiftround
 filetype on
 autocmd Filetype gitcommit setlocal spell textwidth=72
 autocmd Filetype python setlocal textwidth=79
+autocmd Filetype yaml setlocal tabstop=2 shiftwidth=2
 
 " Other Settings
 " ==============
