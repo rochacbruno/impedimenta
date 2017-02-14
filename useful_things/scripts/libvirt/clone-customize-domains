@@ -11,7 +11,7 @@
 # * The user must be root or have passwordless sudo privileges. This is needed
 #   to alter disk image permissions. If the user has password-protected sudo
 #   privileges, this script will still work, but a human may need to babysit.
-# * virsh, virt-clone and virt-customize must be available.
+# * virsh, virt-clone and virt-sysprep must be available.
 #
 # TODO:
 #
@@ -298,9 +298,9 @@ create_clones() {
 # a domain starts. Thus, the effects of this function will be overwritten.
 #
 # By default, system-wide disk images have restrictive permissions, like
-# "-rw------- root root". virt-customize needs root privileges to touch such
-# files. A better solution is to run virt-customize as a normal user and make
-# the disk image permissions more lax.
+# "-rw------- root root". virt-sysprep needs root privileges to touch such
+# files. A better solution is to run virt-sysprep as a normal user and make the
+# disk image permissions more lax.
 #
 # Arguments: connect, bases, suffixes, libvirt_host, uid
 _set_disk_permissions() {
