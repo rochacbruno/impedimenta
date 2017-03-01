@@ -2,5 +2,4 @@
 Description=Start a btrfs scrub
 
 [Service]
-Type=oneshot
-ExecStart=/usr/bin/btrfs scrub start /mnt/btrfs
+ExecStart=/usr/bin/btrfs scrub start -Bd /mnt/btrfs
