@@ -1,0 +1,2 @@
+- name: set install reason for packages
+  command: 'pacman -D --asdeps qemu dnsmasq openbsd-netcat'

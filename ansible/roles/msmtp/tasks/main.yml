@@ -6,9 +6,8 @@
     - msmtp
     - msmtp-mta
     - s-nail
-
-- name: set install reason for packages
-  command: "pacman -D --asdeps msmtp-mta"
+  notify:
+    - set install reason for packages
 
 - name: ensure a group of users authorized to send emails exists
   group:

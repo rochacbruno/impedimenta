@@ -10,9 +10,8 @@
     - openbsd-netcat  # libvirt management over ssh
     - virt-install  # libvirt management via console (including virt-clone)
     - dnsmasq
-
-- name: set install reason for packages
-  command: 'pacman -D --asdeps qemu dnsmasq openbsd-netcat'
+  notify:
+    - set install reason for packages
 
 - name: ensure dnsmasq has a correct configuration file
   copy:
