@@ -1,4 +1,0 @@
-# See templates/msmtprc.j2. DO NOT VERSION CONTROL THIS VAR.
-# msmtprc_password:
-
-# vim:set ts=2 sw=2 et:

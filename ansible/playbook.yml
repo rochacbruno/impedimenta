@@ -12,6 +12,8 @@
 
     # No special requirements.
     - reflector
+  vars:
+    - msmtprc_password: 'FIXME'
 
 - hosts: vm-hosts
   roles:
