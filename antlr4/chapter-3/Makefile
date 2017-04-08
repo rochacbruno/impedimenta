@@ -7,7 +7,11 @@ help:
 	@echo "  ArrayInitParser.java"
 	@echo "    to compile a lexer and parser from ArrayInit.g4"
 	@echo "  TestRig"
-	@echo "    to run Antlr4's TestRig on sample input"
+	@echo "    to call the compiled lexer and parser from Antlr4's TestRig"
+	@echo "  Test.class"
+	@echo "    to compile Test.java"
+	@echo "  Test"
+	@echo "    to call the Test program with sample input"
 
 ArrayInitParser.java:
 	CLASSPATH=$(CLASSPATH) java org.antlr.v4.Tool ArrayInit.g4
@@ -17,4 +21,10 @@ TestRig: ArrayInitParser.java
 	echo "{1, 2, {3, 4}, 5}" | CLASSPATH=$(CLASSPATH) \
 		java org.antlr.v4.gui.TestRig ArrayInit init -gui
 
-.PHONY: help TestRig
+Test.class: ArrayInitParser.java
+	CLASSPATH=$(CLASSPATH) javac Test.java
+
+Test: Test.class
+	echo "{1, 2, {3, 4}, 5}" | CLASSPATH=$(CLASSPATH) java Test
+
+.PHONY: help TestRig Test
