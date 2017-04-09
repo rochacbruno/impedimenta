@@ -14,8 +14,11 @@ public class Test {
 
         // create parser to feed from tokens buffer
         ArrayInitParser parser = new ArrayInitParser(tokens);
-
         ParseTree tree = parser.init(); // parse from "init" rule
-        System.out.println(tree.toStringTree(parser)); // print LISP-style tree
+
+        // Create and launch a generic parse tree walker.
+        ParseTreeWalker walker = new ParseTreeWalker();
+        walker.walk(new ShortToUnicodeString(), tree);
+        System.out.println(); // print \n
     }
 }

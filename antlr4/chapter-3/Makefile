@@ -25,6 +25,6 @@ Test.class: ArrayInitParser.java
 	CLASSPATH=$(CLASSPATH) javac Test.java
 
 Test: Test.class
-	echo "{1, 2, {3, 4}, 5}" | CLASSPATH=$(CLASSPATH) java Test
+	echo "{1, 2, 5}" | CLASSPATH=$(CLASSPATH) java Test
 
 .PHONY: help TestRig Test
