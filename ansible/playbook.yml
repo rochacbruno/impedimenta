@@ -2,7 +2,7 @@
   roles:
     # before running: edit the vars for this role
     # after running: edit group membership for system users
-    - msmtp
+    - {role: msmtp, when: msmtprc_password}
 
     # No special requirements.
     - smartd
@@ -13,7 +13,7 @@
     # No special requirements.
     - reflector
   vars:
-    - msmtprc_password: 'FIXME'
+    - msmtprc_password: null
 
 - hosts: vm-hosts
   roles:
