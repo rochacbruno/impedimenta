@@ -24,7 +24,8 @@ public class Calc {
         ExprParser parser = new ExprParser(tokens);
         ParseTree tree = parser.prog(); // parse, starting at prog
 
-        // emit parse tree
-        System.out.println(tree.toStringTree(parser));
+        // walk parse tree
+        EvalVisitor eval = new EvalVisitor();
+        eval.visit(tree);
     }
 }
