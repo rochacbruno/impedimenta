@@ -5,6 +5,7 @@ prog: stat+ ;
 
 stat: expr NEWLINE        # printExpr
     | ID '=' expr NEWLINE # assign
+    | 'clear' NEWLINE     # clear
     | NEWLINE             # blank
     ;
 
