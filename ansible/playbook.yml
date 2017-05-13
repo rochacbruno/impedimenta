@@ -2,7 +2,8 @@
   roles:
     # before running: edit the vars for this role
     # after running: edit group membership for system users
-    - {role: msmtp, when: msmtprc_password}
+    - role: msmtp
+      when: msmtprc_password is defined
 
     # No special requirements.
     - smartd
@@ -12,8 +13,6 @@
 
     # No special requirements.
     - reflector
-  vars:
-    - msmtprc_password: null
 
 - hosts: vm-hosts
   roles:
