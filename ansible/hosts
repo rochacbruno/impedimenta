@@ -1,7 +1,12 @@
 # http://docs.ansible.com/ansible/intro_inventory.html#list-of-behavioral-inventory-parameters
 #
 # `ansible_connection=local` is especially useful.
+birch.ichimonji10.name
+amelanchier.ichimonji10.name
 
 [vm-hosts]
+pine.ichimonji10.name
 
 [btrfs-hosts]
+pine.ichimonji10.name
+beech.ichimonji10.name
