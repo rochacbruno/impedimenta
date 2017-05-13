@@ -4,8 +4,8 @@
 # * https://docs.ansible.com/ansible/playbooks_variables.html#variable-examples
 # * https://docs.ansible.com/ansible/intro_inventory.html#list-of-behavioral-inventory-parameters
 
-birch.ichimonji10.name
 amelanchier.ichimonji10.name
+butternut.ichimonji10.name
 
 [vm-hosts]
 pine.ichimonji10.name
@@ -13,3 +13,7 @@ pine.ichimonji10.name
 [btrfs-hosts]
 pine.ichimonji10.name
 beech.ichimonji10.name
+
+[nftables-hosts]
+beech.ichimonji10.name
+butternut.ichimonji10.name

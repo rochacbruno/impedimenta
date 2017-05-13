@@ -25,8 +25,8 @@
     # /mnt/btrfs must be present
     - btrfs-scrub
 
-- hosts: beech.ichimonji10.name
+- hosts: nftables-hosts
   roles:
-    - beech-nftables
+    - nftables
 
 # vim:set ts=2 sw=2 et:
