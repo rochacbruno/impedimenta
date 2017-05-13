@@ -1,6 +1,9 @@
-# http://docs.ansible.com/ansible/intro_inventory.html#list-of-behavioral-inventory-parameters
+# Per-host variables should be set in host_vars/. (`ansible_connection=local` is
+# especially useful.) See:
 #
-# `ansible_connection=local` is especially useful.
+# * https://docs.ansible.com/ansible/playbooks_variables.html#variable-examples
+# * https://docs.ansible.com/ansible/intro_inventory.html#list-of-behavioral-inventory-parameters
+
 birch.ichimonji10.name
 amelanchier.ichimonji10.name
 
