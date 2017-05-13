@@ -6,13 +6,9 @@
       when: msmtprc_password is defined
 
     # No special requirements.
-    - smartd
-
-    # No special requirements.
     - pkgfile
-
-    # No special requirements.
     - reflector
+    - smartd
 
 - hosts: vm-hosts
   roles:
