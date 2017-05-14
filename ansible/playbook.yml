@@ -23,4 +23,8 @@
   roles:
     - nftables
 
+- hosts: pine.ichimonji10.name
+  roles:
+    - nftables-pine.ichimonji10.name
+
 # vim:set ts=2 sw=2 et:
