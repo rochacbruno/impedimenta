@@ -1,2 +1,5 @@
 - name: set install reason for packages
   command: 'pacman -D --asdeps qemu dnsmasq openbsd-netcat'
+
+- name: ensure IPv4 forwarding is enabled right now
+  command: 'sysctl --load=/etc/sysctl.d/50-libvirtd-networking.conf'

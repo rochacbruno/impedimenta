@@ -44,13 +44,12 @@
     enabled: yes
     daemon_reload: yes  # due to /etc/systemd/system/ changes above
 
-# The sysctl module doesn't work well under Python 3 with Ansible 2.2.1.0.
+# The sysctl module doesn't work well under Python 3 prior to Ansible 2.4 See:
+# https://github.com/ansible/ansible/issues/23731
 - name: ensure IPv4 forwarding is enabled at next boot
   copy:
     src: 50-libvirtd-networking.conf
     dest: /etc/sysctl.d/50-libvirtd-networking.conf
-
-- name: ensure IPv4 forwarding is enabled right now
-  command: 'sysctl --load=/etc/sysctl.d/50-libvirtd-networking.conf'
+  notify: ensure IPv4 forwarding is enabled right now
 
 # vim:set ts=2 sw=2 et:
