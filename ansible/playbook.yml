@@ -1,19 +1,17 @@
 - hosts: all
   roles:
-    # before running: edit the vars for this role
-    # after running: edit group membership for system users
-    - role: msmtp
-      when: msmtprc_password is defined
-
-    # No special requirements.
     - pkgfile
     - reflector
     - smartd
 
+    # after running: add authorized users to ichi-machines group
+    - role: msmtp
+      when: msmtprc_password is defined
+
 - hosts: vm-hosts
   roles:
-    # after running: edit group membership for system users, and ensure nftables
-    # firewall rules are correct. (Check "chain input" and "table nat".)
+    # NOTE: Members of this group require specific firewall rules. Be careful.
+    # after running: add authorized users to appropriate groups
     - libvirtd
 
 - hosts: btrfs-hosts
