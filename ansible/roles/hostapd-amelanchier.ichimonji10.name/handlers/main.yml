@@ -1,0 +1,4 @@
+- name: reload hostapd
+  systemd:
+    name: hostapd.service
+    state: reloaded

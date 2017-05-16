@@ -31,3 +31,5 @@
   roles:
     - nftables-amelanchier.ichimonji10.name
     - dnsmasq-amelanchier.ichimonji10.name
+    - role: hostapd-amelanchier.ichimonji10.name
+      when: hostapd_passphrase is defined

@@ -1,0 +1,21 @@
+- name: ensure packages are present
+  pacman:
+    name: hostapd
+    state: present
+
+- name: ensure hostapd configuration is present
+  template:
+    src: hostapd.j2
+    dest: /etc/hostapd/hostapd.conf
+    owner: root
+    group: root
+    mode: 0600
+  notify:
+    - reload hostapd
+
+- name: ensure hostapd is started and enabled
+  systemd:
+    name: hostapd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
