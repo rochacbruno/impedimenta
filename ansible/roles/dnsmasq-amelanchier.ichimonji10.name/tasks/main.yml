@@ -1,0 +1,23 @@
+- name: ensure packages are present
+  pacman:
+    name: dnsmasq
+    state: present
+
+- name: ensure dnsmasq configuration is present
+  copy:
+    src: dnsmasq.conf
+    dest: /etc/dnsmasq.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload dnsmasq
+
+- name: ensure dnsmasq is started and enabled
+  systemd:
+    name: dnsmasq.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
+
+# vim:set ts=2 sw=2 et:
