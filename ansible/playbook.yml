@@ -31,5 +31,3 @@
   roles:
     - nftables-amelanchier.ichimonji10.name
     - dnsmasq-amelanchier.ichimonji10.name
-
-# vim:set ts=2 sw=2 et:

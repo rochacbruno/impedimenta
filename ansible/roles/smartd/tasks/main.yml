@@ -42,5 +42,3 @@
   with_items:
     - smart-test-long.timer
     - smart-test-short.timer
-
-# vim:set ts=2 sw=2 et:

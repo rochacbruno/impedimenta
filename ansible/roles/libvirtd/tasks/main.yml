@@ -51,5 +51,3 @@
     src: 50-libvirtd-networking.conf
     dest: /etc/sysctl.d/50-libvirtd-networking.conf
   notify: ensure IPv4 forwarding is enabled right now
-
-# vim:set ts=2 sw=2 et:
