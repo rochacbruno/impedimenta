@@ -1,35 +1,30 @@
+# After running msmtp role, add authorized users to ichi-machines group.
 - hosts: all
   roles:
     - pkgfile
     - reflector
     - smartd
-
-    # after running: add authorized users to ichi-machines group
     - role: msmtp
       when: msmtprc_password is defined
 
-- hosts: vm-hosts
+- hosts: routers
   roles:
-    # NOTE: Members of this group require specific firewall rules. Be careful.
-    # after running: add authorized users to appropriate groups
+    - nftables-routers
+    - dnsmasq
+    - role: hostapd
+      when: hostapd_passphrase is defined
+
+- hosts: workstations
+  roles:
+    - nftables-workstations
+
+# After running libvirtd role, add authorized users to appropriate groups.
+- hosts: vmhosts
+  roles:
+    - nftables-vmhosts
     - libvirtd
 
+# /mnt/btrfs must be present.
 - hosts: btrfs-hosts
   roles:
-    # /mnt/btrfs must be present
     - btrfs-scrub
-
-- hosts: nftables-hosts
-  roles:
-    - nftables
-
-- hosts: pine.ichimonji10.name
-  roles:
-    - nftables-pine.ichimonji10.name
-
-- hosts: amelanchier.ichimonji10.name
-  roles:
-    - nftables-amelanchier.ichimonji10.name
-    - dnsmasq-amelanchier.ichimonji10.name
-    - role: hostapd-amelanchier.ichimonji10.name
-      when: hostapd_passphrase is defined
