@@ -1,0 +1,10 @@
+# TODO:
+#
+# * Create a role named "create-users."
+# * Create a host group named "workstation-hosts." Customize user accounts based
+#   on host roles.
+
+- hosts: all
+  roles:
+    - customize-user-ichimonji10
+  become_user: ichimonji10
