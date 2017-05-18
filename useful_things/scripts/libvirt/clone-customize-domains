@@ -12,11 +12,6 @@
 #   to alter disk image permissions. If the user has password-protected sudo
 #   privileges, this script will still work, but a human may need to babysit.
 # * virsh, virt-clone and virt-sysprep must be available.
-#
-# TODO:
-#
-# * Clone pulp_packaging and install Pulp.
-# * Test exectuion of this script over SSH. (virt-customize had issues.)
 set -euo pipefail
 
 # ------------------------------------------------------------------------------
@@ -31,7 +26,7 @@ main() {
     local temp
     temp=$(getopt \
         --options '' \
-        --longoptions help,libvirt-host:,public-key: \
+        --longoptions help,public-key: \
         --name clone-customize-domains \
         -- "$@")
     eval set -- "$temp"
@@ -39,10 +34,9 @@ main() {
 
     # Read args. (getopt sets $1 to -- even when no args are passed.)
     if [ "${#@}" -eq 1 ]; then show_help; exit 1; fi
-    local libvirt_host public_key bases suffixes
+    local public_key bases suffixes
     while true; do
         case "$1" in
-            --libvirt-host) libvirt_host="$2"; shift 2;;
             --public-key) public_key="$(realpath --canonicalize-existing "$2")"; shift 2;;
             --help) show_help; return;;
             --) shift; break;;
@@ -56,20 +50,14 @@ main() {
     shift 2
 
     # Set non-argument variables.
-    local uid connect
-    if [ -z "${libvirt_host:-}" ]; then
-        readonly uid="$(id -u)"
-        readonly connect=qemu:///system
-    else
-        readonly uid="$(ssh "$libvirt_host" id -u)"
-        readonly connect="qemu+ssh://${libvirt_host}/system"
-    fi
+    readonly local uid=$(id -u)
+    readonly local connect='qemu:///system'
 
     # Execute business logic.
     #
     # Local variables are visible to child functions. Scope creep could be
-    # combatted by moving each child function into a separate script - or by
-    # using a safer programming language.
+    # combatted by moving each child function into a separate script or by using
+    # a safer programming language.
     stop_bases
     delete_clones
     create_clones
@@ -121,13 +109,6 @@ fmt <<EOF
 Options:
     --help
         Show this message.
-    --libvirt-host <hostname>
-        WARNING: Passing this option breaks this script.
-
-        By default, this script will execute commands locally. If this option is
-        provided, this script will instead execute commands over SSH. Before
-        using this option, ensure your SSH config file (~/.ssh/config) and SSH
-        agent have been set so that passwordless communication may be done.
     --public-key <path>
         Copy the named public SSH key into each domain as the root user's
         ~/.ssh/authorized_keys file.
@@ -302,7 +283,7 @@ create_clones() {
 # files. A better solution is to run virt-sysprep as a normal user and make the
 # disk image permissions more lax.
 #
-# Arguments: connect, bases, suffixes, libvirt_host, uid
+# Arguments: connect bases, suffixes, uid
 _set_disk_permissions() {
     local cmd i path words base suffix
     for base in "${bases[@]}"; do
@@ -332,14 +313,12 @@ _set_disk_permissions() {
                 # shellcheck disable=SC2016
                 {
                 cmd=''
-                if [ -n "${libvirt_host:-}" ]; then cmd+='ssh -t "$libvirt_host" '; fi
-                if [ "$uid" != '0' ];          then cmd+='sudo ';                   fi
+                if [ "$uid" != '0' ]; then cmd+='sudo '; fi
                 cmd+='chown :kvm "$path" '
                 eval "$cmd"
 
                 cmd=''
-                if [ -n "${libvirt_host:-}" ]; then cmd+='ssh -t "$libvirt_host" '; fi
-                if [ "$uid" != '0' ];          then cmd+='sudo ';                   fi
+                if [ "$uid" != '0' ]; then cmd+='sudo '; fi
                 cmd+='chmod g+rw "$path" '
                 eval "$cmd"
                 }
@@ -355,15 +334,13 @@ _set_disk_permissions() {
 # that memory, unlike virt-customize. But beware that virt-sysprep also wipes
 # subscription-manager information.
 #
-# Arguments: connect, bases, suffixes, libvirt_host, public_key
+# Arguments: connect, bases, suffixes, public_key
 customize_clones() {
     _set_disk_permissions
     local base suffix cmd
     for base in "${bases[@]}"; do
         # shellcheck disable=SC2016
         for suffix in "${suffixes[@]}"; do
-            # FIXME: This command fails when --libvirt-host has been passed to
-            # this script.
             cmd='virt-sysprep '
             cmd+='--connect "$connect" '
             cmd+='--domain "${base}${suffix}" '
