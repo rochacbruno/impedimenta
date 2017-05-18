@@ -7,6 +7,7 @@
     - bash
     - vim
     - less
+  become_user: root
 
 - name: Create directories named by ~/.bashrc
   file:
@@ -17,3 +18,29 @@
   copy:
     src: bashrc
     dest: "{{ ansible_user_dir }}/.bashrc"
+
+- name: Install vim and applications named by ~/.vimrc
+  pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ctags
+    - vim
+    - vim-jellybeans
+    - vim-nerdtree
+    - vim-tagbar
+  become_user: root
+
+- name: Create directories named by ~/.vimrc
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ ansible_user_dir }}/.cache/custom-ctags"
+    - "{{ ansible_user_dir }}/.vim/undo"
+    - "{{ ansible_user_dir }}/code"
+
+- name: Install ~/.vimrc
+  template:
+    src: vimrc.j2
+    dest: "{{ ansible_user_dir }}/.vimrc"
