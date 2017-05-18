@@ -31,7 +31,7 @@ main() {
     local temp
     temp=$(getopt \
         --options '' \
-        --longoptions help,libvirt-host,public-key: \
+        --longoptions help,libvirt-host:,public-key: \
         --name clone-customize-domains \
         -- "$@")
     eval set -- "$temp"
@@ -122,7 +122,7 @@ Options:
     --help
         Show this message.
     --libvirt-host <hostname>
-        WARNING: This option is untested.
+        WARNING: Passing this option breaks this script.
 
         By default, this script will execute commands locally. If this option is
         provided, this script will instead execute commands over SSH. Before
@@ -176,7 +176,7 @@ stop_bases() {
     # Wait for domains to shut down.
     start_time="$(date +%s)"
     while true; do
-        domains="$(sudo virsh --quiet list --state-shutoff)"
+        domains="$(virsh --quiet --connect "$connect" list --state-shutoff)"
         elapsed="$(( "$(date +%s)" - "$start_time" ))"
         running_bases=()
         shutoff_bases=()
@@ -332,14 +332,14 @@ _set_disk_permissions() {
                 # shellcheck disable=SC2016
                 {
                 cmd=''
-                if [ -n "${libvirt_host:-}" ]; then cmd+='ssh "$libvirt_host" '; fi
-                if [ "$uid" != '0' ];      then cmd+='sudo '; fi
+                if [ -n "${libvirt_host:-}" ]; then cmd+='ssh -t "$libvirt_host" '; fi
+                if [ "$uid" != '0' ];          then cmd+='sudo ';                   fi
                 cmd+='chown :kvm "$path" '
                 eval "$cmd"
 
                 cmd=''
-                if [ -n "${libvirt_host:-}" ]; then cmd+='ssh "$libvirt_host" '; fi
-                if [ "$uid" != '0' ];      then cmd+='sudo '; fi
+                if [ -n "${libvirt_host:-}" ]; then cmd+='ssh -t "$libvirt_host" '; fi
+                if [ "$uid" != '0' ];          then cmd+='sudo ';                   fi
                 cmd+='chmod g+rw "$path" '
                 eval "$cmd"
                 }
@@ -362,6 +362,8 @@ customize_clones() {
     for base in "${bases[@]}"; do
         # shellcheck disable=SC2016
         for suffix in "${suffixes[@]}"; do
+            # FIXME: This command fails when --libvirt-host has been passed to
+            # this script.
             cmd='virt-sysprep '
             cmd+='--connect "$connect" '
             cmd+='--domain "${base}${suffix}" '
