@@ -1,10 +1,11 @@
-# TODO:
-#
-# * Create a role named "create-users."
-# * Create a host group named "workstation-hosts." Customize user accounts based
-#   on host roles.
+# TODO: Create roles to create users.
 
 - hosts: all
   roles:
     - customize-ichimonji10-all
+  become_user: ichimonji10
+
+- hosts: vmhosts
+  roles:
+    - customize-ichimonji10-vmhosts
   become_user: ichimonji10
