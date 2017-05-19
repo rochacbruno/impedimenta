@@ -6,5 +6,5 @@
 
 - hosts: all
   roles:
-    - customize-user-ichimonji10
+    - customize-ichimonji10-all
   become_user: ichimonji10
