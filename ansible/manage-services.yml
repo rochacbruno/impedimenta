@@ -13,6 +13,7 @@
     - dnsmasq
     - role: hostapd
       when: hostapd_passphrase is defined
+    - sshd
 
 - hosts: workstations
   roles:
@@ -23,6 +24,7 @@
   roles:
     - nftables-vmhosts
     - libvirtd
+    - sshd
 
 # /mnt/btrfs must be present.
 - hosts: btrfs-hosts

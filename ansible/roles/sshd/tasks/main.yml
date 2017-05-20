@@ -1,0 +1,21 @@
+- name: Install openssh
+  pacman:
+    name: openssh
+    state: present
+
+- name: Install sshd configuration file
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload sshd
+
+- name: ensure sshd is started and enabled
+  systemd:
+    name: sshd.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
