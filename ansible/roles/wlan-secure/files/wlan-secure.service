@@ -1,0 +1,12 @@
+[Unit]
+Description=Set IP address of wlp4s0_secure
+Requires=hostapd.service
+After=hostapd.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/bash -c 'until ip link show | grep wlp4s0_secure; do sleep 1; done'
+ExecStart=/usr/bin/ip address add 192.168.13.1/24 dev wlp4s0_secure
+
+[Install]
+WantedBy=multi-user.target
