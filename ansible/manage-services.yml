@@ -26,6 +26,7 @@
     - nftables-vmhosts
     - libvirtd
     - sshd
+    - netctl-generic
 
 # /mnt/btrfs must be present.
 - hosts: btrfs-hosts

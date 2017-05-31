@@ -1,0 +1,29 @@
+- name: install netctl
+  pacman:
+    name: netctl
+    state: present
+
+- name: install "external" netctl profile
+  copy:
+    src: external
+    dest: /etc/netctl/external
+    owner: root
+    group: root
+    mode: 0644
+  register: result
+
+# This step seems redundant in light of the following systemd task. However,
+# it's necessary. A netctl@${profile-name}.service systemd unit is created and
+# destroyed whenever `netctl enable $profile-name` and `netctl disable
+# $profile-name` are executed, respectively. `netctl start $profile-name` and
+# `netctl stop $profile-name` do not have any effect on systemd units.
+- name: create or update a systemd unit for the "external" netctl profile
+  command: netctl enable external
+  when: result|changed
+
+- name: start and enable netctl@external
+  systemd:
+    name: netctl@external.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
