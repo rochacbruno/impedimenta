@@ -15,6 +15,7 @@
       when: hostapd_passphrase is defined
     - sshd
     - wlan-secure
+    - netctl-routers
 
 - hosts: workstations
   roles:
