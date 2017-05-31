@@ -1,19 +1,52 @@
-- name: ensure packages are present
-  pacman:
-    name: hostapd
-    state: present
+# NOTE: Execute this play only over a wired connection.
 
-- name: ensure hostapd configuration is present
+- name: install crda and hostapd
+  pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - crda
+    - hostapd
+
+- name: configure crda
+  copy:
+    src: wireless-regdom
+    dest: /etc/conf.d/wireless-regdom
+    owner: root
+    group: root
+    mode: 0644
+  register: result
+
+- name: set wireless regulatory domain
+  command: iw reg set US
+  when: result|changed
+
+- name: configure hostapd
   template:
     src: hostapd.j2
     dest: /etc/hostapd/hostapd.conf
     owner: root
     group: root
     mode: 0600
-  notify:
-    - reload hostapd
+  register: result
 
-- name: ensure hostapd is started and enabled
+# hostapd must be restarted because many changes aren't taken into account by a
+# simple reload.
+- name: restart hostapd
+  systemd:
+    name: hostapd.service
+    state: restarted
+    daemon_reload: yes
+  when: result|changed
+
+- name: set an IP address on the secondary wlan interface
+  systemd:
+    name: wlan-secure.service
+    state: restarted
+    daemon_reload: yes
+  when: result|changed
+
+- name: start and enable hostapd
   systemd:
     name: hostapd.service
     state: started

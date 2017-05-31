@@ -11,6 +11,7 @@
   roles:
     - nftables-routers
     - dnsmasq
+    # NOTE: Execute this play only over a wired connection.
     - role: hostapd
       when: hostapd_passphrase is defined
     - sshd

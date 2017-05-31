@@ -1,16 +1,12 @@
-# /etc/hostapd/hostapd.conf
-#
-# See:
+# References:
 #
 # * /usr/share/doc/hostapd/hostapd.conf
 # * http://www.linuxwireless.org/en/users/Documentation/hostapd/
 # * https://en.wikipedia.org/wiki/Service_set_(802.11_network)
 # * https://en.wikipedia.org/wiki/List_of_WLAN_channels
 # * https://wiki.gentoo.org/wiki/Hostapd
-# * `iw list`, and `iw dev <ifname> scan` when interface not controlled by
-#    hostapd
-#
-# TODO: Update HT and ACS settings, and see if 40 MHz channels can be used.
+# * `iw phy`, `iw dev` and `iw dev $ifname link`. `iw dev <ifname> scan` when
+#   interface not controlled by hostapd
 #
 # This configuration file is a little complicated, as it makes multiple logical
 # networks available. Before editing this file, make sure you have a solid
@@ -41,23 +37,57 @@
 
 # Define the physical interface used by the AP.
 interface=wlp4s0
-# Limit the frequencies to those allowed in...
-ieee80211d=1
-# ...this country.
-country_code=US
-# "g" simply means 2.4 GHz.
-hw_mode=g
-# Should 802.11n support be enabled?
-ieee80211n=1
 
-# The Atheros wireless card in this system only supports 2.4 GHz frequencies.
-# You can verify with `iw phy`. Each ACS (Automatic Channel Selection) scan
-# takes ~100ms per channel; it is advisable to leave `acs_num_scans` at its
-# default value of 5 if `chanlist=…` is omitted, for the sake of speed. (e.g. 11
-# channels * 100ms/channel * 5 == 5.5s)
+# hw_mode defines which frequencies may be used. If set to "a" or "g", then IEEE
+# 802.11n may also be enabled:
+#
+# * If hw_mode=a and ieee80211n=0, then wireless A is used on the 5 GHz bands.
+# * If hw_mode=g and ieee80211n=0, then wireless G is used on the 2.4 GHz bands.
+# * If hw_mode=a and ieee80211n=1, then wireless N is used on the 5 GHz bands.
+# * If hw_mode=g and ieee80211n=1, then wireless N is used on the 2.4 GHz bands.
+#
+# `iw phy` states which frequencies are supported by the card(s) in a system.
+# One may either select a specific channel or use ACS (automatic channel
+# selection). Each ACS scan takes ~100ms per channel. (e.g. 11 channels *
+# 100ms/channel * 5 == 5.5s) If using ACS and `chanlist` isn't specified, then
+# all channels allowed by hw_mode are scanned.
+hw_mode=g
+ieee80211n=1
 channel=acs_survey
 chanlist=1 6 11
 acs_num_scans=10
+
+# In the US, devices operating on the 5 GHz frequencies must support DFS
+# (dynamic frequency selection) and TPC (transmit power control) to avoid
+# interference with weather-radar and military applications.
+#
+# * Enabling 802.11d support inserts regulatory information into frames. Make
+#   sure to install crda and set the current regulatory domain!
+# * Enabling 802.11h support enables weather-radar detection and DFS support.
+# * Power Constrant frames "allow a network to describe the maximum transmit
+#   power to stations. In addition to a regulatory maximum, there may be another
+#   maximum in effect. The only field, a one-byte integer, is the number of
+#   decibels by which any local constraint reduces the regulatory maximum. If,
+#   for example, the regulatory maximum power were 10 dBm, but this information
+#   element contained the value 2, then the station would set its maximum
+#   transmit power to 8 dBm." Power Constraint frames are optional. They're only
+#   sent out when TPC is required by local regulations. (AFAICT, the
+#   local_pwr_constraint value is inserted into Power Constraint frames. The
+#   value of "3" is chosen because that's what the default config uses, and 3dB
+#   seems reasonable.)
+#
+# If ieee80211d=1 and local_power_constraint are configured, then
+# spectrum_mgmt_required is automatically enabled if required by regulations.
+country_code=US
+ieee80211d=1
+ieee80211h=1
+local_pwr_constraint=3
+
+# The WMM (WiFi Multimedia) specification is a subset of 802.11e. It's basically
+# a QoS implementation. The 802.11n spec states that clients must support WMM in
+# order to use HT (high throughput) link rates. Clients that don't support WMM
+# are limited to 54 Mbps.
+wmm_enabled=1
 
 # First AP. bss=<same as "interface"> bssid=<derived from "interface">
 ssid=HouseOfCuddles
