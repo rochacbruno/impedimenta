@@ -1,4 +1,4 @@
-- name: reload dnsmasq
+- name: restart dnsmasq
   systemd:
     name: dnsmasq.service
-    state: reloaded
+    state: restarted

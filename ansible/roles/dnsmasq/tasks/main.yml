@@ -3,6 +3,8 @@
     name: dnsmasq
     state: present
 
+# When dnsmasq receives a SIGHUP signal (as from `systemctl reload`), it does
+# *not* re-read its configuration file. See dnsmasq(8).
 - name: ensure dnsmasq configuration is present
   copy:
     src: dnsmasq.conf
@@ -11,7 +13,7 @@
     group: root
     mode: 0644
   notify:
-    - reload dnsmasq
+    - restart dnsmasq
 
 - name: ensure dnsmasq is started and enabled
   systemd:
