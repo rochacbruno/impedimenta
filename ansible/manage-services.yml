@@ -20,7 +20,7 @@
 
 - hosts: workstations
   roles:
-    - nftables-workstations
+    - nftables-generic
 
 # After running libvirtd role, add authorized users to appropriate groups.
 - hosts: vmhosts
