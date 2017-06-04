@@ -1,9 +1,9 @@
-# After running msmtp role, add authorized users to ichi-machines group.
 - hosts: all
   roles:
     - pkgfile
     - reflector
     - smartd
+    # NOTE: After running, add authorized users to ichi-machines group.
     - role: msmtp
       when: msmtprc_password is defined
 
@@ -22,10 +22,10 @@
   roles:
     - nftables-generic
 
-# After running libvirtd role, add authorized users to appropriate groups.
 - hosts: vmhosts
   roles:
     - nftables-vmhosts
+    # NOTE: After running, add authorized users to appropriate groups.
     - libvirtd
     - sshd
     - netctl-generic
