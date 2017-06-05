@@ -5,7 +5,7 @@
     - customize-ichimonji10-all
   become_user: ichimonji10
 
-- hosts: vmhosts
+- hosts: vm-hosts
   roles:
-    - customize-ichimonji10-vmhosts
+    - customize-ichimonji10-vm-hosts
   become_user: ichimonji10

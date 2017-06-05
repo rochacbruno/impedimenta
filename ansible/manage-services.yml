@@ -1,36 +1,41 @@
 - hosts: all
   roles:
-    - pkgfile
-    - reflector
-    - smartd
     # NOTE: After running, add authorized users to ichi-machines group.
     - role: msmtp
       when: msmtprc_password is defined
-
-- hosts: routers
-  roles:
-    - nftables-routers
-    - dnsmasq
-    # NOTE: Execute this play only over a wired connection.
-    - role: hostapd
-      when: hostapd_passphrase is defined
-    - sshd
-    - wlan-secure
-    - netctl-routers
+    - pkgfile
+    - reflector
+    - smartd
 
 - hosts: workstations
   roles:
     - nftables-generic
 
-- hosts: vmhosts
+- hosts: servers
   roles:
-    - nftables-vmhosts
-    # NOTE: After running, add authorized users to appropriate groups.
-    - libvirtd
     - sshd
+
+- hosts: servers:!routers
+  roles:
     - netctl-generic
 
-# /mnt/btrfs must be present.
+- hosts: routers
+  roles:
+    - dnsmasq
+    # NOTE: Execute this play only over a wired connection.
+    - role: hostapd
+      when: hostapd_passphrase is defined
+    - netctl-routers
+    - nftables-routers
+    - wlan-secure
+
+- hosts: vm-hosts
+  roles:
+    # NOTE: After running, add authorized users to appropriate groups.
+    - libvirtd
+    - nftables-vm-hosts
+
 - hosts: btrfs-hosts
   roles:
+    # NOTE: /mnt/btrfs must be present.
     - btrfs-scrub
