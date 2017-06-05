@@ -39,3 +39,5 @@
   roles:
     # NOTE: /mnt/btrfs must be present.
     - btrfs-scrub
+    - role: btrfs-snapshot
+      when: btrfs_snapshot

@@ -1,2 +1,3 @@
 sshd_port: 30022
 vimrc_color: badwolf
+btrfs_snapshot: true

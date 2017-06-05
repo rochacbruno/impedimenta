@@ -1,0 +1,4 @@
+# By default, assume that hosts with btrfs filesystems do not have the disk
+# space for snapshots. Set this variable to true on a per-host or per-group
+# basis if you want those hosts to periodically snapshot their btrfs filesystem.
+btrfs_snapshot: false
