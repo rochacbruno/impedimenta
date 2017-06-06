@@ -1,0 +1,23 @@
+[Unit]
+Description=Periodically update dynamic DNS
+
+# This timer has conflicting goals: to fire as often as possible so as to keep
+# the DDNS records up-to-date, and to fire as infrequently as possible so as to
+# reduce load on the DDNS servers. Five-minute intervals are an OK compromise.
+#
+# To further reduce load, we increase the timer's AccuracySec from the default
+# of 1min to 1sec, and add small randomized delays between each update. This
+# ensures most updates occur at intervals other than *:*:00.
+#
+# We could use a monotonic timer (e.g. with OnBootSec= and OnUnitActiveSec=)
+# instead of a wall-clock timer. However, monotonic timers stop when the system
+# stops, such as when hibernating. Servers probably shouldn't be suspending
+# anyway, but using a wall-clock timer helps this timer fire more regularly just
+# in case that happens.
+[Timer]
+OnCalendar=*-*-* *:00/5:00
+AccuracySec=1sec
+RandomizedDelaySec=5sec
+
+[Install]
+WantedBy=timers.target

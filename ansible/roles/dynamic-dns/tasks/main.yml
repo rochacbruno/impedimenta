@@ -1,0 +1,27 @@
+- name: Install curl
+  pacman:
+    name: curl
+    state: present
+
+- name: Install script to update dynamic DNS
+  template:
+    src: update-dynamic-dns.j2
+    dest: /usr/local/bin/update-dynamic-dns
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Install systemd units for updating dynamic DNS
+  copy:
+    src: etc_systemd_system/
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Start and enable unit for updating dynamic DNS
+  systemd:
+    name: dynamic-dns.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
