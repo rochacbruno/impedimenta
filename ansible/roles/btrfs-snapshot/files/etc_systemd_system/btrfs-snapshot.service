@@ -4,4 +4,4 @@ Description=Snapshot a btrfs volume
 [Service]
 Type=oneshot
 ExecStart=/usr/local/bin/prune-snapshots
-ExecStart=/usr/bin/btrfs subvolume snapshot /mnt/btrfs/root "/mnt/btrfs/root-$(date --iso-8601=minutes)"
+ExecStart=/usr/bin/bash -c '/usr/bin/btrfs subvolume snapshot /mnt/btrfs/root "/mnt/btrfs/root-$(date --iso-8601=minutes)"'
