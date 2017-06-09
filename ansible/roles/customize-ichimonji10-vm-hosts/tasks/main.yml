@@ -3,3 +3,9 @@
     src: local_bin/
     dest: "{{ ansible_user_dir }}/.local/bin/"
     mode: 0755
+
+- name: Install libvirt configuration file
+  copy:
+    src: libvirt.conf
+    dest: "{{ ansible_user_dir }}/.config/libvirt/libvirt.conf"
+    mode: 0644
