@@ -51,7 +51,6 @@ main() {
 
     # Set non-argument variables.
     readonly local uid=$(id -u)
-    readonly local connect='qemu:///system'
 
     # Execute business logic.
     #
@@ -142,7 +141,7 @@ EOF
 # Wait until all stopped domains are fully shut down before returning. If
 # domains take more than five minutes to shut down, stop waiting and return 1.
 #
-# Arguments: connect, bases
+# Arguments: bases
 stop_bases() {
     local base domains running_bases shutoff_bases start_time elapsed
     local -r time_limit=300
@@ -150,15 +149,16 @@ stop_bases() {
     # Issue shut down commands.
     _stop_bases_begin_msg
     for base in "${bases[@]}"; do
-        virsh --quiet --connect "$connect" shutdown "${base}" &
+        virsh --quiet shutdown "${base}" &
     done
     wait
 
     # Wait for domains to shut down.
     start_time="$(date +%s)"
     while true; do
-        domains="$(virsh --quiet --connect "$connect" list --state-shutoff)"
-        elapsed="$(( "$(date +%s)" - "$start_time" ))"
+        domains="$(virsh --quiet list --state-shutoff)"
+        current_time="$(date +%s)"
+        elapsed="$(( current_time - start_time ))"
         running_bases=()
         shutoff_bases=()
         for base in "${bases[@]}"; do
@@ -205,7 +205,7 @@ echo "Shut down ${#bases[@]} domains: ${bases[*]}"
 
 # Destroy and undefine domains, if possible.
 #
-# Arguments: connect, bases, suffixes
+# Arguments: bases, suffixes
 delete_clones() {
     local base suffix
     local clones=()
@@ -216,7 +216,7 @@ delete_clones() {
     done
     _delete_clones_begin_msg
     for clone in "${clones[@]}"; do
-        _delete_clone "$connect" "$clone" &
+        _delete_clone "$clone" &
     done
     wait
     _delete_clones_end_msg
@@ -228,13 +228,13 @@ delete_clones() {
 # concurrency issues. (What happens if this child function references a variable
 # in the parent function, and the variable changes?)
 #
-# Arguments: connect (positional), domain (positional)
+# Arguments: domain (positional)
 _delete_clone() {
     # We could use `virsh list --all` to check if the targeted domains exist
     # before nuking them. However, that approach is subject to race conditions.
     # Better to ask for forgiveness than permission.
-    virsh --quiet --connect "$1" destroy "$2" || true
-    virsh --quiet --connect "$1" undefine "$2" --remove-all-storage || true
+    virsh --quiet destroy "$1" || true
+    virsh --quiet undefine "$1" --remove-all-storage || true
 }
 
 _delete_clones_begin_msg() {
@@ -247,7 +247,7 @@ echo "Deleted ${#clones[@]} domains: ${clones[*]}"
 
 # Clone domains.
 #
-# Arguments: connect, bases, suffixes
+# Arguments: bases, suffixes
 create_clones() {
     # We avoid parallelization to avoid naming conflicts. `virt-clone
     # --auto-clone` auto-generates disk image paths (among other things), and
@@ -264,7 +264,6 @@ create_clones() {
     for base in "${bases[@]}"; do
         for suffix in "${suffixes[@]}"; do
             virt-clone \
-                --connect "$connect" \
                 --original "$base" \
                 --name "${base}${suffix}" \
                 --auto-clone
@@ -283,7 +282,7 @@ create_clones() {
 # files. A better solution is to run virt-sysprep as a normal user and make the
 # disk image permissions more lax.
 #
-# Arguments: connect bases, suffixes, uid
+# Arguments: bases, suffixes, uid
 _set_disk_permissions() {
     local cmd i path words base suffix
     for base in "${bases[@]}"; do
@@ -297,7 +296,7 @@ _set_disk_permissions() {
             # whitespace, and libvirt doesn't allow whitespace in disk image
             # paths, so it's probably OK to split input on whitespace.
             words=($(
-                virsh --quiet --connect "$connect" domblklist "${base}${suffix}" \
+                virsh --quiet domblklist "${base}${suffix}" \
                 | tr --squeeze-repeats '[:space:]' '\012'
             ))
 
@@ -334,15 +333,16 @@ _set_disk_permissions() {
 # that memory, unlike virt-customize. But beware that virt-sysprep also wipes
 # subscription-manager information.
 #
-# Arguments: connect, bases, suffixes, public_key
+# Arguments: bases, suffixes, public_key
 customize_clones() {
-    _set_disk_permissions
+    if virsh uri | grep system >/dev/null; then
+        _set_disk_permissions
+    fi
     local base suffix cmd
     for base in "${bases[@]}"; do
         # shellcheck disable=SC2016
         for suffix in "${suffixes[@]}"; do
             cmd='virt-sysprep '
-            cmd+='--connect "$connect" '
             cmd+='--domain "${base}${suffix}" '
             cmd+='--hostname "${base}${suffix}" '
             if [ -n "${public_key:-}" ]; then
@@ -358,13 +358,13 @@ customize_clones() {
 
 # Start cloned domains.
 #
-# Arguments: connect, bases, suffixes
+# Arguments: bases, suffixes
 start_clones() {
     local base suffix
     for base in "${bases[@]}"; do
         for suffix in "${suffixes[@]}"; do
             # `virsh start` breaks if parallelized.
-            virsh --connect "$connect" start "${base}${suffix}"
+            virsh start "${base}${suffix}"
         done
     done
 }
