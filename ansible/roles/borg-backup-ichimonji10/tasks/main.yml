@@ -1,0 +1,53 @@
+- name: Install borg and its dependencies
+  pacman:
+    name: '{{ item }}'
+    state: present
+  with_items:
+    - borg
+    - openssh  # for connecting to borg repositories on remote hosts
+  become_user: root
+
+- name: Install borg backup script
+  template:
+    src: borg-backup.j2
+    dest: "{{ ansible_user_dir }}/.local/bin/borg-backup"
+    mode: 0700
+
+- name: Customize ssh configuration file
+  blockinfile:
+    path: "{{ ansible_user_dir }}/.ssh/config"
+    create: yes
+    mode: 0600
+    block: |
+      Host usw-s001.rsync.net
+          User 1025
+          IdentityFile ~/.ssh/usw-s001.rsync.net
+
+- name: Install systemd unit files
+  copy:
+    src: config_systemd_user/
+    dest: "{{ ansible_user_dir }}/.config/systemd/user/"
+
+# To work with systemd in user mode, XDG_RUNTIME_DIR must be set. In most
+# circumstances, this is set by pam_systemd using logind. However, it's not set
+# when executing commands in the form: `sudo -u example ...`. Thus, the
+# alternate become_method. Also see:
+#
+# * https://uggedal.com/journal/ansible-systemd-user/
+# * https://bbs.archlinux.org/viewtopic.php?id=217666
+- name: Start and enable periodic backup service
+  systemd:
+    user: yes
+    name: borg-backup.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  become_method: su
+  register: result
+
+# Spawn a user manager for this user at system start-up time. This allows
+# enabled per-user services to execute without that user being logged in.
+- name: Enable lingering for user
+  command: loginctl enable-linger ichimonji10
+  become_user: root
+  when: result|changed
