@@ -28,11 +28,16 @@
     src: config_systemd_user/
     dest: "{{ ansible_user_dir }}/.config/systemd/user/"
 
-# To work with systemd in user mode, XDG_RUNTIME_DIR must be set. In most
-# circumstances, this is set by pam_systemd using logind. However, it's not set
-# when executing commands in the form: `sudo -u example ...`. Thus, the
-# alternate become_method. Also see:
+# To work with systemd in user mode, XDG_RUNTIME_DIR must be set. This variable
+# is set by pam_systemd when a user logs in. It is not set when commands are
+# executed as another user without logging in, such as happens with sudo. This
+# can lead to errors like:
 #
+#     Failed to connect to bus: No such file or directory
+#
+# `become_method` is specified to avoid this problem. Also see:
+#
+# * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
 # * https://uggedal.com/journal/ansible-systemd-user/
 # * https://bbs.archlinux.org/viewtopic.php?id=217666
 - name: Start and enable periodic backup service
