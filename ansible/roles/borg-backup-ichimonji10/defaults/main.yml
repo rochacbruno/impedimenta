@@ -1,0 +1,4 @@
+# The borg-backup script will back up these directories.
+borg_backup_directories:
+  - ~/Documents
+  - ~/Pictures

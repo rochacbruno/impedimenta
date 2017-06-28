@@ -15,6 +15,7 @@ export BORG_REMOTE_PATH=/usr/local/bin/borg1/borg1
 borg create \
     --compression lzma \
     "${repository}::${archive_prefix}-${archive_postfix}" \
-    ~/docs ~/pictures ~/books
+    {% for directory in borg_backup_directories %} {{ directory }} {% endfor %}
+
 borg prune "${repository}" --prefix "${archive_prefix}-" \
     --keep-within 8d --keep-weekly 4 --keep-monthly 6

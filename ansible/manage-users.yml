@@ -18,4 +18,7 @@
       when: borg_backup_ichimonji10_passphrase is defined
   become_user: ichimonji10
   vars:
-    borg_backup_ichimonji10_passphrase: FT50RPsocab
+    borg_backup_directories:
+      - ~/books
+      - ~/docs
+      - ~/pictures
