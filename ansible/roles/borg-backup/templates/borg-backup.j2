@@ -4,8 +4,8 @@
 # the SSH key is usable.
 set -euo pipefail
 
-export BORG_PASSPHRASE='{{ borg_backup_ichimonji10_passphrase }}'
-repository=usw-s001.rsync.net:borgbackup-ichimonji10
+export BORG_PASSPHRASE='{{ borg_backup_passphrase }}'
+repository=usw-s001.rsync.net:borgbackup-{{ ansible_user_id }}
 archive_prefix="$(hostname --short)"
 archive_postfix="$(date --iso-8601=seconds)"
 

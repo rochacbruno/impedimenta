@@ -7,6 +7,11 @@
     - openssh  # for connecting to borg repositories on remote hosts
   become_user: root
 
+- name: Create ~/.local/bin
+  file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+
 - name: Install borg backup script
   template:
     src: borg-backup.j2
@@ -61,15 +66,21 @@
 # * https://unix.stackexchange.com/q/346841/237894
 - block:
   - name: Reload units for user
-    command: machinectl shell ichimonji10@.host /usr/bin/systemctl --user daemon-reload
+    command: >
+      machinectl shell "{{ ansible_user_id }}"@.host /usr/bin/systemctl --user
+      daemon-reload
     become_user: root
 
   - name: Start periodic backup service for user
-    command: machinectl shell ichimonji10@.host /usr/bin/systemctl --user start borg-backup.timer
+    command: >
+      machinectl shell "{{ ansible_user_id }}"@.host /usr/bin/systemctl --user
+      start borg-backup.timer
     become_user: root
 
   - name: Enable periodic backup service for user
-    command: machinectl shell ichimonji10@.host /usr/bin/systemctl --user enable borg-backup.timer
+    command: >
+      machinectl shell "{{ ansible_user_id }}"@.host /usr/bin/systemctl --user
+      enable borg-backup.timer
     become_user: root
 
   # Spawn a user manager for this user at system start-up time. This allows

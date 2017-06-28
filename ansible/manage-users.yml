@@ -14,8 +14,8 @@
   roles:
     # TODO: Make role generic enough for use with other users.
     # NOTE: Ensure user has an SSH key for logging into remote backup hosts.
-    - role: borg-backup-ichimonji10
-      when: borg_backup_ichimonji10_passphrase is defined
+    - role: borg-backup
+      when: borg_backup_passphrase is defined
   become_user: ichimonji10
   vars:
     borg_backup_directories:
