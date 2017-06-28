@@ -27,32 +27,54 @@
   copy:
     src: config_systemd_user/
     dest: "{{ ansible_user_dir }}/.config/systemd/user/"
+  register: result
 
 # To work with systemd in user mode, XDG_RUNTIME_DIR must be set. This variable
-# is set by pam_systemd when a user logs in. It is not set when commands are
-# executed as another user without logging in, such as happens with sudo. This
-# can lead to errors like:
+# is set by pam_systemd when a user logs in. However, it's not set when one user
+# becomes another via sudo, su, etc. (This may be a bug.) When commands are
+# executed as another user in this fashion, errors like the following result:
 #
-#     Failed to connect to bus: No such file or directory
+#   Failed to connect to bus: No such file or directory
 #
-# `become_method` is specified to avoid this problem. Also see:
+# One solution is to set the following:
+#
+#   become_method: su
+#   environment:
+#     XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"
+#
+# However, authenticating with su is troublesome. This technique doesn't work
+# for users that lack a password (think `passwd --lock`), and Ansible doesn't
+# deal well authenticating as multiple users during the course of a single play.
+# And even when all this is correctly configured, it still fails for me.
+#
+# There are several variations on this solution, such as setting the
+# `XDG_RUNTIME_DIR` and `DBUS_SESSION_BUS_ADDRESS` environment variables.
+# However, these did not work for me, even in manual testing.
+#
+# The chosen solution isn't very Ansible-ish, but it's relatively non-hacky.
+#
+# See:
 #
 # * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
 # * https://uggedal.com/journal/ansible-systemd-user/
-# * https://bbs.archlinux.org/viewtopic.php?id=217666
-- name: Start and enable periodic backup service
-  systemd:
-    user: yes
-    name: borg-backup.timer
-    state: started
-    enabled: yes
-    daemon_reload: yes
-  become_method: su
-  register: result
+# * https://stackoverflow.com/q/34167257
+# * https://unix.stackexchange.com/q/346841/237894
+- block:
+  - name: Reload units for user
+    command: machinectl shell ichimonji10@.host /usr/bin/systemctl --user daemon-reload
+    become_user: root
 
-# Spawn a user manager for this user at system start-up time. This allows
-# enabled per-user services to execute without that user being logged in.
-- name: Enable lingering for user
-  command: loginctl enable-linger ichimonji10
-  become_user: root
+  - name: Start periodic backup service for user
+    command: machinectl shell ichimonji10@.host /usr/bin/systemctl --user start borg-backup.timer
+    become_user: root
+
+  - name: Enable periodic backup service for user
+    command: machinectl shell ichimonji10@.host /usr/bin/systemctl --user enable borg-backup.timer
+    become_user: root
+
+  # Spawn a user manager for this user at system start-up time. This allows
+  # enabled user units to start without that user being logged in.
+  - name: Enable lingering for user
+    command: loginctl enable-linger
+
   when: result|changed
