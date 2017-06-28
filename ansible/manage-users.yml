@@ -22,3 +22,9 @@
       - ~/books
       - ~/docs
       - ~/pictures
+
+- hosts: pine.ichimonji10.name
+  roles:
+    - role: borg-backup
+      when: borg_backup_passphrase is defined
+  become_user: googoo
