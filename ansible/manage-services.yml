@@ -6,6 +6,7 @@
     - pkgfile
     - reflector
     - smartd
+    - time
 
 - hosts: workstations
   roles:
