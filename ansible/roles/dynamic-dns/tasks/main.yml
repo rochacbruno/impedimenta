@@ -5,8 +5,8 @@
 
 - name: Install script to update dynamic DNS
   template:
-    src: update-dynamic-dns.j2
-    dest: /usr/local/bin/update-dynamic-dns
+    src: dynamic-dns.j2
+    dest: /usr/local/bin/dynamic-dns
     owner: root
     group: root
     mode: 0700
