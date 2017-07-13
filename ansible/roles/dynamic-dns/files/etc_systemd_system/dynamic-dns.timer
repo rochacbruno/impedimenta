@@ -5,17 +5,19 @@ Description=Periodically update dynamic DNS
 # the DDNS records up-to-date, and to fire as infrequently as possible so as to
 # reduce load on the DDNS servers. Five-minute intervals are an OK compromise.
 #
-# To further reduce load, we increase the timer's AccuracySec from the default
-# of 1min to 1sec, and add small randomized delays between each update. This
-# ensures most updates occur at intervals other than *:*:00.
+# We could use a wall-clock timer to trigger the service. However, that could
+# lead to an undesirable delay between initial timer start-up and the initial
+# DDNS update. (e.g. timer start-up at 00:00:01, first update at 00:05:00.)
+# However, beware that monotonic timers like OnUnitActiveSec stop if the
+# computer suspends. This shouldn't be an issue for servers. (Right?!)
 #
-# We could use a monotonic timer (e.g. with OnBootSec= and OnUnitActiveSec=)
-# instead of a wall-clock timer. However, monotonic timers stop when the system
-# stops, such as when hibernating. Servers probably shouldn't be suspending
-# anyway, but using a wall-clock timer helps this timer fire more regularly just
-# in case that happens.
+# Due to the prevalence of cron-like systems, it seems likely that many DDNS
+# updates will occur at *:*:00/5:00. In an attempt to be nicer to the DDNS
+# servers, update frequency is slightly randomized. This helps ensure that
+# updates occur at non-peak times, about 59 out of 60 times.
 [Timer]
-OnCalendar=*-*-* *:00/5:00
+OnBootSec=60s
+OnUnitActiveSec=300s
 AccuracySec=1sec
 RandomizedDelaySec=5sec
 
