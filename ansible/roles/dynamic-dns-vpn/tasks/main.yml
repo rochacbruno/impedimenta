@@ -1,0 +1,27 @@
+- name: Install curl
+  pacman:
+    name: curl
+    state: present
+
+- name: Install script to update dynamic DNS for VPN
+  template:
+    src: dynamic-dns-vpn.j2
+    dest: /usr/local/bin/dynamic-dns-vpn
+    owner: root
+    group: root
+    mode: 0700
+
+- name: Install systemd units for updating dynamic DNS for VPN
+  copy:
+    src: etc_systemd_system/
+    dest: /etc/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+  register: result
+
+- name: Enable unit for updating dynamic DNS for VPN
+  systemd:
+    name: dynamic-dns-vpn.timer
+    enabled: yes
+    daemon_reload: yes
