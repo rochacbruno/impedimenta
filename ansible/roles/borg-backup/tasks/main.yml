@@ -29,9 +29,12 @@
           IdentityFile ~/.ssh/usw-s001.rsync.net
 
 - name: Install systemd unit files
-  copy:
-    src: config_systemd_user/
-    dest: "{{ ansible_user_dir }}/.config/systemd/user/"
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ ansible_user_dir }}/.config/systemd/user/{{ item }}"
+  with_items:
+    - borg-backup.service
+    - borg-backup.timer
   register: result
 
 # To work with systemd in user mode, XDG_RUNTIME_DIR must be set. This variable
