@@ -21,6 +21,10 @@
 - hosts: servers:!routers
   roles:
     - netctl-generic
+    - role: openvpn-client-ivpn
+      when:
+        - openvpn_client_ivpn_username is defined
+        - openvpn_client_ivpn_password is defined
 
 - hosts: routers
   roles:
