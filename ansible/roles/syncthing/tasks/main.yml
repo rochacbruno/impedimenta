@@ -18,12 +18,16 @@
   command: >
     machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
     start syncthing-inotify
-  with_items:
-    - syncthing_usernames
+  with_items: "{{ syncthing_usernames }}"
 
 - name: Enable syncthing-inotify for certain users
   command: >
     machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
     enable syncthing-inotify
-  with_items:
-    - syncthing_usernames
+  with_items: "{{ syncthing_usernames }}"
+
+# Spawn a user manager for each user at system start-up time. This allows
+# enabled user units to start without that user being logged in.
+- name: Enable lingering for certain users
+  command: loginctl enable-linger "{{ item }}"
+  with_items: "{{ syncthing_usernames }}"
