@@ -7,10 +7,11 @@ butternut.ichimonji10.name
 # These systems are headless, have high uptime, and have remote management
 # capabilities.
 [servers]
-amelanchier.ichimonji10.name
 pine.ichimonji10.name
 
-# Routers are a subset of servers.
+[servers:children]
+routers
+
 [routers]
 amelanchier.ichimonji10.name
 
