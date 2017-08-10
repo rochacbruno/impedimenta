@@ -12,7 +12,6 @@
 
 - hosts: pine.ichimonji10.name
   roles:
-    # TODO: Make role generic enough for use with other users.
     # NOTE: Ensure user has an SSH key for logging into remote backup hosts.
     - role: borg-backup
       when: borg_backup_passphrase is defined
