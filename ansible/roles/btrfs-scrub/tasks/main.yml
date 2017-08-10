@@ -1,9 +1,9 @@
-- name: ensure packages are present
+- name: Install btrfs-progs
   pacman:
     name: btrfs-progs
     state: present
 
-- name: ensure units for starting a btrfs scrub are installed
+- name: Install units for starting btrfs scrubs
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -11,7 +11,7 @@
     group: root
     mode: 0644
 
-- name: ensure timer for starting a btrfs scrub is started and enabled
+- name: Start and enable timer for starting btrfs scrubs
   systemd:
     name: btrfs-scrub.timer
     state: started

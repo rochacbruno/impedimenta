@@ -1,4 +1,4 @@
-- name: ensure packages are present
+- name: Install msmtp and related tools
   pacman:
     name: "{{ item }}"
     state: present
@@ -7,14 +7,14 @@
     - msmtp-mta
     - s-nail
   notify:
-    - set install reason for packages
+    - Set install reason for packages
 
-- name: ensure a group of users authorized to send emails exists
+- name: Create a group authorized to send emails
   group:
     name: ichi-machines
     state: present
 
-- name: ensure a system-wide msmtp configuration file is present
+- name: Install msmtp configuration file
   template:
     src: msmtprc.j2
     dest: /etc/msmtprc

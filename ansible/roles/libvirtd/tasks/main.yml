@@ -1,6 +1,6 @@
 # After executing this role, add authorized users to 'kvm' and 'libvirt' groups.
 
-- name: ensure packages are present
+- name: Install libvirt and related tools
   pacman:
     name: '{{ item }}'
     state: present
@@ -11,9 +11,9 @@
     - virt-install  # libvirt management via console (including virt-clone)
     - dnsmasq
   notify:
-    - set install reason for packages
+    - Set install reason for packages
 
-- name: ensure dnsmasq has a correct configuration file
+- name: Install dnsmasq configuration file
   copy:
     src: dnsmasq.conf
     dest: /etc/dnsmasq.conf
@@ -21,7 +21,7 @@
     group: root
     mode: 0644
 
-- name: ensure local scripts are present
+- name: Install scripts for libvirt and related tools
   copy:
     src: usr_local_bin/
     dest: '/usr/local/bin/'
@@ -29,7 +29,7 @@
     group: root
     mode: 0755
 
-- name: ensure systemd units are present
+- name: Install units for libvirt and related tools
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -37,17 +37,17 @@
     group: root
     mode: 0644
 
-- name: ensure libvirtd is started and enabled
+- name: Start and enable libvirt
   systemd:
     name: libvirtd
     state: started
     enabled: yes
     daemon_reload: yes  # due to /etc/systemd/system/ changes above
 
-- name: ensure IPv4 forwarding is enabled now and at next boot
+- name: Enable IPv4 forwarding at next boot
   sysctl:
     name: net.ipv4.ip_forward
     value: 1
     sysctl_file: /etc/sysctl.d/50-libvirtd-networking.conf
     state: present
-  notify: ensure IPv4 forwarding is enabled right now
+  notify: Enable IPv4 forwarding now

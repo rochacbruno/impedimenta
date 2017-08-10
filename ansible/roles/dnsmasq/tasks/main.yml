@@ -1,11 +1,11 @@
-- name: ensure packages are present
+- name: Install dnsmasq
   pacman:
     name: dnsmasq
     state: present
 
 # When dnsmasq receives a SIGHUP signal (as from `systemctl reload`), it does
 # *not* re-read its configuration file. See dnsmasq(8).
-- name: ensure dnsmasq configuration is present
+- name: Install dnsmasq configuration file
   copy:
     src: dnsmasq.conf
     dest: /etc/dnsmasq.conf
@@ -13,9 +13,9 @@
     group: root
     mode: 0644
   notify:
-    - restart dnsmasq
+    - Restart dnsmasq
 
-- name: ensure dnsmasq is started and enabled
+- name: Start and enable dnsmasq
   systemd:
     name: dnsmasq.service
     state: started

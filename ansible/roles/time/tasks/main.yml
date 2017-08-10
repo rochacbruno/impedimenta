@@ -4,7 +4,7 @@
     # daylight savings time offsets.
     name: America/New_York
 
-- name: Start and enable ntp
+- name: Start and enable systemd-timesyncd
   systemd:
     name: systemd-timesyncd.service
     state: started

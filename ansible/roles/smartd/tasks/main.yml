@@ -1,9 +1,9 @@
-- name: ensure packages are present
+- name: Install smartmontools
   pacman:
     name: smartmontools
     state: present
 
-- name: ensure a smartd configuration file is present
+- name: Install smartd configuration file
   copy:
     src: smartd.conf
     dest: /etc/smartd.conf
@@ -11,13 +11,13 @@
     group: root
     mode: 0644
 
-- name: ensure smartd daemon is running and enabled
+- name: Start and enable smartd
   systemd:
     name: smartd
     state: started
     enabled: yes
 
-- name: ensure scripts for starting SMART scans are installed
+- name: Install scripts for starting SMART scans
   copy:
     src: usr_local_bin/
     dest: /usr/local/bin/
@@ -25,7 +25,7 @@
     group: root
     mode: 0755
 
-- name: ensure units for starting SMART scans are installed
+- name: Install units for starting SMART scans
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -33,7 +33,7 @@
     group: root
     mode: 0644
 
-- name: ensure timers for starting SMART scans are started and enabled
+- name: Start and enable timers for starting SMART scans
   systemd:
     name: "{{ item }}"
     state: started

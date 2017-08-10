@@ -1,4 +1,4 @@
-- name: Install wlan-secure.service
+- name: Install wlan-secure service
   copy:
     src: wlan-secure.service
     dest: /etc/systemd/system/
@@ -6,7 +6,7 @@
     group: root
     mode: 0644
 
-- name: Enable wlan-secure.service
+- name: Enable wlan-secure service
   systemd:
     name: wlan-secure.service
     enabled: yes

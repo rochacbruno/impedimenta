@@ -1,9 +1,9 @@
-- name: ensure packages are present
+- name: Install reflector
   pacman:
     name: reflector
     state: present
 
-- name: ensure units for periodically calling reflector are installed
+- name: Install units for reflector
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -11,7 +11,7 @@
     group: root
     mode: 0644
 
-- name: ensure timer for periodically calling reflector is started and enabled
+- name: Start and enable timer for reflector
   systemd:
     name: reflector-update.timer
     state: started

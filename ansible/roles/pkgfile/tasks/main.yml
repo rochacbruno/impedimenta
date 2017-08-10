@@ -1,9 +1,9 @@
-- name: ensure packages are present
+- name: Install pkgfile
   pacman:
     name: pkgfile
     state: present
 
-- name: ensure timer for updating pkgfile is started and enabled
+- name: Start and enable timer to update pkgfile database
   systemd:
     name: pkgfile-update.timer
     state: started

@@ -11,7 +11,7 @@
     group: root
     mode: 0755
 
-- name: Install systemd units for pruning and snapshotting a btrfs volume
+- name: Install units for pruning and snapshotting a btrfs volume
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -19,7 +19,7 @@
     group: root
     mode: 0644
 
-- name: Start and enable unit for pruning and snapshotting a btrfs volume
+- name: Start and enable timer for pruning and snapshotting a btrfs volume
   systemd:
     name: btrfs-snapshot.timer
     state: started

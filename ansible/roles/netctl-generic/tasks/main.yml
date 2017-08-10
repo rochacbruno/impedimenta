@@ -1,9 +1,9 @@
-- name: install netctl
+- name: Install netctl
   pacman:
     name: netctl
     state: present
 
-- name: install "external" netctl profile
+- name: Install "external" netctl profile
   copy:
     src: external
     dest: /etc/netctl/external
@@ -20,18 +20,18 @@
 #
 # When a systemd unit is created, the first systemd task ensures it starts. When
 # a systemd unit is updated, the second systemd task ensures it reloads.
-- name: create or update a systemd unit for the "external" netctl profile
+- name: Create or update netctl service
   command: netctl reenable external
   when: result|changed
 
-- name: start and enable netctl@external
+- name: Start and enable netctl service
   systemd:
     name: netctl@external.service
     state: started
     enabled: yes
     daemon_reload: yes
 
-- name: reload netctl@external
+- name: Reload netctl service
   systemd:
     name: netctl@external.service
     state: reloaded

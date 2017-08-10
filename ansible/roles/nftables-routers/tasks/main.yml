@@ -1,9 +1,9 @@
-- name: ensure packages are present
+- name: Install nftables
   pacman:
     name: nftables
     state: present
 
-- name: ensure firewall configuration is present
+- name: Install nftables configuration file
   copy:
     src: nftables.conf
     dest: /etc/nftables.conf
@@ -11,9 +11,9 @@
     group: root
     mode: 0644
   notify:
-    - reload nftables
+    - Reload nftables
 
-- name: ensure firewall is started and enabled
+- name: Start and enable nftables
   systemd:
     name: nftables.service
     state: started

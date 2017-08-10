@@ -11,7 +11,7 @@
     group: root
     mode: 0700
 
-- name: Install systemd units for updating dynamic DNS for VPN
+- name: Install units for updating dynamic DNS for VPN
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -20,7 +20,7 @@
     mode: 0644
   register: result
 
-- name: Enable unit for updating dynamic DNS for VPN
+- name: Enable timer for updating dynamic DNS for VPN
   systemd:
     name: dynamic-dns-vpn.timer
     enabled: yes

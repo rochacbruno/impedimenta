@@ -1,4 +1,4 @@
-- name: reload sshd
+- name: Reload sshd
   systemd:
     name: sshd.service
     state: reloaded

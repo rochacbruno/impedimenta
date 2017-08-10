@@ -11,7 +11,7 @@
     group: root
     mode: 0700
 
-- name: Install systemd units for updating dynamic DNS
+- name: Install units for updating dynamic DNS
   copy:
     src: etc_systemd_system/
     dest: /etc/systemd/system/
@@ -19,7 +19,7 @@
     group: root
     mode: 0644
 
-- name: Start and enable unit for updating dynamic DNS
+- name: Start and enable timer for updating dynamic DNS
   systemd:
     name: dynamic-dns.timer
     state: started

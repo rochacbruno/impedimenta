@@ -1,6 +1,6 @@
 # NOTE: Execute this play only over a wired connection.
 
-- name: install crda and hostapd
+- name: Install crda and hostapd
   pacman:
     name: "{{ item }}"
     state: present
@@ -8,7 +8,7 @@
     - crda
     - hostapd
 
-- name: configure crda
+- name: Configure crda
   copy:
     src: wireless-regdom
     dest: /etc/conf.d/wireless-regdom
@@ -17,11 +17,11 @@
     mode: 0644
   register: result
 
-- name: set wireless regulatory domain
+- name: Set wireless regulatory domain
   command: iw reg set US
   when: result|changed
 
-- name: configure hostapd
+- name: Configure hostapd
   template:
     src: hostapd.j2
     dest: /etc/hostapd/hostapd.conf
@@ -32,21 +32,21 @@
 
 # hostapd must be restarted because many changes aren't taken into account by a
 # simple reload.
-- name: restart hostapd
+- name: Restart hostapd
   systemd:
     name: hostapd.service
     state: restarted
     daemon_reload: yes
   when: result|changed
 
-- name: set an IP address on the secondary wlan interface
+- name: Set an IP address on the secondary wlan interface
   systemd:
     name: wlan-secure.service
     state: restarted
     daemon_reload: yes
   when: result|changed
 
-- name: start and enable hostapd
+- name: Start and enable hostapd
   systemd:
     name: hostapd.service
     state: started
