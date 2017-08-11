@@ -1,0 +1,32 @@
+- project:
+    name: test-01-project-01
+    jobs:
+      - '{name}-{identifier}':
+          identifier: foo
+      - '{name}-{identifier}':
+          identifier: bar
+          enabled_var: 'passed in val for enabled var'
+          disabled_bar: 'passed in val for disabled var'
+
+- project:
+    name: test-01-project-02
+    identifier:
+      - foo
+      - bar:
+          enabled_var: 'passed in val for enabled var'
+          disabled_bar: 'passed in val for disabled var'
+    jobs:
+      - '{name}-{identifier}'
+
+- job-template:
+    enabled_var: 'default val for enabled var'
+    # Setting a variable's default value to null causes passed in values to be
+    # ignored.
+    disabled_var: null
+    name: '{name}-{identifier}'
+    type: periodic
+    builders:
+      # {name} dereferences to the project name, not the job name.
+      - shell: |
+         echo 'enabled_var: {enabled_var}'
+         echo 'disabled_var: {disabled_var}'
