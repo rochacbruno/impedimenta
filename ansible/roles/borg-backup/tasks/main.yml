@@ -1,3 +1,12 @@
+- name: Get user home directory
+  shell: 'getent passwd "{{ borg_backup_user }}" | cut -d: -f6'
+  check_mode: false
+  changed_when: false
+  register: result
+
+- set_fact:
+    borg_backup_user_home: "{{ result.stdout }}"
+
 - name: Install borg and its dependencies
   pacman:
     name: '{{ item }}'
@@ -5,36 +14,39 @@
   with_items:
     - borg
     - openssh  # for connecting to borg repositories on remote hosts
-  become_user: root
 
 - name: Create ~/.local/bin
   file:
-    path: "{{ ansible_user_dir }}/.local/bin"
+    path: "{{ borg_backup_user_home }}/.local/bin"
     state: directory
+  become_user: "{{ borg_backup_user }}"
 
 - name: Install borg backup script
   template:
     src: borg-backup.j2
-    dest: "{{ ansible_user_dir }}/.local/bin/borg-backup"
+    dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup"
     mode: 0700
+  become_user: "{{ borg_backup_user }}"
 
 - name: Customize ssh configuration file
   blockinfile:
-    path: "{{ ansible_user_dir }}/.ssh/config"
+    path: "{{ borg_backup_user_home }}/.ssh/config"
     create: yes
     mode: 0600
     block: |
       Host usw-s001.rsync.net
           User 1025
           IdentityFile ~/.ssh/usw-s001.rsync.net
+  become_user: "{{ borg_backup_user }}"
 
 - name: Install systemd unit files
   template:
     src: "{{ item }}.j2"
-    dest: "{{ ansible_user_dir }}/.config/systemd/user/{{ item }}"
+    dest: "{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}"
   with_items:
     - borg-backup.service
     - borg-backup.timer
+  become_user: "{{ borg_backup_user }}"
   register: result
 
 # To work with systemd in user mode, XDG_RUNTIME_DIR must be set. This variable
@@ -72,23 +84,20 @@
     command: >
       machinectl shell "{{ ansible_user_id }}"@.host /usr/bin/systemctl --user
       daemon-reload
-    become_user: root
 
   - name: Start periodic backup service for user
     command: >
       machinectl shell "{{ ansible_user_id }}"@.host /usr/bin/systemctl --user
       start borg-backup.timer
-    become_user: root
 
   - name: Enable periodic backup service for user
     command: >
       machinectl shell "{{ ansible_user_id }}"@.host /usr/bin/systemctl --user
       enable borg-backup.timer
-    become_user: root
 
   # Spawn a user manager for this user at system start-up time. This allows
   # enabled user units to start without that user being logged in.
   - name: Enable lingering for user
-    command: loginctl enable-linger
+    command: loginctl enable-linger "{{ borg_backup_user }}"
 
   when: result|changed

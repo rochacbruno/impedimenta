@@ -5,7 +5,7 @@
 set -euo pipefail
 
 export BORG_PASSPHRASE='{{ borg_backup_passphrase }}'
-repository=usw-s001.rsync.net:borgbackup-{{ ansible_user_id }}
+repository=usw-s001.rsync.net:borgbackup-{{ borg_backup_user }}
 archive_prefix="$(hostname --short)"
 archive_postfix="$(date --iso-8601=seconds)"
 
