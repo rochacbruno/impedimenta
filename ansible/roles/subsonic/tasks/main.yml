@@ -1,0 +1,97 @@
+- name: Install Subsonic
+  pacman:
+    name: subsonic
+    state: present
+
+- name: Restrict visibility of Subsonic's database
+  file:
+    path: /var/lib/subsonic/db
+    state: directory
+    mode: 'o-rwx'
+
+- name: Start and enable Subsonic
+  systemd:
+    name: subsonic
+    state: started
+    enabled: yes
+
+# We could perform backups with the subsonic user, by giving it SSH access to
+# the backup host and installing systemd units which would trigger periodic
+# remote backups. However:
+#
+# * The subsonic user's home directory contains files installed by the package
+#   manager and files installed by Subsonic. It would be messy for that
+#   directory to *also* contain files installed by the sysadmin.
+# * It's desirable to have both local backups (with btrfs snapshots) and remote
+#   backups. This only gives us remote backups.
+# * Why give Subsonic SSH access to anywhere? If the subsonic user was
+#   compromised, it would be able to blow away backups.
+- name: Create subsonic-backup user
+  user:
+    name: subsonic-backup
+    shell: /usr/bin/nologin
+    groups:
+      - subsonic
+  register: result
+
+- name: Lock subsonic-backup's password
+  command: passwd --lock subsonic-backup
+  when: result|changed
+
+- name: Get subsonic-backup's home directory
+  shell: 'getent passwd subsonic-backup | cut -d: -f6'
+  check_mode: false
+  changed_when: false
+  register: result
+
+- set_fact:
+    subsonic_backup_home: "{{ result.stdout }}"
+
+- name: Create directories in subsonic-backup's home directory
+  file:
+    path: "{{ subsonic_backup_home }}/{{ item }}"
+    state: directory
+  with_items:
+    - '.config/systemd/user'
+    - '.local/bin'
+    - 'backups'
+  become_user: subsonic-backup
+
+- name: Install systemd unit files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ subsonic_backup_home }}/.config/systemd/user/{{ item }}"
+  with_items:
+    - subsonic-backup.service
+    - subsonic-backup.timer
+  become_user: subsonic-backup
+  register: result
+
+# For information on why this hack is performed, see the borg-backup role.
+- block:
+  - name: Reload units for user
+    command: >
+      machinectl shell subsonic-backup@.host /usr/bin/systemctl --user
+      daemon-reload
+
+  - name: Start periodic backup service for user
+    command: >
+      machinectl shell subsonic-backup@.host /usr/bin/systemctl --user start
+      subsonic-backup.timer
+
+  - name: Enable periodic backup service for user
+    command: >
+      machinectl shell subsonic-backup@.host /usr/bin/systemctl --user enable
+      subsonic-backup.timer
+
+  - name: Enable lingering for user
+    command: loginctl enable-linger subsonic-backup
+
+  when: result|changed
+
+- name: Install subsonic restore script
+  copy:
+    src: subsonic-restore.sh
+    dest: "{{ subsonic_backup_home }}/.local/bin/subsonic-restore.sh"
+    mode: 0755
+  become_user: subsonic-backup
