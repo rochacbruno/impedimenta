@@ -7,5 +7,5 @@ python3 -m venv ~/.venvs/jjb
 set +u
 source ~/.venvs/jjb/bin/activate
 set -u
-pip install --upgrade pip
+pip install pip
 pip install jenkins-job-builder
