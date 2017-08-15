@@ -1,0 +1,13 @@
+- name: Install custom executables into ~/.local/bin
+  copy:
+    src: local_bin/
+    dest: "{{ ichimonji10_home }}/.local/bin/"
+    mode: 0755
+  become_user: ichimonji10
+
+- name: Install libvirt configuration file
+  copy:
+    src: libvirt.conf
+    dest: "{{ ichimonji10_home }}/.config/libvirt/libvirt.conf"
+    mode: 0644
+  become_user: ichimonji10
