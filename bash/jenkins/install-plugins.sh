@@ -16,6 +16,7 @@ readonly plugins=(
     ownership
     shiningpanda
     ssh-agent
+    ssh-slaves
     test-stability
     timestamper
     ws-cleanup
