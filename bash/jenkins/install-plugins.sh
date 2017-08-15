@@ -3,8 +3,11 @@ set -euo pipefail
 
 readonly plugins=(
     ansicolor
+    build-timeout
     cobertura
     config-file-provider
+    credentials-binding
+    email-ext
     envinject
     ghprb
     groovy-postbuild
@@ -14,6 +17,8 @@ readonly plugins=(
     shiningpanda
     ssh-agent
     test-stability
+    timestamper
+    ws-cleanup
     zmq-event-publisher
 )
 ssh localhost install-plugin ${plugins[*]}
