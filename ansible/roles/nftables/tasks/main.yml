@@ -1,0 +1,37 @@
+- name: Install nftables
+  pacman:
+    name: nftables
+    state: present
+
+- name: Install nftables configuration file (routers)
+  copy:
+    src: nftables-routers.conf
+    dest: /etc/nftables.conf
+    mode: 0644
+  notify: Reload nftables
+  when: "'routers' in group_names"
+
+- name: Install nftables configuration file (vm-hosts)
+  copy:
+    src: nftables-vm-hosts.conf
+    dest: /etc/nftables.conf
+    mode: 0644
+  notify: Reload nftables
+  when: "'vm-hosts' in group_names"
+
+- name: Install nftables configuration file (generic)
+  copy:
+    src: nftables-generic.conf
+    dest: /etc/nftables.conf
+    mode: 0644
+  notify: Reload nftables
+  when:
+    - "'routers' not in group_names"
+    - "'vm-hosts' not in group_names"
+
+- name: Start and enable nftables
+  systemd:
+    name: nftables.service
+    state: started
+    enabled: yes
+    daemon_reload: yes

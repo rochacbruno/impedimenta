@@ -1,14 +1,11 @@
 - hosts: all
   roles:
     - msmtp
+    - nftables
     - pkgfile
     - reflector
     - smartd
     - time
-
-- hosts: workstations
-  roles:
-    - nftables-generic
 
 - hosts: servers
   roles:
@@ -31,14 +28,12 @@
     - role: hostapd
       when: hostapd_passphrase is defined
     - netctl-routers
-    - nftables-routers
     - wlan-secure
 
 - hosts: vm-hosts
   roles:
     # NOTE: After running, add authorized users to appropriate groups.
     - libvirtd
-    - nftables-vm-hosts
 
 - hosts: btrfs-hosts
   roles:
