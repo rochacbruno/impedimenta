@@ -1,0 +1,75 @@
+- name: Get ichimonji10's home directory
+  shell: 'getent passwd ichimonji10 | cut -d: -f6'
+  check_mode: false
+  changed_when: false
+  register: result
+
+- set_fact:
+    ichimonji10_home: "{{ result.stdout }}"
+
+# Last time I checked, vanilla Arch systems don't ship with these applications.
+- name: Install bash and applications named by ~/.bashrc
+  pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bash
+    - vim
+    - less
+
+- name: Create directories named by ~/.bashrc
+  file:
+    path: "{{ ichimonji10_home }}/.local/bin"
+    state: directory
+  become_user: ichimonji10
+
+- name: Install ~/.bashrc
+  copy:
+    src: bashrc
+    dest: "{{ ichimonji10_home }}/.bashrc"
+  become_user: ichimonji10
+
+- name: Install vim and applications named by ~/.vimrc
+  pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ctags
+    - vim
+    - vim-jellybeans
+    - vim-nerdtree
+    - vim-tagbar
+
+- name: Create directories named by ~/.vimrc
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ ichimonji10_home }}/.cache/custom-ctags"
+    - "{{ ichimonji10_home }}/.vim/undo"
+    - "{{ ichimonji10_home }}/code"
+  become_user: ichimonji10
+
+- name: Install ~/.vimrc
+  template:
+    src: vimrc.j2
+    dest: "{{ ichimonji10_home }}/.vimrc"
+  become_user: ichimonji10
+
+- block:
+
+  - name: Install custom executables into ~/.local/bin
+    copy:
+      src: local_bin/
+      dest: "{{ ichimonji10_home }}/.local/bin/"
+      mode: 0755
+    become_user: ichimonji10
+
+  - name: Install libvirt configuration file
+    copy:
+      src: libvirt.conf
+      dest: "{{ ichimonji10_home }}/.config/libvirt/libvirt.conf"
+      mode: 0644
+    become_user: ichimonji10
+
+  when: "'vm-hosts' in group_names"

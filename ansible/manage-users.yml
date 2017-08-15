@@ -3,17 +3,8 @@
 
 - hosts: all
   roles:
-    - create-users
-
-- hosts: all
-  roles:
-    - customize-ichimonji10-all
-  become_user: ichimonji10
-
-- hosts: vm-hosts
-  roles:
-    - customize-ichimonji10-vm-hosts
-  become_user: ichimonji10
+    # Depends on create-users, etc.
+    - customize-user-ichimonji10
 
 - hosts: pine.ichimonji10.name
   roles:
