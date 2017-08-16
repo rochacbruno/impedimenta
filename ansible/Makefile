@@ -8,6 +8,6 @@ help:
 #     ANSIBLE0017: become_user requires become to work as expected
 #
 lint:
-	ansible-lint -x ANSIBLE0017 manage-services.yml manage-users.yml
+	ansible-lint -x ANSIBLE0017 site.yml
 
 .PHONY: help lint
