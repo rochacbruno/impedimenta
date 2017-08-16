@@ -43,8 +43,12 @@
 - hosts: btrfs-hosts
   roles:
     - btrfs-scrub
-    - role: btrfs-snapshot
-      when: btrfs_snapshot
+
+# Why make an intersection between a group and a single host, instead of simply
+# listing a single host? Well, what if this host is removed from the group?
+- hosts: btrfs-hosts:&pine.ichimonji10.name
+  roles:
+    - btrfs-snapshot
 
 - hosts: pine.ichimonji10.name
   roles:
