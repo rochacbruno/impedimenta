@@ -13,6 +13,10 @@
     - role: dynamic-dns
       when: dynamic_dns_urls is defined
 
+- hosts: servers:beech.ichimonji10.name
+  roles:
+    - apcupsd
+
 - hosts: servers:!routers
   roles:
     - netctl-generic
