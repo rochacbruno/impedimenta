@@ -4,7 +4,8 @@
   changed_when: false
   register: result
 
-- set_fact:
+- name: Set variable referencing user's home directory
+  set_fact:
     borg_backup_user_home: "{{ result.stdout }}"
 
 - name: Install borg and its dependencies

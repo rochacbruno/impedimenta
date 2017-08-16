@@ -4,7 +4,8 @@
   changed_when: false
   register: result
 
-- set_fact:
+- name: Set variable referencing ichimonji10's home directory
+  set_fact:
     ichimonji10_home: "{{ result.stdout }}"
 
 # Last time I checked, vanilla Arch systems don't ship with these applications.

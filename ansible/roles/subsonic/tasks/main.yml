@@ -32,11 +32,7 @@
     shell: /usr/bin/nologin
     groups:
       - subsonic
-  register: result
-
-- name: Lock subsonic-backup's password
-  command: passwd --lock subsonic-backup
-  when: result|changed
+  notify: Lock subsonic-backup's password
 
 - name: Get subsonic-backup's home directory
   shell: 'getent passwd subsonic-backup | cut -d: -f6'
@@ -44,7 +40,8 @@
   changed_when: false
   register: result
 
-- set_fact:
+- name: Set variable referencing subsonic-backup's home directory
+  set_fact:
     subsonic_backup_home: "{{ result.stdout }}"
 
 - name: Create directories in subsonic-backup's home directory

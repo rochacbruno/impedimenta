@@ -15,11 +15,7 @@
     owner: root
     group: root
     mode: 0644
-  register: result
-
-- name: Set wireless regulatory domain
-  command: iw reg set US
-  when: result|changed
+  notify: Set wireless regulatory domain
 
 - name: Configure hostapd
   template:
@@ -28,23 +24,27 @@
     owner: root
     group: root
     mode: 0600
+  notify: Set an IP address on the secondary wlan interface
   register: result
 
-# hostapd must be restarted because many changes aren't taken into account by a
-# simple reload.
+# When hostapd's configuration file changes, it must be restarted, because many
+# changes aren't taken into account by a simple reload.
+#
+# Imagine hostapd is stopped:
+#
+# * If this task were a handler, then the following "start and enable hostapd"
+#   task would start hostapd, and the handler would restart it.
+# * If this task is left as a task, then this start hostapd, and the following
+#   "start and enable hostapd" task doesn't (re)start hostapd.
+#
+# Thus, we leave this as a task here to avoid an unnecessary hostapd restart.
 - name: Restart hostapd
   systemd:
     name: hostapd.service
     state: restarted
     daemon_reload: yes
   when: result|changed
-
-- name: Set an IP address on the secondary wlan interface
-  systemd:
-    name: wlan-secure.service
-    state: restarted
-    daemon_reload: yes
-  when: result|changed
+  tags: skip_ansible_lint
 
 - name: Start and enable hostapd
   systemd:

@@ -11,18 +11,23 @@
     group: root
     mode: 0644
   register: result
+  notify: Reload netctl service
 
-# The "netctl enable" task seems redundant in light of the following systemd
-# tasks. However, it's necessary. A netctl@${profile-name}.service systemd unit
-# is created only when `netctl enable $profile-name` is executed, and vice versa
-# for deletion. (`netctl start $profile-name` and `netctl stop $profile-name`
-# have no effect on systemd units.)
+# This task may look pointless when the systemd module can also enable and
+# disable units. However, netctl does more than systemd:
 #
-# When a systemd unit is created, the first systemd task ensures it starts. When
-# a systemd unit is updated, the second systemd task ensures it reloads.
+# * `netctl enable $profile` also creates a netctl@${profile}.service unit.
+# * `netctl disable $profile` also deletes a netctl@${profile}.service unit.
+# * `netctl reenable $profile` is a combination of `disable` and `enable`. It's
+#   especially useful for updating units. (`netctl enable $profile` loudly
+#   refuses to update existing units.)
+#
+# Thus, `netctl reenable` must be invoked before systemd can work with the
+# desired units.
 - name: Create or update netctl service
   command: netctl reenable external
   when: result|changed
+  tags: skip_ansible_lint
 
 - name: Start and enable netctl service
   systemd:
@@ -30,10 +35,3 @@
     state: started
     enabled: yes
     daemon_reload: yes
-
-- name: Reload netctl service
-  systemd:
-    name: netctl@external.service
-    state: reloaded
-    daemon_reload: yes
-  when: result|changed

@@ -1,0 +1,10 @@
+- name: Reload netctl services
+  systemd:
+    name: netctl@{{ item }}.service
+    state: reloaded
+    daemon_reload: yes
+  with_items:
+    - dmz
+    - lan
+    - wan
+    - wlan
