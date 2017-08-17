@@ -16,6 +16,16 @@
       - wheel
   when: "'vm-hosts' not in group_names"
 
+- name: Get ichimonji10's home directory
+  shell: 'getent passwd ichimonji10 | cut -d: -f6'
+  check_mode: false
+  changed_when: false
+  register: result
+
+- name: Set variable referencing ichimonji10's home directory
+  set_fact:
+    ichimonji10_home: "{{ result.stdout }}"
+
 - include: all.yml
 - include: vm-hosts.yml
   when: "'vm-hosts' in group_names"

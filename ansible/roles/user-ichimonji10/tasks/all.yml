@@ -1,13 +1,3 @@
-- name: Get ichimonji10's home directory
-  shell: 'getent passwd ichimonji10 | cut -d: -f6'
-  check_mode: false
-  changed_when: false
-  register: result
-
-- name: Set variable referencing ichimonji10's home directory
-  set_fact:
-    ichimonji10_home: "{{ result.stdout }}"
-
 # Last time I checked, vanilla Arch systems don't ship with these applications.
 - name: Install bash and applications named by ~/.bashrc
   pacman:
