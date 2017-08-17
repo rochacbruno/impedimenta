@@ -1,3 +1,0 @@
-- include: all.yml
-- include: vm-hosts.yml
-  when: "'vm-hosts' in group_names"

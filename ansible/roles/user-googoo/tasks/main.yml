@@ -1,0 +1,5 @@
+- name: Create user
+  user:
+    name: googoo
+    groups:
+      - ichi-machines

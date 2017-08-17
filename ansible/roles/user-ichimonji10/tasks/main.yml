@@ -1,0 +1,21 @@
+- name: Create user on hosts in vm-hosts group
+  user:
+    name: ichimonji10
+    groups:
+      - ichi-machines
+      - wheel
+      - kvm
+      - libvirt
+  when: "'vm-hosts' in group_names"
+
+- name: Create user on remaining hosts
+  user:
+    name: ichimonji10
+    groups:
+      - ichi-machines
+      - wheel
+  when: "'vm-hosts' not in group_names"
+
+- include: all.yml
+- include: vm-hosts.yml
+  when: "'vm-hosts' in group_names"

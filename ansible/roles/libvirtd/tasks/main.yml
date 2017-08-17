@@ -1,5 +1,3 @@
-# After executing this role, add authorized users to 'kvm' and 'libvirt' groups.
-
 - name: Install libvirt and related tools
   pacman:
     name: '{{ item }}'

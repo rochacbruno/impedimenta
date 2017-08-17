@@ -1,0 +1,5 @@
+dependencies:
+  # Creates ichi-machines group.
+  - {role: msmtp}
+  # Creates kvm and libvirt groups.
+  - {role: libvirtd, when: "'vm-hosts' in group_names"}

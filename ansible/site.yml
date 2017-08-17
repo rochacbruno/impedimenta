@@ -1,12 +1,12 @@
 - hosts: all
   roles:
-    - customize-user-ichimonji10
     - msmtp
     - nftables
     - pkgfile
     - reflector
     - smartd
     - time
+    - user-ichimonji10
 
 - hosts: servers
   roles:
@@ -25,6 +25,7 @@
       when:
         - openvpn_client_ivpn_username is defined
         - openvpn_client_ivpn_password is defined
+    - user-googoo
 
 - hosts: routers
   roles:
@@ -37,7 +38,6 @@
 
 - hosts: vm-hosts
   roles:
-    # NOTE: After running, add authorized users to appropriate groups.
     - libvirtd
 
 - hosts: btrfs-hosts
