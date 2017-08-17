@@ -19,3 +19,7 @@
 - include: all.yml
 - include: vm-hosts.yml
   when: "'vm-hosts' in group_names"
+- include: workstations.yml
+  # ansible_hostname is the hostname as reported by a host, and may be short,
+  # like 'pine'. Also, pine.ichimonji10.name is used for too many things.
+  when: "'workstations' in group_names or inventory_hostname == 'pine.ichimonji10.name'"

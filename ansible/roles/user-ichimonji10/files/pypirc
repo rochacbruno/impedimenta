@@ -1,0 +1,11 @@
+[distutils]
+index-servers=
+    pypi
+    pypitest
+
+[pypitest]
+repository = https://testpypi.python.org/pypi
+username = Ichimonji10
+
+[pypi]
+username = Ichimonji10

@@ -1,0 +1,22 @@
+- name: Install git
+  pacman:
+    name: git
+    state: present
+
+- name: Install git config files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ichimonji10_home }}/.{{ item }}"
+  with_items:
+    - gitconfig
+    - gitignore_global
+
+- name: Install twine
+  pacman:
+    name: twine
+    state: present
+
+- name: Install ~/.pypirc (for twine)
+  copy:
+    src: pypirc
+    dest: "{{ ichimonji10_home}}/.pypirc"
