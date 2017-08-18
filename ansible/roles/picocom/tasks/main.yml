@@ -1,0 +1,4 @@
+- name: Install picocom
+  pacman:
+    name: picocom
+    state: present

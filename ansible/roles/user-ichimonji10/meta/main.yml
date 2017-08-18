@@ -3,3 +3,5 @@ dependencies:
   - {role: msmtp}
   # Creates kvm and libvirt groups.
   - {role: libvirtd, when: "'vm-hosts' in group_names"}
+  # Creates uucp group.
+  - {role: picocom, when: "'workstations' in group_names"}

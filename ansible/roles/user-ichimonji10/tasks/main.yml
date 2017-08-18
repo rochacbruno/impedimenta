@@ -9,6 +9,11 @@
     ichimonji10_groups: "{{ ichimonji10_groups + ['kvm', 'libvirt'] }}"
   when: "'vm-hosts' in group_names"
 
+- name: Append to groups if host in workstations group
+  set_fact:
+    ichimonji10_groups: "{{ ichimonji10_groups + ['uucp'] }}"
+  when: "'workstations' in group_names"
+
 - name: Create ichimonji10
   user:
     name: ichimonji10

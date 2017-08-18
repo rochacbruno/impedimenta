@@ -8,6 +8,10 @@
     - time
     - user-ichimonji10
 
+- hosts: workstations
+  roles:
+    - picocom
+
 - hosts: servers
   roles:
     - sshd
