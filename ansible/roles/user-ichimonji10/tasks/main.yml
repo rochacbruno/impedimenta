@@ -1,20 +1,18 @@
-- name: Create user on hosts in vm-hosts group
-  user:
-    name: ichimonji10
-    groups:
+- name: Set ichimonji10's groups
+  set_fact:
+    ichimonji10_groups:
       - ichi-machines
       - wheel
-      - kvm
-      - libvirt
+
+- name: Append to groups if host in vm-hosts group
+  set_fact:
+    ichimonji10_groups: "{{ ichimonji10_groups + ['kvm', 'libvirt'] }}"
   when: "'vm-hosts' in group_names"
 
-- name: Create user on remaining hosts
+- name: Create ichimonji10
   user:
     name: ichimonji10
-    groups:
-      - ichi-machines
-      - wheel
-  when: "'vm-hosts' not in group_names"
+    groups: "{{ ichimonji10_groups }}"
 
 - name: Get ichimonji10's home directory
   shell: 'getent passwd ichimonji10 | cut -d: -f6'
