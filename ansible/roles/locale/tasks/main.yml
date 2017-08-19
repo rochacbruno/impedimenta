@@ -1,0 +1,18 @@
+- name: Enable en_US locale
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: 'en_US\s+ISO-8859-1'
+    line: 'en_US ISO-8859-1'
+  notify: Generate locales
+
+- name: Enable en_US.UTF-8 locale
+  lineinfile:
+    path: /etc/locale.gen
+    regexp: 'en_US.UTF-8\s+UTF-8'
+    line: 'en_US.UTF-8 UTF-8'
+  notify: Generate locales
+
+- name: Set LANG in /etc/locale.conf
+  file:
+    src: locale.conf
+    path: /etc/locale.conf
