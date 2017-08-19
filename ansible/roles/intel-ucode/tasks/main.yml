@@ -1,0 +1,5 @@
+- name: Install intel-ucode
+  pacman:
+    name: intel-ucode
+    state: present
+  when: "'Intel' in ansible_processor[0]"
