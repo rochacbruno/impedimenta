@@ -1,0 +1,6 @@
+# Role should be applied to all hosts that use systemd-boot. See:
+# https://wiki.archlinux.org/index.php/Systemd-boot
+- name: Install systemd-boot-pacman-hook
+  pacman:
+    name: systemd-boot-pacman-hook
+    state: present

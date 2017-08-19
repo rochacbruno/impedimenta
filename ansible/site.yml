@@ -60,6 +60,10 @@
     - user-googoo
     - user-subsonic-backup
 
+- hosts: '!amelanchier.ichimonji10.name'
+  roles:
+    - systemd-boot-pacman-hook
+
 - hosts: pine.ichimonji10.name
   roles:
     # NOTE: Ensure user has an SSH key for logging into remote backup hosts.
