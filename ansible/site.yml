@@ -12,6 +12,7 @@
 
 - hosts: workstations
   roles:
+    - desktop-environment
     - picocom
 
 - hosts: servers

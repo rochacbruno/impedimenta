@@ -20,3 +20,10 @@
   copy:
     src: pypirc
     dest: "{{ ichimonji10_home}}/.pypirc"
+
+- name: Install workstation-only vim plug-ins
+  pacman:
+    name:
+      - vim-mark
+      - vim-tagbar
+    state: present
