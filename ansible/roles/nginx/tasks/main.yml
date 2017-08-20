@@ -1,0 +1,33 @@
+- name: Install nginx
+  pacman:
+    name: pacman
+    state: present
+
+- name: Install nginx configuration file
+  copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify: Reload nginx
+
+- name: Create directory for SSL certificates
+  file:
+    path: /etc/nginx/ssl
+    state: directory
+    owner: root
+    group: root
+    mode: 0700
+
+# TODO: Add task to install SSL certificates to /etc/nginx/ssl/. Example result:
+#
+# /etc/nginx/ssl/
+# ├── subsonic.ichimonji10.name.chained.crt
+# ├── subsonic.ichimonji10.name.key
+# ├── syncthing.ichimonji10.name.chained.crt
+# └── syncthing.ichimonji10.name.key
+
+- name: Start and enable nginx
+  systemd:
+    name: nginx.service
+    state: started
+    enabled: yes
+    daemon_reload: yes
