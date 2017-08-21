@@ -16,7 +16,6 @@
     state: present
   when: "inventory_hostname == 'butternut.ichimonji10.name'"
 
-# TODO: Move installation of AUR packages into separate step
 # NOTE: We assume base and base-devel are already present, and were enabled at
 # install time. Requiring it at a later time can be problematic if the multilib
 # repository is enabled.
@@ -45,8 +44,6 @@
       - lightdm-gtk-greeter-settings
       - lshw
       - lsof
-      - mnemosyne
-      - ms-sys
       - namcap
       - network-manager-applet
       - networkmanager
@@ -55,7 +52,6 @@
       - noto-fonts-emoji
       - ntfs-3g
       - openssh
-      - pacaur
       - pkgbuild-introspection
       - pulseaudio
       - python-docutils  # for rst2html
@@ -79,6 +75,30 @@
     name: lm_sensors
     state: present
   notify: Detect sensors
+
+- name: Check if mnemosyne is installed
+  command: pacman -Q mnemosyne
+  changed_when: False
+  check_mode: False
+  failed_when: False
+  register: result
+
+- name: Install mnemosyne from the AUR
+  command: 'pacaur -S --noconfirm mnemosyne'
+  when: result.rc != 0
+  become_user: pacaur-builder
+
+- name: Check if ms-sys is installed
+  command: pacman -Q ms-sys
+  changed_when: False
+  check_mode: False
+  failed_when: False
+  register: result
+
+- name: Install ms-sys from the AUR
+  command: 'pacaur -S --noconfirm ms-sys'
+  when: result.rc != 0
+  become_user: pacaur-builder
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.
