@@ -42,16 +42,15 @@
       - iperf3
       - iw
       - lightdm
-      - lightdm-gtk-greeter  # optional for lightdm
-      - lightdm-gtk-greeter-settings  # optional for lightdm
+      - lightdm-gtk-greeter-settings
       - lshw
       - lsof
       - mnemosyne
       - ms-sys
       - namcap
-      - network-manager-applet  # optional for networkmanager
+      - network-manager-applet
       - networkmanager
-      - networkmanager-openvpn  # optional for networkmanager
+      - networkmanager-openvpn
       - noto-fonts
       - noto-fonts-emoji
       - ntfs-3g
