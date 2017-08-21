@@ -2,11 +2,10 @@
 
 - name: Install crda and hostapd
   pacman:
-    name: "{{ item }}"
+    name:
+      - crda
+      - hostapd
     state: present
-  with_items:
-    - crda
-    - hostapd
 
 - name: Configure crda
   copy:

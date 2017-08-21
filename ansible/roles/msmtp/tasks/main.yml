@@ -1,11 +1,10 @@
 - name: Install msmtp and related tools
   pacman:
-    name: "{{ item }}"
+    name:
+      - msmtp
+      - msmtp-mta
+      - s-nail
     state: present
-  with_items:
-    - msmtp
-    - msmtp-mta
-    - s-nail
   notify:
     - Set install reason for packages
 

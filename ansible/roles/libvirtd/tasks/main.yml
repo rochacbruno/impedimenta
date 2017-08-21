@@ -1,13 +1,12 @@
 - name: Install libvirt and related tools
   pacman:
-    name: '{{ item }}'
+    name:
+      - libvirt
+      - qemu  # libvirt backend
+      - openbsd-netcat  # libvirt management over ssh
+      - virt-install  # libvirt management via console (including virt-clone)
+      - dnsmasq
     state: present
-  with_items:
-    - libvirt
-    - qemu  # libvirt backend
-    - openbsd-netcat  # libvirt management over ssh
-    - virt-install  # libvirt management via console (including virt-clone)
-    - dnsmasq
   notify:
     - Set install reason for packages
 

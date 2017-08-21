@@ -1,12 +1,11 @@
 # Last time I checked, vanilla Arch systems don't ship with these applications.
 - name: Install bash and applications named by ~/.bashrc
   pacman:
-    name: "{{ item }}"
+    name:
+      - bash
+      - vim
+      - less
     state: present
-  with_items:
-    - bash
-    - vim
-    - less
 
 - name: Create directories named by ~/.bashrc
   file:
@@ -22,14 +21,13 @@
 
 - name: Install vim and applications named by ~/.vimrc
   pacman:
-    name: "{{ item }}"
+    name:
+      - ctags
+      - vim
+      - vim-jellybeans
+      - vim-nerdtree
+      - vim-tagbar
     state: present
-  with_items:
-    - ctags
-    - vim
-    - vim-jellybeans
-    - vim-nerdtree
-    - vim-tagbar
 
 - name: Create directories named by ~/.vimrc
   file:

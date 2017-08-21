@@ -10,11 +10,10 @@
 
 - name: Install borg and its dependencies
   pacman:
-    name: '{{ item }}'
+    name:
+      - borg
+      - openssh  # for connecting to borg repositories on remote hosts
     state: present
-  with_items:
-    - borg
-    - openssh  # for connecting to borg repositories on remote hosts
 
 - name: Create directories in user's home directory
   file:
