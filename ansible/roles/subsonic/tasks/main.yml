@@ -1,7 +1,14 @@
-- name: Install Subsonic
-  pacman:
-    name: subsonic
-    state: present
+- name: Check if subsonic is installed
+  command: pacman -Q subsonic
+  changed_when: False
+  check_mode: False
+  failed_when: False
+  register: result
+
+- name: Install Subsonic from the AUR
+  command: 'pacaur -S --noconfirm subsonic'
+  when: result.rc != 0
+  become_user: pacaur-builder
 
 - name: Restrict visibility of Subsonic's database
   file:
