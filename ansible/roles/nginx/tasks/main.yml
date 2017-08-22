@@ -1,6 +1,6 @@
 - name: Install nginx
   pacman:
-    name: pacman
+    name: nginx
     state: present
 
 - name: Install nginx configuration file
