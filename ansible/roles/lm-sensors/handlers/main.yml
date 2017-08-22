@@ -1,0 +1,3 @@
+- name: Detect sensors
+  command: sensors-detect --auto
+

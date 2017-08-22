@@ -70,12 +70,6 @@
     state: present
   notify: Set install reason for optional dependencies
 
-- name: Install lm_sensors
-  pacman:
-    name: lm_sensors
-    state: present
-  notify: Detect sensors
-
 - name: Check if mnemosyne is installed
   command: pacman -Q mnemosyne
   changed_when: False
