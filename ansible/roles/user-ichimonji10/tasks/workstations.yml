@@ -21,9 +21,14 @@
     src: pypirc
     dest: "{{ ichimonji10_home}}/.pypirc"
 
-- name: Install workstation-only vim plug-ins
-  pacman:
-    name:
-      - vim-mark
-      - vim-tagbar
-    state: present
+- name: Check if vim-mark is installed
+  command: pacman -Q vim-mark
+  changed_when: False
+  check_mode: False
+  failed_when: False
+  register: result
+
+- name: Install vim-mark from the AUR
+  command: 'pacaur -S --noconfirm vim-mark'
+  when: result.rc != 0
+  become_user: pacaur-builder

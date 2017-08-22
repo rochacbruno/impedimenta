@@ -5,3 +5,5 @@ dependencies:
   - {role: msmtp}
   # Creates uucp group.
   - {role: picocom, when: "'workstations' in group_names"}
+  # Installs pacaur and creates user for builds.
+  - {role: user-pacaur-builder, when: "'workstations' in group_names"}
