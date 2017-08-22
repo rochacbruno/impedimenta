@@ -1,2 +1,0 @@
-# Wireless regulatory domain configuration. See crda(8).
-WIRELESS_REGDOM="US"
