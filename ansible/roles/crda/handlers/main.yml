@@ -1,0 +1,2 @@
+- name: Set wireless regulatory domain
+  command: iw reg set US

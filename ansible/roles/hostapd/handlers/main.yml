@@ -1,6 +1,3 @@
-- name: Set wireless regulatory domain
-  command: iw reg set US
-
 - name: Set an IP address on the secondary wlan interface
   systemd:
     name: wlan-secure.service

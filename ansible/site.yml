@@ -11,6 +11,10 @@
     - time
     - user-ichimonji10
 
+- hosts: all:!pine.ichimonji10.name
+  roles:
+    - crda
+
 - hosts: workstations
   roles:
     - desktop-environment
