@@ -10,6 +10,10 @@
     - time
     - user-ichimonji10
 
+- hosts: all:!routers
+  roles:
+    - user-pacaur-builder
+
 - hosts: workstations
   roles:
     - desktop-environment

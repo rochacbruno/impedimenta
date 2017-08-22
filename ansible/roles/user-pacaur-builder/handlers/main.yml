@@ -1,0 +1,7 @@
+- name: Lock password
+  command: passwd --lock pacaur-builder
+
+- name: Delete temporary sudoers file
+  file:
+    path: /etc/sudoers.tmp
+    state: absent
