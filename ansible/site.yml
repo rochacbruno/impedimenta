@@ -10,6 +10,10 @@
     - smartd
     - time
     - user-ichimonji10
+  tasks:
+    - name: Install tree
+      pacman:
+        name: tree
 
 - hosts: all:!pine.ichimonji10.name
   roles:
