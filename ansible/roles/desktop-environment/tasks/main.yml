@@ -34,6 +34,7 @@
       - firefox
       - gimp
       - git
+      - gnome-keyring
       - gptfdisk
       - graphviz
       - gvfs  # optional for thunar
