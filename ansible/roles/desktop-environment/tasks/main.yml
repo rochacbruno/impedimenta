@@ -66,6 +66,7 @@
       - virt-manager
       - vlc
       - wget
+      - xclip
       - xfce4
       - xfce4-goodies
       - xorg-server
