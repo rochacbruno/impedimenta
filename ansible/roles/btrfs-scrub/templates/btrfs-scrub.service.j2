@@ -3,3 +3,4 @@ Description=Start a btrfs scrub
 
 [Service]
 ExecStart=/usr/bin/btrfs scrub start -Bd '{{ btrfs_path }}'
+ExecStop=/usr/bin/btrfs scrub cancel '{{ btrfs_path }}'
