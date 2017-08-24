@@ -6,6 +6,7 @@ readonly plugins=(
     build-timeout
     cobertura
     config-file-provider
+    copyartifact
     credentials-binding
     email-ext
     envinject
