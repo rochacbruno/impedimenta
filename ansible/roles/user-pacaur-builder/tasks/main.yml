@@ -7,32 +7,12 @@
     name: pacaur-builder
     shell: /usr/bin/nologin
   notify: Lock password
-  register: result
 
 # pacaur builds packages as an unprivileged user, then installs files as root.
 # In fact, it refuses to run as root. Thus, passwordless sudo must be available.
-- block:
-
-  # TODO: Use file returned by mktemp instead of hard-coded path.
-  - name: Create temporary sudoers file
-    copy:
-      src: /etc/sudoers
-      remote_src: True
-      dest: /etc/sudoers.tmp
-    notify: Delete temporary sudoers file
-
-  - name: Give user passwordless sudo privileges
-    lineinfile:
-      path: /etc/sudoers.tmp
-      line: 'pacaur-builder ALL=(ALL) NOPASSWD: ALL'
-
-  - name: Check temporary sudoers file
-    command: visudo --quiet --check --file /etc/sudoers.tmp
-
-  - name: Install new sudoers file
-    copy:
-      src: /etc/sudoers.tmp
-      remote_src: True
-      dest: /etc/sudoers
-
-  when: result|changed
+- name: Give user passwordless sudo privileges
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^pacaur-builder '
+    line: 'pacaur-builder ALL=(ALL) NOPASSWD: ALL'
+    validate: 'visudo --check --file %s'
