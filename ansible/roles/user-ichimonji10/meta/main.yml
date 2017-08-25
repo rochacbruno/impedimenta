@@ -1,4 +1,6 @@
 dependencies:
+  # Configures the "wheel" group.
+  - {role: group-wheel}
   # Creates kvm and libvirt groups.
   - {role: libvirtd, when: "'vm-hosts' in group_names"}
   # Creates ichi-machines group.

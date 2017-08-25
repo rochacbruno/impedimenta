@@ -1,0 +1,11 @@
+# We don't create this group, because:
+#
+# * The system package manager probably expects this group to have certain
+#   properties, like a certain ID.
+# * It should be present in a base installation anyway.
+- name: Give password-protected sudo privileges to group wheel
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^%wheel '
+    line: '%wheel ALL=(ALL) ALL'
+    validate: 'visudo --check --file %s'
