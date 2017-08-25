@@ -41,6 +41,7 @@
       - hexchat
       - iperf3
       - iw
+      - light-locker  # https://wiki.archlinux.org/index.php/Xfce#Panel_lock_button
       - lightdm
       - lightdm-gtk-greeter-settings
       - lshw
