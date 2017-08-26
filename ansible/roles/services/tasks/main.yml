@@ -1,0 +1,43 @@
+- name: Add syncthing-core-ichimonji10 to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^snapenetio\s+22000/tcp'
+    line: 'snapenetio 22000/tcp syncthing-core-ichimonji10'
+
+- name: Add syncthing-core-googoo to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^optocontrol\s+22001/tcp'
+    line: 'optocontrol 22001/tcp syncthing-core-googoo'
+
+- name: Add syncthing-discovery-ichimonji10 to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^syncthing-discovery-ichimonji10 '
+    line: 'syncthing-discovery-ichimonji10 21027/udp'
+
+- name: Add syncthing-discovery-googoo to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^syncthing-discovery-googoo '
+    line: 'syncthing-discovery-googoo 21028/udp'
+
+- name: Add pine-ssh to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^pine-ssh '
+    line: 'pine-ssh 30022/tcp'
+
+# Verified udp with `ss --listening -n`.
+- name: Add bittorrent-dht to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^bittorrent-dht '
+    line: 'bittorrent-dht 40035/udp'
+
+# Verified tcp with `ss --listening -n`.
+- name: Add bittorrent-data to /etc/services
+  lineinfile:
+    path: /etc/services
+    regexp: '^bittorrent-data '
+    line: 'bittorrent-data 41046/tcp'
