@@ -13,6 +13,6 @@
   notify: Generate locales
 
 - name: Set LANG in /etc/locale.conf
-  file:
+  copy:
     src: locale.conf
-    path: /etc/locale.conf
+    dest: /etc/locale.conf
