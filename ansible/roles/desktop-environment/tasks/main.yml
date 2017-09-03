@@ -59,6 +59,7 @@
       - pulseaudio
       - python-docutils  # for rst2html
       - python-wheel
+      - qt4  # for vlc
       - shellcheck
       - sshfs
       - sudo
