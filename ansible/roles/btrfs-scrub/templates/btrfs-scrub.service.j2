@@ -1,6 +1,11 @@
 [Unit]
 Description=Start a btrfs scrub
 
+# If a scrub successfully completes, the `btrfs scrub cancel` command is
+# guaranteed to fail, because by the time it's called, there isn't any scrub to
+# cancel. In this case, btrfs-scrub returns 2, so a good clean solution is to
+# just ignore that error code. Unfortunately, the *ExitStatus directives apply
+# to the main process' exit code. Ignoring all error codes (with -) is a kludge.
 [Service]
 ExecStart=/usr/bin/btrfs scrub start -Bd '{{ btrfs_path }}'
-ExecStop=/usr/bin/btrfs scrub cancel '{{ btrfs_path }}'
+ExecStop=-/usr/bin/btrfs scrub cancel '{{ btrfs_path }}'
