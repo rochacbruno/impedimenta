@@ -66,10 +66,7 @@
   roles:
     # NOTE: Make sure to install SSL certificates.
     - nginx
-    - role: openvpn-client-ivpn
-      when:
-        - openvpn_client_ivpn_username is defined
-        - openvpn_client_ivpn_password is defined
+    - transmission
     - user-googoo
     - user-subsonic-backup
 
