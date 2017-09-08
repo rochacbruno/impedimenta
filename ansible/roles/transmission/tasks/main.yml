@@ -9,6 +9,7 @@
     owner: transmission
     group: transmission
     mode: 0700
+  when: transmission_password is defined
   notify: Restart transmission
 
 - name: Install override file for transmission.service

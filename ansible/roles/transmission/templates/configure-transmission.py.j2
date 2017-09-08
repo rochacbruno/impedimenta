@@ -39,8 +39,7 @@ def main():
     config['rpc-bind-address'] = '127.0.0.1'
     config['rpc-username'] = 'admin'
     config['rpc-whitelist-enabled'] = False
-    {% if transmission_password is defined %}config['rpc-password'] = '{{ transmission_password }}'
-    {% endif %}
+    config['rpc-password'] = '{{ transmission_password }}'
 
     # Avoid uploading much over 1 TB of data per month. God forbid that I use
     # the bandwidth I pay for.
