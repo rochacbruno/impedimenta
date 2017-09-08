@@ -1,24 +1,14 @@
 #!/usr/bin/python3
 # coding=utf-8
-# We don't care that this module has an invalid name, since it should never be
-# imported. It's an executable
+# We don't care that this module has an invalid name. It's an executable that
+# should never be imported.
 # pylint:disable=invalid-name
 """Fiddle with Transmission's configuration file.
 
 Wait for interface tun0 to become available and be initialized with an IPv4
 address. Then, set several parameters in Transmission's configuration file. If
-no configuration file exists, create one. Notable settings:
-
-* UPnP and NAP-PMP are disabled. AFAIK, iVPN doesn't support them.
-* Distinct directories for incomplete and complete downloads aren't configured.
-  This could be desirable because it would help ensure that applications like
-  Subsonic don't have to deal with files changing under their feet. But it
-  might also interfere with the use case where one wants to download only part
-  of a large torrent.
-
-The only option that this script actually needs to set is
-``bind-address-ipv4``. The rest could be set by Ansible, or even a human.
-They're set here because it's convenient to do so.
+no configuration file exists, create one. See the comments in the source code
+below for why each setting is set.
 """
 import json
 import locale
@@ -36,19 +26,29 @@ def main():
     except FileNotFoundError:
         config = {}
     config['bind-address-ipv4'] = _get_tun0_ipv4()
+
+    # Provided by my VPN provider.
     config['peer-port'] = 41046
     config['peer-port-random-on-start'] = False
+
+    # Disable UPnP and NAT-PMP. AFAIK, VPN provider doesn't support them.
     config['port-forwarding-enabled'] = False
+
+    # Require username and password.
     config['rpc-authentication-required'] = True
     config['rpc-bind-address'] = '127.0.0.1'
     config['rpc-username'] = 'admin'
     config['rpc-whitelist-enabled'] = False
     {% if transmission_password is defined %}config['rpc-password'] = '{{ transmission_password }}'
     {% endif %}
+
+    # Avoid uploading much over 1 TB of data per month. God forbid that I use
+    # the bandwidth I pay for.
     config['speed-limit-down'] = 1200
     config['speed-limit-down-enabled'] = True
     config['speed-limit-up'] = 400
     config['speed-limit-up-enabled'] = True
+
     with open(settings_path, 'w') as handle:
         json.dump(config, handle, indent=4, sort_keys=True)
 
