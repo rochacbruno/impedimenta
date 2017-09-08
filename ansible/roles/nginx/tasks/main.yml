@@ -23,7 +23,9 @@
 # ├── subsonic.ichimonji10.name.chained.crt
 # ├── subsonic.ichimonji10.name.key
 # ├── syncthing.ichimonji10.name.chained.crt
-# └── syncthing.ichimonji10.name.key
+# ├── syncthing.ichimonji10.name.key
+# ├── transmission.ichimonji10.name.chained.crt
+# └── transmission.ichimonji10.name.key
 
 - name: Start and enable nginx
   systemd:
