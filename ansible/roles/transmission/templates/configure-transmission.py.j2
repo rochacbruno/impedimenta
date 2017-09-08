@@ -39,6 +39,12 @@ def main():
     config['peer-port'] = 41046
     config['peer-port-random-on-start'] = False
     config['port-forwarding-enabled'] = False
+    config['rpc-authentication-required'] = True
+    config['rpc-bind-address'] = '127.0.0.1'
+    config['rpc-username'] = 'admin'
+    config['rpc-whitelist-enabled'] = False
+    {% if transmission_password is defined %}config['rpc-password'] = '{{ transmission_password }}'
+    {% endif %}
     config['speed-limit-down'] = 1200
     config['speed-limit-down-enabled'] = True
     config['speed-limit-up'] = 400

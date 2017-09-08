@@ -1,0 +1,4 @@
+- name: Restart transmission
+  systemd:
+    name: transmission
+    state: restarted
