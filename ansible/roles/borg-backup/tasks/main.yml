@@ -1,12 +1,12 @@
 - name: Get user home directory
-  shell: 'getent passwd "{{ borg_backup_user }}" | cut -d: -f6'
-  check_mode: false
-  changed_when: false
-  register: result
+  getent:
+    database: passwd
+    key: '{{ borg_backup_user }}'
+    split: ':'
 
 - name: Set variable referencing user's home directory
   set_fact:
-    borg_backup_user_home: "{{ result.stdout }}"
+    borg_backup_user_home: "{{ getent_passwd[borg_backup_user][4] }}"
 
 - name: Install borg and its dependencies
   pacman:

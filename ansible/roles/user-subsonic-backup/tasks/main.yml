@@ -17,15 +17,15 @@
       - subsonic
   notify: Lock subsonic-backup's password
 
-- name: Get subsonic-backup's home directory
-  shell: 'getent passwd subsonic-backup | cut -d: -f6'
-  check_mode: false
-  changed_when: false
-  register: result
+- name: Get information about subsonic-backup
+  getent:
+    database: passwd
+    key: subsonic-backup
+    split: ':'
 
 - name: Set variable referencing subsonic-backup's home directory
   set_fact:
-    subsonic_backup_home: "{{ result.stdout }}"
+    subsonic_backup_home: "{{ getent_passwd['subsonic-backup'][4] }}"
 
 - name: Create directories in subsonic-backup's home directory
   file:

@@ -19,15 +19,15 @@
     name: ichimonji10
     groups: "{{ ichimonji10_groups }}"
 
-- name: Get ichimonji10's home directory
-  shell: 'getent passwd ichimonji10 | cut -d: -f6'
-  check_mode: false
-  changed_when: false
-  register: result
+- name: Get information about ichimonji10
+  getent:
+    database: passwd
+    key: ichimonji10
+    split: ':'
 
 - name: Set variable referencing ichimonji10's home directory
   set_fact:
-    ichimonji10_home: "{{ result.stdout }}"
+    ichimonji10_home: "{{ getent_passwd['ichimonji10'][4] }}"
 
 - include: all.yml
 - include: vm-hosts.yml
