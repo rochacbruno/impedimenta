@@ -10,6 +10,7 @@
   with_items:
     - gitconfig
     - gitignore_global
+  become_user: ichimonji10
 
 - name: Install twine
   pacman:
@@ -20,6 +21,7 @@
   copy:
     src: pypirc
     dest: "{{ ichimonji10_home}}/.pypirc"
+  become_user: ichimonji10
 
 - name: Check if vim-badwolf-git is installed
   command: pacman -Q vim-badwolf-git
