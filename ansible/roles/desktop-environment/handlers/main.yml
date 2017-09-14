@@ -1,2 +1,2 @@
 - name: Set install reason for optional dependencies
-  command: pacman -D --asdeps gvfs qt4
+  command: pacman -D --asdeps gvfs qt4 texlive-core

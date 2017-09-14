@@ -64,6 +64,7 @@
       - sshfs
       - sudo
       - sysstat
+      - texlive-core  # for mnemosyne
       - tmux
       - virt-manager
       - vlc
