@@ -1,3 +1,9 @@
+- name: Assert required variables have been set
+  assert:
+    that:
+      - borg_backup_user is defined
+      - borg_backup_passphrase is defined
+
 - name: Get user home directory
   getent:
     database: passwd

@@ -76,36 +76,36 @@
 
 - hosts: pine.ichimonji10.name
   roles:
-    # NOTE: Ensure user has an SSH key for logging into remote backup hosts.
+    - user-ichimonji10
     - role: borg-backup
       when:
         - borg_backup_passphrase is defined
         - borg_backup_user is defined
-  vars:
-    borg_backup_directories:
-      - ~/books
-      - ~/docs
-      - ~/pictures
-    borg_backup_user: ichimonji10
+      vars:
+        borg_backup_directories:
+          - ~/books
+          - ~/docs
+          - ~/pictures
+        borg_backup_user: ichimonji10
 
 - hosts: pine.ichimonji10.name
   roles:
-    # NOTE: Ensure user has an SSH key for logging into remote backup hosts.
+    - user-googoo
     - role: borg-backup
       when:
         - borg_backup_passphrase is defined
         - borg_backup_user is defined
-  vars:
-    borg_backup_user: googoo
+      vars:
+        borg_backup_user: googoo
 
 - hosts: pine.ichimonji10.name
   roles:
-    # NOTE: Ensure user has an SSH key for logging into remote backup hosts.
+    - user-subsonic-backup
     - role: borg-backup
       when:
         - borg_backup_passphrase is defined
         - borg_backup_user is defined
-  vars:
-    borg_backup_directories:
-      - ~/backups
-    borg_backup_user: subsonic-backup
+      vars:
+        borg_backup_directories:
+          - ~/backups
+        borg_backup_user: subsonic-backup

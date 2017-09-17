@@ -1,5 +1,0 @@
-# A user must exist before borg-backup can be configured for them.
-dependencies:
-  - user-googoo
-  - user-ichimonji10
-  - user-subsonic-backup
