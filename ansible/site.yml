@@ -1,3 +1,12 @@
+- hosts: localhost
+  tasks:
+    - name: Get jtyr.archlinux_aur
+      local_action:
+        module: command
+        _raw_params: ansible-galaxy install jtyr.archlinux_aur
+        creates: galaxy/jtyr.archlinux_aur
+      become: false
+
 - hosts: all
   roles:
     - intel-ucode
