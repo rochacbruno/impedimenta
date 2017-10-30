@@ -6,14 +6,13 @@ The "currently active" Pulp Smash system is the one named in the Pulp Smash
 config file. By default, this file is ``~/.config/pulp_smash/settings.json``.
 """
 from subprocess import run
-from urllib.parse import urlparse
 
 from pulp_smash import config
 
 
 def main():
     """SSH into the currently active Pulp Smash system."""
-    run(['ssh', urlparse(config.get_config().base_url).netloc])
+    run(['ssh', config.get_config().systems[0].hostname])
 
 
 if __name__ == '__main__':
