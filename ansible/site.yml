@@ -54,6 +54,7 @@
 
 - hosts: btrfs-hosts
   roles:
+    - btrfs-balance
     - btrfs-scrub
 
 # Why make an intersection between a group and a single host, instead of simply
