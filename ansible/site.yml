@@ -61,7 +61,7 @@
 # listing a single host? Well, what if this host is removed from the group?
 - hosts: btrfs-hosts:&pine.ichimonji10.name
   roles:
-    - btrfs-snapshot
+    - btrfs-subvolume
 
 - hosts: servers:&pine.ichimonji10.name
   roles:

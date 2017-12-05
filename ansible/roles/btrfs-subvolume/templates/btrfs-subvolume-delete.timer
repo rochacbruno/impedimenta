@@ -1,5 +1,5 @@
 [Unit]
-Description=Periodically snapshot a btrfs volume
+Description=Periodically delete old snapshots of {{ path }}
 
 [Timer]
 # See: systemd.time(7)
