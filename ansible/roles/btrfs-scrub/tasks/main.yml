@@ -3,20 +3,14 @@
     name: btrfs-progs
     state: present
 
-- name: Install units for starting btrfs scrubs
-  template:
-    src: '{{ item }}.j2'
-    dest: '/etc/systemd/system/{{ item }}'
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - btrfs-scrub.service
-    - btrfs-scrub.timer
+- name: Escape btrfs path
+  systemd_escape:
+    path: '{{ btrfs_path }}'
+  register: result
 
-- name: Start and enable timer for starting btrfs scrubs
+- name: Enable periodic btrfs scrubs
   systemd:
-    name: btrfs-scrub.timer
+    name: btrfs-scrub@{{ result.escaped_path }}.timer
     state: started
     enabled: yes
     daemon_reload: yes
