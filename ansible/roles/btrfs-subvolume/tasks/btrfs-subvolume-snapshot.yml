@@ -1,0 +1,30 @@
+- block:
+
+  - name: Install .service to snapshot {{ item.path }}
+    template:
+      src: btrfs-subvolume-snapshot.service
+      dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.service
+      owner: root
+      group: root
+      mode: 0644
+    vars:
+      path: "{{ item.path }}"
+
+  - name: Install .timer to snapshot {{ item.path }}
+    template:
+      src: btrfs-subvolume-snapshot.timer
+      dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
+      owner: root
+      group: root
+      mode: 0644
+    vars:
+      path: "{{ item.path }}"
+
+  - name: Start and enable .timer to snapshot {{ item.path }}
+    systemd:
+      name: btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+  when: item.snapshot | default(true)

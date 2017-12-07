@@ -20,18 +20,18 @@ Example Playbook
 Variables
 ---------
 
-The variables that this role uses, along with their default values, are listed
-below.
+* `btrfs_path` (required): The path to some directory the btrfs filesystem to
+  manage.
+* `btrfs_subvolumes` (required): A list of objects, where each object contains
+  some information about a subvolume to manage. The following attributes may
+  appear in each object.
+  * `path` (required): The path to a subvolue, relative to `btrfs_path`.
+  * `days` (14): How many days may will old snapshots be retained? Only has an effect
+    when `delete` is true.
+  * `weeks` (8): How many weeks will old snapshots be retained? Only has an effect
+    when `delete` is true.
+  * `snapshot` (true): Whether to install subvolume snapshot code.
+  * `delete` (true): Whether to instsall subvolume deletion code.
 
-```yaml
-# The path to some directory on a btrfs filesystem, preferably the root
-# directory of the filesystem.
-# btrfs_path:
-#
-# A list of objects, where each object describes a btrfs subvolume to be
-# managed. Each object must contain a `path`, which is a relative path from
-# `btrfs_path` to the subvolume to be managed. In addition, each object may
-# contain `days` (default: 14) and `weeks` (default: 8), which specify how long
-# snapshots should be retained for.
-# btrfs_subvolumes:
-```
+For more information on `days` and `weeks`, see the `btrfs-subvolume-delete.py`
+script installed by this role.

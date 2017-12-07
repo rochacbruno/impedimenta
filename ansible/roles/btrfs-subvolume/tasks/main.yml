@@ -7,8 +7,7 @@
 # * Usability. Unit names should be human-readable.
 #
 # A hash is compatible and unique. A (good) path transformation is compatible
-# and usable. This module uses the path transformations provided by
-# systemd-escape(1). The control host must have this executable available.
+# and usable. This module uses the latter.
 
 - name: Install btrfs-progs
   pacman:
@@ -19,72 +18,8 @@
   set_fact:
     btrfs_subvolumes: '{{ btrfs_subvolumes | set_escaped_paths }}'
 
-- name: Install a script to delete old subvolumes
-  copy:
-    src: btrfs-subvolume-delete.py
-    dest: /usr/local/bin/
-    owner: root
-    group: root
-    mode: 0755
+- include_tasks: btrfs-subvolume-delete.yml
+  with_items: '{{ btrfs_subvolumes }}'
 
-- name: Install .service units to delete old subvolumes
-  template:
-    src: btrfs-subvolume-delete.service
-    dest: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.service
-    owner: root
-    group: root
-    mode: 0644
-  vars:
-    path: "{{ item.path }}"
-    days: "{{ item.days|default(14) }}"
-    weeks: "{{ item.weeks|default(8) }}"
-  with_items: "{{ btrfs_subvolumes }}"
-
-- name: Install .timer units to delete old subvolumes
-  template:
-    src: btrfs-subvolume-delete.timer
-    dest: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.timer
-    owner: root
-    group: root
-    mode: 0644
-  vars:
-    path: "{{ item.path }}"
-  with_items: "{{ btrfs_subvolumes }}"
-
-- name: Start and enable .timer units to delete old subvolumes
-  systemd:
-    name: btrfs-subvolume-delete-{{ item.escaped_path }}.timer
-    state: started
-    enabled: yes
-    daemon_reload: yes
-  with_items: "{{ btrfs_subvolumes }}"
-
-- name: Install .service units to snapshot subvolumes
-  template:
-    src: btrfs-subvolume-snapshot.service
-    dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.service
-    owner: root
-    group: root
-    mode: 0644
-  vars:
-    path: "{{ item.path }}"
-  with_items: "{{ btrfs_subvolumes }}"
-
-- name: Install .timer units to snapshot subvolumes
-  template:
-    src: btrfs-subvolume-snapshot.timer
-    dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
-    owner: root
-    group: root
-    mode: 0644
-  vars:
-    path: "{{ item.path }}"
-  with_items: "{{ btrfs_subvolumes }}"
-
-- name: Start and enable .timer units to snapshot subvolumes
-  systemd:
-    name: btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
-    state: started
-    enabled: yes
-    daemon_reload: yes
-  with_items: "{{ btrfs_subvolumes }}"
+- include_tasks: btrfs-subvolume-snapshot.yml
+  with_items: '{{ btrfs_subvolumes }}'
