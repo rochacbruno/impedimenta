@@ -6,12 +6,10 @@ Each subvolume named ``path-<iso-8601-string>`` is considered, and snapshots
 with other names are ignored. <iso-8601-string> is assumed to describe when the
 snapshot was created. For each snapshot:
 
-1. If the snapshot is less than the given number of weeks, it is kept.
-2. If the snapshot is less than the given number of months and was created on a
-   Wednesday, it is kept. (A month is assumed to be exactly 30 days.)
+1. If the snapshot is less than the given number of days, it is kept.
+2. If the snapshot is less than the given number of weeks and was created on a
+   Wednesday, it is kept.
 3. Otherwise, the snapshot is deleted.
-
-The week and month time-outs are configurable.
 """
 import datetime
 import pathlib
@@ -19,7 +17,7 @@ import subprocess
 import sys
 
 
-def main(path, weeks, months):
+def main(path, days, weeks):
     """Find and prune snapshots."""
     now = datetime.datetime.now(datetime.timezone.utc)
     ppath = pathlib.PosixPath(path).resolve()
@@ -28,9 +26,9 @@ def main(path, weeks, months):
     for snapshot in snapshots:
         created = _get_datetime(snapshot.parts[-1].lstrip(basename + '-'))
         age = now - created
-        if age <= datetime.timedelta(weeks=int(weeks)):
+        if age <= datetime.timedelta(days=int(days)):
             continue
-        elif (age <= datetime.timedelta(days=int(months) * 30) and
+        elif (age <= datetime.timedelta(weeks=int(weeks)) and
                 created.isoweekday() == 3):
             continue  # 1–7 == mon–sun
         else:

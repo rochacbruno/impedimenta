@@ -14,7 +14,7 @@ Example Playbook
         btrfs_path: /mnt/btrfs
         btrfs_subvolumes:
           - {path: home}
-          - {path: srv/ftp, weeks: 1}
+          - {path: srv/ftp, days: 5, weeks: 2}
 ```
 
 Variables
@@ -31,7 +31,7 @@ below.
 # A list of objects, where each object describes a btrfs subvolume to be
 # managed. Each object must contain a `path`, which is a relative path from
 # `btrfs_path` to the subvolume to be managed. In addition, each object may
-# contain `weeks` and `months`, which specify how long snapshots should be
-# retained for.
+# contain `days` (default: 14) and `weeks` (default: 8), which specify how long
+# snapshots should be retained for.
 # btrfs_subvolumes:
 ```

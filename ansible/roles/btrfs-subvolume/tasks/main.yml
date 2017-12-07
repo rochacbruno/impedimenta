@@ -36,8 +36,8 @@
     mode: 0644
   vars:
     path: "{{ item.path }}"
-    weeks: "{{ item.weeks|default(2) }}"
-    months: "{{ item.months|default(2) }}"
+    days: "{{ item.days|default(14) }}"
+    weeks: "{{ item.weeks|default(8) }}"
   with_items: "{{ btrfs_subvolumes }}"
 
 - name: Install .timer units to delete old subvolumes

@@ -64,9 +64,9 @@
     - name: btrfs-subvolume
       vars:
         btrfs_subvolumes:
-          - {'path': '{{ btrfs_path }}/home'}
-          - {'path': '{{ btrfs_path }}/srv/subsonic', 'weeks': 1, 'months': 1}
-          - {'path': '{{ btrfs_path }}/var/lib/transmission', 'weeks': 1, 'months': 1}
+          - {path: '{{ btrfs_path }}/home'}
+          - {path: '{{ btrfs_path }}/srv/subsonic', days: 5, weeks: 2}
+          - {path: '{{ btrfs_path }}/var/lib/transmission', days: 5, weeks: 2}
 
 - hosts: servers:&pine.ichimonji10.name
   roles:
