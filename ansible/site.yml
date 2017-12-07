@@ -61,7 +61,12 @@
 # listing a single host? Well, what if this host is removed from the group?
 - hosts: btrfs-hosts:&pine.ichimonji10.name
   roles:
-    - btrfs-subvolume
+    - name: btrfs-subvolume
+      vars:
+        btrfs_subvolumes:
+          - {'path': '{{ btrfs_path }}/home'}
+          - {'path': '{{ btrfs_path }}/srv/subsonic', 'weeks': 1, 'months': 1}
+          - {'path': '{{ btrfs_path }}/var/lib/transmission', 'weeks': 1, 'months': 1}
 
 - hosts: servers:&pine.ichimonji10.name
   roles:

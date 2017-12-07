@@ -9,7 +9,12 @@ Example Playbook
 ```yaml
 - hosts: all
   roles:
-    - btrfs-subvolume
+    - name: btrfs-subvolume
+      vars:
+        btrfs_path: /mnt/btrfs
+        btrfs_subvolumes:
+          - {path: home}
+          - {path: srv/ftp, weeks: 1}
 ```
 
 Variables
@@ -20,7 +25,13 @@ below.
 
 ```yaml
 # The path to some directory on a btrfs filesystem, preferably the root
-# directory of the filesystem. Paths to subvolumes are calculated relative to
-# this path.
+# directory of the filesystem.
 # btrfs_path:
+#
+# A list of objects, where each object describes a btrfs subvolume to be
+# managed. Each object must contain a `path`, which is a relative path from
+# `btrfs_path` to the subvolume to be managed. In addition, each object may
+# contain `weeks` and `months`, which specify how long snapshots should be
+# retained for.
+# btrfs_subvolumes:
 ```

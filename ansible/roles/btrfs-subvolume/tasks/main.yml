@@ -15,15 +15,9 @@
     name: btrfs-progs
     state: present
 
-- name: Create fact for btrfs subvolume paths
+- name: Set escaped paths for btrfs subvolumes
   set_fact:
-    btrfs_subvolume_paths: []
-
-- include_tasks: append_btrfs_subvolume_paths.yml
-  with_items:
-    - {'path': '{{ btrfs_path }}/home'}
-    - {'path': '{{ btrfs_path }}/srv/subsonic', 'weeks': 1, 'months': 1}
-    - {'path': '{{ btrfs_path }}/var/lib/transmission', 'weeks': 1, 'months': 1}
+    btrfs_subvolumes: '{{ btrfs_subvolumes | set_escaped_paths }}'
 
 - name: Install a script to delete old subvolumes
   copy:
@@ -44,7 +38,7 @@
     path: "{{ item.path }}"
     weeks: "{{ item.weeks|default(2) }}"
     months: "{{ item.months|default(2) }}"
-  with_items: "{{ btrfs_subvolume_paths }}"
+  with_items: "{{ btrfs_subvolumes }}"
 
 - name: Install .timer units to delete old subvolumes
   template:
@@ -55,7 +49,7 @@
     mode: 0644
   vars:
     path: "{{ item.path }}"
-  with_items: "{{ btrfs_subvolume_paths }}"
+  with_items: "{{ btrfs_subvolumes }}"
 
 - name: Start and enable .timer units to delete old subvolumes
   systemd:
@@ -63,7 +57,7 @@
     state: started
     enabled: yes
     daemon_reload: yes
-  with_items: "{{ btrfs_subvolume_paths }}"
+  with_items: "{{ btrfs_subvolumes }}"
 
 - name: Install .service units to snapshot subvolumes
   template:
@@ -74,7 +68,7 @@
     mode: 0644
   vars:
     path: "{{ item.path }}"
-  with_items: "{{ btrfs_subvolume_paths }}"
+  with_items: "{{ btrfs_subvolumes }}"
 
 - name: Install .timer units to snapshot subvolumes
   template:
@@ -85,7 +79,7 @@
     mode: 0644
   vars:
     path: "{{ item.path }}"
-  with_items: "{{ btrfs_subvolume_paths }}"
+  with_items: "{{ btrfs_subvolumes }}"
 
 - name: Start and enable .timer units to snapshot subvolumes
   systemd:
@@ -93,4 +87,4 @@
     state: started
     enabled: yes
     daemon_reload: yes
-  with_items: "{{ btrfs_subvolume_paths }}"
+  with_items: "{{ btrfs_subvolumes }}"
