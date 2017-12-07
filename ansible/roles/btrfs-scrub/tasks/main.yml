@@ -3,14 +3,9 @@
     name: btrfs-progs
     state: present
 
-- name: Escape btrfs path
-  systemd_escape:
-    path: '{{ btrfs_path }}'
-  register: result
-
 - name: Enable periodic btrfs scrubs
   systemd:
-    name: btrfs-scrub@{{ result.escaped_path }}.timer
+    name: btrfs-scrub@{{ btrfs_path | systemd_escape }}.timer
     state: started
     enabled: yes
     daemon_reload: yes
