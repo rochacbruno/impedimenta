@@ -12,3 +12,4 @@ Example Playbook
 - hosts: all
   roles:
     - crda
+```
