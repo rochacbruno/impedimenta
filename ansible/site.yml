@@ -1,10 +1,10 @@
 - hosts: all
   roles:
+    - crda
     - intel-ucode
     - lm-sensors
     - locale
     - msmtp
-    - nftables
     - pkgfile
     - reflector
     - smartd
@@ -15,37 +15,18 @@
       pacman:
         name: tree
 
-- hosts: all:!pine.ichimonji10.name
+- hosts: all:!routers
   roles:
-    - crda
+    - nftables-generic
+
+- hosts: all:!amelanchier.ichimonji10.name
+  roles:
+    - systemd-boot-pacman-hook
 
 - hosts: workstations
   roles:
     - desktop-environment
     - picocom
-
-- hosts: servers
-  roles:
-    - sshd
-    - role: dynamic-dns
-      when: dynamic_dns_urls is defined
-
-- hosts: servers:beech.ichimonji10.name
-  roles:
-    - apcupsd
-
-- hosts: servers:!routers
-  roles:
-    - netctl-generic
-
-- hosts: routers
-  roles:
-    - dnsmasq
-    # NOTE: Execute this play only over a wired connection.
-    - role: hostapd
-      when: hostapd_passphrase is defined
-    - netctl-routers
-    - wlan-secure
 
 - hosts: vm-hosts
   roles:
@@ -75,21 +56,47 @@
             days: 5
             weeks: 2
 
-- hosts: servers:&pine.ichimonji10.name
+- hosts: servers
   roles:
-    # NOTE: Make sure to install SSL certificates.
-    - nginx
-    - transmission
-    - user-googoo
-    - user-subsonic-backup
+    - sshd
+    - role: dynamic-dns
+      when: dynamic_dns_urls is defined
 
-- hosts: '!amelanchier.ichimonji10.name'
+- hosts: servers:!routers
   roles:
-    - systemd-boot-pacman-hook
+    - netctl-generic
+
+- hosts: servers:beech.ichimonji10.name
+  roles:
+    - apcupsd
+
+- hosts: bittorrent-hosts
+  roles:
+    - transmission
+
+- hosts: routers
+  roles:
+    - dnsmasq
+    # NOTE: Execute this play only over a wired connection.
+    - role: hostapd
+      when: hostapd_passphrase is defined
+    - netctl-routers
+    - nftables-routers
+    - wlan-secure
+
+- hosts: webservers
+  roles:
+    - nginx  # Make sure to install SSL certificates.
+    - user-subsonic-backup  # depends on "subsonic" role
+
+# Host-specific rules ----------------------------------------------------------
 
 - hosts: pine.ichimonji10.name
   roles:
-    - user-ichimonji10
+    - user-googoo
+
+- hosts: pine.ichimonji10.name
+  roles:
     - role: borg-backup
       when:
         - borg_backup_passphrase is defined
@@ -103,7 +110,6 @@
 
 - hosts: pine.ichimonji10.name
   roles:
-    - user-googoo
     - role: borg-backup
       when:
         - borg_backup_passphrase is defined
@@ -113,7 +119,6 @@
 
 - hosts: pine.ichimonji10.name
   roles:
-    - user-subsonic-backup
     - role: borg-backup
       when:
         - borg_backup_passphrase is defined

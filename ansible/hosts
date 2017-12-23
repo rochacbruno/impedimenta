@@ -4,17 +4,6 @@
 beech.ichimonji10.name
 butternut.ichimonji10.name
 
-# These systems are headless, have high uptime, and have remote management
-# capabilities.
-[servers]
-pine.ichimonji10.name
-
-[servers:children]
-routers
-
-[routers]
-amelanchier.ichimonji10.name
-
 # These systems host VMs. They typically have powerful hardware.
 [vm-hosts]
 pine.ichimonji10.name
@@ -23,4 +12,25 @@ pine.ichimonji10.name
 # checks like filesystem scrubs.
 [btrfs-hosts]
 beech.ichimonji10.name
+pine.ichimonji10.name
+
+# These systems are headless, have high uptime, and have remote management
+# capabilities.
+[servers]
+
+[servers:children]
+bittorrent-hosts
+routers
+webservers
+
+# This group should only contain one host. This is because bittorrent requires
+# an open port to function correctly, and only one port is available from the
+# VPN provider.
+[bittorrent-hosts]
+pine.ichimonji10.name
+
+[routers]
+amelanchier.ichimonji10.name
+
+[webservers]
 pine.ichimonji10.name
