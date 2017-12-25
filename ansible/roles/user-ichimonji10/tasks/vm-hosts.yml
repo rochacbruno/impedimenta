@@ -5,6 +5,12 @@
     mode: 0755
   become_user: ichimonji10
 
+- name: Create "{{ ichimonji10_home }}/.config/libvirt"
+  file:
+    state: directory
+    path: "{{ ichimonji10_home }}/.config/libvirt"
+  become_user: ichimonji10
+
 - name: Install libvirt configuration file
   copy:
     src: libvirt.conf
