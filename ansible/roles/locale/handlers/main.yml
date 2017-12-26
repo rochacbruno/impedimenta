@@ -1,2 +1,0 @@
-- name: Generate locales
-  command: locale-gen
