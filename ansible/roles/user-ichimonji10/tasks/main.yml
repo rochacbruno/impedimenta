@@ -4,9 +4,11 @@
       - ichi-machines
       - wheel
 
+# "Members of the libvirt group have passwordless access to the RW daemon socket
+# by default." See: https://wiki.archlinux.org/index.php/Libvirt#Using_polkit
 - name: Append to groups if host in vm-hosts group
   set_fact:
-    ichimonji10_groups: "{{ ichimonji10_groups + ['kvm', 'libvirt'] }}"
+    ichimonji10_groups: "{{ ichimonji10_groups + ['libvirt'] }}"
   when: "'vm-hosts' in group_names"
 
 - name: Append to groups if host in workstations group
