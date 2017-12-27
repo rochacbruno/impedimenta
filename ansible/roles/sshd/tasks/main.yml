@@ -11,7 +11,7 @@
     group: root
     mode: 0644
   notify:
-    - Reload openssh
+    - Reload sshd
 
 - name: Start and enable sshd
   systemd:
