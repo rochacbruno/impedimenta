@@ -22,7 +22,3 @@ ChallengeResponseAuthentication no
 
 # By default, there are no subsystems.
 Subsystem sftp /usr/lib/ssh/sftp-server
-
-{% if sshd_port|default() %}
-Port {{ sshd_port }}
-{% endif %}
