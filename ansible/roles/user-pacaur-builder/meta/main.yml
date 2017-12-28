@@ -1,2 +1,0 @@
-dependencies:
-  - {role: jtyr.archlinux_aur, archlinux_aur_pkgs: [cower, pacaur]}

@@ -23,38 +23,11 @@
     dest: "{{ ichimonji10_home}}/.pypirc"
   become_user: ichimonji10
 
-- name: Check if vim-badwolf-git is installed
-  command: pacman -Q vim-badwolf-git
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
-- name: Install vim-badwolf-git from the AUR
-  command: 'pacaur -S --noconfirm vim-badwolf-git'
-  when: result.rc != 0
-  become_user: pacaur-builder
-
-- name: Check if vim-hemisu-git is installed
-  command: pacman -Q vim-hemisu-git
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
-- name: Install vim-hemisu-git from the AUR
-  command: 'pacaur -S --noconfirm vim-hemisu-git'
-  when: result.rc != 0
-  become_user: pacaur-builder
-
-- name: Check if vim-mark is installed
-  command: pacman -Q vim-mark
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
-- name: Install vim-mark from the AUR
-  command: 'pacaur -S --noconfirm vim-mark'
-  when: result.rc != 0
-  become_user: pacaur-builder
+- name: Install AUR packages
+  include_role:
+    name: user-aur-builder
+  vars:
+    user_aur_builder_packages:
+      - vim-badwolf-git
+      - vim-hemisu-git
+      - vim-mark

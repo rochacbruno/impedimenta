@@ -1,5 +1,4 @@
 dependencies:
-  - {role: user-pacaur-builder}
   # Subsonic looks at files that these users own.
   - {role: transmission}
   - {role: user-ichimonji10}

@@ -76,29 +76,13 @@
     state: present
   notify: Set install reason for optional dependencies
 
-- name: Check if mnemosyne is installed
-  command: pacman -Q mnemosyne
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
-- name: Install mnemosyne from the AUR
-  command: 'pacaur -S --noconfirm mnemosyne'
-  when: result.rc != 0
-  become_user: pacaur-builder
-
-- name: Check if ms-sys is installed
-  command: pacman -Q ms-sys
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
-- name: Install ms-sys from the AUR
-  command: 'pacaur -S --noconfirm ms-sys'
-  when: result.rc != 0
-  become_user: pacaur-builder
+- name: Install AUR packages
+  include_role:
+    name: user-aur-builder
+  vars:
+    user_aur_builder_packages:
+      - mnemosyne
+      - ms-sys
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.

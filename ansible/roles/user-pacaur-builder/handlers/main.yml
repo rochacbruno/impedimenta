@@ -1,2 +1,0 @@
-- name: Lock password
-  command: passwd --lock pacaur-builder

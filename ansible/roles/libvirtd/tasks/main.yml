@@ -10,17 +10,12 @@
   notify:
     - Set install reason for packages
 
-- name: Check if libguestfs is installed
-  command: pacman -Q libguestfs
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
-- name: Install libguestfs from the AUR
-  command: 'pacaur -S --noconfirm libguestfs'
-  when: result.rc != 0
-  become_user: pacaur-builder
+- name: Install AUR packages
+  include_role:
+    name: user-aur-builder
+  vars:
+    user_aur_builder_packages:
+      - libguestfs
 
 - name: Install dnsmasq configuration file
   copy:
