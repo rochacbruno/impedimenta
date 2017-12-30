@@ -1,5 +1,2 @@
 - name: Lock password
   command: passwd --lock aurutils-builder
-
-- name: Sync aur repository
-  command: pacman -Sy --config /etc/pacman.d/aur.conf

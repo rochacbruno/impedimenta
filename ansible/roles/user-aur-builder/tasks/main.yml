@@ -76,7 +76,13 @@
   lineinfile:
     path: /etc/pacman.conf
     line: Include = /etc/pacman.d/aur.conf
-  notify: Sync aur repository
+  register: result
+
+# If a repository is defined in /etc/pacman.conf, but that repository has never
+# been synced, then pacman will produce errors.
+- name: Sync aur repository
+  command: pacman -Sy --config /etc/pacman.d/aur.conf
+  when: result | changed
 
 - include_tasks: package-and-install.yml
   with_items: '{{ user_aur_builder_packages }}'
