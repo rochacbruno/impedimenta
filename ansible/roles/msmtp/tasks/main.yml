@@ -1,23 +1,26 @@
-- name: Install msmtp and related tools
-  pacman:
-    name:
-      - msmtp
-      - msmtp-mta
-      - s-nail
-    state: present
-  notify:
-    - Set install reason for packages
+- block:
 
-- name: Create a group authorized to send emails
-  group:
-    name: ichi-machines
-    state: present
+  - name: Install msmtp and related tools
+    pacman:
+      name:
+        - msmtp
+        - msmtp-mta
+        - s-nail
+    notify:
+      - Set install reason for packages
 
-- name: Install msmtp configuration file
-  template:
-    src: msmtprc.j2
-    dest: /etc/msmtprc
-    owner: root
-    group: ichi-machines
-    mode: 0640
-  when: msmtprc_password is defined
+  - name: Create a group authorized to send emails
+    group:
+      name: ichi-machines
+      state: present
+
+  - name: Install msmtp configuration file
+    template:
+      src: msmtprc.j2
+      dest: /etc/msmtprc
+      owner: root
+      group: ichi-machines
+      mode: 0640
+    when: msmtprc_password is defined
+
+  become: true

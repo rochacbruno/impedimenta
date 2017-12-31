@@ -3,3 +3,4 @@
     name: intel-ucode
     state: present
   when: "'Intel' in ansible_processor[0]"
+  become: true

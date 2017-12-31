@@ -18,12 +18,16 @@
   failed_when: False
   register: result
 
-- name: Package {{ item }}
-  command: aursync --no-confirm {{ item }}
-  when: result.rc != 0
-  become_user: aur-builder
+- block:
 
-- name: Install {{ item }}
-  pacman:
-    name: '{{ item }}'
-    state: present
+  - name: Package {{ item }}
+    command: aursync --no-confirm {{ item }}
+    when: result.rc != 0
+    become_user: aur-builder
+
+  - name: Install {{ item }}
+    pacman:
+      name: '{{ item }}'
+      state: present
+
+  become: true

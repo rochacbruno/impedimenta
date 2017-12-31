@@ -1,11 +1,14 @@
-- name: Install pkgfile
-  pacman:
-    name: pkgfile
-    state: present
+- block:
 
-- name: Start and enable timer to update pkgfile database
-  systemd:
-    name: pkgfile-update.timer
-    state: started
-    enabled: yes
-    daemon_reload: yes
+  - name: Install pkgfile
+    pacman:
+      name: pkgfile
+
+  - name: Start and enable timer to update pkgfile database
+    systemd:
+      name: pkgfile-update.timer
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+  become: true

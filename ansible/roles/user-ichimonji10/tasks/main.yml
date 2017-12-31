@@ -3,6 +3,7 @@
     ichimonji10_groups:
       - ichi-machines
       - wheel
+  become: true
 
 # "Members of the libvirt group have passwordless access to the RW daemon socket
 # by default." See: https://wiki.archlinux.org/index.php/Libvirt#Using_polkit
@@ -20,6 +21,7 @@
   user:
     name: ichimonji10
     groups: "{{ ichimonji10_groups }}"
+  become: true
 
 - name: Get information about ichimonji10
   getent:

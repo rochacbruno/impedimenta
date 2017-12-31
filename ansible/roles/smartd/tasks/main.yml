@@ -1,44 +1,39 @@
-- name: Install smartmontools
-  pacman:
-    name: smartmontools
-    state: present
+- block:
 
-- name: Install smartd configuration file
-  copy:
-    src: smartd.conf
-    dest: /etc/smartd.conf
-    owner: root
-    group: root
-    mode: 0644
+  - name: Install smartmontools
+    pacman:
+      name: smartmontools
 
-- name: Start and enable smartd
-  systemd:
-    name: smartd
-    state: started
-    enabled: yes
+  - name: Install smartd configuration file
+    copy:
+      src: smartd.conf
+      dest: /etc/smartd.conf
 
-- name: Install scripts for starting SMART scans
-  copy:
-    src: usr_local_bin/
-    dest: /usr/local/bin/
-    owner: root
-    group: root
-    mode: 0755
+  - name: Start and enable smartd
+    systemd:
+      name: smartd
+      state: started
+      enabled: yes
 
-- name: Install units for starting SMART scans
-  copy:
-    src: etc_systemd_system/
-    dest: /etc/systemd/system/
-    owner: root
-    group: root
-    mode: 0644
+  - name: Install scripts for starting SMART scans
+    copy:
+      src: usr_local_bin/
+      dest: /usr/local/bin/
+      mode: 0755
 
-- name: Start and enable timers for starting SMART scans
-  systemd:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-    daemon_reload: yes
-  with_items:
-    - smart-test-long.timer
-    - smart-test-short.timer
+  - name: Install units for starting SMART scans
+    copy:
+      src: etc_systemd_system/
+      dest: /etc/systemd/system/
+
+  - name: Start and enable timers for starting SMART scans
+    systemd:
+      name: "{{ item }}"
+      state: started
+      enabled: yes
+      daemon_reload: yes
+    with_items:
+      - smart-test-long.timer
+      - smart-test-short.timer
+
+  become: true

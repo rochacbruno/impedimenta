@@ -1,37 +1,37 @@
-- name: Install netctl
-  pacman:
-    name: netctl
-    state: present
+- block:
 
-- name: Install "external" netctl profile
-  copy:
-    src: external
-    dest: /etc/netctl/external
-    owner: root
-    group: root
-    mode: 0644
-  register: result
-  notify: Reload netctl service
+  - name: Install netctl
+    pacman:
+      name: netctl
 
-# This task may look pointless when the systemd module can also enable and
-# disable units. However, netctl does more than systemd:
-#
-# * `netctl enable $profile` also creates a netctl@${profile}.service unit.
-# * `netctl disable $profile` also deletes a netctl@${profile}.service unit.
-# * `netctl reenable $profile` is a combination of `disable` and `enable`. It's
-#   especially useful for updating units. (`netctl enable $profile` loudly
-#   refuses to update existing units.)
-#
-# Thus, `netctl reenable` must be invoked before systemd can work with the
-# desired units.
-- name: Create or update netctl service
-  command: netctl reenable external
-  when: result|changed
-  tags: skip_ansible_lint
+  - name: Install "external" netctl profile
+    copy:
+      src: external
+      dest: /etc/netctl/external
+    register: result
+    notify: Reload netctl service
 
-- name: Start and enable netctl service
-  systemd:
-    name: netctl@external.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
+  # This task may look pointless when the systemd module can also enable and
+  # disable units. However, netctl does more than systemd:
+  #
+  # * `netctl enable $profile` also creates a netctl@${profile}.service unit.
+  # * `netctl disable $profile` also deletes a netctl@${profile}.service unit.
+  # * `netctl reenable $profile` is a combination of `disable` and `enable`. It's
+  #   especially useful for updating units. (`netctl enable $profile` loudly
+  #   refuses to update existing units.)
+  #
+  # Thus, `netctl reenable` must be invoked before systemd can work with the
+  # desired units.
+  - name: Create or update netctl service
+    command: netctl reenable external
+    when: result|changed
+    tags: skip_ansible_lint
+
+  - name: Start and enable netctl service
+    systemd:
+      name: netctl@external.service
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+  become: true

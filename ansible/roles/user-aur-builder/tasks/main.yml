@@ -1,20 +1,24 @@
-# aurutils caches files in `~/.cache/`. Thus, a home directory should be
-# present. (The user module creates one by default.) Even with no shell and a
-# locked password, commands like `become_user: aur-builder, command: 'echo foo'`
-# still work.
-- name: Create user
-  user:
-    name: aur-builder
-    shell: /usr/bin/nologin
-  notify: Lock password
+- block:
 
-# Necessary so that `makepkg --syncdeps` works. Also used by shell script below.
-- name: Give user passwordless sudo privileges
-  lineinfile:
-    path: /etc/sudoers
-    regexp: '^aur-builder '
-    line: 'aur-builder ALL=(ALL) NOPASSWD: ALL'
-    validate: 'visudo --check --file %s'
+  # aurutils caches files in `~/.cache/`. Thus, a home directory should be
+  # present. (The user module creates one by default.) Even with no shell and a
+  # locked password, commands like `become_user: aur-builder, command: 'echo
+  # foo'` still work.
+  - name: Create user
+    user:
+      name: aur-builder
+      shell: /usr/bin/nologin
+    notify: Lock password
+
+  # Necessary so that `makepkg --syncdeps` works. Also used by shell script below.
+  - name: Give user passwordless sudo privileges
+    lineinfile:
+      path: /etc/sudoers
+      regexp: '^aur-builder '
+      line: 'aur-builder ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo --check --file %s'
+
+  become: true
 
 - name: Check if aurutils is installed
   command: pacman -Q aurutils
@@ -23,66 +27,67 @@
   failed_when: False
   register: result
 
-- name: Install aurutils from the AUR
-  shell: |
-    set -euo pipefail
+- block:
 
-    # Create a workspace, and schedule it for deletion.
-    cleanup() { if [ -n "${workspace:-}" ]; then rm -rf "${workspace}"; fi }
-    trap cleanup EXIT  # bash pseudo signal
-    trap 'cleanup ; trap - SIGINT ; kill -s SIGINT $$' SIGINT
-    trap 'cleanup ; trap - SIGTERM ; kill -s SIGTERM $$' SIGTERM
-    workspace="$(mktemp --directory)"
+  - name: Install aurutils from the AUR
+    shell: |
+      set -euo pipefail
 
-    # Alad Wenter (https://aur.archlinux.org/account/Alad)
-    gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
+      # Create a workspace, and schedule it for deletion.
+      cleanup() { if [ -n "${workspace:-}" ]; then rm -rf "${workspace}"; fi }
+      trap cleanup EXIT  # bash pseudo signal
+      trap 'cleanup ; trap - SIGINT ; kill -s SIGINT $$' SIGINT
+      trap 'cleanup ; trap - SIGTERM ; kill -s SIGTERM $$' SIGTERM
+      workspace="$(mktemp --directory)"
 
-    # Get, build and install aurutils and its deps.
-    cd "${workspace}"
-    wget 'https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz'
-    tar xzf aurutils.tar.gz
-    cd aurutils
-    makepkg --noconfirm --syncdeps
-    sudo pacman -U --noconfirm aurutils-*.pkg.tar.xz
-  args:
-    executable: /usr/bin/bash
-  become_user: aur-builder
-  when: result.rc != 0
-  register: result
+      # Alad Wenter (https://aur.archlinux.org/account/Alad)
+      gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
 
-- name: Create /var/cache/pacman/aur/
-  file:
-    path: /var/cache/pacman/aur
-    state: directory
-    owner: aur-builder
-    group: aur-builder
-    mode: 0755
+      # Get, build and install aurutils and its deps.
+      cd "${workspace}"
+      wget 'https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz'
+      tar xzf aurutils.tar.gz
+      cd aurutils
+      makepkg --noconfirm --syncdeps
+      sudo pacman -U --noconfirm aurutils-*.pkg.tar.xz
+    args:
+      executable: /usr/bin/bash
+    become_user: aur-builder
+    when: result.rc != 0
+    register: result
 
-- name: Create /var/cache/pacman/aur/aur.db.tar
-  command: repo-add /var/cache/pacman/aur/aur.db.tar
-  args:
-    creates: /var/cache/pacman/aur/aur.db.tar
-  become_user: aur-builder
+  - name: Create /var/cache/pacman/aur/
+    file:
+      path: /var/cache/pacman/aur
+      state: directory
+      owner: aur-builder
+      group: aur-builder
+      mode: 0755
 
-- name: Install /etc/pacman.d/aur.conf
-  copy:
-    src: aur.conf
-    dest: /etc/pacman.d/aur.conf
-    owner: root
-    group: root
-    mode: 0644
+  - name: Create /var/cache/pacman/aur/aur.db.tar
+    command: repo-add /var/cache/pacman/aur/aur.db.tar
+    args:
+      creates: /var/cache/pacman/aur/aur.db.tar
+    become_user: aur-builder
 
-- name: Make /etc/pacman.conf include /etc/pacman.d/aur.conf
-  lineinfile:
-    path: /etc/pacman.conf
-    line: Include = /etc/pacman.d/aur.conf
-  register: result
+  - name: Install /etc/pacman.d/aur.conf
+    copy:
+      src: aur.conf
+      dest: /etc/pacman.d/aur.conf
 
-# If a repository is defined in /etc/pacman.conf, but that repository has never
-# been synced, then pacman will produce errors.
-- name: Sync aur repository
-  command: pacman -Sy --config /etc/pacman.d/aur.conf
-  when: result | changed
+  - name: Make /etc/pacman.conf include /etc/pacman.d/aur.conf
+    lineinfile:
+      path: /etc/pacman.conf
+      line: Include = /etc/pacman.d/aur.conf
+    register: result
+
+  # If a repository is defined in /etc/pacman.conf, but that repository has never
+  # been synced, then pacman will produce errors.
+  - name: Sync aur repository
+    command: pacman -Sy --config /etc/pacman.d/aur.conf
+    when: result | changed
+
+  become: true
 
 - include_tasks: package-and-install.yml
   with_items: '{{ user_aur_builder_packages }}'

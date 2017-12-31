@@ -9,3 +9,4 @@
     regexp: '^%wheel '
     line: '%wheel ALL=(ALL) ALL'
     validate: 'visudo --check --file %s'
+  become: true

@@ -16,6 +16,7 @@
     groups:
       - subsonic
   notify: Lock subsonic-backup's password
+  become: true
 
 - name: Get information about subsonic-backup
   getent:
@@ -27,28 +28,32 @@
   set_fact:
     subsonic_backup_home: "{{ getent_passwd['subsonic-backup'][4] }}"
 
-- name: Create directories in subsonic-backup's home directory
-  file:
-    path: "{{ subsonic_backup_home }}/{{ item }}"
-    state: directory
-  with_items:
-    - '.config/systemd/user'
-    - '.local/bin'
-    - 'backups'
-  become_user: subsonic-backup
+- block:
 
-- name: Install systemd unit files
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ subsonic_backup_home }}/.config/systemd/user/{{ item }}"
-  with_items:
-    - subsonic-backup.service
-    - subsonic-backup.timer
+  - name: Create directories in subsonic-backup's home directory
+    file:
+      path: "{{ subsonic_backup_home }}/{{ item }}"
+      state: directory
+    with_items:
+      - '.config/systemd/user'
+      - '.local/bin'
+      - 'backups'
+
+  - name: Install systemd unit files
+    template:
+      src: "{{ item }}.j2"
+      dest: "{{ subsonic_backup_home }}/.config/systemd/user/{{ item }}"
+    with_items:
+      - subsonic-backup.service
+      - subsonic-backup.timer
+    register: result
+
+  become: true
   become_user: subsonic-backup
-  register: result
 
 # For information on why this hack is performed, see the borg-backup role.
 - block:
+
   - name: Reload units for user
     command: >
       machinectl shell subsonic-backup@.host /usr/bin/systemctl --user
@@ -67,6 +72,7 @@
   - name: Enable lingering for user
     command: loginctl enable-linger subsonic-backup
 
+  become: true
   when: result|changed
 
 - name: Install subsonic restore script
@@ -74,4 +80,5 @@
     src: subsonic-restore.sh
     dest: "{{ subsonic_backup_home }}/.local/bin/subsonic-restore.sh"
     mode: 0755
+  become: true
   become_user: subsonic-backup

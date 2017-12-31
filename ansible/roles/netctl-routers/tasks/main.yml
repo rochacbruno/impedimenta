@@ -1,52 +1,52 @@
-- name: Install netctl
-  pacman:
-    name: netctl
-    state: present
+- block:
 
-- name: Install netctl profiles
-  copy:
-    src: "{{ item }}"
-    dest: /etc/netctl/{{ item }}
-    owner: root
-    group: root
-    mode: 0644
-  with_items:
-    - dmz
-    - lan
-    - wan
-    - wlan
-  register: result
-  notify: Reload netctl services
+  - name: Install netctl
+    pacman:
+      name: netctl
 
-# This task may look pointless when the systemd module can also enable and
-# disable units. However, netctl does more than systemd:
-#
-# * `netctl enable $profile` also creates a netctl@${profile}.service unit.
-# * `netctl disable $profile` also deletes a netctl@${profile}.service unit.
-# * `netctl reenable $profile` is a combination of `disable` and `enable`. It's
-#   especially useful for updating units. (`netctl enable $profile` loudly
-#   refuses to update existing units.)
-#
-# Thus, `netctl reenable` must be invoked before systemd can work with the
-# desired units.
-- name: Create or update netctl services
-  command: netctl reenable {{ item }}
-  with_items:
-    - dmz
-    - lan
-    - wan
-    - wlan
-  when: result|changed
-  tags: skip_ansible_lint
+  - name: Install netctl profiles
+    copy:
+      src: "{{ item }}"
+      dest: /etc/netctl/{{ item }}
+    with_items:
+      - dmz
+      - lan
+      - wan
+      - wlan
+    register: result
+    notify: Reload netctl services
 
-- name: Start and enable netctl services
-  systemd:
-    name: netctl@{{ item }}.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
-  with_items:
-    - dmz
-    - lan
-    - wan
-    - wlan
+  # This task may look pointless when the systemd module can also enable and
+  # disable units. However, netctl does more than systemd:
+  #
+  # * `netctl enable $profile` also creates a netctl@${profile}.service unit.
+  # * `netctl disable $profile` also deletes a netctl@${profile}.service unit.
+  # * `netctl reenable $profile` is a combination of `disable` and `enable`. It's
+  #   especially useful for updating units. (`netctl enable $profile` loudly
+  #   refuses to update existing units.)
+  #
+  # Thus, `netctl reenable` must be invoked before systemd can work with the
+  # desired units.
+  - name: Create or update netctl services
+    command: netctl reenable {{ item }}
+    with_items:
+      - dmz
+      - lan
+      - wan
+      - wlan
+    when: result|changed
+    tags: skip_ansible_lint
+
+  - name: Start and enable netctl services
+    systemd:
+      name: netctl@{{ item }}.service
+      state: started
+      enabled: yes
+      daemon_reload: yes
+    with_items:
+      - dmz
+      - lan
+      - wan
+      - wlan
+
+  become: true

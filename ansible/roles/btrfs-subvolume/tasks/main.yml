@@ -13,6 +13,7 @@
   pacman:
     name: btrfs-progs
     state: present
+  become: true
 
 - name: Set escaped paths for btrfs subvolumes
   set_fact:

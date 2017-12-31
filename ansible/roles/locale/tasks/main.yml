@@ -1,12 +1,16 @@
-- name: Enable desired locales
-  locale_gen:
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - en_US
-    - en_US.UTF-8
+- block:
 
-- name: Set LANG in /etc/locale.conf
-  copy:
-    src: locale.conf
-    dest: /etc/locale.conf
+  - name: Enable desired locales
+    locale_gen:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - en_US
+      - en_US.UTF-8
+
+  - name: Set LANG in /etc/locale.conf
+    copy:
+      src: locale.conf
+      dest: /etc/locale.conf
+
+  become: true

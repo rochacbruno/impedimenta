@@ -14,99 +14,105 @@
   set_fact:
     borg_backup_user_home: "{{ getent_passwd[borg_backup_user][4] }}"
 
-- name: Install borg and its dependencies
-  pacman:
-    name:
-      - borg
-      - openssh  # for connecting to borg repositories on remote hosts
-    state: present
-
-- name: Create directories in user's home directory
-  file:
-    path: "{{ borg_backup_user_home }}/{{ item }}"
-    state: directory
-  with_items:
-    - '.local/bin'
-    - '.ssh'
-  become_user: "{{ borg_backup_user }}"
-
-- name: Install borg backup script
-  template:
-    src: borg-backup.j2
-    dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup"
-    mode: 0700
-  become_user: "{{ borg_backup_user }}"
-
-- name: Customize ssh configuration file
-  blockinfile:
-    path: "{{ borg_backup_user_home }}/.ssh/config"
-    create: yes
-    mode: 0600
-    block: |
-      Host usw-s001.rsync.net
-          User 1025
-          IdentityFile ~/.ssh/usw-s001.rsync.net
-  become_user: "{{ borg_backup_user }}"
-
-- name: Install systemd unit files
-  template:
-    src: "{{ item }}.j2"
-    dest: "{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}"
-  with_items:
-    - borg-backup.service
-    - borg-backup.timer
-  become_user: "{{ borg_backup_user }}"
-  register: result
-
-# To work with systemd in user mode, XDG_RUNTIME_DIR must be set. This variable
-# is set by pam_systemd when a user logs in. However, it's not set when one user
-# becomes another via sudo, su, etc. (This may be a bug.) When commands are
-# executed as another user in this fashion, errors like the following result:
-#
-#   Failed to connect to bus: No such file or directory
-#
-# One solution is to set the following:
-#
-#   become_method: su
-#   environment:
-#     XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"
-#
-# However, authenticating with su is troublesome. This technique doesn't work
-# for users that lack a password (think `passwd --lock`), and Ansible doesn't
-# deal well authenticating as multiple users during the course of a single play.
-# And even when all this is correctly configured, it still fails for me.
-#
-# There are several variations on this solution, such as setting the
-# `XDG_RUNTIME_DIR` and `DBUS_SESSION_BUS_ADDRESS` environment variables.
-# However, these did not work for me, even in manual testing.
-#
-# The chosen solution isn't very Ansible-ish, but it's relatively non-hacky.
-#
-# See:
-#
-# * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
-# * https://uggedal.com/journal/ansible-systemd-user/
-# * https://stackoverflow.com/q/34167257
-# * https://unix.stackexchange.com/q/346841/237894
 - block:
-  - name: Reload units for user
-    command: >
-      machinectl shell "{{ borg_backup_user }}"@.host /usr/bin/systemctl --user
-      daemon-reload
 
-  - name: Start periodic backup service for user
-    command: >
-      machinectl shell "{{ borg_backup_user }}"@.host /usr/bin/systemctl --user
-      start borg-backup.timer
+  - name: Install borg and its dependencies
+    pacman:
+      name:
+        - borg
+        - openssh  # for connecting to borg repositories on remote hosts
+      state: present
 
-  - name: Enable periodic backup service for user
-    command: >
-      machinectl shell "{{ borg_backup_user }}"@.host /usr/bin/systemctl --user
-      enable borg-backup.timer
+  - name: Create directories in user's home directory
+    file:
+      path: "{{ borg_backup_user_home }}/{{ item }}"
+      state: directory
+    with_items:
+      - '.local/bin'
+      - '.ssh'
+    become_user: "{{ borg_backup_user }}"
 
-  # Spawn a user manager for this user at system start-up time. This allows
-  # enabled user units to start without that user being logged in.
-  - name: Enable lingering for user
-    command: loginctl enable-linger "{{ borg_backup_user }}"
+  - name: Install borg backup script
+    template:
+      src: borg-backup.j2
+      dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup"
+      mode: 0700
+    become_user: "{{ borg_backup_user }}"
 
-  when: result|changed
+  - name: Customize ssh configuration file
+    blockinfile:
+      path: "{{ borg_backup_user_home }}/.ssh/config"
+      create: yes
+      mode: 0600
+      block: |
+        Host usw-s001.rsync.net
+            User 1025
+            IdentityFile ~/.ssh/usw-s001.rsync.net
+    become_user: "{{ borg_backup_user }}"
+
+  - name: Install systemd unit files
+    template:
+      src: "{{ item }}.j2"
+      dest: "{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}"
+    with_items:
+      - borg-backup.service
+      - borg-backup.timer
+    become_user: "{{ borg_backup_user }}"
+    register: result
+
+  # To work with systemd in user mode, XDG_RUNTIME_DIR must be set. This
+  # variable is set by pam_systemd when a user logs in. However, it's not set
+  # when one user becomes another via sudo, su, etc. (This may be a bug.) When
+  # commands are executed as another user in this fashion, errors like the
+  # following result:
+  #
+  #   Failed to connect to bus: No such file or directory
+  #
+  # One solution is to set the following:
+  #
+  #   become_method: su
+  #   environment:
+  #     XDG_RUNTIME_DIR: "/run/user/{{ ansible_user_uid }}"
+  #
+  # However, authenticating with su is troublesome. This technique doesn't work
+  # for users that lack a password (think `passwd --lock`), and Ansible doesn't
+  # deal well authenticating as multiple users during the course of a single
+  # play.  And even when all this is correctly configured, it still fails for
+  # me.
+  #
+  # There are several variations on this solution, such as setting the
+  # `XDG_RUNTIME_DIR` and `DBUS_SESSION_BUS_ADDRESS` environment variables.
+  # However, these did not work for me, even in manual testing.
+  #
+  # The chosen solution isn't very Ansible-ish, but it's relatively non-hacky.
+  #
+  # See:
+  #
+  # * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
+  # * https://uggedal.com/journal/ansible-systemd-user/
+  # * https://stackoverflow.com/q/34167257
+  # * https://unix.stackexchange.com/q/346841/237894
+  - block:
+    - name: Reload units for user
+      command: >
+        machinectl shell "{{ borg_backup_user }}"@.host /usr/bin/systemctl --user
+        daemon-reload
+
+    - name: Start periodic backup service for user
+      command: >
+        machinectl shell "{{ borg_backup_user }}"@.host /usr/bin/systemctl --user
+        start borg-backup.timer
+
+    - name: Enable periodic backup service for user
+      command: >
+        machinectl shell "{{ borg_backup_user }}"@.host /usr/bin/systemctl --user
+        enable borg-backup.timer
+
+    # Spawn a user manager for this user at system start-up time. This allows
+    # enabled user units to start without that user being logged in.
+    - name: Enable lingering for user
+      command: loginctl enable-linger "{{ borg_backup_user }}"
+
+    when: result|changed
+
+  become: true

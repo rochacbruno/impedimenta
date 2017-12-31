@@ -1,12 +1,16 @@
-- name: Install crda
-  pacman:
-    name: crda
+- block:
 
-# If no WIRELESS_REGDOM is set in the configuration file, one will be added at
-# EOF. If one is already present, it will be updated.
-- name: Configure crda
-  lineinfile:
-    path: /etc/conf.d/wireless-regdom
-    line: WIRELESS_REGDOM="US"
-    regexp: '^WIRELESS_REGDOM='
-  notify: Set wireless regulatory domain
+  - name: Install crda
+    pacman:
+      name: crda
+
+  # If no WIRELESS_REGDOM is set in the configuration file, one will be added at
+  # EOF. If one is already present, it will be updated.
+  - name: Configure crda
+    lineinfile:
+      path: /etc/conf.d/wireless-regdom
+      line: WIRELESS_REGDOM="US"
+      regexp: '^WIRELESS_REGDOM='
+    notify: Set wireless regulatory domain
+
+  become: true

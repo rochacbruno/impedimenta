@@ -6,7 +6,7 @@
       - openbsd-netcat  # libvirt management over ssh
       - virt-install  # libvirt management via console (including virt-clone)
       - dnsmasq
-    state: present
+  become: true
   notify:
     - Set install reason for packages
 
@@ -17,41 +17,37 @@
     user_aur_builder_packages:
       - libguestfs
 
-- name: Install dnsmasq configuration file
-  copy:
-    src: dnsmasq.conf
-    dest: /etc/dnsmasq.conf
-    owner: root
-    group: root
-    mode: 0644
+- block:
 
-- name: Install scripts for libvirt and related tools
-  copy:
-    src: usr_local_bin/
-    dest: '/usr/local/bin/'
-    owner: root
-    group: root
-    mode: 0755
+  - name: Install dnsmasq configuration file
+    copy:
+      src: dnsmasq.conf
+      dest: /etc/dnsmasq.conf
 
-- name: Install units for libvirt and related tools
-  copy:
-    src: etc_systemd_system/
-    dest: /etc/systemd/system/
-    owner: root
-    group: root
-    mode: 0644
+  - name: Install scripts for libvirt and related tools
+    copy:
+      src: usr_local_bin/
+      dest: '/usr/local/bin/'
+      mode: 0755
 
-- name: Start and enable libvirt
-  systemd:
-    name: libvirtd
-    state: started
-    enabled: yes
-    daemon_reload: yes  # due to /etc/systemd/system/ changes above
+  - name: Install units for libvirt and related tools
+    copy:
+      src: etc_systemd_system/
+      dest: /etc/systemd/system/
 
-- name: Enable IPv4 forwarding at next boot
-  sysctl:
-    name: net.ipv4.ip_forward
-    value: 1
-    sysctl_file: /etc/sysctl.d/50-libvirtd-networking.conf
-    state: present
-  notify: Enable IPv4 forwarding now
+  - name: Start and enable libvirt
+    systemd:
+      name: libvirtd
+      state: started
+      enabled: yes
+      daemon_reload: yes  # due to /etc/systemd/system/ changes above
+
+  - name: Enable IPv4 forwarding at next boot
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: 1
+      sysctl_file: /etc/sysctl.d/50-libvirtd-networking.conf
+      state: present
+    notify: Enable IPv4 forwarding now
+
+  become: true

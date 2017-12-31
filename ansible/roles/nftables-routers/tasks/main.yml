@@ -1,18 +1,20 @@
-- name: Install nftables
-  pacman:
-    name: nftables
-    state: present
+- block:
 
-- name: Install nftables configuration file
-  copy:
-    src: nftables.conf
-    dest: /etc/nftables.conf
-    mode: 0644
-  notify: Reload nftables
+  - name: Install nftables
+    pacman:
+      name: nftables
 
-- name: Start and enable nftables
-  systemd:
-    name: nftables.service
-    state: started
-    enabled: yes
-    daemon_reload: yes
+  - name: Install nftables configuration file
+    copy:
+      src: nftables.conf
+      dest: /etc/nftables.conf
+    notify: Reload nftables
+
+  - name: Start and enable nftables
+    systemd:
+      name: nftables.service
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+  become: true

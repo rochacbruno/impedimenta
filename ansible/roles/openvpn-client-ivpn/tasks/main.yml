@@ -1,37 +1,36 @@
-- name: Install openvpn
-  pacman:
-    name: openvpn
-    state: present
+- block:
 
-- name: Install openvpn configuration file
-  copy:
-    src: ivpn.conf
-    dest: /etc/openvpn/client/ivpn.conf
-    owner: root
-    group: root
-    mode: 0755
+  - name: Install openvpn
+    pacman:
+      name: openvpn
 
-- name: Install openvpn credentials file
-  template:
-    src: credentials.j2
-    dest: /etc/openvpn/client/credentials
-    mode: 0700
-  when:
-    - openvpn_client_ivpn_username is defined
-    - openvpn_client_ivpn_password is defined
+  - name: Install openvpn configuration file
+    copy:
+      src: ivpn.conf
+      dest: /etc/openvpn/client/ivpn.conf
+      mode: 0755
 
-- name: Install routing configuration scripts
-  copy:
-    src: usr_local_bin/
-    dest: /usr/local/bin/
-    owner: root
-    group: root
-    mode: 0755
+  - name: Install openvpn credentials file
+    template:
+      src: credentials.j2
+      dest: /etc/openvpn/client/credentials
+      mode: 0700
+    when:
+      - openvpn_client_ivpn_username is defined
+      - openvpn_client_ivpn_password is defined
 
-- name: Define the priority of the "tunnel" routing table
-  blockinfile:
-    path: /etc/iproute2/rt_tables
-    create: no
-    block: |
-      # For openvpn-client@ivpn.
-      100 tunnel
+  - name: Install routing configuration scripts
+    copy:
+      src: usr_local_bin/
+      dest: /usr/local/bin/
+      mode: 0755
+
+  - name: Define the priority of the "tunnel" routing table
+    blockinfile:
+      path: /etc/iproute2/rt_tables
+      create: no
+      block: |
+        # For openvpn-client@ivpn.
+        100 tunnel
+
+  become: true

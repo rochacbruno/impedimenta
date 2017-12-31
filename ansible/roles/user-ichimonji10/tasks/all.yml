@@ -1,46 +1,49 @@
-# Last time I checked, vanilla Arch systems don't ship with these applications.
-- name: Install bash and applications named by ~/.bashrc
-  pacman:
-    name:
-      - bash
-      - vim
-      - less
-    state: present
+- block:
 
-- name: Create directories named by ~/.bashrc
-  file:
-    path: "{{ ichimonji10_home }}/.local/bin"
-    state: directory
-  become_user: ichimonji10
+  # Last time I checked, vanilla Arch systems don't ship with these applications.
+  - name: Install bash and applications named by ~/.bashrc
+    pacman:
+      name:
+        - bash
+        - vim
+        - less
 
-- name: Install ~/.bashrc
-  copy:
-    src: bashrc
-    dest: "{{ ichimonji10_home }}/.bashrc"
-  become_user: ichimonji10
+  - name: Create directories named by ~/.bashrc
+    file:
+      path: "{{ ichimonji10_home }}/.local/bin"
+      state: directory
+    become_user: ichimonji10
 
-- name: Install vim and applications named by ~/.vimrc
-  pacman:
-    name:
-      - ctags
-      - vim
-      - vim-jellybeans
-      - vim-nerdtree
-      - vim-tagbar
-    state: present
+  - name: Install ~/.bashrc
+    copy:
+      src: bashrc
+      dest: "{{ ichimonji10_home }}/.bashrc"
+    become_user: ichimonji10
 
-- name: Create directories named by ~/.vimrc
-  file:
-    path: "{{ item }}"
-    state: directory
-  with_items:
-    - "{{ ichimonji10_home }}/.cache/custom-ctags"
-    - "{{ ichimonji10_home }}/.vim/undo"
-    - "{{ ichimonji10_home }}/code"
-  become_user: ichimonji10
+  - name: Install vim and applications named by ~/.vimrc
+    pacman:
+      name:
+        - ctags
+        - vim
+        - vim-jellybeans
+        - vim-nerdtree
+        - vim-tagbar
+      state: present
 
-- name: Install ~/.vimrc
-  template:
-    src: vimrc.j2
-    dest: "{{ ichimonji10_home }}/.vimrc"
-  become_user: ichimonji10
+  - name: Create directories named by ~/.vimrc
+    file:
+      path: "{{ item }}"
+      state: directory
+    with_items:
+      - "{{ ichimonji10_home }}/.cache/custom-ctags"
+      - "{{ ichimonji10_home }}/.vim/undo"
+      - "{{ ichimonji10_home }}/code"
+    become_user: ichimonji10
+
+  - name: Install ~/.vimrc
+    template:
+      src: vimrc.j2
+      dest: "{{ ichimonji10_home }}/.vimrc"
+    become_user: ichimonji10
+
+  become: true

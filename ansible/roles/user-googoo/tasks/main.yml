@@ -3,3 +3,4 @@
     name: googoo
     groups:
       - ichi-machines
+  become: true

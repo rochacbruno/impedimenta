@@ -1,33 +1,36 @@
-- name: Install syncthing-inotify
-  pacman:
-    name: syncthing-inotify
-    state: present
+- block:
 
-- name: Set inotify watch limit now and at next boot
-  sysctl:
-    name: fs.inotify.max_user_watches
-    # A 64-bit OS uses about 1 KB of memory per inode.
-    value: 65536
-    sysctl_file: /etc/sysctl.d/50-syncthing.conf
-    state: present
-  notify: Set inotify watch limit now
+  - name: Install syncthing-inotify
+    pacman:
+      name: syncthing-inotify
 
-# See comments in borg-backup/tasks/main.yml for explanation of why the systemd
-# module isn't used for these tasks.
-- name: Start syncthing-inotify for certain users
-  command: >
-    machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
-    start syncthing-inotify
-  with_items: "{{ syncthing_usernames }}"
+  - name: Set inotify watch limit now and at next boot
+    sysctl:
+      name: fs.inotify.max_user_watches
+      # A 64-bit OS uses about 1 KB of memory per inode.
+      value: 65536
+      sysctl_file: /etc/sysctl.d/50-syncthing.conf
+      state: present
+    notify: Set inotify watch limit now
 
-- name: Enable syncthing-inotify for certain users
-  command: >
-    machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
-    enable syncthing-inotify
-  with_items: "{{ syncthing_usernames }}"
+  # See comments in borg-backup/tasks/main.yml for explanation of why the systemd
+  # module isn't used for these tasks.
+  - name: Start syncthing-inotify for certain users
+    command: >
+      machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
+      start syncthing-inotify
+    with_items: "{{ syncthing_usernames }}"
 
-# Spawn a user manager for each user at system start-up time. This allows
-# enabled user units to start without that user being logged in.
-- name: Enable lingering for certain users
-  command: loginctl enable-linger "{{ item }}"
-  with_items: "{{ syncthing_usernames }}"
+  - name: Enable syncthing-inotify for certain users
+    command: >
+      machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
+      enable syncthing-inotify
+    with_items: "{{ syncthing_usernames }}"
+
+  # Spawn a user manager for each user at system start-up time. This allows
+  # enabled user units to start without that user being logged in.
+  - name: Enable lingering for certain users
+    command: loginctl enable-linger "{{ item }}"
+    with_items: "{{ syncthing_usernames }}"
+
+  become: true

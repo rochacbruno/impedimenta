@@ -4,17 +4,12 @@
     copy:
       src: btrfs-subvolume-delete.py
       dest: /usr/local/bin/
-      owner: root
-      group: root
       mode: 0755
 
   - name: Install .service to delete old snapshots of {{ item.path }}
     template:
       src: btrfs-subvolume-delete.service
       dest: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.service
-      owner: root
-      group: root
-      mode: 0644
     vars:
       path: '{{ item.path }}'
       days: '{{ item.days|default(14) }}'
@@ -24,9 +19,6 @@
     template:
       src: btrfs-subvolume-delete.timer
       dest: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.timer
-      owner: root
-      group: root
-      mode: 0644
     vars:
       path: '{{ item.path }}'
 
@@ -38,3 +30,4 @@
       daemon_reload: yes
 
   when: item.delete | default(true)
+  become: true

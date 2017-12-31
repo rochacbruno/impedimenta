@@ -28,3 +28,4 @@
       daemon_reload: yes
 
   when: item.snapshot | default(true)
+  become: true

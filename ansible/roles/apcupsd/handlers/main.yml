@@ -2,3 +2,4 @@
   systemd:
     name: apcupsd.service
     state: restarted
+  become: true

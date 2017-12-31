@@ -1,19 +1,19 @@
-- name: Install reflector
-  pacman:
-    name: reflector
-    state: present
+- block:
 
-- name: Install units for reflector
-  copy:
-    src: etc_systemd_system/
-    dest: /etc/systemd/system/
-    owner: root
-    group: root
-    mode: 0644
+  - name: Install reflector
+    pacman:
+      name: reflector
 
-- name: Start and enable timer for reflector
-  systemd:
-    name: reflector-update.timer
-    state: started
-    enabled: yes
-    daemon_reload: yes
+  - name: Install units for reflector
+    copy:
+      src: etc_systemd_system/
+      dest: /etc/systemd/system/
+
+  - name: Start and enable timer for reflector
+    systemd:
+      name: reflector-update.timer
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+  become: true
