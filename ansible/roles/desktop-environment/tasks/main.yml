@@ -82,9 +82,9 @@
 
 - name: Install AUR packages
   include_role:
-    name: user-aur-builder
+    name: aur
   vars:
-    user_aur_builder_packages:
+    aur_packages:
       - mnemosyne
       - ms-sys
 

@@ -23,7 +23,7 @@
   - name: Package {{ item }}
     command: aursync --no-confirm {{ item }}
     when: result.rc != 0
-    become_user: aur-builder
+    become_user: aur-packager
 
   - name: Install {{ item }}
     pacman:

@@ -2,11 +2,11 @@
 
   # aurutils caches files in `~/.cache/`. Thus, a home directory should be
   # present. (The user module creates one by default.) Even with no shell and a
-  # locked password, commands like `become_user: aur-builder, command: 'echo
+  # locked password, commands like `become_user: aur-packager, command: 'echo
   # foo'` still work.
   - name: Create user
     user:
-      name: aur-builder
+      name: aur-packager
       shell: /usr/bin/nologin
     notify: Lock password
 
@@ -14,8 +14,8 @@
   - name: Give user passwordless sudo privileges
     lineinfile:
       path: /etc/sudoers
-      regexp: '^aur-builder '
-      line: 'aur-builder ALL=(ALL) NOPASSWD: ALL'
+      regexp: '^aur-packager '
+      line: 'aur-packager ALL=(ALL) NOPASSWD: ALL'
       validate: 'visudo --check --file %s'
 
   become: true
@@ -52,7 +52,7 @@
       sudo pacman -U --noconfirm aurutils-*.pkg.tar.xz
     args:
       executable: /usr/bin/bash
-    become_user: aur-builder
+    become_user: aur-packager
     when: result.rc != 0
     register: result
 
@@ -60,15 +60,15 @@
     file:
       path: /var/cache/pacman/aur
       state: directory
-      owner: aur-builder
-      group: aur-builder
+      owner: aur-packager
+      group: aur-packager
       mode: 0755
 
   - name: Create /var/cache/pacman/aur/aur.db.tar
     command: repo-add /var/cache/pacman/aur/aur.db.tar
     args:
       creates: /var/cache/pacman/aur/aur.db.tar
-    become_user: aur-builder
+    become_user: aur-packager
 
   - name: Install /etc/pacman.d/aur.conf
     copy:
@@ -90,4 +90,4 @@
   become: true
 
 - include_tasks: package-and-install.yml
-  with_items: '{{ user_aur_builder_packages }}'
+  with_items: '{{ aur_packages }}'

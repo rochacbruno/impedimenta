@@ -1,3 +1,0 @@
-- name: Lock password
-  command: passwd --lock aurutils-builder
-  become: true
