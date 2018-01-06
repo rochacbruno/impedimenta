@@ -4,9 +4,6 @@
     template:
       src: btrfs-subvolume-snapshot.service
       dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.service
-      owner: root
-      group: root
-      mode: 0644
     vars:
       path: "{{ item.path }}"
 
@@ -14,9 +11,6 @@
     template:
       src: btrfs-subvolume-snapshot.timer
       dest: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
-      owner: root
-      group: root
-      mode: 0644
     vars:
       path: "{{ item.path }}"
 
