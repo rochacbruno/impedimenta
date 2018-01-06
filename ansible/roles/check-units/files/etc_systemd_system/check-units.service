@@ -1,0 +1,10 @@
+# Use Wants instead of Requires in case network-online.target isn't correctly
+# configured.
+[Unit]
+Description=Check for failed units
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/check-units.sh

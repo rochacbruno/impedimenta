@@ -1,10 +1,10 @@
 - hosts: all
   roles:
+    - check-units
     - crda
     - intel-ucode
     - lm-sensors
     - locale
-    - msmtp
     - pkgfile
     - reflector
     - smartd
