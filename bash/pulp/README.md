@@ -14,11 +14,7 @@ Pulp and the other product.
 Sample usage:
 
 ```sh
-./setup.sh
-time ./test-01.sh
-time ./test-02.sh
-time ./test-03.sh
-./teardown.sh
+./main.sh
 ```
 
 It would be better to write scripts that directly communicated with Pulp's API.
