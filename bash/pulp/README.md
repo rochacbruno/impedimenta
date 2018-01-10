@@ -4,7 +4,8 @@ Basic Pulp Performance Testing
 This directory contains some *extremely* basic Pulp performance tests. The goal
 is to measure how long it takes to perform several actions. There is inevitably
 some variation in how long it takes to perform each action, so each individual
-action is performed numerous times, so as to swamp small variations.
+action is performed numerous times, so as to swamp small variations. For
+comparison, think of `python -m timeit`.
 
 The same actions can then be done on some product that uses Pulp, such as
 Katello. The time necessary to complete step 1, 2, 3, etc. can be compared on
