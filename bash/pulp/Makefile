@@ -4,6 +4,8 @@ help:
 	@echo "    to show this message"
 	@echo "  lint"
 	@echo "    to lint scripts"
+	@echo "  clean"
+	@echo "    to remove artifacts"
 	@echo "  measurements"
 	@echo "    to measure Pulp's performance"
 	@echo "  measurements.png"
@@ -13,10 +15,13 @@ help:
 lint:
 	find . -name '*.sh' -print0 | xargs -0 shellcheck
 
+clean:
+	rm -f measurements measurements.png
+
 measurements:
 	bin/main.sh $@
 
 measurements.png: measurements
 	bin/plot-measurements.gp > $@
 
-.PHONY: help lint
+.PHONY: help lint clean
