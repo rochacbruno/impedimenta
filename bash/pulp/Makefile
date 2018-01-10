@@ -6,6 +6,8 @@ help:
 	@echo "    to lint scripts"
 	@echo "  measurements"
 	@echo "    to measure Pulp's performance"
+	@echo "  measurements.png"
+	@echo "    to graph measurements"
 
 # xargs communicates return values better than find's `-exec` argument.
 lint:
@@ -13,5 +15,8 @@ lint:
 
 measurements:
 	bin/main.sh $@
+
+measurements.png: measurements
+	bin/plot-measurements.gp > $@
 
 .PHONY: help lint
