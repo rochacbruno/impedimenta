@@ -62,7 +62,7 @@ pulp-admin rpm repo create \
     >/dev/null
 pulp-admin rpm repo sync run --repo-id src >/dev/null
 for (( i=0; i<iterations; i++ )); do
-    echo "$((i + 1)) $(./bin/step.sh)" >> "${temp_file}"
+    ./bin/step.sh >> "${temp_file}"
 done
 
 # Copy files to their destination, rather than moving them, to prevent
