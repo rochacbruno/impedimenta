@@ -17,6 +17,6 @@ clean:
 	rm -f measurements.txt
 
 measurements.txt:
-	bin/main.sh $@
+	bin/main.sh > $@
 
 .PHONY: help lint clean
