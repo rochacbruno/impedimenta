@@ -26,6 +26,6 @@ declare -a times
 
 # Create, populate and publish a repository.
 for cmd in "${cmds[@]}"; do
-    times+=( "$(time ( eval "${cmd}" ) 2>&1)s" )
+    times+=( "$(time ( eval "${cmd}" ) 2>&1)" )
 done
 echo "${times[*]}"
