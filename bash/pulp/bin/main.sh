@@ -43,7 +43,7 @@ while true; do
         *) echo "Internal error! Encountered unexpected argument: $1"; exit 1;;
     esac
 done
-iterations="${iterations:-20}"
+iterations="${iterations:-10}"
 
 # Schedule teardown.
 teardown() {
