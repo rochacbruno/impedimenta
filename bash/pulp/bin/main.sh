@@ -9,21 +9,28 @@ source ./bin/common.sh
 readonly script_name='main.sh'
 
 # Print usage instructions to stdout.
-# TODO: Add <iterations> argument.
 # TODO: Make <output-file> optional. (Print to stdout if not specified.)
-declare -r iterations=20
 show_help() {
 fmt <<EOF
-Usage: ${script_name} <output-file>
+Usage: ${script_name} [options] <output-file>
 
-Create, populate and publish an RPM repository, some number of times. Record how
-long those steps take, in seconds, and save those recordings to <output-file>.
+Repeatedly create, populate, publish and delete an RPM repository. Record how
+long those steps take, and save those recordings to <output-file>.
+
+Options:
+    --iterations <number>
+        How many times to create, populate, publish and delete an RPM
+        repository. Default: 20.
 EOF
 }
 
 # Transform $@. $temp is needed. If omitted, non-zero exit codes are ignored.
 check_getopt
-temp=$(getopt --name "${script_name}" -o '+' -- "$@")
+temp=$(getopt \
+    --options '' \
+    --longoptions iterations: \
+    --name "${script_name}" \
+    -- "$@")
 eval set -- "${temp}"
 unset temp
 
@@ -34,10 +41,13 @@ if [ "${#@}" -eq 1 ]; then
 fi
 while true; do
     case "$1" in
+        --iterations) iterations="${2}"; shift 2;;
         --) shift; break;;
         *) echo "Internal error! Encountered unexpected argument: $1"; exit 1;;
     esac
 done
+iterations="${iterations:-20}"
+if [ -z "${1:-}" ]; then echo >&2 'Missing parameter <output-file>.'; exit 1; fi
 output_file="$(realpath "$1")"
 shift 1
 
