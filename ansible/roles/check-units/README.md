@@ -5,6 +5,22 @@ Periodically check for failed units.
 
 If any units have failed, send an email notification.
 
+Usage
+-----
+
+Sample usage:
+
+```yaml
+- hosts: all
+  roles:
+    - check-units
+```
+
+No variables are accepted.
+
+About
+-----
+
 Periodically checking for failed units is a terrible way to monitor the state of
 a host. It would be much better to take an event-based approach, where something
 is notified as soon as a unit fails. However, this approach is subjectively
