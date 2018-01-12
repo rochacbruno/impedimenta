@@ -7,4 +7,8 @@ After=network-online.target
 
 [Service]
 Type=oneshot
+{% if check_units_home is defined %}
+ExecStart={{ check_units_home }}/.local/bin/check-units.sh
+{% else %}
 ExecStart=/usr/local/bin/check-units.sh
+{% endif %}

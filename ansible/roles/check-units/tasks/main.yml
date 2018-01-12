@@ -1,21 +1,6 @@
-- block:
+- include_tasks: system.yml
+  when: check_units_users is undefined
 
-  - name: Install script to check units and send notifications
-    copy:
-      src: check-units.sh
-      dest: /usr/local/bin/
-      mode: 0700
-
-  - name: Install units to check units and send notifications
-    copy:
-      src: etc_systemd_system/
-      dest: /etc/systemd/system/
-
-  - name: Start and enable .timer to check units and send notifications
-    systemd:
-      name: check-units.timer
-      state: started
-      enabled: true
-      daemon_reload: true
-
-  become: true
+- include_tasks: user.yml
+  when: check_units_users is defined
+  with_items: '{{ check_units_users }}'

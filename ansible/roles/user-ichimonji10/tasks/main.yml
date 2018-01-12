@@ -33,6 +33,15 @@
   set_fact:
     ichimonji10_home: "{{ getent_passwd['ichimonji10'][4] }}"
 
+- name: Configure basic unit monitoring for user
+  include_role:
+    name: check-units
+  vars:
+    check_units_users:
+      - ichimonji10
+
+- meta: end_play
+
 - include_tasks: all.yml
 - include_tasks: vm-hosts.yml
   when: "'vm-hosts' in group_names"

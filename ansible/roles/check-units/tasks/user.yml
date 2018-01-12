@@ -1,0 +1,46 @@
+- name: Get information about {{ item }}
+  getent:
+    database: passwd
+    key: '{{ item }}'
+    split: ':'
+
+- name: "Set variable referencing {{ item }}'s home directory"
+  set_fact:
+    check_units_home: "{{ getent_passwd[item][4] }}"
+
+- block:
+
+  - name: Install script to check units and send notifications
+    copy:
+      src: check-units-user.sh
+      dest: '{{ check_units_home }}/.local/bin/check-units.sh'
+      mode: 0700
+
+  - name: Install service to check units and send notifications
+    template:
+      src: check-units.service
+      dest: '{{ check_units_home }}/.config/systemd/user/'
+
+  - name: Install timer to check units and send notifications
+    copy:
+      src: check-units.timer
+      dest: '{{ check_units_home }}/.config/systemd/user/'
+    register: result
+
+  become: true
+  become_user: '{{ item }}'
+
+- block:
+
+  - name: Start and enable .timer to check units and send notifications
+    command: >
+      machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
+      daemon-reload
+
+  - name: Start and enable .timer to check units and send notifications
+    command: >
+      machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user enable --now
+      check-units.timer
+
+  when: result|changed
+  become: true

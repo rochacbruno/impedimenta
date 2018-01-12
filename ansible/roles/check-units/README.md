@@ -1,14 +1,23 @@
 check-units
 ===========
 
-Periodically check for failed units.
+Periodically check for failed units, on a system-wide or per-user basis.
 
-If any units have failed, send an email notification.
+If any failed units are found, send an email notification.
+
+Multiple instances of systemd may be installed on a host. One instance controls
+the host as a whole, and this is the instance that has PID 1. Additional
+instances may be spawned on a per-user basis. This role configures *very* basic
+monitoring for any number of those managers.
+
+If monitoring is configured for a user, make sure to add them to the
+"ichi-machines" group. Otherwise, they won't have permission to send emails.
 
 Usage
 -----
 
-Sample usage:
+To configure system-wide monitoring, place something like the following in a
+playbook:
 
 ```yaml
 - hosts: all
@@ -16,10 +25,31 @@ Sample usage:
     - check-units
 ```
 
-No variables are accepted.
+To configure per-user monitoring, create tasks like the following:
 
-About
------
+```yaml
+- name: Create user
+  user:
+    name: alice
+    groups: ichi-machines
+
+- name: Configure basic unit monitoring for user
+  include_role:
+    name: check-units
+  vars:
+    check_units_users:
+      - alice
+```
+
+Variables
+---------
+
+The only accepted variable is ``check_units_users``. It's a list of user names.
+By default, it's unset. If unset, then monitoring will be configured
+system-wide.
+
+Alternatives
+------------
 
 Periodically checking for failed units is a terrible way to monitor the state of
 a host. It would be much better to take an event-based approach, where something
