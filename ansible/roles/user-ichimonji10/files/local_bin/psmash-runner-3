@@ -9,8 +9,8 @@ tmux split-window -v
 tmux select-layout even-vertical
 
 # configure each pane
-tmux send-keys -t 0 'export PULP_SMASH_CONFIG_FILE=fedora-25-pulp-3.json' C-m
-tmux send-keys -t 1 'export PULP_SMASH_CONFIG_FILE=fedora-26-pulp-3.json' C-m
+tmux send-keys -t 0 'export PULP_SMASH_CONFIG_FILE=fedora-26-pulp-3.json' C-m
+tmux send-keys -t 1 'export PULP_SMASH_CONFIG_FILE=fedora-27-pulp-3.json' C-m
 
 # etc
 tmux set-window-option synchronize-panes on
