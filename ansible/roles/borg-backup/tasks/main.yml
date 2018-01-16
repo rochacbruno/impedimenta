@@ -34,8 +34,8 @@
 
   - name: Install borg backup script
     template:
-      src: borg-backup.j2
-      dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup"
+      src: borg-backup.sh
+      dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup.sh"
       mode: 0700
     become_user: "{{ borg_backup_user }}"
 
@@ -52,7 +52,7 @@
 
   - name: Install systemd unit files
     template:
-      src: "{{ item }}.j2"
+      src: "{{ item }}"
       dest: "{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}"
     with_items:
       - borg-backup.service
