@@ -40,8 +40,6 @@
     check_units_users:
       - ichimonji10
 
-- meta: end_play
-
 - include_tasks: all.yml
 - include_tasks: vm-hosts.yml
   when: "'vm-hosts' in group_names"
