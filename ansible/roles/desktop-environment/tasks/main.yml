@@ -64,6 +64,7 @@
         - qt4  # for vlc
         - shellcheck
         - sshfs
+        - sshpass  # optional for ansible
         - sudo
         - sysstat
         - texlive-core  # for mnemosyne
