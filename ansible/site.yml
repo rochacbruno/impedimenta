@@ -11,9 +11,11 @@
     - time
     - user-ichimonji10
   tasks:
-    - name: Install tree
+    - name: Install useful applications
       pacman:
-        name: tree
+        name:
+          - bind-tools
+          - tree
 
 - hosts: all:!routers
   roles:
