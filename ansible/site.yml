@@ -16,6 +16,7 @@
         name:
           - bind-tools
           - tree
+      become: true
 
 - hosts: all:!routers
   roles:
