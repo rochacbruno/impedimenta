@@ -21,7 +21,7 @@
 - block:
 
   - name: Package {{ item }}
-    command: aursync --no-confirm {{ item }}
+    command: aursync --chroot --no-confirm {{ item }}
     when: result.rc != 0
     become_user: aur-packager
 

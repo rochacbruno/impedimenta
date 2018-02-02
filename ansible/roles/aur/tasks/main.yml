@@ -1,5 +1,9 @@
 - block:
 
+  - name: Install devtools (for makechrootpkg, etc.)
+    pacman:
+      name: devtools
+
   # aurutils caches files in `~/.cache/`. Thus, a home directory should be
   # present. (The user module creates one by default.) Even with no shell and a
   # locked password, commands like `become_user: aur-packager, command: 'echo
