@@ -21,6 +21,10 @@
 - hosts: all:!routers
   roles:
     - nftables-generic
+    - name: aur
+      vars:
+        aur_packages:
+          - entr
 
 - hosts: all:!amelanchier.ichimonji10.name
   roles:
