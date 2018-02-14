@@ -5,13 +5,11 @@
       name: devtools
 
   # aurutils caches files in `~/.cache/`. Thus, a home directory should be
-  # present. (The user module creates one by default.) Even with no shell and a
-  # locked password, commands like `become_user: aur-packager, command: 'echo
-  # foo'` still work.
+  # present. (The user module creates one by default.)
   - name: Create user
     user:
       name: aur-packager
-      shell: /usr/bin/nologin
+      shell: /usr/bin/bash
     notify: Lock password
 
   # Necessary so that `makepkg --syncdeps` works. Also used by shell script below.
