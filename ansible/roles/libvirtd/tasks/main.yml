@@ -19,6 +19,19 @@
 
 - block:
 
+  - name: Install NetworkManager configuration file
+    copy:
+      src: NetworkManager.conf
+      dest: /etc/NetworkManager/
+    when: "'workstations' in group_names"
+    register: result
+
+  - name: Reload NetworkManager
+    systemd:
+      name: NetworkManager
+      state: reloaded
+    when: result|changed
+
   - name: Install dnsmasq configuration file
     copy:
       src: dnsmasq.conf
