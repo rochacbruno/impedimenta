@@ -10,6 +10,11 @@
 
 - block:
 
+  - name: Create ~/.local/bin/
+    file:
+      path: '{{ check_units_home }}/.local/bin'
+      state: directory
+
   - name: Install script to check units and send notifications
     copy:
       src: check-units-user.sh
