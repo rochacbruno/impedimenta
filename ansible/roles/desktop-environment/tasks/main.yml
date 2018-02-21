@@ -62,6 +62,7 @@
         - python-docutils  # for rst2html
         - python-wheel
         - qt4  # for vlc
+        - rst2pdf
         - shellcheck
         - sshfs
         - sshpass  # optional for ansible
