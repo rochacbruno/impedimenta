@@ -67,6 +67,7 @@
         - sshpass  # optional for ansible
         - sudo
         - sysstat
+        - system-config-printer
         - texlive-core  # for mnemosyne
         - tmux
         - virt-manager
@@ -86,6 +87,7 @@
     name: aur
   vars:
     aur_packages:
+      - brother-hll2395dw
       - mnemosyne
       - ms-sys
       - python-rst2pdf
@@ -100,4 +102,12 @@
   with_items:
     - NetworkManager.service
     - lightdm.service
+  become: true
+
+- name: Enable and start CUPS
+  systemd:
+    name: org.cups.cupsd
+    state: started
+    enabled: yes
+    daemon_reload: yes
   become: true

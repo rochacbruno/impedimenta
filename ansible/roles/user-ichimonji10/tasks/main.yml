@@ -1,7 +1,10 @@
+# The "sys" group is for printing. See:
+# https://wiki.archlinux.org/index.php/Printing#Configuration
 - name: Set ichimonji10's groups
   set_fact:
     ichimonji10_groups:
       - ichi-machines
+      - sys
       - wheel
   become: true
 
