@@ -62,7 +62,6 @@
         - python-docutils  # for rst2html
         - python-wheel
         - qt4  # for vlc
-        - rst2pdf
         - shellcheck
         - sshfs
         - sshpass  # optional for ansible
@@ -89,6 +88,7 @@
     aur_packages:
       - mnemosyne
       - ms-sys
+      - python-rst2pdf
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.
