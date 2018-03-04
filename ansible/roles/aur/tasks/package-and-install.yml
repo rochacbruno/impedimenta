@@ -22,12 +22,16 @@
 
   - name: Package {{ item }}
     command: aursync --chroot --no-confirm {{ item }}
-    when: result.rc != 0
     become_user: aur-packager
 
-  - name: Install {{ item }}
-    pacman:
-      name: '{{ item }}'
-      state: present
+  - name: Sync aur repository
+    command: pacman -Sy --config /etc/pacman.d/aur.conf
 
+  when: result.rc != 0
+  become: true
+
+- name: Install {{ item }}
+  pacman:
+    name: '{{ item }}'
+    state: present
   become: true
