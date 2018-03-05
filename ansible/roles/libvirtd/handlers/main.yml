@@ -5,3 +5,9 @@
 - name: Enable IPv4 forwarding now
   command: 'sysctl --load=/etc/sysctl.d/50-libvirtd-networking.conf'
   become: true
+
+- name: Restart dnsmasq
+  systemd:
+    name: dnsmasq.service
+    state: restarted
+  become: true
