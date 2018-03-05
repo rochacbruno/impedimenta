@@ -33,7 +33,7 @@
     when: result|changed
 
   - name: Install dnsmasq configuration file
-    copy:
+    template:
       src: dnsmasq.conf
       dest: /etc/dnsmasq.conf
     notify: Restart dnsmasq
