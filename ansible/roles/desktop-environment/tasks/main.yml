@@ -63,6 +63,7 @@
         - python-wheel
         - qt4  # for vlc
         - shellcheck
+        - simple-scan
         - sshfs
         - sshpass  # optional for ansible
         - sudo
@@ -88,6 +89,7 @@
   vars:
     aur_packages:
       - brother-hll2395dw
+      - brscan4
       - mnemosyne
       - ms-sys
       - python-rst2pdf
