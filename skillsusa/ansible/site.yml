@@ -1,0 +1,11 @@
+- hosts: all
+  roles:
+    - ssh-server
+
+- hosts: clients
+  roles:
+    - skillsusa-client
+
+- hosts: servers
+  roles:
+    - skillsusa-server

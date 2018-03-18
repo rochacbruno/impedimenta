@@ -1,0 +1,5 @@
+- name: Reload OpenSSH server
+  systemd:
+    name: sshd.service
+    state: reloaded
+  become: true

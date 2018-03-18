@@ -1,0 +1,53 @@
+- block:
+
+  - name: Create skillsusa-client user
+    user:
+      name: skillsusa-client
+      comment: SkillsUSA Client
+
+  - name: Install virt-manager
+    package:
+      name: virt-manager
+
+  become: true
+
+- name: Get information about skillsusa-client
+  getent:
+    database: passwd
+    key: skillsusa-client
+    split: ':'
+
+- name: Set variable referencing skillsusa-client's home directory
+  set_fact:
+    skillsusa_client_home: '{{ getent_passwd["skillsusa-client"][4] }}'
+
+- block:
+
+  - name: Create {{ skillsusa_client_home }}/.ssh
+    file:
+      path: '{{ skillsusa_client_home }}/.ssh'
+      state: directory
+      mode: 0700
+
+  - name: Install {{ skillsusa_client_home }}/.ssh/config
+    template:
+      src: config
+      dest: '{{ skillsusa_client_home }}/.ssh/config'
+      mode: 0600
+
+  - name: Install {{ skillsusa_client_home }}/.ssh/authorized_keys
+    copy:
+      src: '{{ skillsusa_client_public_key }}'
+      dest: '{{ skillsusa_client_home }}/.ssh/authorized_keys'
+      mode: 0600
+    when: skillsusa_client_public_key is defined
+
+  - name: Install {{ skillsusa_client_home }}/.ssh/skillsusa-server
+    copy:
+      src: '{{ skillsusa_client_private_key }}'
+      dest: '{{ skillsusa_client_home }}/.ssh/skillsusa-server'
+      mode: 0600
+    when: skillsusa_client_private_key is defined
+
+  become: true
+  become_user: skillsusa-client

@@ -1,0 +1,34 @@
+- name: Create skillsusa-server user
+  user:
+    name: skillsusa-server
+    comment: SkillsUSA Server
+    groups: libvirt
+  become: true
+
+- name: Get information about skillsusa-server
+  getent:
+    database: passwd
+    key: skillsusa-server
+    split: ':'
+
+- name: Set variable referencing skillsusa-server's home directory
+  set_fact:
+    skillsusa_server_home: '{{ getent_passwd["skillsusa-server"][4] }}'
+
+- block:
+
+  - name: Create {{ skillsusa_server_home }}/.ssh
+    file:
+      path: '{{ skillsusa_server_home }}/.ssh'
+      state: directory
+      mode: 0700
+
+  - name: Install {{ skillsusa_server_home }}/.ssh/authorized_keys
+    copy:
+      src: '{{ skillsusa_server_public_key }}'
+      dest: '{{ skillsusa_server_home }}/.ssh/authorized_keys'
+      mode: 0600
+    when: skillsusa_server_public_key is defined
+
+  become: true
+  become_user: skillsusa-server

@@ -1,0 +1,21 @@
+- block:
+
+  - name: Install OpenSSH server
+    package:
+      name: openssh{% if ansible_distribution == 'Ubuntu' %}-server{% endif %}
+
+  - name: Install OpenSSH server configuration file
+    copy:
+      src: sshd_config
+      dest: /etc/ssh/sshd_config
+    notify:
+      - Reload OpenSSH server
+
+  - name: Start and enable OpenSSH server
+    systemd:
+      name: sshd.service
+      state: started
+      enabled: yes
+      daemon_reload: yes
+
+  become: true
