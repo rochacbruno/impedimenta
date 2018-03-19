@@ -5,8 +5,8 @@
       name: openssh
 
   - name: Install sshd configuration file
-    template:
-      src: sshd_config.j2
+    copy:
+      src: sshd_config
       dest: /etc/ssh/sshd_config
     notify:
       - Reload sshd
