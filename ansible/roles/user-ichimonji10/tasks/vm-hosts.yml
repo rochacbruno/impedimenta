@@ -1,5 +1,10 @@
 - block:
 
+  - name: Remove 'psmash-runner-3' script
+    file:
+      path: "{{ ichimonji10_home }}/.local/bin/psmash-runner-3"
+      state: absent
+
   - name: Install custom executables into ~/.local/bin
     copy:
       src: local_bin/
