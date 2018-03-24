@@ -1,8 +1,21 @@
-- name: Create skillsusa-server user
-  user:
-    name: skillsusa-server
-    comment: SkillsUSA Server
-    groups: libvirt
+- block:
+
+  - name: Create skillsusa-server user
+    user:
+      name: skillsusa-server
+      comment: SkillsUSA Server
+      groups: libvirt
+
+  - name: Get passwd status of skillsusa-server
+    command: passwd --status skillsusa-server
+    changed_when: False
+    check_mode: False
+    register: result
+
+  - name: Lock password of skillsusa-server
+    command: passwd --lock skillsusa-server
+    when: result.stdout.split(' ')[1] != 'L'
+
   become: true
 
 - name: Get information about skillsusa-server
