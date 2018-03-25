@@ -14,3 +14,14 @@ Optional variables:
   into skillsusa-client's ~/.ssh directory. The corresponding private key should
   be installed onto management systems. This keypair allows management systems
   to log in to skillsusa-client's account and perform management tasks.
+
+Sample playbook:
+
+```yaml
+- hosts: clients
+  vars:
+    skillsusa_client_public_key: ~/.ssh/skillsusa-client.pub
+    skillsusa_client_private_key: ~/.ssh/skillsusa-server
+  roles:
+    - skillsusa-client
+```
