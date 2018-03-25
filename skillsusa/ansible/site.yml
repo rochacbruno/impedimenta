@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: all:!pine
   roles:
     - ssh-server
 
