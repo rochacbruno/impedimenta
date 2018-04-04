@@ -1,8 +1,8 @@
 - block:
 
-  - name: Install syncthing-inotify
+  - name: Install syncthing
     pacman:
-      name: syncthing-inotify
+      name: syncthing
 
   - name: Set inotify watch limit now and at next boot
     sysctl:
@@ -15,16 +15,16 @@
 
   # See comments in borg-backup/tasks/main.yml for explanation of why the systemd
   # module isn't used for these tasks.
-  - name: Start syncthing-inotify for certain users
+  - name: Start syncthing for certain users
     command: >
       machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
-      start syncthing-inotify
+      start syncthing
     with_items: "{{ syncthing_usernames }}"
 
-  - name: Enable syncthing-inotify for certain users
+  - name: Enable syncthing for certain users
     command: >
       machinectl shell "{{ item }}"@.host /usr/bin/systemctl --user
-      enable syncthing-inotify
+      enable syncthing
     with_items: "{{ syncthing_usernames }}"
 
   # Spawn a user manager for each user at system start-up time. This allows
