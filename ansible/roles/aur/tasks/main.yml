@@ -47,7 +47,7 @@
 
       # Get, build and install aurutils and its deps.
       cd "${workspace}"
-      wget 'https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz'
+      curl -O 'https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz'
       tar xzf aurutils.tar.gz
       cd aurutils
       makepkg --noconfirm --syncdeps
