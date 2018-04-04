@@ -57,7 +57,6 @@
         - ntfs-3g
         - openssh
         - pavucontrol
-        - pkgbuild-introspection
         - pulseaudio
         - python-docutils  # for rst2html
         - python-wheel
@@ -92,6 +91,7 @@
       - brscan4
       - mnemosyne
       - ms-sys
+      - pkgbuild-introspection
       - python-rst2pdf
 
 # Immediately starting these applications - especially at install time - could
