@@ -26,6 +26,7 @@
       name:
         - ansible
         - ansible-lint
+        - audacious
         - calibre
         - chromium
         - cmark
