@@ -4,6 +4,6 @@ lint-ansible-lint:
 	ansible-lint ansible/site.yml
 
 lint-shellcheck:
-	shellcheck bootstrap-client.sh create-disk-images.sh
+	find . -type f -name '*.sh' -print0 | xargs -0 shellcheck
 
 .PHONY: lint-ansible-lint lint-shellcheck
