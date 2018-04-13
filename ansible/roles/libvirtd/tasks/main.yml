@@ -19,12 +19,20 @@
 
 - block:
 
-  - name: Install NetworkManager configuration file
-    copy:
-      src: NetworkManager.conf
-      dest: /etc/NetworkManager/
+  - block:
+
+    - name: Install NetworkManager
+      pacman:
+        name: networkmanager
+        state: present
+
+    - name: Install NetworkManager configuration file
+      copy:
+        src: NetworkManager.conf
+        dest: /etc/NetworkManager/
+      register: result
+
     when: "'workstations' in group_names"
-    register: result
 
   - name: Reload NetworkManager
     systemd:
