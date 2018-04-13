@@ -9,14 +9,9 @@ class FilterModule(object):
     def filters(self):
         """Return custom filters."""
         return {
-            'systemd_escape': systemd_escape,
             'set_escaped_paths': set_escaped_paths,
+            'systemd_escape': systemd_escape,
         }
-
-
-def systemd_escape(path):
-    """Call systemd-escape(1) on the given path, and return the result."""
-    return subprocess.check_output(('systemd-escape', '--path', path)).strip()
 
 
 def set_escaped_paths(btrfs_subvolumes):
@@ -45,3 +40,8 @@ def set_escaped_paths(btrfs_subvolumes):
             systemd_escape(btrfs_subvolume['path'])
         )
     return btrfs_subvolumes
+
+
+def systemd_escape(path):
+    """Call systemd-escape(1) on the given path, and return the result."""
+    return subprocess.check_output(('systemd-escape', '--path', path)).strip()
