@@ -2,21 +2,21 @@
   assert:
     that: borg_backup_user is defined
 
-- name: Get passwd information about user
+- name: Get passwd information about {{ borg_backup_user }}
   getent:
     database: passwd
     key: '{{ borg_backup_user }}'
     split: ':'
 
-- name: Set variable referencing user's ID
+- name: "Set variable referencing {{ borg_backup_user }}'s ID"
   set_fact:
     borg_backup_user_id: "{{ getent_passwd[borg_backup_user][1] }}"
 
-- name: Set variable referencing user's home directory
+- name: "Set variable referencing {{ borg_backup_user }}'s home directory"
   set_fact:
     borg_backup_user_home: "{{ getent_passwd[borg_backup_user][4] }}"
 
-- name: Get user lingering state
+- name: "Get {{ borg_backup_user }}'s lingering state"
   command: loginctl --property Linger --value show-user {{ borg_backup_user }}
   changed_when: False
   check_mode: False
@@ -33,7 +33,7 @@
 
 - block:
 
-  - name: Create directories in user's home directory
+  - name: "Create directories in {{ borg_backup_user }}'s home directory"
     file:
       path: "{{ borg_backup_user_home }}/{{ item }}"
       state: directory
@@ -69,7 +69,7 @@
 
   # Spawn a user manager for this user at system start-up time. This allows
   # enabled user units to start without that user being logged in.
-  - name: Enable lingering for user
+  - name: Enable lingering for {{ borg_backup_user }}
     command: loginctl enable-linger {{ borg_backup_user }}
     when: result.stdout != 'yes'
 
@@ -81,7 +81,7 @@
   # * https://uggedal.com/journal/ansible-systemd-user/
   # * https://unix.stackexchange.com/questions/346841/why-does-sudo-i-not-set-xdg-runtime-dir-for-the-target-user
   # * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
-  - name: Start and enable periodic backup service for user
+  - name: Start and enable periodic backup service for {{ borg_backup_user }}
     systemd:
       name: borg-backup.timer
       state: started
