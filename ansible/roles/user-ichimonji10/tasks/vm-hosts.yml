@@ -1,9 +1,13 @@
 - block:
 
-  - name: Remove 'psmash-runner-3' script
+  - name: Remove outdated custom executables
     file:
-      path: "{{ ichimonji10_home }}/.local/bin/psmash-runner-3"
+      path: "{{ ichimonji10_home }}/.local/bin/{{ item }}"
       state: absent
+    with_items:
+      - psmash-runner-3
+      - psmash-runner-3-qpid
+      - psmash-runner-3-rabbitmq
 
   - name: Install custom executables into ~/.local/bin
     copy:
