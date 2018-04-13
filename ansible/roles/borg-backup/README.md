@@ -18,9 +18,7 @@ Example Playbook
   roles:
     - user-example  # create user before configuring backups for them
     - role: borg-backup
-      when:
-        - borg_backup_user is defined
-        - borg_backup_passphrase is defined
+      when: borg_backup_user is defined
       vars:
         borg_backup_user: example
 ```
@@ -38,7 +36,7 @@ below:
 # borg_backup_user:
 
 # The passphrase for the Borg repository to which data is backed up. Undefined
-# by default. Required.
+# by default.
 # borg_backup_passphrase:
 
 # These local directories will be backed up to the Borg repository.

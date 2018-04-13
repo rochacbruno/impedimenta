@@ -109,7 +109,6 @@
   roles:
     - role: borg-backup
       when:
-        - borg_backup_passphrase is defined
         - borg_backup_user is defined
       vars:
         borg_backup_directories:
@@ -122,7 +121,6 @@
   roles:
     - role: borg-backup
       when:
-        - borg_backup_passphrase is defined
         - borg_backup_user is defined
       vars:
         borg_backup_user: googoo
@@ -131,7 +129,6 @@
   roles:
     - role: borg-backup
       when:
-        - borg_backup_passphrase is defined
         - borg_backup_user is defined
       vars:
         borg_backup_directories:

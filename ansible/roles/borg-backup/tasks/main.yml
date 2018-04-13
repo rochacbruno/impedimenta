@@ -1,10 +1,8 @@
 - name: Assert required variables have been set
   assert:
-    that:
-      - borg_backup_user is defined
-      - borg_backup_passphrase is defined
+    that: borg_backup_user is defined
 
-- name: Get user home directory
+- name: Get passwd information about user
   getent:
     database: passwd
     key: '{{ borg_backup_user }}'
@@ -19,8 +17,7 @@
     borg_backup_user_home: "{{ getent_passwd[borg_backup_user][4] }}"
 
 - name: Get user lingering state
-  command: >
-    loginctl --property Linger --value show-user {{ borg_backup_user }}
+  command: loginctl --property Linger --value show-user {{ borg_backup_user }}
   changed_when: False
   check_mode: False
   failed_when: False
@@ -49,6 +46,7 @@
       src: borg-backup.sh
       dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup.sh"
       mode: 0700
+    when: borg_backup_passphrase is defined
 
   - name: Customize ssh configuration file
     blockinfile:
@@ -67,6 +65,7 @@
     with_items:
       - borg-backup.service
       - borg-backup.timer
+    when: borg_backup_passphrase is defined
 
   # Spawn a user manager for this user at system start-up time. This allows
   # enabled user units to start without that user being logged in.
@@ -88,8 +87,10 @@
       state: started
       enabled: true
       user: true
+      daemon_reload: true
     environment:
       XDG_RUNTIME_DIR: /run/user/{{ borg_backup_user_id }}
+    when: borg_backup_passphrase is defined
 
   become: true
   become_user: "{{ borg_backup_user }}"
