@@ -57,6 +57,7 @@
         - noto-fonts-emoji
         - ntfs-3g
         - openssh
+        - p7zip
         - pavucontrol
         - pulseaudio
         - python-docutils  # for rst2html
