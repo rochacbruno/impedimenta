@@ -25,6 +25,10 @@
       vars:
         aur_packages:
           - entr
+    - name: syncthing
+      vars:
+        syncthing_usernames:
+          - ichimonji10
 
 - hosts: all:!amelanchier.ichimonji10.name
   roles:
@@ -104,6 +108,10 @@
 - hosts: pine.ichimonji10.name
   roles:
     - user-googoo
+    - name: syncthing
+      vars:
+        syncthing_usernames:
+          - googoo
 
 - hosts: pine.ichimonji10.name
   roles:
