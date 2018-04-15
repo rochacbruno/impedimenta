@@ -71,6 +71,7 @@
         - system-config-printer
         - texlive-core  # for mnemosyne
         - tmux
+        - unrar
         - virt-manager
         - vlc
         - wget
