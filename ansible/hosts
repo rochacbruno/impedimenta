@@ -2,7 +2,6 @@
 # capabilities.
 [workstations]
 beech.ichimonji10.name
-butternut.ichimonji10.name
 
 # These systems host VMs. They typically have powerful hardware.
 [vm-hosts]
