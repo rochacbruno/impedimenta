@@ -1,1 +1,2 @@
-vimrc_color: "jellybeans"
+# badwolf is provided by an AUR package, and thus isn't available on routers.
+vimrc_color: '{{ "jellybeans" if "routers" in group_names else "badwolf" }}'
