@@ -7,7 +7,7 @@
 
   - name: Configure hostapd
     template:
-      src: hostapd.j2
+      src: hostapd.conf
       dest: /etc/hostapd/hostapd.conf
       mode: 0600
     notify: Set an IP address on the secondary wlan interface
@@ -16,14 +16,13 @@
   # When hostapd's configuration file changes, it must be restarted, because
   # many changes aren't taken into account by a simple reload.
   #
-  # Imagine hostapd is stopped:
+  # We leave this as a task here to avoid an unnecessary hostapd restart. To
+  # explain, imagine hostapd is stopped:
   #
   # * If this task were a handler, then the following "start and enable hostapd"
   #   task would start hostapd, and the handler would restart it.
-  # * If this task is left as a task, then this start hostapd, and the following
-  #   "start and enable hostapd" task doesn't (re)start hostapd.
-  #
-  # Thus, we leave this as a task here to avoid an unnecessary hostapd restart.
+  # * If this task is left as a task, then this task starts hostapd, and the
+  #   following "start and enable hostapd" task leaves hostapd running.
   - name: Restart hostapd
     systemd:
       name: hostapd.service
