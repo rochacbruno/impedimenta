@@ -12,6 +12,7 @@
       mode: 0600
     notify: Set an IP address on the secondary wlan interface
     register: result
+    when: hostapd_passphrase is defined
 
   # When hostapd's configuration file changes, it must be restarted, because
   # many changes aren't taken into account by a simple reload.

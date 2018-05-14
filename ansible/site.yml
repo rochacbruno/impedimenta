@@ -91,9 +91,7 @@
 - hosts: routers
   roles:
     - dnsmasq
-    # NOTE: Execute this play only over a wired connection.
-    - role: hostapd
-      when: hostapd_passphrase is defined
+    - hostapd  # NOTE: Execute this play only over a wired connection.
     - netctl-routers
     - nftables-routers
     - wlan-secure
