@@ -7,7 +7,7 @@
 
   - name: Install script to update dynamic DNS
     template:
-      src: dynamic-dns.j2
+      src: dynamic-dns
       dest: /usr/local/bin/dynamic-dns
       mode: 0700
     when: dynamic_dns_urls is defined

@@ -6,7 +6,7 @@
 
   - name: Install script for configuring transmission
     template:
-      src: configure-transmission.py.j2
+      src: configure-transmission.py
       dest: /usr/local/bin/configure-transmission.py
       owner: transmission
       group: transmission

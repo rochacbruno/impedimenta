@@ -12,7 +12,7 @@
 
   - name: Install openvpn credentials file
     template:
-      src: credentials.j2
+      src: credentials
       dest: /etc/openvpn/client/credentials
       mode: 0700
     when:

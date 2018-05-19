@@ -16,7 +16,7 @@
 
   - name: Install msmtp configuration file
     template:
-      src: msmtprc.j2
+      src: msmtprc
       dest: /etc/msmtprc
       owner: root
       group: ichi-machines

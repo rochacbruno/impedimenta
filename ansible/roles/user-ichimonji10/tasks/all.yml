@@ -42,7 +42,7 @@
 
   - name: Install ~/.vimrc
     template:
-      src: vimrc.j2
+      src: vimrc
       dest: "{{ ichimonji10_home }}/.vimrc"
     become_user: ichimonji10
 

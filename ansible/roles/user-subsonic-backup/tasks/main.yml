@@ -52,7 +52,7 @@
 
   - name: Install systemd unit files
     template:
-      src: "{{ item }}.j2"
+      src: "{{ item }}"
       dest: "{{ subsonic_backup_home }}/.config/systemd/user/{{ item }}"
     with_items:
       - subsonic-backup.service
