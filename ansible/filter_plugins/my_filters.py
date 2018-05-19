@@ -44,4 +44,8 @@ def set_escaped_paths(btrfs_subvolumes):
 
 def systemd_escape(path):
     """Call systemd-escape(1) on the given path, and return the result."""
-    return subprocess.check_output(('systemd-escape', '--path', path)).strip()
+    return (
+        subprocess
+        .check_output(('systemd-escape', '--path', path))
+        .strip()
+        .decode('utf-8'))
