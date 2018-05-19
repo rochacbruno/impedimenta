@@ -29,7 +29,7 @@
       name: hostapd.service
       state: restarted
       daemon_reload: yes
-    when: result|changed
+    when: result is changed
     tags: skip_ansible_lint
 
   - name: Start and enable hostapd

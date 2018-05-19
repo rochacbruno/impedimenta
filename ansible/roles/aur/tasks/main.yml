@@ -87,7 +87,7 @@
   # been synced, then pacman will produce errors.
   - name: Sync aur repository
     command: pacman -Sy --config /etc/pacman.d/aur.conf
-    when: result | changed
+    when: result is changed
 
   become: true
 

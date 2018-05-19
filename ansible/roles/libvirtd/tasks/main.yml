@@ -38,7 +38,7 @@
     systemd:
       name: NetworkManager
       state: reloaded
-    when: result|changed
+    when: result is changed
 
   - name: Install dnsmasq configuration file
     template:

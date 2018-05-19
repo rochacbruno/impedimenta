@@ -34,7 +34,7 @@
       - lan
       - wan
       - wlan
-    when: result|changed
+    when: result is changed
     tags: skip_ansible_lint
 
   - name: Start and enable netctl services
