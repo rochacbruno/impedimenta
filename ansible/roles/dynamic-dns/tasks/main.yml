@@ -10,17 +10,25 @@
       src: dynamic-dns.j2
       dest: /usr/local/bin/dynamic-dns
       mode: 0700
+    when: dynamic_dns_urls is defined
 
   - name: Install units for updating dynamic DNS
     copy:
       src: etc_systemd_system/
       dest: /etc/systemd/system/
 
-  - name: Start and enable timer for updating dynamic DNS
-    systemd:
-      name: dynamic-dns.timer
-      state: started
-      enabled: yes
-      daemon_reload: yes
-
   become: true
+
+- name: Check whether /usr/local/bin/dynamic-dns exists
+  stat:
+    path: /usr/local/bin/dynamic-dns
+  register: result
+
+- name: Start and enable timer for updating dynamic DNS
+  systemd:
+    name: dynamic-dns.timer
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  become: true
+  when: result.stat.exists == True

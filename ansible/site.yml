@@ -73,8 +73,7 @@
 - hosts: servers
   roles:
     - sshd
-    - role: dynamic-dns
-      when: dynamic_dns_urls is defined
+    - dynamic-dns
 
 - hosts: servers:!routers
   roles:
