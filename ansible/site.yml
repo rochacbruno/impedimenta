@@ -40,7 +40,6 @@
 - hosts: workstations
   roles:
     - desktop-environment
-    - picocom
 
 - hosts: vm-hosts
   roles:
