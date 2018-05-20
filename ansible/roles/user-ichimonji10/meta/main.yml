@@ -5,5 +5,3 @@ dependencies:
   - {role: libvirtd, when: "'vm-hosts' in group_names"}
   # Creates ichi-machines group.
   - {role: msmtp}
-  # Creates uucp group.
-  - {role: picocom, when: "'workstations' in group_names"}

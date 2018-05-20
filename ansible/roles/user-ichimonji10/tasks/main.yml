@@ -1,6 +1,6 @@
 # The "sys" group is for printing. See:
 # https://wiki.archlinux.org/index.php/Printing#Configuration
-- name: Set ichimonji10's groups
+- name: Define a list of ichimonji10's groups
   set_fact:
     ichimonji10_groups:
       - ichi-machines
@@ -15,9 +15,17 @@
     ichimonji10_groups: "{{ ichimonji10_groups + ['libvirt'] }}"
   when: "'vm-hosts' in group_names"
 
-- name: Append to groups if host in workstations group
-  set_fact:
-    ichimonji10_groups: "{{ ichimonji10_groups + ['uucp'] }}"
+- block:
+
+  - name: Install picocom (and create uucp group)
+    include_role:
+      name: desktop-environment
+      tasks_from: picocom
+
+  - name: Append "uucp" to the list of ichimonji10's groups
+    set_fact:
+      ichimonji10_groups: "{{ ichimonji10_groups + ['uucp'] }}"
+
   when: "'workstations' in group_names"
 
 - name: Create ichimonji10

@@ -85,6 +85,8 @@
 
   become: true
 
+- include_tasks: picocom.yml
+
 - name: Install AUR packages
   include_role:
     name: aur

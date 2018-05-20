@@ -1,4 +1,0 @@
-- name: Install picocom
-  pacman:
-    name: picocom
-  become: true
