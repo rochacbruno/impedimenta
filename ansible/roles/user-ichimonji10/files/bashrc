@@ -26,7 +26,7 @@ alias ls='ls --color=auto --group-directories-first'
 alias rm='rm -I'
 
 export EDITOR="vim"
-export EMAIL="ichimonji10@gmail.com"
+export EMAIL="jerebear@protonmail.com"
 export PAGER=less
 export PATH="$PATH:$HOME/.local/bin"
 export PS1="[\[\e[0;36m\]\u\[\e[0;0m\]@\[\e[0;36m\]\h\[\e[0;0m\]:\[\e[0;36m\]\W\[\e[0;0m\]]\$ "
