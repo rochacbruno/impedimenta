@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # coding=utf-8
-"""SSH into the currently active Pulp Smash system.
+"""SSH into the currently active Pulp Smash host.
 
-The "currently active" Pulp Smash system is the one named in the Pulp Smash
+The "currently active" Pulp Smash host is the one named in the Pulp Smash
 config file. By default, this file is ``~/.config/pulp_smash/settings.json``.
 """
 from subprocess import run
@@ -11,8 +11,8 @@ from pulp_smash import config
 
 
 def main():
-    """SSH into the currently active Pulp Smash system."""
-    run(['ssh', config.get_config().systems[0].hostname])
+    """SSH into the currently active Pulp Smash host."""
+    run(['ssh', config.get_config().hosts[0].hostname])
 
 
 if __name__ == '__main__':
