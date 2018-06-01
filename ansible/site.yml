@@ -76,7 +76,9 @@
 
 - hosts: servers:!routers
   roles:
-    - netctl-generic
+    - name: netctl-generic
+      vars:
+        netctl_generic_external: enp2s0
 
 - hosts: servers:beech.ichimonji10.name
   roles:

@@ -1,6 +1,7 @@
-- name: Reload netctl service
+# Restart, because a reload isn't allowed for netctl@.service units.
+- name: Restart external network interface
   systemd:
     name: netctl@external.service
-    state: reloaded
+    state: restarted
     daemon_reload: yes
   become: true

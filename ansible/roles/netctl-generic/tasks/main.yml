@@ -5,20 +5,23 @@
       name: netctl
 
   - name: Install "external" netctl profile
-    copy:
+    template:
       src: external
       dest: /etc/netctl/external
+    when: netctl_generic_external is defined
     register: result
-    notify: Reload netctl service
+    notify: Restart external network interface
 
   # This task may look pointless when the systemd module can also enable and
   # disable units. However, netctl does more than systemd:
   #
-  # * `netctl enable $profile` also creates a netctl@${profile}.service unit.
-  # * `netctl disable $profile` also deletes a netctl@${profile}.service unit.
+  # * `netctl enable $profile` creates a netctl@${profile}.service unit, and
+  #   then enables the service.
+  # * `netctl disable $profile` deletes a netctl@${profile}.service unit, and
+  #   then disables the service.
   # * `netctl reenable $profile` is a combination of `disable` and `enable`. It's
-  #   especially useful for updating units. (`netctl enable $profile` loudly
-  #   refuses to update existing units.)
+  #   especially useful for updating units. (`netctl enable $profile` will fail
+  #   if a .service file already exists.)
   #
   # Thus, `netctl reenable` must be invoked before systemd can work with the
   # desired units.
@@ -27,11 +30,21 @@
     when: result is changed
     tags: skip_ansible_lint
 
+  - name: Get information about the "external" profile's configuration file
+    stat:
+      path: /etc/netctl/external
+    register: result
+
+  # Why enable this unit here, given that `netctl reenable $profile` enables
+  # this unit? Well, what if this .service is disabled for some reason? The
+  # `netctl reenable $profile` task won't fix that drift, because it executes
+  # conditionally.
   - name: Start and enable netctl service
     systemd:
       name: netctl@external.service
       state: started
       enabled: yes
       daemon_reload: yes
+    when: result.stat.exists
 
   become: true
