@@ -26,6 +26,21 @@
   # ├── transmission.ichimonji10.name.chained.crt
   # └── transmission.ichimonji10.name.key
 
+  # From ansible-doc: The [copy] module recursively copy facility does not scale
+  # to lots (>hundreds) of files. For alternative, see [synchronize] module,
+  # which is a wrapper around `rsync'.
+  - name: Install files for static websites
+    copy:
+      src: '{{ item }}'
+      dest: /usr/share/nginx/
+      owner: root
+      group: root
+      mode: 0644
+      directory_mode: 0755
+    loop:
+      - www.backtobasicsreading.com
+      - www.ichimonji10.name
+
   - name: Start and enable nginx
     systemd:
       name: nginx.service
