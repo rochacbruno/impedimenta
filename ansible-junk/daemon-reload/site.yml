@@ -1,0 +1,6 @@
+- hosts: all
+  tasks:
+    - name: Reload systemd daemon
+      systemd:
+        daemon-reload: true
+      become: true
