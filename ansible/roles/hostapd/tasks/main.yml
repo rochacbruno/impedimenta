@@ -39,19 +39,4 @@
       enabled: yes
       daemon_reload: yes
 
-  - name: Install units for logging available entropy
-    copy:
-      src: '{{ item }}'
-      dest: /etc/systemd/system/{{ item }}
-    with_items:
-      - log-entropy.service
-      - log-entropy.timer
-
-  - name: Start and enable timer for logging available entropy
-    systemd:
-      name: log-entropy.timer
-      state: started
-      enabled: yes
-      daemon_reload: yes
-
   become: true
