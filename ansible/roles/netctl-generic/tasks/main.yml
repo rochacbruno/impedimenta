@@ -8,7 +8,7 @@
     template:
       src: external
       dest: /etc/netctl/external
-    when: netctl_generic_external is defined
+    when: netctl_generic_external_if is defined
     register: result
     notify: Restart external network interface
 
