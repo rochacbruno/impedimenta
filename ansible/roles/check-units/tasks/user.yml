@@ -42,12 +42,6 @@
       src: check-units.timer
       dest: '{{ check_units_home }}/.config/systemd/user/'
 
-  # Spawn a user manager for this user at system start-up time. This allows
-  # enabled user units to start without that user being logged in.
-  - name: Enable lingering for user
-    command: loginctl enable-linger {{ item }}
-    when: result.stdout != 'yes'
-
   # XDG_RUNTIME_DIR must be set, or else the systemd module will be unable to
   # contact the user's DBus instance. In no particular order, see:
   #

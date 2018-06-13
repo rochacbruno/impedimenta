@@ -3,15 +3,17 @@ check-units
 
 Periodically check for failed units, on a system-wide or per-user basis.
 
-If any failed units are found, send an email notification.
+If any failed units are found, send an email notification. The user must belong
+to the "ichi-machines" group, or else they won't have permission to send an
+email.
 
 Multiple instances of systemd may be installed on a host. One instance controls
 the host as a whole, and this is the instance that has PID 1. Additional
 instances may be spawned on a per-user basis. This role configures *very* basic
-monitoring for any number of those managers.
-
-If monitoring is configured for a user, make sure to add them to the
-"ichi-machines" group. Otherwise, they won't have permission to send emails.
+monitoring for any number of those managers. This role does *not* enable
+lingering for the targeted user. Monitoring of a process should not be cause to
+start that process; monitoring of a process should only be done when that
+process has some other reason to start.
 
 Usage
 -----
