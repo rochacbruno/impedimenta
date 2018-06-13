@@ -10,6 +10,8 @@
     user:
       name: aur-packager
       shell: /usr/bin/bash
+      home: /usr/local/lib/aur-packager
+      move_home: true
     notify: Lock password
 
   # Necessary so that `makepkg --syncdeps` works. Also used by shell script below.
