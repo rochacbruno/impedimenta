@@ -5,32 +5,17 @@
     pacman:
       name: hostapd
 
+  # When hostapd's configuration file changes, it must be restarted, because
+  # many changes aren't taken into account by a simple reload.
   - name: Configure hostapd
     template:
       src: hostapd.conf
       dest: /etc/hostapd/hostapd.conf
       mode: 0600
-    notify: Set an IP address on the secondary wlan interface
-    register: result
+    notify:
+      - Restart hostapd
+      - Set an IP address on the secondary wlan interface
     when: hostapd_passphrase is defined
-
-  # When hostapd's configuration file changes, it must be restarted, because
-  # many changes aren't taken into account by a simple reload.
-  #
-  # We leave this as a task here to avoid an unnecessary hostapd restart. To
-  # explain, imagine hostapd is stopped:
-  #
-  # * If this task were a handler, then the following "start and enable hostapd"
-  #   task would start hostapd, and the handler would restart it.
-  # * If this task is left as a task, then this task starts hostapd, and the
-  #   following "start and enable hostapd" task leaves hostapd running.
-  - name: Restart hostapd
-    systemd:
-      name: hostapd.service
-      state: restarted
-      daemon_reload: yes
-    when: result is changed
-    tags: skip_ansible_lint
 
   - name: Start and enable hostapd
     systemd:
