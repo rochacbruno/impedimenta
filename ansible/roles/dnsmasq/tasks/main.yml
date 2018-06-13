@@ -8,10 +8,14 @@
   # When dnsmasq receives a SIGHUP signal (as from `systemctl reload`), it does
   # *not* re-read its configuration file. See dnsmasq(8).
   - name: Install dnsmasq configuration file
-    copy:
+    template:
       src: dnsmasq.conf
       dest: /etc/dnsmasq.conf
     notify: Restart dnsmasq
+    when:
+      - dnsmasq_lan_if is defined
+      - dnsmasq_dmz_if is defined
+      - dnsmasq_wlan_if is defined
 
   - name: Start and enable dnsmasq
     systemd:

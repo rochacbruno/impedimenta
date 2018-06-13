@@ -1,1 +1,4 @@
+dnsmasq_lan_if: enp2s0
+dnsmasq_dmz_if: enp3s0
+dnsmasq_wlan_if: wlp4s0
 hostapd_wlan_if: wlp4s0
