@@ -11,8 +11,7 @@
     copy:
       src: dnsmasq.conf
       dest: /etc/dnsmasq.conf
-    notify:
-      - Restart dnsmasq
+    notify: Restart dnsmasq
 
   - name: Start and enable dnsmasq
     systemd:
