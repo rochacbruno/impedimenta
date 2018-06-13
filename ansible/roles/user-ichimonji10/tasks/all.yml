@@ -10,14 +10,14 @@
 
   - name: Create directories named by ~/.bashrc
     file:
-      path: "{{ ichimonji10_home }}/.local/bin"
+      path: "{{ user_ichimonji10_home }}/.local/bin"
       state: directory
     become_user: ichimonji10
 
   - name: Install ~/.bashrc
     copy:
       src: bashrc
-      dest: "{{ ichimonji10_home }}/.bashrc"
+      dest: "{{ user_ichimonji10_home }}/.bashrc"
     become_user: ichimonji10
 
   - name: Install vim and applications named by ~/.vimrc
@@ -35,15 +35,15 @@
       path: "{{ item }}"
       state: directory
     with_items:
-      - "{{ ichimonji10_home }}/.cache/custom-ctags"
-      - "{{ ichimonji10_home }}/.vim/undo"
-      - "{{ ichimonji10_home }}/code"
+      - "{{ user_ichimonji10_home }}/.cache/custom-ctags"
+      - "{{ user_ichimonji10_home }}/.vim/undo"
+      - "{{ user_ichimonji10_home }}/code"
     become_user: ichimonji10
 
   - name: Install ~/.vimrc
     template:
       src: vimrc
-      dest: "{{ ichimonji10_home }}/.vimrc"
+      dest: "{{ user_ichimonji10_home }}/.vimrc"
     become_user: ichimonji10
 
   become: true

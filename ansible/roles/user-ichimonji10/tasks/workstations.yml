@@ -10,7 +10,7 @@
   - name: Install git config files
     copy:
       src: "{{ item }}"
-      dest: "{{ ichimonji10_home }}/.{{ item }}"
+      dest: "{{ user_ichimonji10_home }}/.{{ item }}"
     with_items:
       - gitconfig
       - gitignore_global
@@ -18,7 +18,7 @@
   - name: Install ~/.pypirc (for twine)
     copy:
       src: pypirc
-      dest: "{{ ichimonji10_home}}/.pypirc"
+      dest: "{{ user_ichimonji10_home }}/.pypirc"
 
   become: true
   become_user: ichimonji10

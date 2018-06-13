@@ -2,7 +2,7 @@
 # https://wiki.archlinux.org/index.php/Printing#Configuration
 - name: Define a list of ichimonji10's groups
   set_fact:
-    ichimonji10_groups:
+    user_ichimonji10_groups:
       - ichi-machines
       - sys
       - wheel
@@ -12,7 +12,7 @@
 # by default." See: https://wiki.archlinux.org/index.php/Libvirt#Using_polkit
 - name: Append to groups if host in vm-hosts group
   set_fact:
-    ichimonji10_groups: "{{ ichimonji10_groups + ['libvirt'] }}"
+    user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['libvirt'] }}"
   when: "'vm-hosts' in group_names"
 
 - block:
@@ -24,14 +24,14 @@
 
   - name: Append "uucp" to the list of ichimonji10's groups
     set_fact:
-      ichimonji10_groups: "{{ ichimonji10_groups + ['uucp'] }}"
+      user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['uucp'] }}"
 
   when: "'workstations' in group_names"
 
 - name: Create ichimonji10
   user:
     name: ichimonji10
-    groups: "{{ ichimonji10_groups }}"
+    groups: "{{ user_ichimonji10_groups }}"
   become: true
 
 - name: Get information about ichimonji10
@@ -42,7 +42,7 @@
 
 - name: Set variable referencing ichimonji10's home directory
   set_fact:
-    ichimonji10_home: "{{ getent_passwd['ichimonji10'][4] }}"
+    user_ichimonji10_home: "{{ getent_passwd['ichimonji10'][4] }}"
 
 - name: Configure basic unit monitoring for user
   include_role:

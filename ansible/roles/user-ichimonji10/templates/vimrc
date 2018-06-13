@@ -101,7 +101,7 @@ set backspace=2
 set scrolloff=5
 " Use syntax highlighting.
 syntax enable
-color {{ vimrc_color }}
+color {{ user_ichimonji10_vimrc_color }}
 " Display interesting characters, such as trailing whitespace, specially.
 set list
 set listchars=trail:·,tab:>-,extends:!
