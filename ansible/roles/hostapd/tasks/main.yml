@@ -12,20 +12,34 @@
       src: hostapd.conf
       dest: /etc/hostapd/hostapd.conf
       mode: 0600
-    notify:
-      - Restart hostapd
-      - Set an IP address on the secondary wlan interface
+    notify: Restart hostapd
     when: hostapd_passphrase is defined
+
+  - name: Install systemd unit files
+    copy:
+      src: '{{ item }}'
+      dest: /etc/systemd/system/
+    with_items:
+      - hostapd.service.d
+      - wlan-secure.service
 
   - name: Start and enable hostapd
     systemd:
       name: hostapd.service
       state: started
-      enabled: yes
-      daemon_reload: yes
+      enabled: true
+      daemon_reload: true
+
+  # This task cleans up after legacy configurations.
+  - name: Disable wlan-secure.service
+    systemd:
+      name: wlan-secure.service
+      enabled: false
+      daemon_reload: true
 
   become: true
 
+# The following tasks all clean up after legacy configurations.
 - name: Check whether unit file exists
   stat:
     path: /etc/systemd/system/{{ item }}
