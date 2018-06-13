@@ -13,15 +13,20 @@
       dest: /etc/hostapd/hostapd.conf
       mode: 0600
     notify: Restart hostapd
-    when: hostapd_passphrase is defined
+    when:
+      - hostapd_passphrase is defined
+      - hostapd_wlan_if is defined
 
-  - name: Install systemd unit files
+  - name: Install hostapd override file
     copy:
-      src: '{{ item }}'
+      src: hostapd.service.d
       dest: /etc/systemd/system/
-    with_items:
-      - hostapd.service.d
-      - wlan-secure.service
+
+  - name: Install wlan-secure unit file
+    template:
+      src: wlan-secure.service
+      dest: /etc/systemd/system/
+    when: hostapd_wlan_if is defined
 
   - name: Start and enable hostapd
     systemd:
