@@ -1,3 +1,0 @@
-dependencies:
-  # Creates ichi-machines group.
-  - {role: msmtp}

@@ -104,12 +104,13 @@
 # Host-specific rules ----------------------------------------------------------
 
 - hosts: pine.ichimonji10.name
-  roles:
-    - user-googoo
-    - name: syncthing
-      vars:
-        syncthing_usernames:
-          - googoo
+  tasks:
+    - name: Delete user googoo
+      user:
+        name: googoo
+        state: absent
+        remove: true
+      become: true
 
 - hosts: pine.ichimonji10.name
   roles:
@@ -122,14 +123,6 @@
           - ~/docs
           - ~/pictures
         borg_backup_user: ichimonji10
-
-- hosts: pine.ichimonji10.name
-  roles:
-    - role: borg-backup
-      when:
-        - borg_backup_user is defined
-      vars:
-        borg_backup_user: googoo
 
 - hosts: pine.ichimonji10.name
   roles:
