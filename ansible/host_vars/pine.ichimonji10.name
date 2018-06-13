@@ -1,1 +1,2 @@
 btrfs_path: /mnt/btrfs
+netctl_generic_external_if: enp2s0
