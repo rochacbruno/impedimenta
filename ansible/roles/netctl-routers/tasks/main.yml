@@ -8,13 +8,13 @@
     copy:
       src: "{{ item }}"
       dest: /etc/netctl/{{ item }}
+    notify: Restart netctl@{{ item }}.service
     with_items:
       - dmz
       - lan
       - wan
       - wlan
     register: result
-    notify: Reload netctl services
 
   # This task may look pointless when the systemd module can also enable and
   # disable units. However, netctl does more than systemd:

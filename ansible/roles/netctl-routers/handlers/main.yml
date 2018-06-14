@@ -1,11 +1,28 @@
-- name: Reload netctl services
+# Restart, because a reload isn't allowed for netctl@.service units.
+- name: Restart netctl@dmz.service
   systemd:
-    name: netctl@{{ item }}.service
-    state: reloaded
+    name: netctl@dmz.service
+    state: restarted
     daemon_reload: yes
-  with_items:
-    - dmz
-    - lan
-    - wan
-    - wlan
+  become: true
+
+- name: Restart netctl@lan.service
+  systemd:
+    name: netctl@lan.service
+    state: restarted
+    daemon_reload: yes
+  become: true
+
+- name: Restart netctl@wan.service
+  systemd:
+    name: netctl@wan.service
+    state: restarted
+    daemon_reload: yes
+  become: true
+
+- name: Restart netctl@wlan.service
+  systemd:
+    name: netctl@wlan.service
+    state: restarted
+    daemon_reload: yes
   become: true
