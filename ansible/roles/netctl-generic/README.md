@@ -8,13 +8,11 @@ suitable for relatively static hosts, like headless servers. This role does the
 following:
 
 1. Install netctl.
-2. If the variable `netctl_generic_external_if` is specified, install a
-   configuration file for a profile called "external." If the configuration file
-   is changed in any way, also update the corresponding systemd service file.
-3. If a configuration file for the "external" netctl profile exists, start and
-   enable the corresponding systemd service.
+2. Install a configuration file for the "external" interface. If the
+   configuration file is changed in any way, also update the corresponding
+   systemd service file. (This includes initial installation.)
+3. Start and enable each of the systemd services.
 
-Variables:
+Required variables:
 
-* `netctl_generic_external_if`: Optional. The name of the network interface that
-  the "external" network profile should manage.
+* `netctl_generic_external_if`: The name of the "external" network interface.

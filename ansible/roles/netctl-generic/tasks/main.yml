@@ -1,3 +1,7 @@
+- name: Assert that required variables are defined
+  assert:
+    that: netctl_generic_external_if is defined
+
 - block:
 
   - name: Install netctl
@@ -8,7 +12,6 @@
     template:
       src: external
       dest: /etc/netctl/external
-    when: netctl_generic_external_if is defined
     register: result
     notify: Restart external network interface
 
@@ -30,11 +33,6 @@
     when: result is changed
     tags: skip_ansible_lint
 
-  - name: Get information about the "external" profile's configuration file
-    stat:
-      path: /etc/netctl/external
-    register: result
-
   # Why enable this unit here, given that `netctl reenable $profile` enables
   # this unit? Well, what if this .service is disabled for some reason? The
   # `netctl reenable $profile` task won't fix that drift, because it executes
@@ -45,6 +43,5 @@
       state: started
       enabled: yes
       daemon_reload: yes
-    when: result.stat.exists
 
   become: true
