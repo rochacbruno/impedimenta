@@ -1,3 +1,7 @@
+- name: Assert required variables are present
+  assert:
+    that: btrfs_subvolumes is defined
+
 # There's three conerns to consider when deciding how to name units:
 #
 # * Compatibility. Various file systems place restrictions on which characters
