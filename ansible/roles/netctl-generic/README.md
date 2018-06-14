@@ -17,4 +17,4 @@ following:
 Variables:
 
 * `netctl_generic_external_if`: Optional. The name of the network interface that
-  the "external" network profile should manage. For example: eth0 or enp2s0.
+  the "external" network profile should manage.
