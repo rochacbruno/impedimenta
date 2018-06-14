@@ -5,7 +5,7 @@
       name: nftables
 
   - name: Install nftables configuration file
-    copy:
+    template:
       src: nftables.conf
       dest: /etc/nftables.conf
     notify: Reload nftables
