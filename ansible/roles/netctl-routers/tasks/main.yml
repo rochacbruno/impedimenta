@@ -1,3 +1,11 @@
+- name: Assert that required variables are defined
+  assert:
+    that:
+      - netctl_routers_wan_if is defined
+      - netctl_routers_lan_if is defined
+      - netctl_routers_dmz_if is defined
+      - netctl_routers_wlan_if is defined
+
 - block:
 
   - name: Install netctl
@@ -5,7 +13,7 @@
       name: netctl
 
   - name: Install netctl profiles
-    copy:
+    template:
       src: "{{ item }}"
       dest: /etc/netctl/{{ item }}
     notify: Restart netctl@{{ item }}.service

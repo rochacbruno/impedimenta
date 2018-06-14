@@ -19,7 +19,7 @@
 # address of a logical interface.
 Description='WLAN interface (insecure infrastructure access point)'
 Connection=ethernet
-Interface=wlp4s0
+Interface={{ netctl_routers_wlan_if }}
 IP=static
 Address=(192.168.12.1/24)
 SkipNoCarrier=yes

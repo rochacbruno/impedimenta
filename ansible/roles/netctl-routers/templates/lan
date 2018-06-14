@@ -1,5 +1,5 @@
 Description='LAN interface'
-Interface=enp2s0
+Interface={{ netctl_routers_lan_if }}
 Connection=ethernet
 IP=static
 Address=(192.168.10.1/24)
