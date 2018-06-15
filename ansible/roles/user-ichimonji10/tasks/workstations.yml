@@ -31,3 +31,4 @@
       - vim-badwolf-git
       - vim-hemisu-git
       - vim-mark
+      - vim-undotree
