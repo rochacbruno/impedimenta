@@ -1,14 +1,3 @@
-# We could perform backups with the subsonic user, by giving it SSH access to
-# the backup host and installing systemd units which would trigger periodic
-# remote backups. However:
-#
-# * The subsonic user's home directory contains files installed by the package
-#   manager and files installed by Subsonic. It would be messy for that
-#   directory to *also* contain files installed by the sysadmin.
-# * It's desirable to have both local backups (with btrfs snapshots) and remote
-#   backups. This only gives us remote backups.
-# * Why give Subsonic SSH access to anywhere? If the subsonic user was
-#   compromised, it would be able to blow away backups.
 - name: Create subsonic-backup user
   user:
     name: subsonic-backup
