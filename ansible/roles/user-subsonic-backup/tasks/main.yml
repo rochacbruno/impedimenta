@@ -1,10 +1,21 @@
-- name: Create subsonic-backup user
-  user:
-    name: subsonic-backup
-    shell: /usr/bin/nologin
-    groups:
-      - subsonic
-  notify: Lock subsonic-backup's password
+- block:
+
+  - name: Create subsonic-backup user
+    user:
+      name: subsonic-backup
+      shell: /usr/bin/nologin
+      groups:
+        - ichi-machines
+        - subsonic
+    notify: Lock subsonic-backup's password
+
+  - name: Configure basic unit monitoring for subsonic-backup user
+    include_role:
+      name: check-units
+    vars:
+      check_units_users:
+        - subsonic-backup
+
   become: true
 
 - name: Get passwd information about subsonic-backup
