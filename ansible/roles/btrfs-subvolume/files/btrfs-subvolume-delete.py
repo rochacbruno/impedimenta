@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 # coding=utf-8
+# pylint:disable=invalid-name
+# It's OK for this module to have an invalid name. It's a shell script, not a
+# module to be imported.
 """Delete old Btrfs subvolumes from a given path.
 
 Each subvolume named ``path-<iso-8601-string>`` is considered, and snapshots
@@ -22,14 +25,16 @@ def main(path, days, weeks):
     now = datetime.datetime.now(datetime.timezone.utc)
     ppath = pathlib.PosixPath(path).resolve()
     basename = ppath.parts[-1]
-    snapshots = ppath.parent.glob(basename + '-*')
+    # For some reason, Pylint thinks that ppath is a PurePath object, instead
+    # of a PosixPath object. And PurePath objects don't have a glob() method.
+    snapshots = ppath.parent.glob(basename + '-*')  # pylint:disable=no-member
     for snapshot in snapshots:
         created = _get_datetime(snapshot.parts[-1].lstrip(basename + '-'))
         age = now - created
         if age <= datetime.timedelta(days=int(days)):
             continue
         elif (age <= datetime.timedelta(weeks=int(weeks)) and
-                created.isoweekday() == 3):
+              created.isoweekday() == 3):
             continue  # 1–7 == mon–sun
         else:
             subprocess.run(['btrfs', 'subvolume', 'delete', str(snapshot)])
@@ -50,4 +55,7 @@ def _get_datetime(timestamp):
 
 
 if __name__ == '__main__':
-    exit(main(*sys.argv[1:]))
+    # TODO: Explicitly parse arguments.
+    # Doing this would provide a better user experience, and might sanitize
+    # input.
+    exit(main(*sys.argv[1:]))  # pylint:disable=no-value-for-parameter
