@@ -18,4 +18,4 @@ lint-ansible-lint:
 lint-syntax-check:
 	ansible-playbook site.yml --syntax-check
 
-.PHONY: help lint
+.PHONY: help lint lint-ansible-lint lint-syntax-check
