@@ -3,17 +3,14 @@ check-units
 
 Periodically check for failed units, on a system-wide or per-user basis.
 
-If any failed units are found, send an email notification. The user must belong
-to the "ichi-machines" group, or else they won't have permission to send an
-email.
+When executed, this role will install, start and enable units to periodically
+check for failed units, plus script for sending notifications when failed units
+are found. If `check_units_users` is defined, this is done for the listed users.
+Otherwise, this is done for the system-wide instance of systemd.
 
-Multiple instances of systemd may be installed on a host. One instance controls
-the host as a whole, and this is the instance that has PID 1. Additional
-instances may be spawned on a per-user basis. This role configures *very* basic
-monitoring for any number of those managers. This role does *not* enable
-lingering for the targeted user. Monitoring of a process should not be cause to
-start that process; monitoring of a process should only be done when that
-process has some other reason to start.
+All users that are to be monitored must exist and belong to the `ichi-machines`
+group _before_ this role is called for those users. User creation roles can't
+depend on this role.
 
 Usage
 -----
@@ -46,12 +43,18 @@ To configure per-user monitoring, create tasks like the following:
 Variables
 ---------
 
-The only accepted variable is ``check_units_users``. It's a list of user names.
-By default, it's unset. If unset, then monitoring will be configured
-system-wide.
+The only accepted variable is `check_units_users`. It's a list of user names.
 
-Alternatives
-------------
+Extra Information
+-----------------
+
+Multiple instances of systemd may be installed on a host. One instance controls
+the host as a whole, and this is the instance that has PID 1. Additional
+instances may be spawned on a per-user basis. This role configures *very* basic
+monitoring for any number of those managers. This role does *not* enable
+lingering for the targeted user. Monitoring of a process should not be cause to
+start that process; monitoring of a process should only be done when that
+process has some other reason to start.
 
 Periodically checking for failed units is a terrible way to monitor the state of
 a host. It would be much better to take an event-based approach, where something
