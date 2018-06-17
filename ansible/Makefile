@@ -7,9 +7,6 @@ help:
 
 lint: lint-syntax-check lint-ansible-lint
 
-lint-syntax-check:
-	ansible-playbook site.yml --syntax-check
-
 # ANSIBLE0017: become_user requires become to work as expected
 #
 # ansible-lint doesn't know how to deal with the case where `become_user: ...`
@@ -17,5 +14,8 @@ lint-syntax-check:
 # block statement.
 lint-ansible-lint:
 	ansible-lint -x ANSIBLE0017 site.yml
+
+lint-syntax-check:
+	ansible-playbook site.yml --syntax-check
 
 .PHONY: help lint
