@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+
+  - name: Wait for host to start
+    wait_for_connection:
+      timeout: 90
+
+  - name: Update packages
+    package:
+      name: '*'
+      state: latest
+    become: true
+
+  - name: Shut down system
+    shell: sleep 5 && systemctl poweroff
+    async: 1
+    poll: 0
+    become: true
