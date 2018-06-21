@@ -5,8 +5,8 @@
       name: subsonic-backup
       shell: /usr/bin/nologin
       groups:
-        - ichi-machines
-        - subsonic
+      - ichi-machines
+      - subsonic
     notify: Lock subsonic-backup's password
 
   - name: Configure basic unit monitoring for subsonic-backup user
@@ -14,7 +14,7 @@
       name: check-units
     vars:
       check_units_users:
-        - subsonic-backup
+      - subsonic-backup
 
   become: true
 
@@ -46,17 +46,17 @@
       path: "{{ subsonic_backup_home }}/{{ item }}"
       state: directory
     with_items:
-      - '.config/systemd/user'
-      - '.local/bin'
-      - 'backups'
+    - '.config/systemd/user'
+    - '.local/bin'
+    - 'backups'
 
   - name: Install systemd unit files
     template:
       src: "{{ item }}"
       dest: "{{ subsonic_backup_home }}/.config/systemd/user/{{ item }}"
     with_items:
-      - subsonic-backup.service
-      - subsonic-backup.timer
+    - subsonic-backup.service
+    - subsonic-backup.timer
 
   # Spawn a user manager for this user at system start-up time. This allows
   # enabled user units to start without that user being logged in.

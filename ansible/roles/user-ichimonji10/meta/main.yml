@@ -1,7 +1,8 @@
+# group-wheel configures the "wheel" group.
+# libvirtd creates the libvirt group.
+# msmtp creates the ichi-machines group.
 dependencies:
-  # Configures the "wheel" group.
-  - {role: group-wheel}
-  # Creates libvirt group.
-  - {role: libvirtd, when: "'vm-hosts' in group_names"}
-  # Creates ichi-machines group.
-  - {role: msmtp}
+- group-wheel
+- role: libvirtd
+  when: "'vm-hosts' in group_names"
+- msmtp

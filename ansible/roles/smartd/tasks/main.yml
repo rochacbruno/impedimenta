@@ -33,7 +33,7 @@
       enabled: yes
       daemon_reload: yes
     with_items:
-      - smart-test-long.timer
-      - smart-test-short.timer
+    - smart-test-long.timer
+    - smart-test-short.timer
 
   become: true

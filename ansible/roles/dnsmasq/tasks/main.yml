@@ -13,9 +13,9 @@
       dest: /etc/dnsmasq.conf
     notify: Restart dnsmasq
     when:
-      - dnsmasq_lan_if is defined
-      - dnsmasq_dmz_if is defined
-      - dnsmasq_wlan_if is defined
+    - dnsmasq_lan_if is defined
+    - dnsmasq_dmz_if is defined
+    - dnsmasq_wlan_if is defined
 
   - name: Start and enable dnsmasq
     systemd:

@@ -1,10 +1,10 @@
 - name: Assert that required variables are defined
   assert:
     that:
-      - netctl_routers_wan_if is defined
-      - netctl_routers_lan_if is defined
-      - netctl_routers_dmz_if is defined
-      - netctl_routers_wlan_if is defined
+    - netctl_routers_wan_if is defined
+    - netctl_routers_lan_if is defined
+    - netctl_routers_dmz_if is defined
+    - netctl_routers_wlan_if is defined
 
 - block:
 
@@ -18,10 +18,10 @@
       dest: /etc/netctl/{{ item }}
     notify: Restart netctl@{{ item }}.service
     with_items:
-      - dmz
-      - lan
-      - wan
-      - wlan
+    - dmz
+    - lan
+    - wan
+    - wlan
     register: result
 
   # This task may look pointless when the systemd module can also enable and
@@ -38,10 +38,10 @@
   - name: Create or update netctl services
     command: netctl reenable {{ item }}
     with_items:
-      - dmz
-      - lan
-      - wan
-      - wlan
+    - dmz
+    - lan
+    - wan
+    - wlan
     when: result is changed
     tags: skip_ansible_lint
 
@@ -52,9 +52,9 @@
       enabled: yes
       daemon_reload: yes
     with_items:
-      - dmz
-      - lan
-      - wan
-      - wlan
+    - dmz
+    - lan
+    - wan
+    - wlan
 
   become: true

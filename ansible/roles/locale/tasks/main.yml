@@ -5,8 +5,8 @@
       name: "{{ item }}"
       state: present
     with_items:
-      - en_US
-      - en_US.UTF-8
+    - en_US
+    - en_US.UTF-8
 
   - name: Set LANG in /etc/locale.conf
     copy:

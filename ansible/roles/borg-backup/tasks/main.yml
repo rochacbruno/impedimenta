@@ -26,8 +26,8 @@
 - name: Install borg and its dependencies
   pacman:
     name:
-      - borg
-      - openssh  # for connecting to borg repositories on remote hosts
+    - borg
+    - openssh  # for connecting to borg repositories on remote hosts
     state: present
   become: true
 
@@ -38,8 +38,8 @@
       path: "{{ borg_backup_user_home }}/{{ item }}"
       state: directory
     with_items:
-      - '.local/bin'
-      - '.ssh'
+    - '.local/bin'
+    - '.ssh'
 
   - name: Install borg backup script
     template:
@@ -55,16 +55,16 @@
       mode: 0600
       block: |
         Host usw-s001.rsync.net
-            User 1025
-            IdentityFile ~/.ssh/usw-s001.rsync.net
+          User 1025
+          IdentityFile ~/.ssh/usw-s001.rsync.net
 
   - name: Install systemd unit files
     template:
       src: "{{ item }}"
       dest: "{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}"
     with_items:
-      - borg-backup.service
-      - borg-backup.timer
+    - borg-backup.service
+    - borg-backup.timer
     when: borg_backup_passphrase is defined
 
   # Spawn a user manager for this user at system start-up time. This allows

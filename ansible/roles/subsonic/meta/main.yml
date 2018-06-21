@@ -1,4 +1,4 @@
+# Subsonic looks at files that these users own.
 dependencies:
-  # Subsonic looks at files that these users own.
-  - {role: transmission}
-  - {role: user-ichimonji10}
+- transmission
+- user-ichimonji10

@@ -3,7 +3,7 @@
     name: aur
   vars:
     aur_packages:
-      - subsonic
+    - subsonic
 
 - block:
 
@@ -19,8 +19,8 @@
     user:
       name: subsonic
       groups:
-        - ichimonji10
-        - transmission
+      - ichimonji10
+      - transmission
 
   - name: Start and enable Subsonic
     systemd:

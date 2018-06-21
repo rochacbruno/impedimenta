@@ -1,18 +1,18 @@
 btrfs_path: /mnt/btrfs
 btrfs_subvolumes:
-  - path: '{{ btrfs_path }}/home'
-  - path: '{{ btrfs_path }}/root'
-    days: 5
-    weeks: 2
-    snapshot: false
-  - path: '{{ btrfs_path }}/srv/subsonic'
-    days: 5
-    weeks: 2
-  - path: '{{ btrfs_path }}/var/lib/transmission'
-    days: 5
-    weeks: 2
+- path: '{{ btrfs_path }}/home'
+- path: '{{ btrfs_path }}/root'
+  days: 5
+  weeks: 2
+  snapshot: false
+- path: '{{ btrfs_path }}/srv/subsonic'
+  days: 5
+  weeks: 2
+- path: '{{ btrfs_path }}/var/lib/transmission'
+  days: 5
+  weeks: 2
 
 netctl_generic_external_if: enp2s0
 
 syncthing_usernames:
-  - ichimonji10
+- ichimonji10

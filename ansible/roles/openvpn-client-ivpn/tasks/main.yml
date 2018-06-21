@@ -16,8 +16,8 @@
       dest: /etc/openvpn/client/credentials
       mode: 0700
     when:
-      - openvpn_client_ivpn_username is defined
-      - openvpn_client_ivpn_password is defined
+    - openvpn_client_ivpn_username is defined
+    - openvpn_client_ivpn_password is defined
 
   - name: Install routing configuration scripts
     copy:

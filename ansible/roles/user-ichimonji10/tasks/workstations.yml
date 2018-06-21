@@ -1,8 +1,8 @@
 - name: Install git and twine
   pacman:
     name:
-      - git
-      - twine
+    - git
+    - twine
   become: true
 
 - block:
@@ -12,8 +12,8 @@
       src: "{{ item }}"
       dest: "{{ user_ichimonji10_home }}/.{{ item }}"
     with_items:
-      - gitconfig
-      - gitignore_global
+    - gitconfig
+    - gitignore_global
 
   - name: Install ~/.pypirc (for twine)
     copy:
@@ -28,7 +28,7 @@
     name: aur
   vars:
     aur_packages:
-      - vim-badwolf-git
-      - vim-hemisu-git
-      - vim-mark
-      - vim-undotree
+    - vim-badwolf-git
+    - vim-hemisu-git
+    - vim-mark
+    - vim-undotree

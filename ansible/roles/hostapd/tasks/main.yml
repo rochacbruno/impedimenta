@@ -14,8 +14,8 @@
       mode: 0600
     notify: Restart hostapd
     when:
-      - hostapd_passphrase is defined
-      - hostapd_wlan_if is defined
+    - hostapd_passphrase is defined
+    - hostapd_wlan_if is defined
 
   - name: Install hostapd override file
     copy:
@@ -49,8 +49,8 @@
   stat:
     path: /etc/systemd/system/{{ item }}
   loop:
-    - log-entropy.service
-    - log-entropy.timer
+  - log-entropy.service
+  - log-entropy.timer
   register: result
 
 - block:

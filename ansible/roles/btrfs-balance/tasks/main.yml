@@ -10,8 +10,8 @@
       src: '{{ item }}'
       dest: /etc/systemd/system/{{ item }}
     with_items:
-      - btrfs-balance.service
-      - btrfs-balance.timer
+    - btrfs-balance.service
+    - btrfs-balance.timer
 
   - name: Start and enable timer for starting btrfs balances
     systemd:

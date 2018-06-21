@@ -3,9 +3,9 @@
 - name: Define a list of ichimonji10's groups
   set_fact:
     user_ichimonji10_groups:
-      - ichi-machines
-      - sys
-      - wheel
+    - ichi-machines
+    - sys
+    - wheel
   become: true
 
 # "Members of the libvirt group have passwordless access to the RW daemon socket
@@ -49,7 +49,7 @@
     name: check-units
   vars:
     check_units_users:
-      - ichimonji10
+    - ichimonji10
 
 - include_tasks: all.yml
 - include_tasks: vm-hosts.yml

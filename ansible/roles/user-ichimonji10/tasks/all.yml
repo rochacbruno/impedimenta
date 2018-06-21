@@ -4,9 +4,9 @@
   - name: Install bash and applications named by ~/.bashrc
     pacman:
       name:
-        - bash
-        - vim
-        - less
+      - bash
+      - vim
+      - less
 
   - name: Create directories named by ~/.bashrc
     file:
@@ -23,11 +23,11 @@
   - name: Install vim and applications named by ~/.vimrc
     pacman:
       name:
-        - ctags
-        - vim
-        - vim-jellybeans
-        - vim-nerdtree
-        - vim-tagbar
+      - ctags
+      - vim
+      - vim-jellybeans
+      - vim-nerdtree
+      - vim-tagbar
       state: present
 
   - name: Create directories named by ~/.vimrc
@@ -35,9 +35,9 @@
       path: "{{ item }}"
       state: directory
     with_items:
-      - "{{ user_ichimonji10_home }}/.cache/custom-ctags"
-      - "{{ user_ichimonji10_home }}/.vim/undo"
-      - "{{ user_ichimonji10_home }}/code"
+    - "{{ user_ichimonji10_home }}/.cache/custom-ctags"
+    - "{{ user_ichimonji10_home }}/.vim/undo"
+    - "{{ user_ichimonji10_home }}/code"
     become_user: ichimonji10
 
   - name: Install ~/.vimrc

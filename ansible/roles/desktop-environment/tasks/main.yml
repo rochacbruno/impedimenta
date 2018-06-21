@@ -1,20 +1,20 @@
 - block:
 
+  # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
   - name: Install video driver (beech)
     pacman:
       name:
-        # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-        - mesa-vdpau
-        - xf86-video-amdgpu
+      - mesa-vdpau
+      - xf86-video-amdgpu
       state: present
     when: "inventory_hostname == 'beech.ichimonji10.name'"
 
+  # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
   - name: Install video driver (butternut)
     pacman:
       name:
-        # See: https://wiki.archlinux.org/index.php/Hardware_video_acceleration
-        - mesa-vdpau
-        - xf86-video-amdgpu
+      - mesa-vdpau
+      - xf86-video-amdgpu
       state: present
     when: "inventory_hostname == 'butternut.ichimonji10.name'"
 
@@ -24,62 +24,62 @@
   - name: Install applications
     pacman:
       name:
-        - ansible
-        - ansible-lint
-        - audacious
-        - calibre
-        - chromium
-        - cmark
-        - easytag
-        - evince
-        - exfat-utils
-        - file-roller
-        - firefox
-        - gimp
-        - git
-        - gnome-keyring
-        - gptfdisk
-        - graphviz
-        - gvfs  # optional for thunar
-        - hexchat
-        - iperf3
-        - iw
-        - light-locker  # https://wiki.archlinux.org/index.php/Xfce#Panel_lock_button
-        - lightdm
-        - lightdm-gtk-greeter-settings
-        - lshw
-        - lsof
-        - namcap
-        - network-manager-applet
-        - networkmanager
-        - networkmanager-openvpn
-        - noto-fonts
-        - noto-fonts-emoji
-        - ntfs-3g
-        - openssh
-        - p7zip
-        - pavucontrol
-        - pulseaudio
-        - python-docutils  # for rst2html
-        - python-wheel
-        - qt4  # for vlc
-        - shellcheck
-        - simple-scan
-        - sshfs
-        - sshpass  # optional for ansible
-        - sudo
-        - sysstat
-        - system-config-printer
-        - texlive-core  # for mnemosyne
-        - tmux
-        - unrar
-        - virt-manager
-        - vlc
-        - wget
-        - xclip
-        - xfce4
-        - xfce4-goodies
-        - xorg-server
+      - ansible
+      - ansible-lint
+      - audacious
+      - calibre
+      - chromium
+      - cmark
+      - easytag
+      - evince
+      - exfat-utils
+      - file-roller
+      - firefox
+      - gimp
+      - git
+      - gnome-keyring
+      - gptfdisk
+      - graphviz
+      - gvfs  # optional for thunar
+      - hexchat
+      - iperf3
+      - iw
+      - light-locker  # https://wiki.archlinux.org/index.php/Xfce#Panel_lock_button
+      - lightdm
+      - lightdm-gtk-greeter-settings
+      - lshw
+      - lsof
+      - namcap
+      - network-manager-applet
+      - networkmanager
+      - networkmanager-openvpn
+      - noto-fonts
+      - noto-fonts-emoji
+      - ntfs-3g
+      - openssh
+      - p7zip
+      - pavucontrol
+      - pulseaudio
+      - python-docutils  # for rst2html
+      - python-wheel
+      - qt4  # for vlc
+      - shellcheck
+      - simple-scan
+      - sshfs
+      - sshpass  # optional for ansible
+      - sudo
+      - sysstat
+      - system-config-printer
+      - texlive-core  # for mnemosyne
+      - tmux
+      - unrar
+      - virt-manager
+      - vlc
+      - wget
+      - xclip
+      - xfce4
+      - xfce4-goodies
+      - xorg-server
       state: present
     notify: Set install reason for optional dependencies
 
@@ -92,12 +92,12 @@
     name: aur
   vars:
     aur_packages:
-      - brother-hll2395dw
-      - brscan4
-      - mnemosyne
-      - ms-sys
-      - pkgbuild-introspection
-      - python-rst2pdf
+    - brother-hll2395dw
+    - brscan4
+    - mnemosyne
+    - ms-sys
+    - pkgbuild-introspection
+    - python-rst2pdf
 
 # Immediately starting these applications - especially at install time - could
 # cause complications.
@@ -107,8 +107,8 @@
     enabled: yes
     daemon_reload: yes
   with_items:
-    - NetworkManager.service
-    - lightdm.service
+  - NetworkManager.service
+  - lightdm.service
   become: true
 
 - name: Enable and start CUPS

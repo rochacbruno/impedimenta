@@ -1,117 +1,117 @@
 - hosts: all
   roles:
-    - check-units
-    - crda
-    - intel-ucode
-    - lm-sensors
-    - locale
-    - pkgfile
-    - reflector
-    - smartd
-    - time
-    - user-ichimonji10
+  - check-units
+  - crda
+  - intel-ucode
+  - lm-sensors
+  - locale
+  - pkgfile
+  - reflector
+  - smartd
+  - time
+  - user-ichimonji10
   tasks:
-    - name: Install useful applications
-      pacman:
-        name:
-          - bind-tools
-          - tree
-      become: true
+  - name: Install useful applications
+    pacman:
+      name:
+      - bind-tools
+      - tree
+    become: true
 
 - hosts: all:!routers
   roles:
-    - nftables-generic
-    - name: aur
-      vars:
-        aur_packages:
-          - entr
-    - syncthing
+  - nftables-generic
+  - name: aur
+    vars:
+      aur_packages:
+      - entr
+  - syncthing
   tasks:
-    - name: Install useful applications
-      pacman:
-        name: pacman-contrib
-      become: true
+  - name: Install useful applications
+    pacman:
+      name: pacman-contrib
+    become: true
 
 - hosts: all:!amelanchier.ichimonji10.name
   roles:
-    - name: aur
-      vars:
-        aur_packages:
-          - systemd-boot-pacman-hook
+  - name: aur
+    vars:
+      aur_packages:
+      - systemd-boot-pacman-hook
 
 - hosts: workstations
   roles:
-    - desktop-environment
+  - desktop-environment
 
 - hosts: vm-hosts
   roles:
-    - libvirtd
+  - libvirtd
 
 - hosts: btrfs-hosts
   roles:
-    - btrfs-balance
-    - btrfs-scrub
+  - btrfs-balance
+  - btrfs-scrub
 
 - hosts: servers
   roles:
-    - sshd
-    - dynamic-dns
+  - sshd
+  - dynamic-dns
 
 - hosts: servers:!routers
   roles:
-    - netctl-generic
+  - netctl-generic
 
 - hosts: servers:beech.ichimonji10.name
   roles:
-    - apcupsd
+  - apcupsd
 
 - hosts: bittorrent-hosts
   roles:
-    - transmission
+  - transmission
 
 - hosts: routers
   roles:
-    - dnsmasq
-    - hostapd  # NOTE: Execute this play only over a wired connection.
-    - netctl-routers
-    - nftables-routers
+  - dnsmasq
+  - hostapd  # NOTE: Execute this play only over a wired connection.
+  - netctl-routers
+  - nftables-routers
 
 - hosts: webservers
   roles:
-    - nginx  # Make sure to install SSL certificates.
-    - user-subsonic-backup  # depends on "subsonic" role
+  - nginx  # Make sure to install SSL certificates.
+  - user-subsonic-backup  # depends on "subsonic" role
 
 # Host-specific rules ----------------------------------------------------------
 
 - hosts: pine.ichimonji10.name
   tasks:
-    - name: Delete user googoo
-      user:
-        name: googoo
-        state: absent
-        remove: true
-      become: true
+  - name: Delete user googoo
+    user:
+      name: googoo
+      state: absent
+      remove: true
+    become: true
   roles:
-    - btrfs-subvolume
+  - btrfs-subvolume
 
 - hosts: pine.ichimonji10.name
   roles:
-    - role: borg-backup
-      when:
-        - borg_backup_user is defined
-      vars:
-        borg_backup_directories:
-          - ~/books
-          - ~/docs
-          - ~/pictures
-        borg_backup_user: ichimonji10
+  - role: borg-backup
+    when:
+    - borg_backup_user is defined
+    vars:
+      borg_backup_directories:
+      - ~/books
+      - ~/docs
+      - ~/pictures
+      borg_backup_user: ichimonji10
 
 - hosts: pine.ichimonji10.name
   roles:
-    - role: borg-backup
-      when:
-        - borg_backup_user is defined
-      vars:
-        borg_backup_directories:
-          - ~/backups
-        borg_backup_user: subsonic-backup
+  - role: borg-backup
+    when:
+    - borg_backup_user is defined
+    vars:
+      borg_backup_directories:
+      - ~/backups
+      borg_backup_user: subsonic-backup
