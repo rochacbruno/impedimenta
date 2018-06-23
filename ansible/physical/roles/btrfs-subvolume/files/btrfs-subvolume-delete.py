@@ -6,24 +6,18 @@
 """Delete old Btrfs subvolumes from a given path."""
 import argparse
 import datetime
+import io
 import pathlib
 import subprocess
+import textwrap
 
 
 def main():
     """Parse arguments, and call other functions as needed."""
     parser = argparse.ArgumentParser(
+        formatter_class=argparse.RawDescriptionHelpFormatter,
         description='Delete old btrfs subvolumes.',
-        epilog='''
-        When this script executes, it will search for files named `path-*`.
-        Each file named `path-<iso-8601-string>` is assumed to be a btrfs
-        subvolume of `path`, and is considered for deletion. <iso-8601-string>
-        is assumed to describe when the snapshot was created. The deletion
-        logic is as follows: If the snapshot is less than the given number of
-        days, it is kept. Otherwise, if the snapshot is less than the given
-        number of weeks and was created on a Wednesday, it is kept. Otherwise,
-        the snapshot is deleted.
-        ''',
+        epilog=_get_epilog(),
     )
     parser.add_argument(
         'path',
@@ -33,15 +27,12 @@ def main():
     parser.add_argument(
         'days',
         type=int,
-        help='Snapshots less than this many days old are kept.',
+        help='The maximum age of snapshots, in days.',
     )
     parser.add_argument(
         'weeks',
         type=int,
-        help='''
-        Snapshots less than this many weeks old and created on a Wednesday are
-        kept.
-        ''',
+        help='The maximum age of snapshots, in weeks.',
     )
     args = parser.parse_args()
     find_prune_snapshots(args.path, args.days, args.weeks)
@@ -79,6 +70,39 @@ def _get_datetime(timestamp):
         # root-2016-08-21T18:03-04:00 → root-2016-08-21T18:03-0400
         timestamp = timestamp[:-3] + timestamp[-2:]
     return datetime.datetime.strptime(timestamp, '%Y-%m-%dT%H:%M%z')
+
+
+def _get_epilog():
+    """Return a string for use in argparse's epilog."""
+    wrapper = textwrap.TextWrapper()
+    with io.StringIO() as handle:
+        handle.write(wrapper.fill(textwrap.dedent('''\
+            When this script executes, it will search for files named `path-*`.
+            Each file named `path-<iso-8601-string>` is assumed to be a btrfs
+            subvolume of `path`, and is considered for deletion. <iso-8601-string>
+            is assumed to describe when the snapshot was created. The deletion
+            logic is as follows:
+            ''')))
+
+        handle.write('\n\n')
+        wrapper.initial_indent = '1. '
+        wrapper.subsequent_indent = '   '
+        handle.write(wrapper.fill(
+            'If the snapshot is not yet <days> old, it is kept.'
+        ))
+
+        handle.write('\n')
+        wrapper.initial_indent = '2. '
+        handle.write(wrapper.fill(textwrap.dedent('''\
+            If the snapshot is not yet <weeks> old and was created on a
+            Wednesday, it is kept.
+            ''')))
+
+        handle.write('\n')
+        wrapper.initial_indent = '3. '
+        handle.write(wrapper.fill('The snapshot is deleted.'))
+
+        return handle.getvalue()
 
 
 if __name__ == '__main__':
