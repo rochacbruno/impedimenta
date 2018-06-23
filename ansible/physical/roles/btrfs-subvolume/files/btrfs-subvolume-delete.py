@@ -3,24 +3,51 @@
 # pylint:disable=invalid-name
 # It's OK for this module to have an invalid name. It's a shell script, not a
 # module to be imported.
-"""Delete old Btrfs subvolumes from a given path.
-
-Each subvolume named ``path-<iso-8601-string>`` is considered, and snapshots
-with other names are ignored. <iso-8601-string> is assumed to describe when the
-snapshot was created. For each snapshot:
-
-1. If the snapshot is less than the given number of days, it is kept.
-2. If the snapshot is less than the given number of weeks and was created on a
-   Wednesday, it is kept.
-3. Otherwise, the snapshot is deleted.
-"""
+"""Delete old Btrfs subvolumes from a given path."""
+import argparse
 import datetime
 import pathlib
 import subprocess
-import sys
 
 
-def main(path, days, weeks):
+def main():
+    """Parse arguments, and call other functions as needed."""
+    parser = argparse.ArgumentParser(
+        description='Delete old btrfs subvolumes.',
+        epilog='''
+        When this script executes, it will search for files named `path-*`.
+        Each file named `path-<iso-8601-string>` is assumed to be a btrfs
+        subvolume of `path`, and is considered for deletion. <iso-8601-string>
+        is assumed to describe when the snapshot was created. The deletion
+        logic is as follows: If the snapshot is less than the given number of
+        days, it is kept. Otherwise, if the snapshot is less than the given
+        number of weeks and was created on a Wednesday, it is kept. Otherwise,
+        the snapshot is deleted.
+        ''',
+    )
+    parser.add_argument(
+        'path',
+        type=str,
+        help='The base path to use when searching for snapshots.',
+    )
+    parser.add_argument(
+        'days',
+        type=int,
+        help='Snapshots less than this many days old are kept.',
+    )
+    parser.add_argument(
+        'weeks',
+        type=int,
+        help='''
+        Snapshots less than this many weeks old and created on a Wednesday are
+        kept.
+        ''',
+    )
+    args = parser.parse_args()
+    find_prune_snapshots(args.path, args.days, args.weeks)
+
+
+def find_prune_snapshots(path, days, weeks):
     """Find and prune snapshots."""
     now = datetime.datetime.now(datetime.timezone.utc)
     ppath = pathlib.PosixPath(path).resolve()
@@ -55,7 +82,4 @@ def _get_datetime(timestamp):
 
 
 if __name__ == '__main__':
-    # TODO: Explicitly parse arguments.
-    # Doing this would provide a better user experience, and might sanitize
-    # input.
-    exit(main(*sys.argv[1:]))  # pylint:disable=no-value-for-parameter
+    exit(main())
