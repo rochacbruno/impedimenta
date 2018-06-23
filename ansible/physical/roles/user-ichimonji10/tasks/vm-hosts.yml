@@ -15,6 +15,11 @@
       dest: "{{ user_ichimonji10_home }}/.local/bin/"
       mode: 0755
 
+  - name: Delete outdated psmash-ssh executable
+    file:
+      path: "{{ user_ichimonji10_home }}/.local/bin/psmash-ssh"
+      state: absent
+
   - name: Create "{{ user_ichimonji10_home }}/.config/libvirt"
     file:
       state: directory
