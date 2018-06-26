@@ -41,7 +41,7 @@
 
 - hosts: workstations
   roles:
-  - desktop-environment
+  - workstation
 
 - hosts: vm-hosts
   roles:
