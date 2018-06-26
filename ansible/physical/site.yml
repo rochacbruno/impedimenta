@@ -47,7 +47,7 @@
   roles:
   - netctl-generic
 
-- hosts: servers:beech.ichimonji10.name
+- hosts: apc-hosts
   roles:
   - apcupsd
 
