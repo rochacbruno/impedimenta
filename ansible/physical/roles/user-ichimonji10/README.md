@@ -11,8 +11,8 @@ On all hosts, do the following:
 * Create a user that belongs to the appropriate groups, depending on the groups
   that the target host belongs to.
 * Include the "check-units" role.
-* Install several useful applications, and create the directories referenced by
-  those application's configuration files.
+* Install several configuration files, plus the things (like directories) that
+  they reference.
 
 On VM hosts, also do the following:
 

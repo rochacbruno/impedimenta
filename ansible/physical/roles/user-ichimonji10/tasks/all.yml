@@ -1,12 +1,5 @@
 - block:
 
-  # Last time I checked, vanilla Arch systems don't ship with these applications.
-  - name: Install bash and applications named by ~/.bashrc
-    pacman:
-      name:
-      - bash
-      - less
-
   - name: Create directories named by ~/.bashrc
     file:
       path: "{{ user_ichimonji10_home }}/.local/bin"

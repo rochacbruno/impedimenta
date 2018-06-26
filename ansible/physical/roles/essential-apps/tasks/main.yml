@@ -1,0 +1,8 @@
+- name: Install essential applications
+  pacman:
+    name:
+    - bash
+    - less
+    - bind-tools
+    - tree
+  become: true

@@ -2,6 +2,7 @@
   roles:
   - check-units
   - crda
+  - essential-apps
   - intel-ucode
   - lm-sensors
   - locale
@@ -10,13 +11,6 @@
   - smartd
   - time
   - user-ichimonji10
-  tasks:
-  - name: Install useful applications
-    pacman:
-      name:
-      - bind-tools
-      - tree
-    become: true
 
 - hosts: dev-hosts
   roles:
