@@ -3,6 +3,12 @@
 [workstations]
 beech.ichimonji10.name
 
+# These systems are used for software development. They might or might not have
+# a GUI.
+[dev-hosts]
+beech.ichimonji10.name
+pine.ichimonji10.name
+
 # These systems host VMs. They typically have powerful hardware.
 [vm-hosts]
 beech.ichimonji10.name

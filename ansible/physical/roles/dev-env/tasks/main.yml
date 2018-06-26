@@ -1,0 +1,23 @@
+- name: Install development tools
+  pacman:
+    name:
+    - ctags
+    - git
+    - pacman-contrib
+    - twine
+    - vim
+    - vim-jellybeans
+    - vim-nerdtree
+    - vim-tagbar
+  become: true
+
+- name: Install development tools from the AUR
+  include_role:
+    name: aur
+  vars:
+    aur_packages:
+    - entr
+    - vim-badwolf-git
+    - vim-hemisu-git
+    - vim-mark
+    - vim-undotree

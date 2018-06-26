@@ -1,8 +1,11 @@
 # group-wheel configures the "wheel" group.
 # libvirtd creates the libvirt group.
 # msmtp creates the ichi-machines group.
+# dev-env installs tools referenced by various config files.
 dependencies:
 - group-wheel
 - role: libvirtd
   when: "'vm-hosts' in group_names"
 - msmtp
+- role: dev-env
+  when: "'dev-hosts' in group_names"
