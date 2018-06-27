@@ -12,7 +12,7 @@ help:
 
 # Don't depend on lint-ansible-review yet, because compliance is a far way off,
 # and ansible-review is still being evaluated.
-lint: lint-syntax-check lint-ansible-lint lint-pylint
+lint: lint-syntax-check lint-ansible-lint lint-ansible-review lint-pylint
 
 # ANSIBLE0017: become_user requires become to work as expected
 #
