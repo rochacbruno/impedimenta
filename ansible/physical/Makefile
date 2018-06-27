@@ -1,4 +1,4 @@
-CPU_COUNT=$(shell python3 -c "from multiprocessing import cpu_count; print(cpu_count())")
+CPU_COUNT=$(shell nproc)
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of:"
