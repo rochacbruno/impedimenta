@@ -22,7 +22,7 @@ lint-ansible-lint:
 	ansible-lint -x ANSIBLE0017 site.yml
 
 lint-ansible-review:
-	find . -path './host_vars/*' -print0 -o -type f -name '*.yml' -print0 | xargs -0 ansible-review
+	find . -path ./inventory -print0 -o -path './host_vars/*' -print0 -o -type f -name '*.yml' -print0 | xargs -0 ansible-review
 
 lint-pylint:
 	find . -type f -name '*.py' -print0 | xargs -0 pylint -j $(CPU_COUNT)
