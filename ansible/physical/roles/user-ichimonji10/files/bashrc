@@ -13,8 +13,6 @@
 # This is a kludge.
 if [ -n "$TMUX" ]; then
     export TERM=screen-256color
-else
-    export TERM=xterm-256color
 fi
 
 alias d='dirs -v'
