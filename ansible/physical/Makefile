@@ -28,7 +28,7 @@ lint-ansible-lint:
 # https://stackoverflow.com/a/12536521
 lint-ansible-review:
 	find . $(FIND_PATHS) -print0 \
-	| xargs -0 --max-procs $(CPU_COUNT) --max-args $$(( ($(shell find .  $(FIND_PATHS) -exec echo one-file ';' | wc -l) + $(CPU_COUNT) - 1) / $(CPU_COUNT) )) ansible-review
+	| xargs -0 --max-procs $(CPU_COUNT) --max-args $$(( ($(shell find . $(FIND_PATHS) -exec echo one-file ';' | wc -l) + $(CPU_COUNT) - 1) / $(CPU_COUNT) )) ansible-review -c ansible-review-config.ini
 
 lint-pylint:
 	find . -type f -name '*.py' -print0 | xargs -0 pylint -j $(CPU_COUNT)
