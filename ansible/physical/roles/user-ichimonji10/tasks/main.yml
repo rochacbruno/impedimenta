@@ -1,6 +1,6 @@
 # The "sys" group is for printing. See:
 # https://wiki.archlinux.org/index.php/Printing#Configuration
-- name: Define a list of ichimonji10's groups
+- name: Define a list of groups that ichimonji10 belongs to
   set_fact:
     user_ichimonji10_groups:
     - ichi-machines
@@ -10,7 +10,7 @@
 
 # "Members of the libvirt group have passwordless access to the RW daemon socket
 # by default." See: https://wiki.archlinux.org/index.php/Libvirt#Using_polkit
-- name: Append to groups if host in vm-hosts group
+- name: Append "libvirt" to the list of groups
   set_fact:
     user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['libvirt'] }}"
   when: "'vm-hosts' in group_names"
@@ -22,7 +22,7 @@
       name: workstation
       tasks_from: picocom
 
-  - name: Append "uucp" to the list of ichimonji10's groups
+  - name: Append "uucp" to the list of groups
     set_fact:
       user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['uucp'] }}"
 
