@@ -1,4 +1,0 @@
-- name: Install picocom (and create uucp group)
-  pacman:
-    name: picocom
-  become: true

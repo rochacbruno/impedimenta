@@ -15,17 +15,9 @@
     user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['libvirt'] }}"
   when: "'vm-hosts' in group_names"
 
-- block:
-
-  - name: Install picocom (and create uucp group)
-    include_role:
-      name: workstation
-      tasks_from: picocom
-
-  - name: Append "uucp" to the list of groups
-    set_fact:
-      user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['uucp'] }}"
-
+- name: Append "uucp" to the list of groups
+  set_fact:
+    user_ichimonji10_groups: "{{ user_ichimonji10_groups + ['uucp'] }}"
   when: "'workstations' in group_names"
 
 - name: Create ichimonji10

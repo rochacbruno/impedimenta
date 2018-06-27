@@ -59,6 +59,7 @@
       - openssh
       - p7zip
       - pavucontrol
+      - picocom
       - pulseaudio
       - python-docutils  # for rst2html
       - python-wheel
@@ -84,8 +85,6 @@
     notify: Set install reason for optional dependencies
 
   become: true
-
-- include_tasks: picocom.yml
 
 - name: Install AUR packages
   include_role:
