@@ -1,4 +1,5 @@
 CPU_COUNT=$(shell nproc)
+FIND_PATHS='(' -path ./inventory -o -path './host_vars/*' -o -type f -name '*.yml' ')'
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of:"
@@ -21,8 +22,13 @@ lint: lint-syntax-check lint-ansible-lint lint-pylint
 lint-ansible-lint:
 	ansible-lint -x ANSIBLE0017 site.yml
 
+# ansible-review doesn't support parallelism, so we use xargs to implement it.
+# Bash's division is integer-based, with floored results. To get ceiling'd
+# results, we use some math: ceil=$(( ($divide + $by - 1) / $by )). See:
+# https://stackoverflow.com/a/12536521
 lint-ansible-review:
-	find . -path ./inventory -print0 -o -path './host_vars/*' -print0 -o -type f -name '*.yml' -print0 | xargs -0 ansible-review
+	find . $(FIND_PATHS) -print0 \
+	| xargs -0 --max-procs $(CPU_COUNT) --max-args $$(( ($(shell find .  $(FIND_PATHS) -exec echo one-file ';' | wc -l) + $(CPU_COUNT) - 1) / $(CPU_COUNT) )) ansible-review
 
 lint-pylint:
 	find . -type f -name '*.py' -print0 | xargs -0 pylint -j $(CPU_COUNT)
