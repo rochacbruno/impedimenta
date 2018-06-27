@@ -1,15 +1,27 @@
 - name: Install development tools
   pacman:
     name:
+    - ansible
+    - ansible-lint
+    - cmark
     - ctags
     - git
+    - graphviz
+    - namcap
     - pacman-contrib
+    - python-docutils  # for rst2html
+    - python-wheel
+    - shellcheck
+    - sshpass  # optional for ansible
+    - tmux
     - twine
     - vim
     - vim-jellybeans
     - vim-nerdtree
     - vim-tagbar
+    - wget
   become: true
+  notify: Set install reason for optional dependencies
 
 - name: Install development tools from the AUR
   include_role:
@@ -17,6 +29,7 @@
   vars:
     aur_packages:
     - entr
+    - python-rst2pdf
     - vim-badwolf-git
     - vim-hemisu-git
     - vim-mark

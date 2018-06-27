@@ -2,7 +2,8 @@
   pacman:
     name:
     - bash
-    - less
     - bind-tools
+    - less
+    - sudo
     - tree
   become: true
