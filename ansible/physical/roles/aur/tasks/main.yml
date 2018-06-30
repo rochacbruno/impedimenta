@@ -10,6 +10,7 @@
   - name: Create {{ aur_user }}
     user:
       name: '{{ aur_user }}'
+      groups: ichi-machines
       shell: /usr/bin/bash
       home: '{{ aur_user_home }}'
       move_home: true
@@ -130,6 +131,13 @@
 
   become: true
   become_user: '{{ aur_user }}'
+
+- name: Configure basic unit monitoring for user
+  include_role:
+    name: check-units
+  vars:
+    check_units_users:
+    - '{{ aur_user }}'
 
 - include_tasks: package-and-install.yml
   with_items: '{{ aur_packages }}'
