@@ -4,9 +4,9 @@
 #   properties, like a certain ID.
 # * It should be present in a base installation anyway.
 - name: Give password-protected sudo privileges to the wheel group
-  lineinfile:
-    path: /etc/sudoers
-    regexp: '^%wheel '
-    line: '%wheel ALL=(ALL) ALL'
+  copy:
+    src: wheel-group
+    dest: /etc/sudoers.d/
     validate: 'visudo --check --file %s'
+    mode: 0440
   become: true

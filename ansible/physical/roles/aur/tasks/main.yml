@@ -19,9 +19,10 @@
   # building packages, but this is unclear.
   - name: Give {{ aur_user }} passwordless sudo privileges
     template:
-      src: aur-user-nopasswd
-      dest: /etc/sudoers.d/{{ aur_user }}-nopasswd
+      src: aur-user
+      dest: /etc/sudoers.d/{{ aur_user }}-user
       validate: 'visudo --check --file %s'
+      mode: 0440
 
   - name: Remove references to aur-packager from /etc/sudoers
     lineinfile:
