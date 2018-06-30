@@ -1,8 +1,10 @@
 [Unit]
 Description=Periodically update Pacman's mirrorlist
 
+# We add a RandomizedDelaySec to be nicer to mirrors.
 [Timer]
-OnCalendar=Mon,Wed,Fri
+OnCalendar=daily
+RandomizedDelaySec=5m
 Persistent=true
 
 [Install]
