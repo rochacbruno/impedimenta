@@ -1,3 +1,3 @@
 - name: Lock password
-  command: passwd --lock aur-packager
+  command: passwd --lock {{ aur_user }}
   become: true

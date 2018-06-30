@@ -22,7 +22,7 @@
 
   - name: Package {{ item }}
     command: aursync --chroot --no-confirm {{ item }}
-    become_user: aur-packager
+    become_user: '{{ aur_user }}'
 
   - name: Sync aur repository
     command: pacman -Sy --config /etc/pacman.d/aur.conf

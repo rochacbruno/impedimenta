@@ -11,7 +11,8 @@ workspace="$(mktemp --directory)"
 # Alad Wenter (https://aur.archlinux.org/account/Alad)
 gpg --recv-keys DBE7D3DD8C81D58D0A13D0E76BC26A17B9B7018A
 
-# Get, build and install aurutils and its deps.
+# Get and compile aurutils and its deps. `makepkg --syncdeps` requires root
+# permissions, as does `sudo ...`.
 cd "${workspace}"
 curl -O 'https://aur.archlinux.org/cgit/aur.git/snapshot/aurutils.tar.gz'
 tar xzf aurutils.tar.gz

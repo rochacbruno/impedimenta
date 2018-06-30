@@ -7,13 +7,23 @@ This role is designed to address the needs of an Arch Linux and Ansible user
 who'd like to locally package and install packages from the AUR, using aurutils.
 When invoked, this role will:
 
-1. Create a user named `aur-packager` and give them passwordless sudo access.
+1. Create an AUR user, and give it passwordless sudo privileges.
 2. Install aurutils.
 3. Create a package cache in `/var/cache/pacman/aur/`. Let this cache be owned
-   by the `aur-packager` user.
+   by the AUR user.
 4. Create a repository named `aur`, and make `/etc/pacman.conf` include it.
-5. Package and install the AUR packages named by the `aur_packages` variable.
-   Let all packaging work be done by the `aur-packager` user.
+5. Package and install the packages named by the `aur_packages` variable. Let
+   all packaging work be done by the AUR user.
+
+This role doesn't allow one to serve packages over a network. Instead, only the
+local system may consume compiled packages.
+
+Variables:
+
+* `aur_packages`: Required. The AUR packages to compile.
+* `aur_user`: Optional. The name of the local system user that will compile and
+  own packages.
+* `aur_user_home`: Optional. The AUR user's home directory.
 
 Sample playbook:
 
@@ -25,15 +35,3 @@ Sample playbook:
         aur_packages:
           - systemd-boot-pacman-hook
 ```
-
-Known drawbacks:
-
-* Packages aren't built in a chroot. As a result:
-  * The build environment may be dirty.
-  * The `aur-packager` user requires passwordless sudo access.
-* This role is inflexible, and may encounter conflicts. It's impossible to
-  configure the user that's used to build packages, the path at which the
-  package cache is placed, the name of the repository, or anything else.
-* This role doesn't satisfy the needs of an Arch Linux and Ansible user who'd
-  like to package and distribute software. (Say, on a LAN.) This role assumes
-  that only the local system will use the repository created by this role.
