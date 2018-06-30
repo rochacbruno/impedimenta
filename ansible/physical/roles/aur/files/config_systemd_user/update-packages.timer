@@ -1,8 +1,10 @@
 [Unit]
 Description=Periodically update AUR packages
 
+# We add a RandomizedDelaySec to be nicer to the mirrors.
 [Timer]
 OnCalendar=daily
+RandomizedDelaySec=15min
 Persistent=True
 
 [Install]
