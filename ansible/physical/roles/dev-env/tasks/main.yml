@@ -28,6 +28,7 @@
     name: aur
   vars:
     aur_packages:
+    - ansible-review
     - entr
     - python-rst2pdf
     - vim-badwolf-git
