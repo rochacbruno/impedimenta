@@ -1,0 +1,5 @@
+[Unit]
+Description=Mnemosyne sync server
+
+[Service]
+ExecStart=/usr/bin/mnemosyne --sync-server

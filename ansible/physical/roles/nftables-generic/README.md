@@ -18,5 +18,6 @@ The firewall that's installed differs depending on whether the host is in the
 following groups:
 
 * bittorrent-hosts
+* mnemosyne-hosts
 * vm-hosts
 * webservers

@@ -37,6 +37,7 @@ pine.ichimonji10.name
 
 [servers:children]
 bittorrent-hosts
+mnemosyne-hosts
 routers
 webservers
 
@@ -44,6 +45,9 @@ webservers
 # an open port to function correctly, and only one port is available from the
 # VPN provider.
 [bittorrent-hosts]
+pine.ichimonji10.name
+
+[mnemosyne-hosts]
 pine.ichimonji10.name
 
 [routers]

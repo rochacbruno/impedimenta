@@ -1,0 +1,116 @@
+- name: Install mnemosyne
+  include_role:
+    name: aur
+  vars:
+    aur_packages:
+    - mnemosyne
+
+- block:
+
+  - name: Install python-cheroot, for the mnemosyne sync server
+    pacman:
+      name: python-cheroot
+      state: present
+    notify: Set install reason for python-cheroot
+
+  - name: Create a user for the mnemosyne sync server
+    user:
+      name: '{{ mnemosyne_user }}'
+      home: '{{ mnemosyne_user_home }}'
+      system: true
+      shell: /usr/bin/nologin
+    notify: Lock password
+
+  become: true
+
+- name: Get {{ mnemosyne_user }} lingering state
+  command: loginctl --property Linger --value show-user {{ mnemosyne_user }}
+  changed_when: false
+  check_mode: false
+  failed_when: false
+  register: result
+
+- name: Get passwd information about {{ mnemosyne_user }}
+  getent:
+    database: passwd
+    key: '{{ mnemosyne_user }}'
+    split: ':'
+
+- block:
+
+  - name: Create {{ mnemosyne_user_home }}/.config/systemd/user/
+    file:
+      path: '{{ mnemosyne_user_home }}/.config/systemd/user/'
+      state: directory
+
+  - name: Install the sync server .service
+    copy:
+      src: sync-server.service
+      dest: '{{ mnemosyne_user_home }}/.config/systemd/user/'
+
+  - name: Enable lingering for {{ mnemosyne_user }}
+    command: loginctl enable-linger {{ mnemosyne_user }}
+    when: result.stdout != 'yes'
+
+  # XDG_RUNTIME_DIR must be set, or else the systemd module will be unable to
+  # contact the user's DBus instance. In no particular order, see:
+  #
+  # * https://github.com/ansible/ansible/issues/27631
+  # * https://stackoverflow.com/questions/34167257/can-i-control-a-user-systemd-using-systemctl-user-after-sudo-su-myuser
+  # * https://uggedal.com/journal/ansible-systemd-user/
+  # * https://unix.stackexchange.com/questions/346841/why-does-sudo-i-not-set-xdg-runtime-dir-for-the-target-user
+  # * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
+  - name: Start and enable the sync server
+    systemd:
+      name: sync-server.service
+      state: started
+      enabled: true
+      user: true
+      daemon_reload: true
+    environment:
+      XDG_RUNTIME_DIR: /run/user/{{ getent_passwd[mnemosyne_user][1] }}
+
+  become: true
+  become_user: '{{ mnemosyne_user }}'
+
+# We can't do this until mnemosyne has run at least once. As a future
+# improvement, this should only be done if mnemosyne_sync_{username,password}
+# are defined and differ from what are in the database. This will enable
+# idempotence.
+- block:
+
+  - name: Stop the sync server, so that the database may be safely munged
+    systemd:
+      name: sync-server.service
+      state: stopped
+      user: true
+
+  # This is a kludge. It's be nice if mnemosyne supported a better method for
+  # setting the sync server's username and password.
+  - name: Set username and password for mnemosyne sync server
+    script: >
+      set-sync-credentials.py
+      {{ mnemosyne_user_home }}/.config/mnemosyne/config.db
+      {{ mnemosyne_sync_username }}
+      {{ mnemosyne_sync_password }}
+
+  - name: Start the sync server
+    systemd:
+      name: sync-server.service
+      state: started
+      user: true
+
+  become: true
+  become_user: '{{ mnemosyne_user }}'
+  environment:
+    XDG_RUNTIME_DIR: /run/user/{{ getent_passwd[mnemosyne_user][1] }}
+  when:
+  - mnemosyne_sync_username is defined
+  - mnemosyne_sync_password is defined
+
+- name: Configure basic unit monitoring for user
+  include_role:
+    name: check-units
+  vars:
+    check_units_users:
+    - '{{ mnemosyne_user }}'
