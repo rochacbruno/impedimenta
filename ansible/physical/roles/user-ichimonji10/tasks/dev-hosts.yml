@@ -1,17 +1,27 @@
 - block:
 
+  - name: Create ~/.config/git/
+    file:
+      name: '{{ user_ichimonji10_home }}/.config/git/'
+      state: directory
+
   - name: Install git config files
     copy:
-      src: "{{ item }}"
-      dest: "{{ user_ichimonji10_home }}/.{{ item }}"
+      src: config_git/
+      dest: '{{ user_ichimonji10_home }}/.config/git/'
+
+  - name: Remove old git config files
+    file:
+      name: '{{ user_ichimonji10_home }}/{{ item }}'
+      state: absent
     with_items:
-    - gitconfig
-    - gitignore_global
+    - .gitconfig
+    - .gitignore_global
 
   - name: Install ~/.pypirc (for twine)
     copy:
       src: pypirc
-      dest: "{{ user_ichimonji10_home }}/.pypirc"
+      dest: '{{ user_ichimonji10_home }}/.pypirc'
 
   become: true
   become_user: ichimonji10
