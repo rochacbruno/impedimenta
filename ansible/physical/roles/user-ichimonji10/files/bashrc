@@ -23,11 +23,35 @@ alias ll='ls -lha'
 alias ls='ls --color=auto --group-directories-first'
 alias rm='rm -I'
 
+# See bash(1) or https://wiki.archlinux.org/index.php/Bash/Prompt_customization.
+__prompt_command() {
+    local exit="$?"
+
+    # local black="\[$(tput setaf 0)\]"
+    local red="\[$(tput setaf 1)\]"
+    # local green="\[$(tput setaf 2)\]"
+    # local yellow="\[$(tput setaf 3)\]"
+    # local blue="\[$(tput setaf 4)\]"
+    # local purple="\[$(tput setaf 5)\]"
+    local turquoise="\[$(tput setaf 6)\]"
+    # local white="\[$(tput setaf 7)\]"
+    local reset="\[$(tput sgr0)\]"
+
+    # As far as I can tell, there's no reason to export PS1. It's only of use to
+    # bash, not sub-processes like vim or git-commit.
+    PS1="[${turquoise}\u${reset}@${turquoise}\h${reset}:${turquoise}\W${reset}]"
+    if [ "${exit}" == 0 ]; then
+        PS1+="[${turquoise}${exit}${reset}]\$ "
+    else
+        PS1+="[${red}${exit}${reset}]\$ "
+    fi
+}
+PROMPT_COMMAND=__prompt_command
+
 export EDITOR="vim"
 export EMAIL="jerebear@protonmail.com"
 export PAGER=less
 export PATH="$PATH:$HOME/.local/bin"
-export PS1="[\[\e[0;36m\]\u\[\e[0;0m\]@\[\e[0;36m\]\h\[\e[0;0m\]:\[\e[0;36m\]\W\[\e[0;0m\]]\$ "
 
 # Update LINES and COLUMNS after each command if needed.
 shopt -s checkwinsize
