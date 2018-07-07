@@ -6,10 +6,10 @@
   - name: Create {{ aur_user }}
     user:
       name: '{{ aur_user }}'
-      groups: ichi-machines
-      shell: /usr/bin/bash
       home: '{{ aur_user_home }}'
       move_home: true
+      shell: /usr/bin/nologin
+      system: true
     notify: Lock password
 
   # Required by install-aurutils.sh. Possibly required by aurutils itself for

@@ -1,3 +1,6 @@
+# The AUR update service was initially implemented as a --user service. We need
+# to make sure that that service and supporting services are not running before
+# proceeding.
 - name: Get {{ aur_user }} lingering state
   command: loginctl --property Linger --value show-user {{ aur_user }}
   changed_when: false
@@ -5,52 +8,35 @@
   failed_when: false
   register: result
 
-- name: Get passwd information about {{ aur_user }}
-  getent:
-    database: passwd
-    key: '{{ aur_user }}'
-    split: ':'
-
 - block:
 
-  - name: Create {{ aur_user_home }}/.config/systemd/user/
+  - name: Delete {{ aur_user_home }}/.config/systemd/user/
     file:
       path: '{{ aur_user_home }}/.config/systemd/user/'
-      state: directory
+      state: absent
 
-  - name: Install units to periodically update AUR packages
-    copy:
-      src: config_systemd_user/
-      dest: '{{ aur_user_home }}/.config/systemd/user/'
-
-  - name: Enable lingering for {{ aur_user }}
-    command: loginctl enable-linger {{ aur_user }}
-    when: result.stdout != 'yes'
-
-  # XDG_RUNTIME_DIR must be set, or else the systemd module will be unable to
-  # contact the user's DBus instance. In no particular order, see:
-  #
-  # * https://github.com/ansible/ansible/issues/27631
-  # * https://stackoverflow.com/questions/34167257/can-i-control-a-user-systemd-using-systemctl-user-after-sudo-su-myuser
-  # * https://uggedal.com/journal/ansible-systemd-user/
-  # * https://unix.stackexchange.com/questions/346841/why-does-sudo-i-not-set-xdg-runtime-dir-for-the-target-user
-  # * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
-  - name: Start and enable timer to periodically update AUR packages
-    systemd:
-      name: update-packages.timer
-      state: started
-      enabled: true
-      user: true
-      daemon_reload: true
-    environment:
-      XDG_RUNTIME_DIR: /run/user/{{ getent_passwd[aur_user][1] }}
+  - name: Disable lingering for {{ aur_user }}
+    command: loginctl disable-linger {{ aur_user }}
+    when: result.stdout == 'yes'
 
   become: true
   become_user: '{{ aur_user }}'
 
-- name: Configure basic unit monitoring for user
-  include_role:
-    name: check-units
-  vars:
-    check_units_users:
-    - '{{ aur_user }}'
+- block:
+
+  - name: Install units to update AUR packages
+    template:
+      src: update-aur-packages.{{ item }}
+      dest: /etc/systemd/system/
+    with_items:
+    - service
+    - timer
+
+  - name: Start and enable units to update AUR packages
+    systemd:
+      name: update-aur-packages.timer
+      state: started
+      enabled: true
+      daemon_reload: true
+
+  become: true

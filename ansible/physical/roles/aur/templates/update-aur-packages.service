@@ -8,3 +8,5 @@ After=network-online.target
 [Service]
 Type=oneshot
 ExecStart=/usr/bin/aursync --chroot --update --no-confirm
+User={{ aur_user }}
+Group={{ aur_user }}
