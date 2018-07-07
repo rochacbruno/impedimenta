@@ -98,6 +98,7 @@
     systemd:
       name: sync-server.service
       state: started
+      enabled: true
       user: true
 
   become: true
