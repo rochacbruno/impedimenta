@@ -3,3 +3,5 @@ Description=Mnemosyne sync server
 
 [Service]
 ExecStart=/usr/bin/mnemosyne --sync-server
+User={{ mnemosyne_user }}
+Group={{ mnemosyne_user }}

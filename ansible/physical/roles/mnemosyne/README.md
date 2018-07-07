@@ -1,7 +1,9 @@
 mnemosyne
 =========
 
-Install mnemosyne, start and enable its sync server, and enable unit monitoring.
+Install mnemosyne, and start and enable its sync server.
+
+The sync server may be controlled with `mnemosyne-sync-server.service`.
 
 Variables:
 
