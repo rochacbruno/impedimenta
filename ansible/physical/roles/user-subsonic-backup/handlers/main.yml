@@ -1,3 +1,0 @@
-- name: Lock subsonic-backup's password
-  command: passwd --lock subsonic-backup
-  become: true

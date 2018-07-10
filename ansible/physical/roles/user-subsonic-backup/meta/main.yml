@@ -1,5 +1,0 @@
-# Standards: 0.1
-# The msmtp role creates the ichi-machines group.
-dependencies:
-- msmtp
-- subsonic

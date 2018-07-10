@@ -1,9 +1,13 @@
-- name: Install AUR packages
+- name: Install Subsonic
   include_role:
     name: aur
   vars:
     aur_packages:
     - subsonic
+
+- include_tasks: install-transcoders.yml
+- include_tasks: configure-backups.yml
+- include_tasks: delete-outdated.yml
 
 - block:
 
@@ -11,6 +15,8 @@
     file:
       path: /var/lib/subsonic/db
       state: directory
+      owner: subsonic
+      group: subsonic
       mode: 'o-rwx'
 
   # It'd be *very* nice if Subsonic didn't have visibility into these users'
@@ -21,6 +27,13 @@
       groups:
       - ichimonji10
       - transmission
+
+  - name: Create a podcasts directory
+    file:
+      name: /srv/subsonic/podcasts
+      state: directory
+      owner: subsonic
+      group: subsonic
 
   - name: Start and enable Subsonic
     systemd:

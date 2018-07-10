@@ -1,0 +1,27 @@
+- block:
+
+  - name: Install transcoders
+    pacman:
+      name:
+      - ffmpeg
+      - flac
+      - lame
+
+  - name: Create a directory to link to transcoders
+    file:
+      path: /var/lib/subsonic/transcoders
+      state: directory
+      owner: subsonic
+      group: subsonic
+
+  - name: Link to transcoders
+    file:
+      path: /var/lib/subsonic/transcoders/{{ item }}
+      src: /usr/bin/{{ item }}
+      state: link
+    with_items:
+    - ffmpeg
+    - flac
+    - lame
+
+  become: true
