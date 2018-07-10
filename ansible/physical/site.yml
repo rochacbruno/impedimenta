@@ -41,8 +41,8 @@
 
 - hosts: servers
   roles:
-  - sshd
   - dynamic-dns
+  - sshd
 
 - hosts: servers:!routers
   roles:
