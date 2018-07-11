@@ -15,3 +15,12 @@
 - name: Print result.stdout
   debug:
     var: result.stdout
+
+- name: Call script with command moule and use the quote filter
+  command: /usr/bin/bash "{{ ansible_env.HOME }}/.local/bin/echo-args.sh" {{ item | quote }}
+  changed_when: false
+  register: result
+
+- name: Print result.stdout
+  debug:
+    var: result.stdout
