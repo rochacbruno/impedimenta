@@ -14,8 +14,11 @@
 
   - name: Install units to periodically back up Subsonic's database
     copy:
-      src: etc_systemd_system/
-      dest: /etc/systemd/system/
+      src: etc_systemd_system/{{ item }}
+      dest: /etc/systemd/system/{{ item }}
+    with_items:
+    - subsonic-backup.service
+    - subsonic-backup.timer
 
   - name: Start and enable timer to periodically back up Subsonic's database
     systemd:

@@ -35,6 +35,13 @@
       owner: subsonic
       group: subsonic
 
+  # We customize the config file by setting several environment variables.
+  - name: Customize Subsonic's configuration file
+    copy:
+      src: etc_systemd_system/subsonic.service.d
+      dest: /etc/systemd/system/
+    notify: Restart subsonic
+
   - name: Start and enable Subsonic
     systemd:
       name: subsonic
