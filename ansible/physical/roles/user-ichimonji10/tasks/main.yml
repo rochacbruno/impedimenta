@@ -3,7 +3,6 @@
 - name: Define a list of groups that ichimonji10 belongs to
   set_fact:
     user_ichimonji10_groups:
-    - ichi-machines
     - sys
     - wheel
   become: true
@@ -35,13 +34,6 @@
 - name: Set variable referencing ichimonji10's home directory
   set_fact:
     user_ichimonji10_home: "{{ getent_passwd['ichimonji10'][4] }}"
-
-- name: Configure basic unit monitoring for user
-  include_role:
-    name: check-units
-  vars:
-    check_units_users:
-    - ichimonji10
 
 - include_tasks: all.yml
 - include_tasks: vm-hosts.yml

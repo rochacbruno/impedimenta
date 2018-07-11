@@ -10,7 +10,6 @@ On all hosts, do the following:
 
 * Create a user that belongs to the appropriate groups, depending on the groups
   that the target host belongs to.
-* Include the "check-units" role.
 * Install several configuration files, plus the things (like directories) that
   they reference.
 
