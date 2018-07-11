@@ -1,0 +1,14 @@
+- name: Create ~/.local/bin/
+  file:
+    path: '{{ ansible_env.HOME }}/.local/bin'
+    state: directory
+
+- name: Install script into home directory
+  copy:
+    src: echo-args.sh
+    dest: '{{ ansible_env.HOME }}/.local/bin/'
+
+- include_tasks: call-script.yml
+  with_items:
+  - one
+  - two three

@@ -1,0 +1,17 @@
+- name: Call script with command moule and single quote its argument(s)
+  command: /usr/bin/bash '{{ ansible_env.HOME }}/.local/bin/echo-args.sh' '{{ item }}'
+  changed_when: false
+  register: result
+
+- name: Print result.stdout
+  debug:
+    var: result.stdout
+
+- name: Call script with command moule and double quote its argument(s)
+  command: /usr/bin/bash "{{ ansible_env.HOME }}/.local/bin/echo-args.sh" "{{ item }}"
+  changed_when: false
+  register: result
+
+- name: Print result.stdout
+  debug:
+    var: result.stdout
