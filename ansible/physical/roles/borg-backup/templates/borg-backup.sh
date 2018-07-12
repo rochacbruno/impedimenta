@@ -4,8 +4,8 @@
 # the SSH key is usable.
 set -euo pipefail
 
-export BORG_PASSPHRASE='{{ borg_backup_passphrase }}'
-repository=usw-s001.rsync.net:borgbackup-{{ borg_backup_user }}
+export BORG_PASSPHRASE='{{ borg_backup_passphrases[borg_backup.user] }}'
+repository=usw-s001.rsync.net:borgbackup-{{ borg_backup.user }}
 archive_prefix="$(hostname --short)"
 archive_postfix="$(date --iso-8601=seconds)"
 
@@ -15,7 +15,7 @@ export BORG_REMOTE_PATH=/usr/local/bin/borg1/borg1
 borg create \
     --compression lzma \
     "${repository}::${archive_prefix}-${archive_postfix}" \
-    {% for directory in borg_backup_directories %} {{ directory }} {% endfor %}
+    {% for directory in borg_backup.directories | default(('~/Documents', 'Pictures')) %} {{ directory }} {% endfor %}
 
 borg prune "${repository}" --prefix "${archive_prefix}-" \
     --keep-within 8d --keep-weekly 4 --keep-monthly 6

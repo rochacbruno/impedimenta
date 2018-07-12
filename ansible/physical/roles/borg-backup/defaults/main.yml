@@ -1,3 +1,2 @@
-borg_backup_directories:
-- ~/Documents
-- ~/Pictures
+borg_backup_passphrases: {}
+borg_backups: []

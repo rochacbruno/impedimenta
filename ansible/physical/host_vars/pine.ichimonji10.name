@@ -1,3 +1,10 @@
+borg_backups:
+- user: ichimonji10
+  directories:
+  - ~/books
+  - ~/docs
+  - ~/pictures
+
 btrfs_path: /mnt/btrfs
 btrfs_subvolumes:
 - path: '{{ btrfs_path }}/home'

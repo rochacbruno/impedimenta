@@ -2,4 +2,4 @@
 dependencies:
 - role: check-units
   check_units_users:
-  - '{{ borg_backup_user }}'
+  - '{{ borg_backups | map(attribute="user") | list }}'

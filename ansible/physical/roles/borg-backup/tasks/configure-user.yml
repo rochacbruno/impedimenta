@@ -1,0 +1,80 @@
+- name: Get passwd information about {{ borg_backup.user }}
+  getent:
+    database: passwd
+    key: '{{ borg_backup.user }}'
+    split: ':'
+
+- name: "Set variable referencing {{ borg_backup.user }}'s ID"
+  set_fact:
+    borg_backup_user_id: '{{ getent_passwd[borg_backup.user][1] }}'
+
+- name: "Set variable referencing {{ borg_backup.user }}'s home directory"
+  set_fact:
+    borg_backup_user_home: '{{ getent_passwd[borg_backup.user][4] }}'
+
+- name: "Get {{ borg_backup.user }}'s lingering state"
+  command: loginctl --property Linger --value show-user {{ borg_backup.user }}
+  changed_when: false
+  check_mode: false
+  register: result
+
+- block:
+
+  - name: "Create directories in {{ borg_backup.user }}'s home directory"
+    file:
+      path: '{{ borg_backup_user_home }}/{{ item }}'
+      state: directory
+    loop:
+    - .local/bin
+    - .ssh
+
+  - name: Install borg backup script
+    template:
+      src: borg-backup.sh
+      dest: '{{ borg_backup_user_home }}/.local/bin/'
+      mode: 0700
+      validate: bash -n %s
+    when: borg_backup.user in borg_backup_passphrases
+
+  - name: Customize ssh configuration file
+    blockinfile:
+      path: '{{ borg_backup_user_home }}/.ssh/config'
+      create: yes
+      mode: 0600
+      block: |
+        Host usw-s001.rsync.net
+          User 1025
+          IdentityFile ~/.ssh/usw-s001.rsync.net
+
+  - name: Install systemd unit files
+    template:
+      src: '{{ item }}'
+      dest: '{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}'
+    loop:
+    - borg-backup.service
+    - borg-backup.timer
+
+  - name: Enable lingering for {{ borg_backup.user }}
+    command: loginctl enable-linger {{ borg_backup.user }}
+    when: result.stdout != 'yes'
+
+  # XDG_RUNTIME_DIR must be set, or else the systemd module will be unable to
+  # contact the user's DBus instance. In no particular order, see:
+  #
+  # * https://github.com/ansible/ansible/issues/27631
+  # * https://stackoverflow.com/questions/34167257/can-i-control-a-user-systemd-using-systemctl-user-after-sudo-su-myuser
+  # * https://uggedal.com/journal/ansible-systemd-user/
+  # * https://unix.stackexchange.com/questions/346841/why-does-sudo-i-not-set-xdg-runtime-dir-for-the-target-user
+  # * https://www.freedesktop.org/software/systemd/man/pam_systemd.html
+  - name: Start and enable periodic backup service for {{ borg_backup.user }}
+    systemd:
+      name: borg-backup.timer
+      state: started
+      enabled: true
+      user: true
+      daemon_reload: true
+    environment:
+      XDG_RUNTIME_DIR: /run/user/{{ borg_backup_user_id }}
+
+  become: true
+  become_user: '{{ borg_backup.user }}'
