@@ -88,12 +88,5 @@
 # Host-specific rules ----------------------------------------------------------
 
 - hosts: pine.ichimonji10.name
-  tasks:
-  - name: Delete user googoo
-    user:
-      name: googoo
-      state: absent
-      remove: true
-    become: true
   roles:
   - btrfs-subvolume
