@@ -1,18 +1,5 @@
 - block:
 
-  - name: Delete outdated script for checking on units
-    file:
-      path: "{{ user_ichimonji10_home }}/.local/bin/check-units.sh"
-      state: absent
-
-  - name: Delete outdated units for checking on units
-    file:
-      path: '{{ user_ichimonji10_home }}/.config/systemd/user/{{ item }}'
-      state: absent
-    with_items:
-    - check-units.service
-    - check-units.timer
-
   - name: Create directories named by ~/.bashrc
     file:
       path: "{{ user_ichimonji10_home }}/.local/bin"
