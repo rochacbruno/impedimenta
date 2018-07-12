@@ -3,35 +3,42 @@ btrfs-subvolume
 
 Periodically create and delete snapshots of btrfs subvolumes.
 
-Example Playbook
-----------------
+Snapshots of each subvolume are made alongside the subvolumes themselves. For
+example, if there are subvolumes at `/mnt/btrfs/home` and `/mnt/btrfs/srv/ftp`,
+then snapshots will be created with names of the form
+`/mnt/btrfs/home-${timestamp}` and `/mnt/btrfs/srv/ftp-${timestamp}`. Timestamps
+are in ISO 8601 datetime format.
+
+Example playbook:
 
 ```yaml
 - hosts: all
   roles:
-    - name: btrfs-subvolume
-      vars:
-        btrfs_path: /mnt/btrfs
-        btrfs_subvolumes:
-          - {path: home}
-          - {path: srv/ftp, days: 5, weeks: 2}
+  - name: btrfs-subvolume
+    vars:
+      btrfs_path: /mnt/btrfs
+      btrfs_subvolumes:
+      - {path: home}
+      - {path: srv/ftp, days: 5, weeks: 2}
 ```
 
-Variables
----------
+Variables:
 
-* `btrfs_path` (required): The path to some directory the btrfs filesystem to
+* `btrfs_path` Required. The path to some directory the btrfs filesystem to
   manage.
-* `btrfs_subvolumes` (required): A list of objects, where each object contains
-  some information about a subvolume to manage. The following attributes may
-  appear in each object.
-  * `path` (required): The path to a subvolue, relative to `btrfs_path`.
-  * `days` (14): How many days may will old snapshots be retained? Only has an effect
-    when `delete` is true.
-  * `weeks` (8): How many weeks will old snapshots be retained? Only has an effect
-    when `delete` is true.
-  * `snapshot` (true): Whether to install subvolume snapshot code.
-  * `delete` (true): Whether to instsall subvolume deletion code.
+* `btrfs_subvolumes` Optional, defaults to an empty list. A list of objects,
+  where each object contains some information about a subvolume to manage. The
+  following attributes may appear in each object. If empty, only a few
+  preliminary tasks are executed, such as installing btrfs-progs.
+  * `path` Required. The path to a subvolue, relative to `btrfs_path`.
+  * `days` Optional, defaults to 14. How many days may will old snapshots be
+    retained? Only has an effect when `delete` is true.
+  * `weeks` Optional, defaults to 8. How many weeks will old snapshots be
+    retained? Only has an effect when `delete` is true.
+  * `snapshot` Optional, defaults to true. Whether to install subvolume snapshot
+    code.
+  * `delete` Optional, defaults to true. Whether to instsall subvolume deletion
+    code.
 
 For more information on `days` and `weeks`, see the `btrfs-subvolume-delete.py`
 script installed by this role.

@@ -51,6 +51,7 @@
   roles:
   - btrfs-balance
   - btrfs-scrub
+  - btrfs-subvolume
 
 - hosts: servers
   roles:
@@ -84,9 +85,3 @@
   roles:
   - nginx  # Make sure to install SSL certificates.
   - subsonic
-
-# Host-specific rules ----------------------------------------------------------
-
-- hosts: pine.ichimonji10.name
-  roles:
-  - btrfs-subvolume
