@@ -23,3 +23,22 @@
 
   when: item.snapshot | default(true)
   become: true
+
+- block:
+
+  - name: Delete .service to snapshot {{ item.path }}
+    file:
+      path: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.service
+      state: absent
+    notify: Reload systemd
+
+  - name: Delete .timer to snapshot {{ item.path }}
+    file:
+      path: /etc/systemd/system/btrfs-subvolume-snapshot-{{ item.escaped_path }}.timer
+      state: absent
+    notify: Reload systemd
+
+  when:
+  - item.snapshot is defined
+  - item.snapshot == false
+  become: true

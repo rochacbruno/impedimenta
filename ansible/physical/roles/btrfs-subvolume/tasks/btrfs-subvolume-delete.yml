@@ -31,3 +31,22 @@
 
   when: item.delete | default(true)
   become: true
+
+- block:
+
+  - name: Delete .service to delete old snapshots of {{ item.path }}
+    file:
+      path: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.service
+      state: absent
+    notify: Reload systemd
+
+  - name: Install .timer to delete old snapshots of {{ item.path }}
+    file:
+      path: /etc/systemd/system/btrfs-subvolume-delete-{{ item.escaped_path }}.timer
+      state: absent
+    notify: Reload systemd
+
+  when:
+  - item.delete is defined
+  - item.delete == false
+  become: true
