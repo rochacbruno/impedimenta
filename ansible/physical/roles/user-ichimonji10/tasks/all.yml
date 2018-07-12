@@ -1,15 +1,4 @@
-# This user used to have per-user .timer units.
-- name: Get ichimonji10's lingering state
-  command: loginctl --property Linger --value show-user ichimonji10
-  changed_when: false
-  check_mode: false
-  register: result
-
 - block:
-
-  - name: Disable lingering for ichimonji10
-    command: loginctl disable-linger ichimonji10
-    when: result.stdout == 'yes'
 
   - name: Delete outdated script for checking on units
     file:
