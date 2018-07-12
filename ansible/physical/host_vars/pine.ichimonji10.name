@@ -15,6 +15,7 @@ btrfs_subvolumes:
 - path: '{{ btrfs_path }}/srv/subsonic'
   days: 5
   weeks: 2
+  snapshot: false
 - path: '{{ btrfs_path }}/var/lib/transmission'
   days: 5
   weeks: 2
