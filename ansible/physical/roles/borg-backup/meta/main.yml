@@ -1,2 +1,5 @@
 # Standards: 0.1
-dependencies: []
+dependencies:
+- role: check-units
+  check_units_users:
+  - '{{ borg_backup_user }}'

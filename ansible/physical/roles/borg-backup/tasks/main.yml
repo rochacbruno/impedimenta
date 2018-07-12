@@ -10,17 +10,16 @@
 
 - name: "Set variable referencing {{ borg_backup_user }}'s ID"
   set_fact:
-    borg_backup_user_id: "{{ getent_passwd[borg_backup_user][1] }}"
+    borg_backup_user_id: '{{ getent_passwd[borg_backup_user][1] }}'
 
 - name: "Set variable referencing {{ borg_backup_user }}'s home directory"
   set_fact:
-    borg_backup_user_home: "{{ getent_passwd[borg_backup_user][4] }}"
+    borg_backup_user_home: '{{ getent_passwd[borg_backup_user][4] }}'
 
 - name: "Get {{ borg_backup_user }}'s lingering state"
   command: loginctl --property Linger --value show-user {{ borg_backup_user }}
-  changed_when: False
-  check_mode: False
-  failed_when: False
+  changed_when: false
+  check_mode: false
   register: result
 
 - name: Install borg and its dependencies
@@ -28,29 +27,28 @@
     name:
     - borg
     - openssh  # for connecting to borg repositories on remote hosts
-    state: present
   become: true
 
 - block:
 
   - name: "Create directories in {{ borg_backup_user }}'s home directory"
     file:
-      path: "{{ borg_backup_user_home }}/{{ item }}"
+      path: '{{ borg_backup_user_home }}/{{ item }}'
       state: directory
     with_items:
-    - '.local/bin'
-    - '.ssh'
+    - .local/bin
+    - .ssh
 
   - name: Install borg backup script
     template:
       src: borg-backup.sh
-      dest: "{{ borg_backup_user_home }}/.local/bin/borg-backup.sh"
+      dest: '{{ borg_backup_user_home }}/.local/bin/'
       mode: 0700
     when: borg_backup_passphrase is defined
 
   - name: Customize ssh configuration file
     blockinfile:
-      path: "{{ borg_backup_user_home }}/.ssh/config"
+      path: '{{ borg_backup_user_home }}/.ssh/config'
       create: yes
       mode: 0600
       block: |
@@ -60,15 +58,12 @@
 
   - name: Install systemd unit files
     template:
-      src: "{{ item }}"
-      dest: "{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}"
+      src: '{{ item }}'
+      dest: '{{ borg_backup_user_home }}/.config/systemd/user/{{ item }}'
     with_items:
     - borg-backup.service
     - borg-backup.timer
-    when: borg_backup_passphrase is defined
 
-  # Spawn a user manager for this user at system start-up time. This allows
-  # enabled user units to start without that user being logged in.
   - name: Enable lingering for {{ borg_backup_user }}
     command: loginctl enable-linger {{ borg_backup_user }}
     when: result.stdout != 'yes'
@@ -90,7 +85,6 @@
       daemon_reload: true
     environment:
       XDG_RUNTIME_DIR: /run/user/{{ borg_backup_user_id }}
-    when: borg_backup_passphrase is defined
 
   become: true
-  become_user: "{{ borg_backup_user }}"
+  become_user: '{{ borg_backup_user }}'
