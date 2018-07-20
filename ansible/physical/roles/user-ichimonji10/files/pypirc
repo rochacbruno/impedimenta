@@ -1,10 +1,10 @@
 [distutils]
 index-servers=
     pypi
-    pypitest
+    testpypi
 
-[pypitest]
-repository = https://testpypi.python.org/pypi
+[testpypi]
+repository = https://test.pypi.org/legacy/
 username = Ichimonji10
 
 [pypi]
