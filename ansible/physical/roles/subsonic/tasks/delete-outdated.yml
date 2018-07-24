@@ -1,6 +1,0 @@
-- name: Delete the user that used to perform backups
-  user:
-    name: subsonic-backup
-    state: absent
-    remove: true
-  become: true
