@@ -25,12 +25,7 @@
 
 - hosts: dev-hosts:&servers:&vm-hosts
   roles:
-  - name: coworkers
-    vars:
-      coworkers:
-      - bizhang
-      - jwilkerson
-      - ragbalak
+  - coworkers
 
 - hosts: uefi-hosts
   roles:
