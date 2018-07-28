@@ -29,10 +29,7 @@
 
 - hosts: uefi-hosts
   roles:
-  - name: aur
-    vars:
-      aur_packages:
-      - systemd-boot-pacman-hook
+  - uefi
 
 - hosts: workstations
   roles:
