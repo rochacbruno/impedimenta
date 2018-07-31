@@ -6,7 +6,7 @@ import subprocess
 # It's OK for this class to have only one public method. There's only one
 # public method because only one custom filter is desired, and this is how
 # custom filters are created.
-class FilterModule(object):  # pylint:disable=too-few-public-methods
+class FilterModule():  # pylint:disable=too-few-public-methods
     """Custom filters."""
 
     @staticmethod
