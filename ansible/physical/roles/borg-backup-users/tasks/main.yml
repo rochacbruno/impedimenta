@@ -6,6 +6,6 @@
   become: true
 
 - include_tasks: configure-user.yml
-  loop: '{{ borg_backups }}'
+  loop: '{{ borg_backup_users }}'
   loop_control:
-    loop_var: borg_backup
+    loop_var: borg_backup_user

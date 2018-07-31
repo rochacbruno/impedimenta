@@ -4,8 +4,8 @@
 beech.ichimonji10.name
 
 # These systems perform periodic backups to remote hosts.
-[borg-backup-hosts]
-pine.ichimonji10.name
+[borg-backup-users-hosts]
+beech.ichimonji10.name
 
 # These systems are used for software development. They might or might not have
 # a GUI.

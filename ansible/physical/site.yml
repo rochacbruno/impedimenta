@@ -13,9 +13,9 @@
   - time
   - user-ichimonji10
 
-- hosts: borg-backup-hosts
+- hosts: borg-backup-users-hosts
   roles:
-  - borg-backup
+  - borg-backup-users
 
 - hosts: dev-hosts
   roles:

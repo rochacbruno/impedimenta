@@ -1,3 +1,10 @@
+borg_backup_users:
+- name: ichimonji10
+  directories:
+  - /mnt/btrfs/home/ichimonji10/Books
+  - /mnt/btrfs/home/ichimonji10/Documents
+  - /mnt/btrfs/home/ichimonji10/Pictures
+
 btrfs_path: /mnt/btrfs
 
 syncthing_usernames:
