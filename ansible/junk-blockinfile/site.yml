@@ -1,0 +1,22 @@
+- hosts: all
+  tasks:
+
+    - name: Create a file
+      file:
+        path: /tmp/blockinfile
+        state: touch
+
+    - name: Call blockinfile on the file
+      blockinfile:
+        path: /tmp/blockinfile
+        block: |
+          call one
+          who knows what will be done
+
+    - name: Call blockinfile on the file
+      blockinfile:
+        path: /tmp/blockinfile
+        block: |
+          call two
+          we might just be amused
+
