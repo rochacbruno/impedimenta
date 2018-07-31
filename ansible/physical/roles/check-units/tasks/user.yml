@@ -12,13 +12,6 @@
   set_fact:
     check_units_home: "{{ getent_passwd[item][4] }}"
 
-- name: Get lingering state of {{ item }}
-  command: loginctl --property Linger --value show-user {{ item }}
-  changed_when: False
-  check_mode: False
-  failed_when: False
-  register: result
-
 - block:
 
   - name: Create ~/.local/bin/
