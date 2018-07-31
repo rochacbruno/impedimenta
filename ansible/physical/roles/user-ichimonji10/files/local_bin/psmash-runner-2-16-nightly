@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Configure a tmux window. Make it so Pulp Smash can test several Pulp systems
+# Configure a tmux window. Make it so Pulp 2 Tests can test several Pulp systems
 # at once.
 set -euo pipefail
 
@@ -17,4 +17,4 @@ tmux send-keys -t 2 'export PULP_SMASH_CONFIG_FILE=rhel-7-pulp-2-16-nightly.json
 
 # etc
 tmux set-window-option synchronize-panes on
-tmux send-keys 'source ~/.venvs/pulp-smash/bin/activate' C-m
+tmux send-keys 'source ~/.venvs/pulp-2-tests/bin/activate' C-m

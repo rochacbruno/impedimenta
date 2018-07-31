@@ -6,8 +6,11 @@
       state: absent
     with_items:
     - psmash-runner-3
+    - psmash-runner-3-pypi
     - psmash-runner-3-qpid
     - psmash-runner-3-rabbitmq
+    - psmash-runner-3-source
+    - psmash-runner-clustered
 
   - name: Install custom executables into ~/.local/bin
     copy:
