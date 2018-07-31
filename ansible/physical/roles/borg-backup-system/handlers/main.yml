@@ -1,0 +1,3 @@
+- name: Lock password
+  command: passwd --lock '{{ borg_backup_system_local_user }}'
+  become: true

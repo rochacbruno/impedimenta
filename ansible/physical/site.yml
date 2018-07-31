@@ -13,6 +13,10 @@
   - time
   - user-ichimonji10
 
+- hosts: borg-backup-system-hosts
+  roles:
+  - borg-backup-system
+
 - hosts: borg-backup-users-hosts
   roles:
   - borg-backup-users

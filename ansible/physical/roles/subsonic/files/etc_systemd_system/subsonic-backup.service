@@ -6,6 +6,6 @@ Description=Back up subsonic's database rebuild script
 [Service]
 Type=oneshot
 ExecStartPre=/usr/bin/systemctl stop subsonic
-ExecStart=/usr/bin/install -Dm600 /var/lib/subsonic/db/subsonic.script \
+ExecStart=/usr/bin/install -Dm640 /var/lib/subsonic/db/subsonic.script \
     /var/local/subsonic/backups/
 ExecStartPost=/usr/bin/systemctl start subsonic
