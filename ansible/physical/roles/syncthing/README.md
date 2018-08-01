@@ -1,19 +1,28 @@
 syncthing
 =========
 
-When executed, this role will install [Syncthing](https://syncthing.net/) and
-enable it on for the given users.
+Install [Syncthing](https://syncthing.net/), and enable it for certain users.
 
-The `syncthing_usernames` variable is required.
+Lingering is enabled if the target host is a server. Otherwise, it is left
+as-is.
 
 Example playbook:
 
 ```yaml
 - hosts: all
   roles:
-    - name: syncthing
-      vars:
-        syncthing_usernames:
-          - alice
-          - bob
+  - syncthing
 ```
+
+Example variables file:
+
+```yaml
+syncthing_usernames:
+- alice
+- bob
+```
+
+Variables:
+
+* `syncthing_username`: Required. A list of user names for which syncthing is
+  configured.

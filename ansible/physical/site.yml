@@ -30,6 +30,7 @@
 - hosts: workstations
   roles:
   - borg-backup-users
+  - syncthing
   - workstation
 
 - hosts: vm-hosts

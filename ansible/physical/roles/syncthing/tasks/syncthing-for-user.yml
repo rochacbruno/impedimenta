@@ -9,9 +9,11 @@
 # enabled user units to start without that user being logged in.
 - name: Enable lingering for {{ item }}
   command: loginctl enable-linger {{ item }}
-  when: result.stdout != 'yes'
   become: true
   become_user: '{{ item }}'
+  when:
+  - '"servers" in group_names'
+  - result.stdout != 'yes'
 
 - name: Get passwd information about {{ item }}
   getent:
