@@ -1,9 +1,11 @@
 borg_backup_users:
-- name: ichimonji10
-  directories:
+- local_user: ichimonji10
+  local_paths:
   - /mnt/btrfs/home/ichimonji10/Books
   - /mnt/btrfs/home/ichimonji10/Documents
   - /mnt/btrfs/home/ichimonji10/Pictures
+  remote_host: usw-s001.rsync.net
+  remote_user: 1025
 
 btrfs_path: /mnt/btrfs
 

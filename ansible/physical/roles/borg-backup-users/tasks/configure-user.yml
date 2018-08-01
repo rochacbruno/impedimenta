@@ -1,20 +1,20 @@
-- name: Get passwd information about {{ borg_backup_user.name }}
+- name: Get passwd information about {{ borg_backup_user.local_user }}
   getent:
     database: passwd
-    key: '{{ borg_backup_user.name }}'
+    key: '{{ borg_backup_user.local_user }}'
     split: ':'
 
-- name: "Set variable referencing {{ borg_backup_user.name }}'s ID"
+- name: Set a variable referencing the user's ID
   set_fact:
-    borg_backup_user_id: '{{ getent_passwd[borg_backup_user.name][1] }}'
+    borg_backup_user_id: '{{ getent_passwd[borg_backup_user.local_user][1] }}'
 
-- name: "Set variable referencing {{ borg_backup_user.name }}'s home directory"
+- name: Set a variable referencing the user's home directory
   set_fact:
-    borg_backup_user_home: '{{ getent_passwd[borg_backup_user.name][4] }}'
+    borg_backup_user_home: '{{ getent_passwd[borg_backup_user.local_user][4] }}'
 
 - block:
 
-  - name: "Create directories in {{ borg_backup_user.name }}'s home directory"
+  - name: Create directories in the user's home directory
     file:
       path: '{{ borg_backup_user_home }}/{{ item }}'
       state: directory
@@ -22,30 +22,30 @@
     - .local/bin
     - .ssh
 
-  - name: Install private SSH key
+  - name: Install a private SSH key
     copy:
-      src: '{{ borg_backup_users_private_keys[borg_backup_user.name] }}'
+      src: '{{ borg_backup_users_private_keys[borg_backup_user.local_user] }}'
       dest: '{{ borg_backup_user_home }}/.ssh/borg-backup'
       mode: 0600
-    when: borg_backup_user.name in borg_backup_users_private_keys
+    when: borg_backup_user.local_user in borg_backup_users_private_keys
 
-  - name: Customize SSH configuration file
+  - name: Customize the user's SSH configuration file
     blockinfile:
       path: '{{ borg_backup_user_home }}/.ssh/config'
       create: yes
       mode: 0600
       block: |
-        Host usw-s001.rsync.net
-          User 1025
+        Host {{ borg_backup_user.remote_host }}
+          User {{ borg_backup_user.remote_user }}
           IdentityFile ~/.ssh/borg-backup
 
-  - name: Install Borg backup script
+  - name: Install the Borg backup script
     template:
       src: borg-backup.sh
       dest: '{{ borg_backup_user_home }}/.local/bin/'
       mode: 0700
       validate: bash -n %s
-    when: borg_backup_user.name in borg_backup_users_passphrases
+    when: borg_backup_user.local_user in borg_backup_users_passphrases
 
   - name: Install borg-backup.service
     template:
@@ -76,4 +76,4 @@
       XDG_RUNTIME_DIR: /run/user/{{ borg_backup_user_id }}
 
   become: true
-  become_user: '{{ borg_backup_user.name }}'
+  become_user: '{{ borg_backup_user.local_user }}'
