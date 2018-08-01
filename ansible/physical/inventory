@@ -3,14 +3,6 @@
 [workstations]
 beech.ichimonji10.name
 
-# These systems periodically perform system-wide backups to a remote host.
-[borg-backup-system-hosts]
-pine.ichimonji10.name
-
-# These systems periodically perform per-user backups to a remote host.
-[borg-backup-users-hosts]
-beech.ichimonji10.name
-
 # These systems are used for software development. They might or might not have
 # a GUI.
 [dev-hosts]

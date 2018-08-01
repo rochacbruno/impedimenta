@@ -13,14 +13,6 @@
   - time
   - user-ichimonji10
 
-- hosts: borg-backup-system-hosts
-  roles:
-  - borg-backup-system
-
-- hosts: borg-backup-users-hosts
-  roles:
-  - borg-backup-users
-
 - hosts: dev-hosts
   roles:
   - dev-env
@@ -37,6 +29,7 @@
 
 - hosts: workstations
   roles:
+  - borg-backup-users
   - workstation
 
 - hosts: vm-hosts
@@ -79,5 +72,6 @@
 
 - hosts: webservers
   roles:
+  - borg-backup-system
   - nginx  # Make sure to install SSL certificates.
   - subsonic
