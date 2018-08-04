@@ -1,3 +1,3 @@
 - name: Set install reason for optional dependencies
-  command: pacman -D --asdeps sshpass
+  command: pacman -D --asdeps python-passlib sshpass
   become: true

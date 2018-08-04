@@ -1,2 +1,4 @@
 # Standards: 0.1
-dependencies: []
+# The transmission role creates the transmission group.
+dependencies:
+- transmission

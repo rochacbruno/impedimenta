@@ -27,7 +27,7 @@ def main():
         config = {}
     config['bind-address-ipv4'] = _get_tun0_ipv4()
 
-    # Provided by my VPN provider.
+    # Provided by VPN provider.
     config['peer-port'] = 41046
     config['peer-port-random-on-start'] = False
 
@@ -48,19 +48,34 @@ def main():
     config['speed-limit-up'] = 400
     config['speed-limit-up-enabled'] = True
 
+    # Normalize paths exposed by web interface.
+    config['download-dir'] = _get_downloads_path()
+    config['incomplete-dir'] = _get_downloads_path()
+
     with open(settings_path, 'w') as handle:
         json.dump(config, handle, indent=4, sort_keys=True)
 
 
-def _get_settings_path():
-    """Return the path to transmission's settings file."""
-    proc = subprocess.run(
+def _get_downloads_path():
+    """Return the path to transmission's downloads directory."""
+    return os.path.join(_get_home_path(), 'downloads')
+
+
+def _get_home_path():
+    """Return the path to transmission's home directory."""
+    return subprocess.run(
         ('getent', 'passwd', 'transmission'),
         check=True,
         stdout=subprocess.PIPE,
+    ).stdout.decode(locale.getpreferredencoding()).split(':')[5]
+
+
+def _get_settings_path():
+    """Return the path to transmission's settings file."""
+    return os.path.join(
+        _get_home_path(),
+        '.config/transmission-daemon/settings.json'
     )
-    home_dir = proc.stdout.decode(locale.getpreferredencoding()).split(':')[5]
-    return os.path.join(home_dir, '.config/transmission-daemon/settings.json')
 
 
 def _get_tun0_ipv4():

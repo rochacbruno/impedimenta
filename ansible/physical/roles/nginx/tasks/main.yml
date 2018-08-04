@@ -4,6 +4,23 @@
     pacman:
       name: nginx
 
+  - name: Let nginx access transmission's downloads
+    user:
+      name: http
+      groups: transmission
+      append: true
+      create_home: false
+
+  - name: Install htpasswd file for transmission.ichimonji10.name
+    htpasswd:
+      name: admin
+      password: '{{ transmission_password }}'
+      path: /etc/nginx/transmission_ichimonji10_name_downloads.htpasswd
+      owner: root
+      group: http
+      mode: 0640
+    when: transmission_password is defined
+
   - name: Install nginx configuration file
     copy:
       src: nginx.conf
