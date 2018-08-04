@@ -3,16 +3,16 @@ nginx
 
 Install, configure and start nginx, and install static website files.
 
-The following proxied websites are made available:
+Make the following websites available:
 
-* subsonic.ichimonji10.name
-* syncthing.ichimonji10.name
-* transmission.ichimonji10.name
+* http://www.backtobasicsreading.com
+* http://www.ichimonji10.name
+* https://subsonic.ichimonji10.name
+* https://syncthing.ichimonji10.name
+* https://transmission.ichimonji10.name
 
-The following static websites are made available:
+Variables:
 
-* www.backtobasicsreading.com
-* www.ichimonji10.name
-
-Note that _SSL certificates are not installed_. As a result, this role may fail
-the first time it's executed.
+* `nginx_ssl_files`: Optional. If omitted, certain tasks are skipped. A list of
+  paths to local SSL certificates and certificate keys. These files are
+  installed in `/etc/nginx/ssl`.
