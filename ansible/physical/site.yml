@@ -37,6 +37,10 @@
   roles:
   - libvirtd
 
+- hosts: docker-hosts
+  roles:
+  - docker-nftables
+
 - hosts: btrfs-hosts
   roles:
   - btrfs-balance

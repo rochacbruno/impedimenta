@@ -1,0 +1,26 @@
+- block:
+
+  - name: Disable several iptables modules
+    copy:
+      src: docker-nftables.conf
+      dest: /etc/modprobe.d/
+
+  - name: Install Docker
+    pacman:
+      name: docker
+      state: present
+
+  - name: Install Docker configuration file
+    copy:
+      src: daemon.json
+      dest: /etc/docker/
+      mode: 0600
+
+  - name: Start and enable Docker
+    systemd:
+      name: docker
+      state: started
+      enabled: true
+      daemon_reload: true
+
+  become: true

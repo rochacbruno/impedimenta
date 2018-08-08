@@ -9,11 +9,6 @@ beech.ichimonji10.name
 beech.ichimonji10.name
 pine.ichimonji10.name
 
-# These systems host VMs. They typically have powerful hardware.
-[vm-hosts]
-beech.ichimonji10.name
-pine.ichimonji10.name
-
 # These systems have BTRFS filesystems, and therefore require special periodic
 # checks like filesystem scrubs.
 [btrfs-hosts]
@@ -29,6 +24,22 @@ pine.ichimonji10.name
 [apc-hosts]
 amelanchier.ichimonji10.name
 beech.ichimonji10.name
+pine.ichimonji10.name
+
+# These systems host virtual machines of some kind.
+[virt-hosts]
+
+[virt-hosts:children]
+vm-hosts
+docker-hosts
+
+# These systems host qemu-kvm VMs.
+[vm-hosts]
+beech.ichimonji10.name
+pine.ichimonji10.name
+
+# These system host Docker VMs.
+[docker-hosts]
 pine.ichimonji10.name
 
 # These systems are headless, have high uptime, and have remote management
