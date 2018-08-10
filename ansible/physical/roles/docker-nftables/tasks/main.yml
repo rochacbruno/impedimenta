@@ -1,10 +1,5 @@
 - block:
 
-  - name: Disable several iptables modules
-    copy:
-      src: docker-nftables.conf
-      dest: /etc/modprobe.d/
-
   - name: Install Docker
     pacman:
       name: docker

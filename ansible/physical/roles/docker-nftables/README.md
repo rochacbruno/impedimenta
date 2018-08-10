@@ -3,7 +3,9 @@ docker-nftables
 
 Install Docker, and make compatible with nftables.
 
-In addition, prevent certain modules related to iptables from ever loading.
+"Make compatible" consists of making the firewall reference the logical
+interface that Docker creates (via a dependency) and telling Docker to not use
+iptables.
 
 For background information, see:
 
