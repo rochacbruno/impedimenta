@@ -17,4 +17,4 @@ tmux send-keys -t 2 'export PULP_SMASH_CONFIG_FILE=rhel-7-pulp-2-17-beta.json' C
 
 # etc
 tmux set-window-option synchronize-panes on
-tmux send-keys 'source ~/.venvs/pulp-smash/bin/activate' C-m
+tmux send-keys 'source ~/.venvs/pulp-2-tests/bin/activate' C-m
